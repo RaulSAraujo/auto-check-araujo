@@ -10,6 +10,8 @@ defineProps<{
   veiculos: Veiculo[]
   loading?: boolean
 }>()
+
+const { can } = usePermissions()
 </script>
 
 <template>
@@ -19,6 +21,7 @@ defineProps<{
         Veículos
       </h2>
       <UButton
+        v-if="can('vehicles.write')"
         :to="CUSTOMER_ROUTES.newVehicle(clienteId)"
         icon="i-lucide-plus"
         label="Adicionar veículo"

@@ -24,6 +24,8 @@ const {
   save,
   removeVehicle
 } = useVehicleDetailPage(id, state, refresh)
+
+const { can } = usePermissions()
 </script>
 
 <template>
@@ -75,7 +77,7 @@ const {
             </div>
             <div class="flex gap-2">
               <UButton
-                v-if="!editing"
+                v-if="can('vehicles.write') && !editing"
                 label="Editar"
                 icon="i-lucide-pencil"
                 color="neutral"
@@ -84,6 +86,7 @@ const {
                 @click="editing = true"
               />
               <UButton
+                v-if="can('vehicles.delete')"
                 label="Excluir"
                 icon="i-lucide-trash"
                 color="error"

@@ -10,11 +10,13 @@ export function useOrderDetailEditor(
   refresh: () => Promise<void>
 ) {
   const { updateOrder } = useOrderMutations()
+  const { can } = usePermissions()
 
   const editing = ref(false)
   const saving = ref(false)
 
   const canEdit = computed(() => {
+    if (!can('orders.edit')) return false
     if (!ordem.value) return false
     return isOrderEditable(ordem.value.status as OrdemStatus)
   })

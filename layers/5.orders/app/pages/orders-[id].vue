@@ -158,6 +158,7 @@ async function onStartChecklist() {
         />
 
         <OrdersStatusEditor
+          v-if="statusItems.length > 1"
           :ordem="ordem"
           :selected-status="selectedStatus"
           :status-items="statusItems"

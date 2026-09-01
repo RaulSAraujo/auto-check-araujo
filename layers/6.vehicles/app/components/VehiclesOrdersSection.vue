@@ -11,6 +11,8 @@ defineProps<{
   ordens: OrdemServico[]
   loading?: boolean
 }>()
+
+const { can } = usePermissions()
 </script>
 
 <template>
@@ -20,6 +22,7 @@ defineProps<{
         Ordens de serviço
       </h2>
       <UButton
+        v-if="can('orders.create')"
         :to="VEHICLE_ROUTES.newOrder(veiculoId)"
         icon="i-lucide-plus"
         label="Nova OS"

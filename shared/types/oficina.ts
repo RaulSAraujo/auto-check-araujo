@@ -1,5 +1,34 @@
 export type OrdemStatus = 'aberta' | 'em_andamento' | 'concluida' | 'cancelada'
 export type ChecklistResultado = 'ok' | 'atencao' | 'ruim' | 'na'
+export type ColaboradorPapel = 'recepcao' | 'mecanico' | 'gerente'
+export type OrdemItemTipo = 'servico' | 'peca'
+export type OrcamentoStatus = 'rascunho' | 'aguardando_aprovacao' | 'aprovado' | 'rejeitado'
+
+export const COLABORADOR_PAPEL_LABEL: Record<ColaboradorPapel, string> = {
+  recepcao: 'Recepção',
+  mecanico: 'Mecânico',
+  gerente: 'Gerente'
+}
+
+export const ORDEM_ITEM_TIPO_LABEL: Record<OrdemItemTipo, string> = {
+  servico: 'Serviço',
+  peca: 'Peça'
+}
+
+export const ORCAMENTO_STATUS_LABEL: Record<OrcamentoStatus, string> = {
+  rascunho: 'Rascunho',
+  aguardando_aprovacao: 'Aguardando aprovação',
+  aprovado: 'Aprovado',
+  rejeitado: 'Rejeitado'
+}
+
+export const ORCAMENTO_STATUS_COLOR: Record<OrcamentoStatus, 'neutral' | 'warning' | 'success' | 'error'> = {
+  rascunho: 'neutral',
+  aguardando_aprovacao: 'warning',
+  aprovado: 'success',
+  rejeitado: 'error'
+}
+
 
 export const ORDEM_STATUS_LABEL: Record<OrdemStatus, string> = {
   aberta: 'Aberta',
@@ -25,29 +54,6 @@ export const CHECKLIST_RESULTADO_LABEL: Record<ChecklistResultado, string> = {
 export function isOrderEditable(status: OrdemStatus): boolean {
   return status === 'aberta' || status === 'em_andamento'
 }
-
-export type OrdemItemTipo = 'servico' | 'peca'
-export type OrcamentoStatus = 'rascunho' | 'aguardando_aprovacao' | 'aprovado' | 'rejeitado'
-
-export const ORDEM_ITEM_TIPO_LABEL: Record<OrdemItemTipo, string> = {
-  servico: 'Serviço',
-  peca: 'Peça'
-}
-
-export const ORCAMENTO_STATUS_LABEL: Record<OrcamentoStatus, string> = {
-  rascunho: 'Rascunho',
-  aguardando_aprovacao: 'Aguardando aprovação',
-  aprovado: 'Aprovado',
-  rejeitado: 'Rejeitado'
-}
-
-export const ORCAMENTO_STATUS_COLOR: Record<OrcamentoStatus, 'neutral' | 'warning' | 'success' | 'error'> = {
-  rascunho: 'neutral',
-  aguardando_aprovacao: 'warning',
-  aprovado: 'success',
-  rejeitado: 'error'
-}
-
 
 export function isBudgetEditable(
   orderStatus: OrdemStatus,

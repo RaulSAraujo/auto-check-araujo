@@ -22,6 +22,8 @@ const {
   ordens,
   pending
 } = await useOrdersList((route.query.status as OrdemStatus | undefined) ?? ORDEM_STATUS_FILTER_ALL)
+
+const { can } = usePermissions()
 </script>
 
 <template>
@@ -33,6 +35,7 @@ const {
         </template>
         <template #right>
           <UButton
+            v-if="can('orders.create')"
             :to="ORDER_ROUTES.new"
             icon="i-lucide-plus"
             label="Nova OS"

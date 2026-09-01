@@ -7,6 +7,7 @@ definePageMeta({
 })
 
 const router = useRouter()
+useRequirePermission('customers.write')
 const { state } = useCustomerForm()
 const { createCustomer } = useCustomerMutations()
 

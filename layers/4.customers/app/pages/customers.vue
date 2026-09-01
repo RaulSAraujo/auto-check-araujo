@@ -7,6 +7,7 @@ definePageMeta({
 })
 
 const { q, page, pageSize, total, clientes, pending } = await useCustomersList()
+const { can } = usePermissions()
 </script>
 
 <template>
@@ -18,6 +19,7 @@ const { q, page, pageSize, total, clientes, pending } = await useCustomersList()
         </template>
         <template #right>
           <UButton
+            v-if="can('customers.write')"
             :to="CUSTOMER_ROUTES.new"
             icon="i-lucide-plus"
             label="Novo cliente"

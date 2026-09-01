@@ -1,4 +1,5 @@
 import type { OrderDetail } from '../types/orders'
+import type { OrdemStatus } from '~~/shared/types/oficina'
 import { ORDEM_STATUS_SELECT_ITEMS } from '../utils/order-select-items'
 
 export function useOrderStatusEditor(
@@ -7,9 +8,19 @@ export function useOrderStatusEditor(
   refresh: () => Promise<void>
 ) {
   const { updateOrderStatus } = useOrderMutations()
+  const { canChangeOrderStatus } = usePermissions()
 
   const selectedStatus = ref('')
   const savingStatus = ref(false)
+
+  const statusItems = computed(() => {
+    if (!ordem.value) return [...ORDEM_STATUS_SELECT_ITEMS]
+
+    const current = ordem.value.status as OrdemStatus
+    return ORDEM_STATUS_SELECT_ITEMS.filter(item =>
+      canChangeOrderStatus(current, item.value as OrdemStatus)
+    )
+  })
 
   watch(ordem, (value) => {
     if (value) selectedStatus.value = value.status
@@ -17,6 +28,13 @@ export function useOrderStatusEditor(
 
   async function saveStatus() {
     if (!ordem.value || selectedStatus.value === ordem.value.status) return
+
+    const current = ordem.value.status as OrdemStatus
+    const next = selectedStatus.value as OrdemStatus
+    if (!canChangeOrderStatus(current, next)) {
+      selectedStatus.value = ordem.value.status
+      return
+    }
 
     savingStatus.value = true
     try {
@@ -40,7 +58,7 @@ export function useOrderStatusEditor(
   return {
     selectedStatus,
     savingStatus,
-    statusItems: ORDEM_STATUS_SELECT_ITEMS,
+    statusItems,
     saveStatus
   }
 }

@@ -3,6 +3,7 @@ import type { NavigationMenuItem } from '@nuxt/ui'
 
 const { signOut } = useAuth()
 const { nome: profileNome } = useColaboradorNome()
+const { papel } = usePermissions()
 const signingOut = ref(false)
 
 async function onSignOut() {
@@ -83,6 +84,7 @@ const items = computed<NavigationMenuItem[]>(() => [
             class="px-2 py-1 text-xs text-muted truncate"
           >
             {{ profileNome }}
+            <span class="text-dimmed">· {{ COLABORADOR_PAPEL_LABEL[papel] }}</span>
           </div>
           <div class="flex items-center gap-1">
             <UColorModeButton />

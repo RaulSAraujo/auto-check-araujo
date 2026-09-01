@@ -24,6 +24,8 @@ const {
   removeCustomer
 } = useCustomerDetailPage(id, cliente, veiculos, state, refresh)
 
+const { can } = usePermissions()
+
 onMounted(() => {
   refreshVeiculos()
 })
@@ -67,7 +69,7 @@ onMounted(() => {
             </h2>
             <div class="flex gap-2">
               <UButton
-                v-if="!editing"
+                v-if="can('customers.write') && !editing"
                 label="Editar"
                 icon="i-lucide-pencil"
                 color="neutral"
@@ -76,6 +78,7 @@ onMounted(() => {
                 @click="editing = true"
               />
               <UButton
+                v-if="can('customers.delete')"
                 label="Excluir"
                 icon="i-lucide-trash"
                 color="error"

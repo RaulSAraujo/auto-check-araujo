@@ -7,6 +7,7 @@ definePageMeta({
 })
 
 const { q, page, pageSize, total, veiculos, pending } = await useVehiclesList()
+const { can } = usePermissions()
 </script>
 
 <template>
@@ -18,6 +19,7 @@ const { q, page, pageSize, total, veiculos, pending } = await useVehiclesList()
         </template>
         <template #right>
           <UButton
+            v-if="can('vehicles.write')"
             :to="VEHICLE_ROUTES.new"
             icon="i-lucide-plus"
             label="Novo veículo"

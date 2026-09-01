@@ -11,6 +11,7 @@ definePageMeta({
 
 const route = useRoute()
 const router = useRouter()
+useRequirePermission('orders.create')
 const { createOrder } = useOrderMutations()
 const { veiculoItems } = await useOrderVehicleOptions()
 

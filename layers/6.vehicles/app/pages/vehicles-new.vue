@@ -10,6 +10,7 @@ const route = useRoute()
 const router = useRouter()
 
 const clienteId = (route.query.cliente_id as string) || ''
+useRequirePermission('vehicles.write')
 const { state } = useVehicleForm(undefined, clienteId)
 const { clienteItems } = await useCustomerOptions()
 const { createVehicle } = useVehicleMutations()

@@ -16,6 +16,7 @@ export function useOrderBudgetPage(
   refreshItems: () => Promise<void>
 ) {
   const { data: catalog } = useServiceCatalog()
+  const { can } = usePermissions()
   const {
     addOrderItem,
     deleteOrderItem,
@@ -31,6 +32,7 @@ export function useOrderBudgetPage(
   const budgetStatus = computed(() => (ordem.value?.orcamento_status || 'rascunho') as OrcamentoStatus)
 
   const canEditItems = computed(() => {
+    if (!can('budget.edit')) return false
     if (!ordem.value) return false
     return isBudgetEditable(
       ordem.value.status as OrdemStatus,
@@ -38,7 +40,7 @@ export function useOrderBudgetPage(
     )
   })
 
-  const canApproveBudget = computed(() => budgetStatus.value === 'aguardando_aprovacao')
+  const canApproveBudget = computed(() => can('budget.approve'))
 
   const total = computed(() => calcItemsTotal(items.value || []))
 
