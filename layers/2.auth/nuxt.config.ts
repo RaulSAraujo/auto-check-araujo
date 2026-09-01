@@ -1,11 +1,11 @@
 export default defineNuxtConfig({
+
+  modules: ['@nuxtjs/supabase'],
   $meta: {
     name: 'auth'
   },
 
-  components: [{ path: '~/components', prefix: 'Auth' }],
-
-  modules: ['@nuxtjs/supabase'],
+  components: [{ path: 'components', pathPrefix: true, prefix: 'Auth' }],
 
   supabase: {
     redirect: true,

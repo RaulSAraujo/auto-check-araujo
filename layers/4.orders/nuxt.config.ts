@@ -3,5 +3,5 @@ export default defineNuxtConfig({
     name: 'orders'
   },
 
-  components: [{ path: '~/components', prefix: 'Orders' }]
+  components: [{ path: 'components', pathPrefix: true, prefix: 'Orders' }]
 })
