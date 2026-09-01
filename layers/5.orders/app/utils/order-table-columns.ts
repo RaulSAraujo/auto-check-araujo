@@ -5,6 +5,7 @@ export const ORDER_LIST_COLUMNS: TableColumn<OrderListItem>[] = [
   { accessorKey: 'numero', header: 'Número' },
   { id: 'placa', header: 'Placa' },
   { accessorKey: 'status', header: 'Status' },
+  { id: 'pagamento', header: 'Pagamento' },
   { accessorKey: 'aberta_em', header: 'Aberta em' },
   { id: 'actions', header: '' }
 ]

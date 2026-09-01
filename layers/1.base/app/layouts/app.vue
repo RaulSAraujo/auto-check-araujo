@@ -3,7 +3,7 @@ import type { NavigationMenuItem } from '@nuxt/ui'
 
 const { signOut } = useAuth()
 const { nome: profileNome } = useColaboradorNome()
-const { papel } = usePermissions()
+const { papel, can } = usePermissions()
 const signingOut = ref(false)
 
 async function onSignOut() {
@@ -16,28 +16,40 @@ async function onSignOut() {
   }
 }
 
-const items = computed<NavigationMenuItem[]>(() => [
-  {
-    label: 'Início',
-    icon: 'i-lucide-layout-dashboard',
-    to: APP_ROUTES.home
-  },
-  {
-    label: 'Ordens de serviço',
-    icon: 'i-lucide-clipboard-list',
-    to: APP_ROUTES.orders
-  },
-  {
-    label: 'Clientes',
-    icon: 'i-lucide-users',
-    to: APP_ROUTES.customers
-  },
-  {
-    label: 'Veículos',
-    icon: 'i-lucide-car',
-    to: APP_ROUTES.vehicles
+const items = computed<NavigationMenuItem[]>(() => {
+  const navigation: NavigationMenuItem[] = [
+    {
+      label: 'Início',
+      icon: 'i-lucide-layout-dashboard',
+      to: APP_ROUTES.home
+    },
+    {
+      label: 'Ordens de serviço',
+      icon: 'i-lucide-clipboard-list',
+      to: APP_ROUTES.orders
+    },
+    {
+      label: 'Clientes',
+      icon: 'i-lucide-users',
+      to: APP_ROUTES.customers
+    },
+    {
+      label: 'Veículos',
+      icon: 'i-lucide-car',
+      to: APP_ROUTES.vehicles
+    }
+  ]
+
+  if (can('finance.view')) {
+    navigation.push({
+      label: 'Financeiro',
+      icon: 'i-lucide-banknote',
+      to: APP_ROUTES.finance
+    })
   }
-])
+
+  return navigation
+})
 </script>
 
 <template>

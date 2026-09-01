@@ -43,6 +43,21 @@ defineProps<{
       </UBadge>
     </template>
 
+    <template #pagamento-cell="{ row }">
+      <UBadge
+        v-if="row.original.status === 'concluida' && row.original.valor_total != null"
+        :color="row.original.pago ? 'success' : 'warning'"
+        variant="subtle"
+        size="sm"
+      >
+        {{ row.original.pago ? 'Pago' : 'Pendente' }}
+      </UBadge>
+      <span
+        v-else
+        class="text-muted"
+      >—</span>
+    </template>
+
     <template #aberta_em-cell="{ row }">
       {{ formatDateTime(row.original.aberta_em) }}
     </template>

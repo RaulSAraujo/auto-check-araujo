@@ -3,6 +3,7 @@ export type ChecklistResultado = 'ok' | 'atencao' | 'ruim' | 'na'
 export type ColaboradorPapel = 'recepcao' | 'mecanico' | 'gerente'
 export type OrdemItemTipo = 'servico' | 'peca'
 export type OrcamentoStatus = 'rascunho' | 'aguardando_aprovacao' | 'aprovado' | 'rejeitado'
+export type FormaPagamento = 'dinheiro' | 'pix' | 'cartao_credito' | 'cartao_debito'
 
 export const COLABORADOR_PAPEL_LABEL: Record<ColaboradorPapel, string> = {
   recepcao: 'Recepção',
@@ -29,6 +30,19 @@ export const ORCAMENTO_STATUS_COLOR: Record<OrcamentoStatus, 'neutral' | 'warnin
   rejeitado: 'error'
 }
 
+export const FORMA_PAGAMENTO_LABEL: Record<FormaPagamento, string> = {
+  dinheiro: 'Dinheiro',
+  pix: 'PIX',
+  cartao_credito: 'Cartão de crédito',
+  cartao_debito: 'Cartão de débito'
+}
+
+export const FORMA_PAGAMENTO_SELECT_ITEMS = [
+  { label: 'Dinheiro', value: 'dinheiro' },
+  { label: 'PIX', value: 'pix' },
+  { label: 'Cartão de crédito', value: 'cartao_credito' },
+  { label: 'Cartão de débito', value: 'cartao_debito' }
+] as const
 
 export const ORDEM_STATUS_LABEL: Record<OrdemStatus, string> = {
   aberta: 'Aberta',

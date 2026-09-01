@@ -2,5 +2,6 @@ export const APP_ROUTES = {
   home: '/',
   orders: '/ordens',
   customers: '/clientes',
-  vehicles: '/veiculos'
+  vehicles: '/veiculos',
+  finance: '/financeiro'
 } as const

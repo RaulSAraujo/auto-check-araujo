@@ -57,6 +57,13 @@ const {
   saveStatus
 } = useOrderStatusEditor(id, ordem, refresh)
 
+const {
+  state: paymentState,
+  saving: savingPayment,
+  canEditPayment,
+  showPaymentSection,
+  savePayment
+} = useOrderPayment(id, ordem, refresh)
 
 async function onStartChecklist() {
   startingChecklist.value = true
@@ -193,6 +200,14 @@ const budgetWhatsappUrl = computed(() => {
           @start-checklist="onStartChecklist"
         />
 
+        <OrdersPaymentEditor
+          v-if="showPaymentSection"
+          v-model="paymentState"
+          :ordem="ordem"
+          :can-edit="canEditPayment"
+          :saving="savingPayment"
+          @save="savePayment"
+        />
       </div>
     </template>
   </UDashboardPanel>

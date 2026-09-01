@@ -12,6 +12,9 @@ const {
   clientesCount,
   veiculosCount
 } = await useDashboardStats()
+
+const { can } = usePermissions()
+const { data: financeSummary, pending: pendingFinance } = await useFinanceSummary()
 </script>
 
 <template>
@@ -156,6 +159,46 @@ const {
             </div>
           </UCard>
         </div>
+
+        <UCard
+          v-if="can('finance.view')"
+          class="max-w-3xl"
+        >
+          <div class="flex items-start justify-between gap-3">
+            <div>
+              <p class="text-sm text-muted">
+                Faturamento do mês
+              </p>
+              <p class="text-3xl font-semibold text-highlighted mt-1 tabular-nums">
+                <USkeleton
+                  v-if="pendingFinance"
+                  class="h-9 w-32"
+                />
+                <span v-else>{{ formatMoney(Number(financeSummary?.total_faturado ?? 0)) }}</span>
+              </p>
+              <p
+                v-if="financeSummary && !pendingFinance"
+                class="text-sm text-muted mt-2"
+              >
+                Recebido {{ formatMoney(Number(financeSummary.total_pago)) }}
+                · Pendente {{ formatMoney(Number(financeSummary.total_pendente)) }}
+              </p>
+            </div>
+            <UIcon
+              name="i-lucide-banknote"
+              class="size-8 text-primary"
+            />
+          </div>
+          <div class="mt-4">
+            <UButton
+              to="/financeiro"
+              label="Ver financeiro"
+              variant="soft"
+              trailing-icon="i-lucide-arrow-right"
+              size="sm"
+            />
+          </div>
+        </UCard>
       </div>
     </template>
   </UDashboardPanel>
