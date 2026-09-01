@@ -1,5 +1,9 @@
-import type { OrderFormState } from '../utils/order-form'
-import { isOrderFormValid, orderFormToInsert } from '../utils/order-form'
+import type { OrderEditState, OrderFormState } from '../utils/order-form'
+import {
+  isOrderFormValid,
+  orderEditToUpdate,
+  orderFormToInsert
+} from '../utils/order-form'
 import { ORDER_ROUTES } from '../utils/order-routes'
 
 export function useOrderMutations() {
@@ -32,6 +36,26 @@ export function useOrderMutations() {
 
     toast.add({ title: 'Ordem de Serviço aberta', color: 'success' })
     return { data, error: null }
+  }
+
+  async function updateOrder(id: string, state: OrderEditState) {
+    if (state.km_entrada != null && state.km_entrada < 0) {
+      toast.add({ title: 'Km de entrada inválido', color: 'warning' })
+      return { error: null }
+    }
+
+    const { error } = await supabase
+      .from('ordens_servico')
+      .update(orderEditToUpdate(state))
+      .eq('id', id)
+
+    if (error) {
+      toast.add({ title: 'Erro ao salvar OS', description: error.message, color: 'error' })
+      return { error }
+    }
+
+    toast.add({ title: 'Ordem de Serviço atualizada', color: 'success' })
+    return { error: null }
   }
 
   async function updateOrderStatus(
@@ -83,6 +107,7 @@ export function useOrderMutations() {
 
   return {
     createOrder,
+    updateOrder,
     updateOrderStatus,
     startChecklist
   }

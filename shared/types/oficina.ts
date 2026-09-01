@@ -21,3 +21,7 @@ export const CHECKLIST_RESULTADO_LABEL: Record<ChecklistResultado, string> = {
   ruim: 'Ruim',
   na: 'N/A'
 }
+
+export function isOrderEditable(status: OrdemStatus): boolean {
+  return status === 'aberta' || status === 'em_andamento'
+}

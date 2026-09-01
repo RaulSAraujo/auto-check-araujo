@@ -15,6 +15,15 @@ const id = computed(() => route.params.id as string)
 const startingChecklist = ref(false)
 
 const { data: ordem, pending, refresh } = await useOrderQuery(id)
+const { state } = useOrderEditForm(ordem)
+
+const {
+  editing,
+  saving,
+  canEdit,
+  cancelEdit,
+  save
+} = useOrderDetailEditor(id, ordem, state, refresh)
 
 const {
   selectedStatus,
@@ -64,7 +73,48 @@ async function onStartChecklist() {
         v-else-if="ordem"
         class="p-4 sm:p-6 space-y-8 max-w-2xl"
       >
-        <OrdersDetailSummary :ordem="ordem" />
+        <section class="space-y-4">
+          <div class="flex items-center justify-between gap-3">
+            <h2 class="text-lg font-semibold text-highlighted">
+              Dados da OS
+            </h2>
+            <UButton
+              v-if="canEdit && !editing"
+              label="Editar"
+              icon="i-lucide-pencil"
+              color="neutral"
+              variant="soft"
+              size="sm"
+              @click="editing = true"
+            />
+          </div>
+
+          <OrdersDetailSummary
+            :ordem="ordem"
+            :hide-fields="editing"
+          />
+
+          <OrdersDetailForm
+            v-if="editing"
+            v-model="state"
+            :disabled="false"
+            @submit="save"
+          >
+            <div class="flex gap-2">
+              <UButton
+                type="submit"
+                label="Salvar"
+                :loading="saving"
+              />
+              <UButton
+                label="Cancelar"
+                color="neutral"
+                variant="ghost"
+                @click="cancelEdit"
+              />
+            </div>
+          </OrdersDetailForm>
+        </section>
 
         <OrdersStatusEditor
           :ordem="ordem"

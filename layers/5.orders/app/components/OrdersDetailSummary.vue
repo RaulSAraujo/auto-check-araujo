@@ -4,6 +4,7 @@ import type { OrdemStatus } from '~~/shared/types/oficina'
 
 defineProps<{
   ordem: OrderDetail
+  hideFields?: boolean
 }>()
 </script>
 
@@ -60,32 +61,34 @@ defineProps<{
         </p>
       </div>
 
-      <div v-if="ordem.km_entrada != null">
-        <p class="text-muted">
-          Km de entrada
-        </p>
-        <p class="text-highlighted">
-          {{ ordem.km_entrada.toLocaleString('pt-BR') }}
-        </p>
-      </div>
+      <template v-if="!hideFields">
+        <div v-if="ordem.km_entrada != null">
+          <p class="text-muted">
+            Km de entrada
+          </p>
+          <p class="text-highlighted">
+            {{ ordem.km_entrada.toLocaleString('pt-BR') }}
+          </p>
+        </div>
 
-      <div>
-        <p class="text-muted">
-          Reclamação
-        </p>
-        <p class="text-highlighted whitespace-pre-wrap">
-          {{ ordem.reclamacao || '—' }}
-        </p>
-      </div>
+        <div>
+          <p class="text-muted">
+            Reclamação
+          </p>
+          <p class="text-highlighted whitespace-pre-wrap">
+            {{ ordem.reclamacao || '—' }}
+          </p>
+        </div>
 
-      <div v-if="ordem.observacoes">
-        <p class="text-muted">
-          Observações
-        </p>
-        <p class="text-highlighted whitespace-pre-wrap">
-          {{ ordem.observacoes }}
-        </p>
-      </div>
+        <div v-if="ordem.observacoes">
+          <p class="text-muted">
+            Observações
+          </p>
+          <p class="text-highlighted whitespace-pre-wrap">
+            {{ ordem.observacoes }}
+          </p>
+        </div>
+      </template>
     </div>
   </section>
 </template>
