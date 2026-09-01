@@ -1,6 +1,6 @@
 import type { Cliente } from '~~/shared/types/database'
 
-export function useCustomersList() {
+export async function useCustomersList() {
   const supabase = useTypedSupabaseClient()
 
   const q = ref('')
@@ -15,7 +15,7 @@ export function useCustomersList() {
     }, 300)
   })
 
-  const { data, pending } = useAsyncData(
+  const { data, pending } = await useAsyncData(
     'clientes-list',
     async () => {
       const { from, to } = rangeBounds()

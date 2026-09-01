@@ -8,10 +8,11 @@ definePageMeta({
   layout: false
 })
 
-const { user, signInWithPassword } = useAuth()
+const session = useSupabaseSession()
+const { signInWithPassword } = useAuth()
 
-watchEffect(() => {
-  if (user.value) {
+watch(session, (value) => {
+  if (value) {
     navigateTo(AUTH_ROUTES.app)
   }
 })

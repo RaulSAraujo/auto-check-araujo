@@ -17,7 +17,6 @@
     "@nuxt/ui": "^4.11.0",
     "@nuxtjs/supabase": "2.0.10",
     "better-sqlite3": "^13.0.3",
-    "dayjs-nuxt": "2.1.11",
     "nuxt": "^4.5.2",
     "nuxt-charts": "2.2.1",
     "tailwindcss": "^4.3.3"

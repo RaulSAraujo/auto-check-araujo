@@ -7,8 +7,7 @@ export default defineNuxtConfig({
 
   modules: [
     '@nuxt/eslint',
-    '@nuxt/ui',
-    'dayjs-nuxt'
+    '@nuxt/ui'
   ],
   $meta: {
     name: 'base'

@@ -4,7 +4,7 @@ import { ORDER_ROUTES } from '../utils/order-routes'
 
 export function useOrderMutations() {
   const supabase = useTypedSupabaseClient()
-  const user = useSupabaseUser()
+  const userId = useAuthUserId()
   const toast = useToast()
 
   async function createOrder(state: OrderFormState) {
@@ -13,14 +13,15 @@ export function useOrderMutations() {
       return { data: null, error: null }
     }
 
-    if (!user.value?.id) {
+    const abertoPor = userId.value
+    if (!abertoPor) {
       toast.add({ title: 'Sessão inválida', color: 'error' })
       return { data: null, error: null }
     }
 
     const { data, error } = await supabase
       .from('ordens_servico')
-      .insert(orderFormToInsert(state, user.value.id))
+      .insert(orderFormToInsert(state, abertoPor))
       .select('id')
       .single()
 

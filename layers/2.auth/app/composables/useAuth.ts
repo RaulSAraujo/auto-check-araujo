@@ -23,6 +23,9 @@ export function useAuth() {
   }
 
   async function signOut() {
+    const session = useSupabaseSession()
+    const redirectInfo = useSupabaseCookieRedirect()
+
     const { error } = await supabase.auth.signOut()
 
     if (error) {
@@ -34,7 +37,12 @@ export function useAuth() {
       return { error }
     }
 
-    await navigateTo(AUTH_ROUTES.login)
+    // Limpa estado antes do redirect para evitar loop com login.vue
+    session.value = null
+    user.value = null
+    redirectInfo.pluck()
+
+    await navigateTo(AUTH_ROUTES.login, { replace: true })
     return { error: null }
   }
 

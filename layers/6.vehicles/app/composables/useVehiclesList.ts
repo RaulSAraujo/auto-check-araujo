@@ -1,6 +1,6 @@
 import type { VeiculoComCliente } from '../utils/vehicle-types'
 
-export function useVehiclesList() {
+export async function useVehiclesList() {
   const supabase = useTypedSupabaseClient()
 
   const q = ref('')
@@ -15,7 +15,7 @@ export function useVehiclesList() {
     }, 300)
   })
 
-  const { data, pending } = useAsyncData(
+  const { data, pending } = await useAsyncData(
     'veiculos-list',
     async () => {
       const { from, to } = rangeBounds()

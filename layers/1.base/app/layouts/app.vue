@@ -3,6 +3,17 @@ import type { NavigationMenuItem } from '@nuxt/ui'
 
 const { signOut } = useAuth()
 const { nome: profileNome } = useColaboradorNome()
+const signingOut = ref(false)
+
+async function onSignOut() {
+  if (signingOut.value) return
+  signingOut.value = true
+  try {
+    await signOut()
+  } finally {
+    signingOut.value = false
+  }
+}
 
 const items = computed<NavigationMenuItem[]>(() => [
   {
@@ -76,13 +87,15 @@ const items = computed<NavigationMenuItem[]>(() => [
           <div class="flex items-center gap-1">
             <UColorModeButton />
             <UButton
+              type="button"
               :label="collapsed ? undefined : 'Sair'"
               icon="i-lucide-log-out"
               color="neutral"
               variant="ghost"
               class="flex-1 justify-start"
               :block="collapsed"
-              @click="signOut"
+              :loading="signingOut"
+              @click="onSignOut"
             />
           </div>
         </div>

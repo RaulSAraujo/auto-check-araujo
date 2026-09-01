@@ -1,12 +1,12 @@
 import type { OrdemStatus } from '~~/shared/types/oficina'
 import type { OrderListItem } from '../types/orders'
-import { ORDEM_STATUS_FILTER_ITEMS } from '../utils/order-select-items'
+import { ORDEM_STATUS_FILTER_ALL, ORDEM_STATUS_FILTER_ITEMS, type OrdemStatusFilter } from '../utils/order-select-items'
 
-export async function useOrdersList(initialStatus: OrdemStatus | '' = '') {
+export async function useOrdersList(initialStatus: OrdemStatusFilter = ORDEM_STATUS_FILTER_ALL) {
   const supabase = useTypedSupabaseClient()
   const router = useRouter()
 
-  const statusFilter = ref<OrdemStatus | ''>(initialStatus)
+  const statusFilter = ref<OrdemStatusFilter>(initialStatus)
   const q = ref('')
   const debouncedQ = ref('')
   const { page, pageSize, rangeBounds } = useListPagination([debouncedQ, statusFilter])
@@ -32,7 +32,7 @@ export async function useOrdersList(initialStatus: OrdemStatus | '' = '') {
         .order('aberta_em', { ascending: false })
         .range(from, to)
 
-      if (statusFilter.value) {
+      if (statusFilter.value !== ORDEM_STATUS_FILTER_ALL) {
         query = query.eq('status', statusFilter.value)
       }
 
@@ -63,7 +63,7 @@ export async function useOrdersList(initialStatus: OrdemStatus | '' = '') {
   )
 
   watch(statusFilter, (value) => {
-    router.replace({ query: value ? { status: value } : {} })
+    router.replace({ query: value !== ORDEM_STATUS_FILTER_ALL ? { status: value } : {} })
   })
 
   const ordens = computed(() => data.value?.items ?? [])
