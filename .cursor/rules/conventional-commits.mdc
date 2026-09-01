@@ -1,0 +1,60 @@
+---
+description: Conventional Commits com ícones (iuricode) — mensagens de commit em inglês
+alwaysApply: true
+---
+
+# Conventional Commits
+
+Sempre que gerar mensagens de commit do Git, siga estritamente esta especificação.
+Referência de ícones: [iuricode/padroes-de-commits](https://github.com/iuricode/padroes-de-commits).
+
+## Estrutura
+
+```
+:<emoji>: <tipo>(<escopo opcional>): <descrição curta>
+```
+
+- Descrição em **inglês**, verbo no **imperativo**
+- Primeira letra da descrição em **minúsculo**
+- **Sem** ponto final
+- Alteração crítica: `!` após tipo/escopo — ex.: `:sparkles: feat!: redesign auth flow`
+
+## Tipos e ícones
+
+| Tipo | Ícone | Uso |
+|------|-------|-----|
+| `feat` | `:sparkles:` ✨ | Novo recurso |
+| `fix` | `:bug:` 🐛 | Correção de bug |
+| `docs` | `:books:` 📚 | Documentação |
+| `style` | `:ok_hand:` 👌 | Formatação (sem mudança de comportamento) |
+| `refactor` | `:recycle:` ♻️ | Refatoração sem alterar comportamento |
+| `perf` | `:zap:` ⚡ | Performance |
+| `test` | `:test_tube:` 🧪 | Testes |
+| `build` | `:package:` 📦 | Build / dependências |
+| `ci` | `:bricks:` 🧱 | CI/CD |
+| `chore` | `:wrench:` 🔧 | Tarefas administrativas / config |
+| `cleanup` | `:broom:` 🧹 | Remoção de código morto/comentado |
+| `remove` | `:wastebasket:` 🗑️ | Remoção de arquivos/features |
+
+Ícones extras quando couber: `:lipstick:` (UI/estilo visual), `:lock:` (segurança), `:truck:` (mover/renomear), `:arrow_up:` / `:heavy_plus_sign:` (deps), `:boom:` (revert).
+
+## Exemplos
+
+```
+:sparkles: feat(purchase): add validation hints to order form
+:bug: fix(listing): prevent infinite loop on page change
+:books: docs: clarify graphify update guidelines
+:recycle: refactor(core): simplify listing header props
+:wrench: chore: update eslint config
+:sparkles: feat!: replace auth session storage
+```
+
+## Evitar
+
+```
+# ❌ português / maiúscula / ponto final / sem ícone
+feat: Adiciona validação no formulário.
+
+# ❌ tipo inventado
+update: change button color
+```

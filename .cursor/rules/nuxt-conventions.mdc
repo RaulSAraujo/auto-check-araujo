@@ -1,0 +1,142 @@
+---
+description: Convenções de nomenclatura, prefixos de componentes por layer e separação de responsabilidades
+alwaysApply: true
+---
+
+# Convenções — Auto Check Araujo
+
+## Layers em inglês
+
+Pastas de layer e `$meta.name` ficam em **inglês**: `3.customers`, `4.orders`, `5.vehicles`. URLs públicas continuam em português (via `definePageMeta` e `APP_ROUTES`).
+
+## Páginas: arquivos flat em inglês (`domínio-função`), rota em português
+
+Páginas ficam **diretamente** em `pages/` da layer, **sem subpastas por domínio**. O nome do arquivo segue `{domínio}-{função}` em inglês. A **URL pública** fica em **português**, declarada com `path` em `definePageMeta` ([docs Nuxt](https://nuxt.com/docs/4.x/api/utils/define-page-meta)).
+
+| Rota (PT) | Arquivo (EN) |
+|-----------|--------------|
+| `/clientes` | `pages/customers.vue` |
+| `/clientes/novo` | `pages/customers-new.vue` |
+| `/clientes/:id` | `pages/customers-[id].vue` |
+| `/ordens` | `pages/orders.vue` |
+| `/ordens/novo` | `pages/orders-new.vue` |
+| `/ordens/:id` | `pages/orders-[id].vue` |
+| `/ordens/:id/checklist` | `pages/orders-[id]-checklist.vue` |
+| `/veiculos` | `pages/vehicles.vue` |
+| `/veiculos/novo` | `pages/vehicles-new.vue` |
+| `/veiculos/:id` | `pages/vehicles-[id].vue` |
+| `/login` | `pages/login.vue` |
+
+Padrão de nome de arquivo:
+
+| Função | Antes (subpasta) | Agora (flat) |
+|--------|------------------|--------------|
+| Listagem | `{domain}/index.vue` | `{domain}.vue` |
+| Criar | `{domain}/new.vue` | `{domain}-new.vue` |
+| Detalhe | `{domain}/[id].vue` | `{domain}-[id].vue` |
+| Ação aninhada | `{domain}/[id]/{action}.vue` | `{domain}-[id]-{action}.vue` |
+
+Regras:
+
+- **Sem subpastas** de domínio em `pages/` — nunca `pages/customers/index.vue` nem `pages/vehicles/new.vue`.
+- Nomes em inglês: `vehicles`, `vehicles-new`, `vehicles-[id]` — nunca `clientes/`, `ordens/`, `veiculos/`.
+- **Toda page** declara `path` em português no `definePageMeta` (o caminho do arquivo não corresponde à URL pública).
+- Links e `APP_ROUTES` usam sempre a URL em português (`/clientes/novo`, não `/customers-new`).
+- Código dentro da página (variáveis, funções, tipos locais): **inglês**. Labels de UI e copy: **português**.
+
+```vue
+<!-- pages/customers-new.vue -->
+<script setup lang="ts">
+definePageMeta({
+  path: '/clientes/novo',
+  layout: 'app'
+})
+</script>
+```
+
+```
+❌ pages/clientes/novo.vue
+❌ pages/customers/new.vue
+❌ pages/customers-new.vue   (sem definePageMeta.path)
+✅ pages/customers-new.vue + path: '/clientes/novo'
+
+❌ const carregando = ref(false)
+✅ const loading = ref(false)
+```
+
+## Nome do componente: `defineOptions`
+
+Arquivos com **nome de uma palavra** (`login`, `confirm`, `customers`, `orders`, `vehicles`) violam a regra ESLint `vue/multi-word-component-names`. Declare um nome composto com `defineOptions`:
+
+```vue
+<!-- pages/login.vue -->
+<script setup lang="ts">
+defineOptions({ name: 'AuthLoginPage' })
+
+definePageMeta({
+  path: '/login',
+  layout: false
+})
+</script>
+```
+
+Padrão de nomenclatura: `{Domain}{Purpose}Page`
+
+| Arquivo | `name` |
+|---------|--------|
+| `login.vue` | `AuthLoginPage` |
+| `confirm.vue` | `AuthConfirmPage` |
+| `customers.vue` | `CustomersIndexPage` |
+| `customers-new.vue` | `CustomersNewPage` |
+| `customers-[id].vue` | `CustomersDetailPage` |
+| `orders-[id]-checklist.vue` | `OrdersChecklistPage` |
+
+- Arquivos com hífen no nome (`customers-new.vue`, `vehicles-[id].vue`) já são multi-word e podem dispensar `defineOptions` se o ESLint não alertar.
+- Quando em dúvida, prefira sempre declarar `defineOptions`.
+
+## Prefix de componentes por layer
+
+Cada layer **deve** declarar `components` com `prefix` no seu `nuxt.config.ts` para evitar colisão no auto-import entre layers.
+
+| Layer | Prefix | Exemplo de uso |
+|-------|--------|----------------|
+| `app/` (raiz) | `App` | `<AppDashboardStats />` |
+| `1.base` | `Base` | `<BasePageHeader />` |
+| `2.auth` | `Auth` | `<AuthLoginForm />` |
+| `3.customers` | `Customers` | `<CustomersForm />` |
+| `4.orders` | `Orders` | `<OrdersChecklistItem />` |
+| `5.vehicles` | `Vehicles` | `<VehiclesPlacaInput />` |
+
+```ts
+// layers/3.customers/nuxt.config.ts
+export default defineNuxtConfig({
+  $meta: { name: 'customers' },
+  components: [{ path: '~/components', prefix: 'Customers' }]
+})
+```
+
+- Componentes ficam em `app/components/` da layer correspondente.
+- Nunca criar componente genérico (`Form.vue`, `Table.vue`) sem prefix — colide entre layers.
+- Cross-domain: usar componentes de outra layer só via import explícito, nunca depender de auto-import ambíguo.
+
+## Separação de responsabilidades
+
+Cada tipo de arquivo tem **uma** responsabilidade. Páginas não acumulam lógica de negócio.
+
+| Tipo | Responsabilidade | Onde |
+|------|------------------|------|
+| **Page** | Orquestra layout, meta, composables e componentes | `app/pages/` ou `layers/*/app/pages/` |
+| **Component** | UI reutilizável e apresentação | `app/components/` da layer |
+| **Composable** | Estado, fetch, mutations, regras de domínio | `app/composables/` da layer |
+| **Util** | Funções puras, formatadores, constantes de rota | `app/utils/` ou `shared/types/` |
+| **Type** | Tipos Supabase e enums/labels de domínio | `shared/types/` |
+
+Checklist ao criar código novo:
+
+- [ ] Lógica de Supabase/fetch está no composable, não na page
+- [ ] Formatação pura (`formatPlaca`, datas) está em util ou composable compartilhado
+- [ ] Page tem no máximo orquestração (wire-up)
+- [ ] Componente não chama Supabase diretamente — recebe props/emits ou usa composable injetado
+- [ ] Arquivo na layer do domínio correto (ver `nuxt-architecture.mdc`)
+- [ ] Prefix declarado no `nuxt.config.ts` da layer antes de adicionar componentes
+- [ ] Pages de nome simples declaram `defineOptions({ name: '...Page' })`

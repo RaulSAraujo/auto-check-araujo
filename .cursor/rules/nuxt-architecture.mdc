@@ -1,0 +1,104 @@
+---
+description: Arquitetura Nuxt Layers, convenções de código e padrões Nuxt UI do Auto Check Araujo
+alwaysApply: true
+---
+
+# Arquitetura — Auto Check Araujo
+
+Projeto Nuxt 4 com **layers locais** em `layers/`. O app raiz (`app/`) contém bootstrap e shell do dashboard; cada domínio tem sua layer.
+
+## Estrutura de layers
+
+```
+auto-check-araujo/
+├── app/                          # App raiz (prioridade máxima)
+│   ├── app.vue                   # UApp + NuxtLayout + SEO global
+│   ├── layouts/                  # app.vue (UDashboard), default.vue
+│   ├── pages/index.vue           # Dashboard (agrega domínios)
+│   ├── composables/              # useOficina, useColaboradorNome
+│   └── utils/app-routes.ts       # APP_ROUTES
+├── layers/
+│   ├── 1.base/                   # UI, tema, ESLint, dayjs
+│   ├── 2.auth/                   # Supabase Auth ($meta.name: auth)
+│   ├── 3.customers/              # CRUD clientes ($meta.name: customers)
+│   ├── 4.orders/                 # Ordens + checklist ($meta.name: orders)
+│   └── 5.vehicles/               # CRUD veículos ($meta.name: vehicles)
+├── shared/types/
+│   ├── database.ts               # Schema Supabase
+│   └── oficina.ts                # OrdemStatus, labels, cores
+└── nuxt.config.ts                # runtimeConfig, nuxt-zod, nuxt-charts, @nuxt/content
+```
+
+### Prioridade de override (maior → menor)
+
+1. `app/` raiz
+2. Layers auto-scanned (`5.vehicles` > `4.orders` > `3.customers` > `2.auth` > `1.base`)
+3. `extends` explícito no `nuxt.config.ts`
+
+### Onde colocar código novo
+
+| Tipo | Local |
+|------|-------|
+| Auth (login, logout, client tipado) | `layers/2.auth/` |
+| Dashboard, layout app, composables compartilhados | `app/` raiz |
+| Rotas do app (`APP_ROUTES`) | `app/utils/app-routes.ts` |
+| Páginas `/clientes/*` | `layers/3.customers/app/pages/` (`customers.vue`, `customers-new.vue`, …) |
+| Páginas `/ordens/*` | `layers/4.orders/app/pages/` (`orders.vue`, `orders-new.vue`, …) |
+| Páginas `/veiculos/*` | `layers/5.vehicles/app/pages/` (`vehicles.vue`, `vehicles-new.vue`, …) |
+| Composable específico de clientes | `layers/3.customers/app/composables/` |
+| Composable específico de ordens | `layers/4.orders/app/composables/` |
+| Composable específico de veículos | `layers/5.vehicles/app/composables/` |
+| Tipo Supabase (schema) | `shared/types/database.ts` |
+| Tipo/constante de domínio | `shared/types/oficina.ts` |
+| Tema, cores, CSS global | `layers/1.base/` (`app/app.config.ts` na raiz para cores) |
+
+**Cross-domain links** (ex.: ordem → veículo) usam URLs de `APP_ROUTES` ou paths literais `/ordens`, `/clientes`, `/veiculos` — não importar páginas de outra layer. Rotas em português são declaradas via `definePageMeta({ path })`; ver `nuxt-conventions.mdc`.
+
+## Aliases
+
+| Alias | Resolve para |
+|-------|--------------|
+| `~` / `@` | `app/` da layer ou raiz onde o arquivo está |
+| `~~` / `@@` | raiz do projeto |
+| `#layers/auth` | layer `2.auth` |
+| `#layers/customers` | layer `3.customers` |
+| `#layers/orders` | layer `4.orders` |
+| `#layers/vehicles` | layer `5.vehicles` |
+
+Importar tipos cross-layer via `~~/shared/types/...`.
+
+## Composables por responsabilidade
+
+| Local | Composables |
+|-------|-------------|
+| `layers/2.auth` | `useAuth`, `useTypedSupabaseClient` |
+| `app/` raiz | `useOficina` (formatPlaca, formatDateTime), `useColaboradorNome` |
+| `layers/3.customers` | composables só de clientes (se necessário) |
+| `layers/4.orders` | composables só de ordens (se necessário) |
+| `layers/5.vehicles` | composables só de veículos (se necessário) |
+
+## Módulos por layer
+
+| Layer / raiz | Módulos |
+|--------------|---------|
+| `1.base` | `@nuxt/eslint`, `@nuxt/ui`, `dayjs-nuxt` |
+| `2.auth` | `@nuxtjs/supabase` |
+| `3.customers` | — |
+| `4.orders` | — |
+| `5.vehicles` | — |
+| raiz | `@nuxt/content`, `nuxt-zod`, `nuxt-charts`, `devtools`, `runtimeConfig` |
+
+## Nuxt UI v4
+
+- `UApp` em `app.vue` raiz
+- Layout `app` com `UDashboardGroup` + `UDashboardSidebar`
+- `definePageMeta({ layout: 'app' })` em todas as páginas autenticadas do dashboard
+- Status de ordem: `ORDEM_STATUS_COLOR` / `ORDEM_STATUS_LABEL` de `shared/types/oficina.ts`
+
+## Checklist antes de PR
+
+- [ ] `npx nuxt prepare` sem erros
+- [ ] `npx nuxt typecheck` passa
+- [ ] Página nova na layer do domínio correto
+- [ ] Sem import de componentes/páginas entre layers de domínio
+- [ ] Páginas autenticadas usam `layout: 'app'`
