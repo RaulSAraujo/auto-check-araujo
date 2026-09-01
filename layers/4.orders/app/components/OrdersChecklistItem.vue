@@ -10,7 +10,7 @@ defineProps<{
 }>()
 
 const emit = defineEmits<{
-  save: [item: ChecklistItem]
+  'save': [item: ChecklistItem]
   'update:resultado': [item: ChecklistItem, value: ChecklistResultado]
   'update:observacao': [item: ChecklistItem, value: string]
 }>()

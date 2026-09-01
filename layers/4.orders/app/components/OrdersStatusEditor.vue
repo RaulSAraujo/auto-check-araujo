@@ -10,7 +10,7 @@ defineProps<{
 
 const emit = defineEmits<{
   'update:selectedStatus': [value: string]
-  save: []
+  'save': []
 }>()
 </script>
 
