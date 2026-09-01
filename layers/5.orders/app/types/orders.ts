@@ -10,7 +10,7 @@ export type OrderDetail = OrdemServico & {
     placa: string
     marca: string | null
     modelo: string | null
-    clientes: { id: string, nome: string } | null
+    clientes: { id: string, nome: string, telefone: string | null } | null
   } | null
   profiles: { nome: string } | null
   checklists: Pick<Checklist, 'id' | 'status'> | null

@@ -3,5 +3,7 @@ export const ORDER_ROUTES = {
   new: '/ordens/novo',
   detail: (id: string) => `/ordens/${id}`,
   checklist: (id: string) => `/ordens/${id}/checklist`,
+  print: (id: string) => `/ordens/${id}/impressao`,
+  checklistPrint: (id: string) => `/ordens/${id}/checklist/impressao`,
   newWithVehicle: (veiculoId: string) => `/ordens/novo?veiculo_id=${veiculoId}`
 } as const

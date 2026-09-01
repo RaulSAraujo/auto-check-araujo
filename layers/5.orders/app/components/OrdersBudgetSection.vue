@@ -19,6 +19,8 @@ defineProps<{
   adding: boolean
   deletingId: string | null
   updatingStatus: boolean
+  printTo?: string
+  whatsappUrl?: string | null
 }>()
 
 const emit = defineEmits<{
@@ -41,6 +43,12 @@ const draftModel = defineModel<OrderItemDraft>('draft', { required: true })
         Orçamento
       </h2>
       <div class="flex flex-wrap items-center gap-2">
+        <OrdersPrintActions
+          v-if="printTo"
+          :print-to="printTo"
+          :whatsapp-url="whatsappUrl"
+          print-label="Imprimir orçamento"
+        />
         <UBadge
           :color="ORCAMENTO_STATUS_COLOR[budgetStatus]"
           variant="subtle"

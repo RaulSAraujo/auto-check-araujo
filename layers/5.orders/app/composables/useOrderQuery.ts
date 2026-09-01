@@ -9,7 +9,7 @@ export function useOrderQuery(id: MaybeRefOrGetter<string>) {
     async () => {
       const { data, error } = await supabase
         .from('ordens_servico')
-        .select('*, veiculos(id, placa, marca, modelo, clientes(id, nome)), profiles!ordens_servico_aberto_por_fkey(nome), checklists(id, status)')
+        .select('*, veiculos(id, placa, marca, modelo, clientes(id, nome, telefone)), profiles!ordens_servico_aberto_por_fkey(nome), checklists(id, status)')
         .eq('id', toValue(id))
         .single()
 

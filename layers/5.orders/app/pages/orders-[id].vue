@@ -1,5 +1,10 @@
 <script setup lang="ts">
 import { ORDER_ROUTES } from '../utils/order-routes'
+import {
+  absolutePrintUrl,
+  buildBudgetWhatsAppMessage,
+  buildWhatsAppUrl
+} from '../utils/print'
 
 defineOptions({ name: 'OrdersDetailPage' })
 
@@ -52,6 +57,7 @@ const {
   saveStatus
 } = useOrderStatusEditor(id, ordem, refresh)
 
+
 async function onStartChecklist() {
   startingChecklist.value = true
   try {
@@ -60,6 +66,17 @@ async function onStartChecklist() {
     startingChecklist.value = false
   }
 }
+
+const budgetWhatsappUrl = computed(() => {
+  if (!ordem.value) return null
+  return buildWhatsAppUrl(
+    ordem.value.veiculos?.clientes?.telefone,
+    buildBudgetWhatsAppMessage(
+      ordem.value.numero,
+      absolutePrintUrl(ORDER_ROUTES.print(id.value))
+    )
+  )
+})
 </script>
 
 <template>
@@ -155,6 +172,8 @@ async function onStartChecklist() {
           @approve="onApprove"
           @reject="onReject"
           @reopen="onReopen"
+          :print-to="ORDER_ROUTES.print(id)"
+          :whatsapp-url="budgetWhatsappUrl"
         />
 
         <OrdersStatusEditor
@@ -173,6 +192,7 @@ async function onStartChecklist() {
           :starting-checklist="startingChecklist"
           @start-checklist="onStartChecklist"
         />
+
       </div>
     </template>
   </UDashboardPanel>
