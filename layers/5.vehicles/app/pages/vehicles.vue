@@ -6,7 +6,7 @@ definePageMeta({
   layout: 'app'
 })
 
-const { q, veiculos, pending } = await useVehiclesList()
+const { q, page, pageSize, total, veiculos, pending } = await useVehiclesList()
 </script>
 
 <template>
@@ -36,9 +36,22 @@ const { q, veiculos, pending } = await useVehiclesList()
         />
 
         <VehiclesTable
-          :veiculos="veiculos || []"
+          :veiculos="veiculos"
           :loading="pending"
         />
+
+        <div
+          v-if="total > pageSize"
+          class="flex justify-center pt-2"
+        >
+          <UPagination
+            v-model:page="page"
+            :total="total"
+            :items-per-page="pageSize"
+            show-edges
+            :sibling-count="1"
+          />
+        </div>
       </div>
     </template>
   </UDashboardPanel>

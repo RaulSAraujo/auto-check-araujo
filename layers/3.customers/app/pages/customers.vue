@@ -6,7 +6,7 @@ definePageMeta({
   layout: 'app'
 })
 
-const { q, clientes, pending } = await useCustomersList()
+const { q, page, pageSize, total, clientes, pending } = await useCustomersList()
 </script>
 
 <template>
@@ -36,9 +36,22 @@ const { q, clientes, pending } = await useCustomersList()
         />
 
         <CustomersTable
-          :clientes="clientes || []"
+          :clientes="clientes"
           :loading="pending"
         />
+
+        <div
+          v-if="total > pageSize"
+          class="flex justify-center pt-2"
+        >
+          <UPagination
+            v-model:page="page"
+            :total="total"
+            :items-per-page="pageSize"
+            show-edges
+            :sibling-count="1"
+          />
+        </div>
       </div>
     </template>
   </UDashboardPanel>

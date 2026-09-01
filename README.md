@@ -32,7 +32,11 @@ Schema (`profiles`, `clientes`, `veiculos` + RLS) já aplicado no remoto.
 No [Studio](https://supabase.com/dashboard/project/afvtakijrfalpdtmbjdt/auth/users) → Authentication → Users → Add user (e-mail e senha).  
 O trigger cria o registro em `profiles` automaticamente.
 
-Em Authentication → Providers, para desenvolvimento, desative “Confirm email” se quiser login imediato.
+**Configurações de Auth recomendadas (Dashboard → Authentication → Settings):**
+
+- **Disable signup** — app interno; colaboradores são criados manualmente no Studio
+- **Leaked password protection** — ativar (HaveIBeenPwned)
+- **Confirm email** — desativar em dev se quiser login imediato
 
 ### 4. App
 

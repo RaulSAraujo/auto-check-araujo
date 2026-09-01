@@ -308,6 +308,10 @@ export type Database = {
         Args: { p_ordem_servico_id: string }
         Returns: string
       }
+      dashboard_stats: {
+        Args: Record<PropertyKey, never>
+        Returns: Json
+      }
     }
     Enums: {
       [_ in never]: never

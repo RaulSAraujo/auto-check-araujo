@@ -1,10 +1,12 @@
 import type { VeiculoComCliente } from '../utils/vehicle-types'
+import { ilikePattern } from '~/utils/supabase-search'
 
 export function useVehiclesList() {
   const supabase = useTypedSupabaseClient()
 
   const q = ref('')
   const debouncedQ = ref('')
+  const { page, pageSize, rangeBounds } = useListPagination([debouncedQ])
 
   let debounceTimer: ReturnType<typeof setTimeout> | undefined
   watch(q, (value) => {
@@ -14,29 +16,44 @@ export function useVehiclesList() {
     }, 300)
   })
 
-  const { data: veiculos, pending } = useAsyncData(
+  const { data, pending } = useAsyncData(
     'veiculos-list',
     async () => {
+      const { from, to } = rangeBounds()
+      const raw = debouncedQ.value.trim()
+      const pattern = ilikePattern(raw)
+      const placaPattern = ilikePattern(normalizePlaca(raw) || raw)
+
       let query = supabase
         .from('veiculos')
-        .select('*, clientes(id, nome)')
+        .select('*, clientes(id, nome)', { count: 'exact' })
         .order('placa', { ascending: true })
+        .range(from, to)
 
-      const term = normalizePlaca(debouncedQ.value.trim()) || debouncedQ.value.trim()
-      if (term) {
-        const raw = debouncedQ.value.trim()
-        query = query.or(`placa.ilike.%${normalizePlaca(raw) || raw}%,marca.ilike.%${raw}%,modelo.ilike.%${raw}%`)
+      if (pattern) {
+        const placa = placaPattern || pattern
+        query = query.or(`placa.ilike.${placa},marca.ilike.${pattern},modelo.ilike.${pattern}`)
       }
 
-      const { data, error } = await query
+      const { data: rows, count, error } = await query
       if (error) throw error
-      return data as VeiculoComCliente[]
+
+      return {
+        items: (rows || []) as VeiculoComCliente[],
+        total: count ?? 0
+      }
     },
-    { watch: [debouncedQ] }
+    { watch: [debouncedQ, page] }
   )
+
+  const veiculos = computed(() => data.value?.items ?? [])
+  const total = computed(() => data.value?.total ?? 0)
 
   return {
     q,
+    page,
+    pageSize,
+    total,
     veiculos,
     pending
   }

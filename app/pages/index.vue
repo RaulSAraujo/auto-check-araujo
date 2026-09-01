@@ -7,39 +7,23 @@ definePageMeta({
 
 const supabase = useTypedSupabaseClient()
 
-const { data: clientesCount, pending: pendingClientes } = await useAsyncData('dashboard-clientes-count', async () => {
-  const { count, error } = await supabase
-    .from('clientes')
-    .select('*', { count: 'exact', head: true })
+type DashboardStats = {
+  clientes: number
+  veiculos: number
+  os_abertas: number
+  os_andamento: number
+}
+
+const { data: stats, pending } = await useAsyncData('dashboard-stats', async () => {
+  const { data, error } = await supabase.rpc('dashboard_stats')
   if (error) throw error
-  return count ?? 0
+  return data as DashboardStats
 })
 
-const { data: veiculosCount, pending: pendingVeiculos } = await useAsyncData('dashboard-veiculos-count', async () => {
-  const { count, error } = await supabase
-    .from('veiculos')
-    .select('*', { count: 'exact', head: true })
-  if (error) throw error
-  return count ?? 0
-})
-
-const { data: osAbertas, pending: pendingOsAbertas } = await useAsyncData('dashboard-os-abertas', async () => {
-  const { count, error } = await supabase
-    .from('ordens_servico')
-    .select('*', { count: 'exact', head: true })
-    .eq('status', 'aberta')
-  if (error) throw error
-  return count ?? 0
-})
-
-const { data: osAndamento, pending: pendingOsAndamento } = await useAsyncData('dashboard-os-andamento', async () => {
-  const { count, error } = await supabase
-    .from('ordens_servico')
-    .select('*', { count: 'exact', head: true })
-    .eq('status', 'em_andamento')
-  if (error) throw error
-  return count ?? 0
-})
+const osAbertas = computed(() => stats.value?.os_abertas ?? 0)
+const osAndamento = computed(() => stats.value?.os_andamento ?? 0)
+const clientesCount = computed(() => stats.value?.clientes ?? 0)
+const veiculosCount = computed(() => stats.value?.veiculos ?? 0)
 </script>
 
 <template>
@@ -72,7 +56,7 @@ const { data: osAndamento, pending: pendingOsAndamento } = await useAsyncData('d
                 </p>
                 <p class="text-3xl font-semibold text-highlighted mt-1">
                   <USkeleton
-                    v-if="pendingOsAbertas"
+                    v-if="pending"
                     class="h-9 w-16"
                   />
                   <span v-else>{{ osAbertas }}</span>
@@ -102,7 +86,7 @@ const { data: osAndamento, pending: pendingOsAndamento } = await useAsyncData('d
                 </p>
                 <p class="text-3xl font-semibold text-highlighted mt-1">
                   <USkeleton
-                    v-if="pendingOsAndamento"
+                    v-if="pending"
                     class="h-9 w-16"
                   />
                   <span v-else>{{ osAndamento }}</span>
@@ -132,7 +116,7 @@ const { data: osAndamento, pending: pendingOsAndamento } = await useAsyncData('d
                 </p>
                 <p class="text-3xl font-semibold text-highlighted mt-1">
                   <USkeleton
-                    v-if="pendingClientes"
+                    v-if="pending"
                     class="h-9 w-16"
                   />
                   <span v-else>{{ clientesCount }}</span>
@@ -162,7 +146,7 @@ const { data: osAndamento, pending: pendingOsAndamento } = await useAsyncData('d
                 </p>
                 <p class="text-3xl font-semibold text-highlighted mt-1">
                   <USkeleton
-                    v-if="pendingVeiculos"
+                    v-if="pending"
                     class="h-9 w-16"
                   />
                   <span v-else>{{ veiculosCount }}</span>

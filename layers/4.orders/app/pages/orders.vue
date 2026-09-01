@@ -14,6 +14,9 @@ const route = useRoute()
 
 const {
   q,
+  page,
+  pageSize,
+  total,
   statusFilter,
   statusItems,
   ordens,
@@ -55,7 +58,7 @@ const {
         </div>
 
         <UTable
-          :data="ordens || []"
+          :data="ordens"
           :columns="ORDER_LIST_COLUMNS"
           :loading="pending"
           class="w-full"
@@ -104,6 +107,19 @@ const {
             </div>
           </template>
         </UTable>
+
+        <div
+          v-if="total > pageSize"
+          class="flex justify-center pt-2"
+        >
+          <UPagination
+            v-model:page="page"
+            :total="total"
+            :items-per-page="pageSize"
+            show-edges
+            :sibling-count="1"
+          />
+        </div>
       </div>
     </template>
   </UDashboardPanel>
