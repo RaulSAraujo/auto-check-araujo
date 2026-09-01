@@ -20,7 +20,6 @@
     "dayjs-nuxt": "2.1.11",
     "nuxt": "^4.5.2",
     "nuxt-charts": "2.2.1",
-    "nuxt-zod": "1.5.0",
     "tailwindcss": "^4.3.3"
   },
   "devDependencies": {
