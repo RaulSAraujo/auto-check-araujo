@@ -1,7 +1,6 @@
 import type { OrdemStatus } from '~~/shared/types/oficina'
 import type { OrderListItem } from '../types/orders'
 import { ORDEM_STATUS_FILTER_ITEMS } from '../utils/order-select-items'
-import { ilikePattern } from '~/utils/supabase-search'
 
 export async function useOrdersList(initialStatus: OrdemStatus | '' = '') {
   const supabase = useTypedSupabaseClient()

@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import type { NavigationMenuItem } from '@nuxt/ui'
-import { APP_ROUTES } from '~/utils/app-routes'
 
 const { signOut } = useAuth()
 const { nome: profileNome } = useColaboradorNome()

@@ -1,29 +1,17 @@
 <script setup lang="ts">
-defineOptions({ name: 'DashboardIndexPage' })
+defineOptions({ name: 'HomeIndexPage' })
 
 definePageMeta({
   layout: 'app'
 })
 
-const supabase = useTypedSupabaseClient()
-
-type DashboardStats = {
-  clientes: number
-  veiculos: number
-  os_abertas: number
-  os_andamento: number
-}
-
-const { data: stats, pending } = await useAsyncData('dashboard-stats', async () => {
-  const { data, error } = await supabase.rpc('dashboard_stats')
-  if (error) throw error
-  return data as DashboardStats
-})
-
-const osAbertas = computed(() => stats.value?.os_abertas ?? 0)
-const osAndamento = computed(() => stats.value?.os_andamento ?? 0)
-const clientesCount = computed(() => stats.value?.clientes ?? 0)
-const veiculosCount = computed(() => stats.value?.veiculos ?? 0)
+const {
+  pending,
+  osAbertas,
+  osAndamento,
+  clientesCount,
+  veiculosCount
+} = await useDashboardStats()
 </script>
 
 <template>

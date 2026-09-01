@@ -1,7 +1,6 @@
-import type { VeiculoComCliente } from '../utils/vehicle-types'
-import { ilikePattern } from '~/utils/supabase-search'
+import type { Cliente } from '~~/shared/types/database'
 
-export function useVehiclesList() {
+export function useCustomersList() {
   const supabase = useTypedSupabaseClient()
 
   const q = ref('')
@@ -17,36 +16,33 @@ export function useVehiclesList() {
   })
 
   const { data, pending } = useAsyncData(
-    'veiculos-list',
+    'clientes-list',
     async () => {
       const { from, to } = rangeBounds()
-      const raw = debouncedQ.value.trim()
-      const pattern = ilikePattern(raw)
-      const placaPattern = ilikePattern(normalizePlaca(raw) || raw)
+      const pattern = ilikePattern(debouncedQ.value)
 
       let query = supabase
-        .from('veiculos')
-        .select('*, clientes(id, nome)', { count: 'exact' })
-        .order('placa', { ascending: true })
+        .from('clientes')
+        .select('*', { count: 'exact' })
+        .order('nome', { ascending: true })
         .range(from, to)
 
       if (pattern) {
-        const placa = placaPattern || pattern
-        query = query.or(`placa.ilike.${placa},marca.ilike.${pattern},modelo.ilike.${pattern}`)
+        query = query.or(`nome.ilike.${pattern},telefone.ilike.${pattern},documento.ilike.${pattern},email.ilike.${pattern}`)
       }
 
       const { data: rows, count, error } = await query
       if (error) throw error
 
       return {
-        items: (rows || []) as VeiculoComCliente[],
+        items: (rows || []) as Cliente[],
         total: count ?? 0
       }
     },
     { watch: [debouncedQ, page] }
   )
 
-  const veiculos = computed(() => data.value?.items ?? [])
+  const clientes = computed(() => data.value?.items ?? [])
   const total = computed(() => data.value?.total ?? 0)
 
   return {
@@ -54,7 +50,7 @@ export function useVehiclesList() {
     page,
     pageSize,
     total,
-    veiculos,
+    clientes,
     pending
   }
 }

@@ -7,51 +7,23 @@ definePageMeta({
 })
 
 const route = useRoute()
-const router = useRouter()
 
 const id = computed(() => route.params.id as string)
-
-const editing = ref(false)
-const saving = ref(false)
-const deleting = ref(false)
-const deleteOpen = ref(false)
 
 const { data: veiculo, pending, refresh } = await useVehicleQuery(id)
 const { clienteItems } = await useCustomerOptions('clientes-options-edit')
 const { data: ordens, pending: pendingOrdens } = await useVehicleOrders(id)
 const { state } = useVehicleForm(veiculo)
-const { updateVehicle, deleteVehicle } = useVehicleMutations()
 
-function cancelEdit() {
-  editing.value = false
-  refresh()
-}
-
-async function save() {
-  saving.value = true
-  try {
-    const { error } = await updateVehicle(id.value, state)
-    if (!error) {
-      editing.value = false
-      await refresh()
-    }
-  } finally {
-    saving.value = false
-  }
-}
-
-async function removeVeiculo() {
-  deleting.value = true
-  try {
-    const { error } = await deleteVehicle(id.value)
-    if (!error) {
-      await router.push(VEHICLE_ROUTES.list)
-    }
-  } finally {
-    deleting.value = false
-    deleteOpen.value = false
-  }
-}
+const {
+  editing,
+  saving,
+  deleting,
+  deleteOpen,
+  cancelEdit,
+  save,
+  removeVehicle
+} = useVehicleDetailPage(id, state, refresh)
 </script>
 
 <template>
@@ -157,7 +129,7 @@ async function removeVeiculo() {
       <VehiclesDeleteModal
         v-model:open="deleteOpen"
         :loading="deleting"
-        @confirm="removeVeiculo"
+        @confirm="removeVehicle"
       />
     </template>
   </UDashboardPanel>

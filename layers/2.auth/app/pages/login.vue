@@ -56,46 +56,11 @@ async function onSubmit() {
         </div>
       </template>
 
-      <UForm
-        :state="state"
-        class="space-y-4"
+      <AuthLoginForm
+        v-model="state"
+        :loading="loading"
         @submit="onSubmit"
-      >
-        <UFormField
-          label="E-mail"
-          name="email"
-          required
-        >
-          <UInput
-            v-model="state.email"
-            type="email"
-            autocomplete="username"
-            placeholder="voce@oficina.com"
-            class="w-full"
-          />
-        </UFormField>
-
-        <UFormField
-          label="Senha"
-          name="password"
-          required
-        >
-          <UInput
-            v-model="state.password"
-            type="password"
-            autocomplete="current-password"
-            placeholder="••••••••"
-            class="w-full"
-          />
-        </UFormField>
-
-        <UButton
-          type="submit"
-          label="Entrar"
-          block
-          :loading="loading"
-        />
-      </UForm>
+      />
     </UCard>
   </div>
 </template>

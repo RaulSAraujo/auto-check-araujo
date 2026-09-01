@@ -1,5 +1,3 @@
-import { LIST_PAGE_SIZE } from '~/utils/supabase-search'
-
 export function useListPagination(resetTriggers: Array<Ref<unknown>> = []) {
   const page = ref(1)
   const pageSize = LIST_PAGE_SIZE

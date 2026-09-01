@@ -1,13 +1,21 @@
 export default defineNuxtConfig({
+
   modules: [
     '@nuxt/eslint',
     '@nuxt/ui',
     'dayjs-nuxt'
   ],
+  $meta: {
+    name: 'base'
+  },
 
-  components: [{ path: '~/components', prefix: 'Base' }],
+  components: [{ path: 'components', pathPrefix: true, prefix: 'Base' }],
 
-  css: ['#layers/1.base/app/assets/css/main.css'],
+  imports: {
+    dirs: ['utils']
+  },
+
+  css: ['~/assets/css/main.css'],
 
   eslint: {
     config: {

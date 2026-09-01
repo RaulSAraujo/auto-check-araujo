@@ -7,54 +7,22 @@ definePageMeta({
 })
 
 const route = useRoute()
-const router = useRouter()
 
 const id = computed(() => route.params.id as string)
-
-const editing = ref(false)
-const saving = ref(false)
-const deleting = ref(false)
-const deleteOpen = ref(false)
 
 const { data: cliente, pending, refresh } = await useCustomerQuery(id)
 const { data: veiculos, pending: pendingVeiculos, refresh: refreshVeiculos } = await useCustomerVehicles(id)
 const { state } = useCustomerForm(cliente)
-const { updateCustomer, deleteCustomer } = useCustomerMutations()
 
-function cancelEdit() {
-  editing.value = false
-  refresh()
-}
-
-async function save() {
-  saving.value = true
-  try {
-    const { error } = await updateCustomer(id.value, state)
-    if (!error) {
-      editing.value = false
-      await refresh()
-    }
-  } finally {
-    saving.value = false
-  }
-}
-
-async function removeCliente() {
-  deleting.value = true
-  try {
-    const { error, blocked } = await deleteCustomer(id.value, veiculos.value?.length || 0)
-    if (blocked) {
-      deleteOpen.value = false
-      return
-    }
-    if (!error) {
-      await router.push(CUSTOMER_ROUTES.list)
-    }
-  } finally {
-    deleting.value = false
-    deleteOpen.value = false
-  }
-}
+const {
+  editing,
+  saving,
+  deleting,
+  deleteOpen,
+  cancelEdit,
+  save,
+  removeCustomer
+} = useCustomerDetailPage(id, cliente, veiculos, state, refresh)
 
 onMounted(() => {
   refreshVeiculos()
@@ -152,7 +120,7 @@ onMounted(() => {
       <CustomersDeleteModal
         v-model:open="deleteOpen"
         :loading="deleting"
-        @confirm="removeCliente"
+        @confirm="removeCustomer"
       />
     </template>
   </UDashboardPanel>

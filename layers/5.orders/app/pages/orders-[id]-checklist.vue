@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import type { ChecklistItem } from '~~/shared/types/database'
-import type { ChecklistResultado } from '~~/shared/types/oficina'
 import { ORDER_ROUTES } from '../utils/order-routes'
 
 defineOptions({ name: 'OrdersChecklistPage' })
@@ -11,11 +9,8 @@ definePageMeta({
 })
 
 const route = useRoute()
-const { saveChecklistItem, concludeChecklist } = useChecklistMutations()
 
 const ordemId = computed(() => route.params.id as string)
-const saving = ref(false)
-const concluding = ref(false)
 
 const {
   checklist,
@@ -27,37 +22,13 @@ const {
   readOnly
 } = await useChecklistQuery(ordemId)
 
-async function onSaveItem(item: ChecklistItem) {
-  saving.value = true
-  try {
-    await saveChecklistItem(item, readOnly.value)
-  } finally {
-    saving.value = false
-  }
-}
-
-function onUpdateResultado(item: ChecklistItem, value: ChecklistResultado) {
-  item.resultado = value
-  onSaveItem(item)
-}
-
-function onUpdateObservacao(item: ChecklistItem, value: string) {
-  item.observacao = value
-}
-
-async function onConcludeChecklist() {
-  if (!checklist.value) return
-
-  concluding.value = true
-  try {
-    const { error, incomplete } = await concludeChecklist(checklist.value)
-    if (!error && !incomplete) {
-      await refresh()
-    }
-  } finally {
-    concluding.value = false
-  }
-}
+const {
+  concluding,
+  onSaveItem,
+  onUpdateResultado,
+  onUpdateObservacao,
+  onConcludeChecklist
+} = useChecklistPage(checklist, readOnly, refresh)
 </script>
 
 <template>
