@@ -1,0 +1,162 @@
+import type { OrderDetail } from '../types/orders'
+import type { OrdemItem } from '~~/shared/types/database'
+import type { OrcamentoStatus, OrdemStatus } from '~~/shared/types/oficina'
+import { isBudgetEditable } from '~~/shared/types/oficina'
+import {
+  calcItemsTotal,
+  emptyOrderItemDraft,
+  type OrderItemDraft
+} from '../utils/budget'
+
+export function useOrderBudgetPage(
+  orderId: MaybeRefOrGetter<string>,
+  ordem: Ref<OrderDetail | null | undefined>,
+  items: Ref<OrdemItem[] | null | undefined>,
+  refreshOrder: () => Promise<void>,
+  refreshItems: () => Promise<void>
+) {
+  const { data: catalog } = useServiceCatalog()
+  const {
+    addOrderItem,
+    deleteOrderItem,
+    updateBudgetStatus
+  } = useOrderBudgetMutations()
+
+  const draft = reactive<OrderItemDraft>(emptyOrderItemDraft())
+  const selectedCatalogId = ref<string | undefined>()
+  const adding = ref(false)
+  const deletingId = ref<string | null>(null)
+  const updatingStatus = ref(false)
+
+  const budgetStatus = computed(() => (ordem.value?.orcamento_status || 'rascunho') as OrcamentoStatus)
+
+  const canEditItems = computed(() => {
+    if (!ordem.value) return false
+    return isBudgetEditable(
+      ordem.value.status as OrdemStatus,
+      budgetStatus.value
+    )
+  })
+
+  const canApproveBudget = computed(() => budgetStatus.value === 'aguardando_aprovacao')
+
+  const total = computed(() => calcItemsTotal(items.value || []))
+
+  const catalogItems = computed(() => {
+    return (catalog.value || []).map(item => ({
+      label: `${item.nome} — ${formatMoney(Number(item.valor_padrao))}`,
+      value: item.id
+    }))
+  })
+
+  watch(selectedCatalogId, (id) => {
+    if (!id || !catalog.value) return
+    const entry = catalog.value.find(item => item.id === id)
+    if (!entry) return
+    draft.tipo = entry.tipo as OrderItemDraft['tipo']
+    draft.descricao = entry.nome
+    draft.valor_unitario = Number(entry.valor_padrao)
+    if (!draft.quantidade || draft.quantidade < 1) {
+      draft.quantidade = 1
+    }
+  })
+
+  async function refreshAll() {
+    await Promise.all([refreshOrder(), refreshItems()])
+  }
+
+  async function onAddItem() {
+    adding.value = true
+    try {
+      const nextOrdem = (items.value?.length || 0)
+      const { error } = await addOrderItem(toValue(orderId), draft, nextOrdem)
+      if (!error) {
+        Object.assign(draft, emptyOrderItemDraft())
+        selectedCatalogId.value = undefined
+        await refreshItems()
+      }
+    } finally {
+      adding.value = false
+    }
+  }
+
+  async function onDeleteItem(itemId: string) {
+    deletingId.value = itemId
+    try {
+      const { error } = await deleteOrderItem(itemId)
+      if (!error) {
+        await refreshItems()
+      }
+    } finally {
+      deletingId.value = null
+    }
+  }
+
+  async function onSubmitForApproval() {
+    if (!items.value?.length) {
+      useToast().add({
+        title: 'Adicione ao menos um item',
+        description: 'O orçamento precisa de itens antes de ser enviado.',
+        color: 'warning'
+      })
+      return
+    }
+
+    updatingStatus.value = true
+    try {
+      const { error } = await updateBudgetStatus(toValue(orderId), 'aguardando_aprovacao')
+      if (!error) await refreshAll()
+    } finally {
+      updatingStatus.value = false
+    }
+  }
+
+  async function onApprove() {
+    updatingStatus.value = true
+    try {
+      const { error } = await updateBudgetStatus(toValue(orderId), 'aprovado')
+      if (!error) await refreshAll()
+    } finally {
+      updatingStatus.value = false
+    }
+  }
+
+  async function onReject() {
+    updatingStatus.value = true
+    try {
+      const { error } = await updateBudgetStatus(toValue(orderId), 'rejeitado')
+      if (!error) await refreshAll()
+    } finally {
+      updatingStatus.value = false
+    }
+  }
+
+  async function onReopen() {
+    updatingStatus.value = true
+    try {
+      const { error } = await updateBudgetStatus(toValue(orderId), 'rascunho')
+      if (!error) await refreshAll()
+    } finally {
+      updatingStatus.value = false
+    }
+  }
+
+  return {
+    draft,
+    selectedCatalogId,
+    adding,
+    deletingId,
+    updatingStatus,
+    budgetStatus,
+    canEditItems,
+    canApproveBudget,
+    total,
+    catalogItems,
+    onAddItem,
+    onDeleteItem,
+    onSubmitForApproval,
+    onApprove,
+    onReject,
+    onReopen
+  }
+}

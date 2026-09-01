@@ -15,7 +15,27 @@ const id = computed(() => route.params.id as string)
 const startingChecklist = ref(false)
 
 const { data: ordem, pending, refresh } = await useOrderQuery(id)
+const { data: budgetItems, refresh: refreshBudgetItems } = await useOrderItemsQuery(id)
 const { state } = useOrderEditForm(ordem)
+
+const {
+  draft,
+  selectedCatalogId,
+  adding,
+  deletingId,
+  updatingStatus,
+  budgetStatus,
+  canEditItems,
+  canApproveBudget,
+  total,
+  catalogItems,
+  onAddItem,
+  onDeleteItem,
+  onSubmitForApproval,
+  onApprove,
+  onReject,
+  onReopen
+} = useOrderBudgetPage(id, ordem, budgetItems, refresh, refreshBudgetItems)
 
 const {
   editing,
@@ -71,7 +91,7 @@ async function onStartChecklist() {
 
       <div
         v-else-if="ordem"
-        class="p-4 sm:p-6 space-y-8 max-w-2xl"
+        class="p-4 sm:p-6 space-y-8 max-w-3xl"
       >
         <section class="space-y-4">
           <div class="flex items-center justify-between gap-3">
@@ -115,6 +135,27 @@ async function onStartChecklist() {
             </div>
           </OrdersDetailForm>
         </section>
+
+        <OrdersBudgetSection
+          v-model:draft="draft"
+          :items="budgetItems || []"
+          :budget-status="budgetStatus"
+          :can-edit-items="canEditItems"
+          :can-approve="canApproveBudget"
+          :total="total"
+          :selected-catalog-id="selectedCatalogId"
+          :catalog-items="catalogItems"
+          :adding="adding"
+          :deleting-id="deletingId"
+          :updating-status="updatingStatus"
+          @update:selected-catalog-id="selectedCatalogId = $event"
+          @add="onAddItem"
+          @delete="onDeleteItem"
+          @submit-for-approval="onSubmitForApproval"
+          @approve="onApprove"
+          @reject="onReject"
+          @reopen="onReopen"
+        />
 
         <OrdersStatusEditor
           :ordem="ordem"

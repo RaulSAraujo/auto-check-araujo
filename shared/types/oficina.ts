@@ -25,3 +25,34 @@ export const CHECKLIST_RESULTADO_LABEL: Record<ChecklistResultado, string> = {
 export function isOrderEditable(status: OrdemStatus): boolean {
   return status === 'aberta' || status === 'em_andamento'
 }
+
+export type OrdemItemTipo = 'servico' | 'peca'
+export type OrcamentoStatus = 'rascunho' | 'aguardando_aprovacao' | 'aprovado' | 'rejeitado'
+
+export const ORDEM_ITEM_TIPO_LABEL: Record<OrdemItemTipo, string> = {
+  servico: 'Serviço',
+  peca: 'Peça'
+}
+
+export const ORCAMENTO_STATUS_LABEL: Record<OrcamentoStatus, string> = {
+  rascunho: 'Rascunho',
+  aguardando_aprovacao: 'Aguardando aprovação',
+  aprovado: 'Aprovado',
+  rejeitado: 'Rejeitado'
+}
+
+export const ORCAMENTO_STATUS_COLOR: Record<OrcamentoStatus, 'neutral' | 'warning' | 'success' | 'error'> = {
+  rascunho: 'neutral',
+  aguardando_aprovacao: 'warning',
+  aprovado: 'success',
+  rejeitado: 'error'
+}
+
+
+export function isBudgetEditable(
+  orderStatus: OrdemStatus,
+  budgetStatus: OrcamentoStatus
+): boolean {
+  if (!isOrderEditable(orderStatus)) return false
+  return budgetStatus === 'rascunho' || budgetStatus === 'rejeitado'
+}

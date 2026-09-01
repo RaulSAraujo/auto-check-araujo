@@ -12,6 +12,38 @@ export type Database = {
   }
   public: {
     Tables: {
+      checklist_item_fotos: {
+        Row: {
+          checklist_item_id: string
+          created_at: string
+          id: string
+          nome_arquivo: string | null
+          storage_path: string
+        }
+        Insert: {
+          checklist_item_id: string
+          created_at?: string
+          id?: string
+          nome_arquivo?: string | null
+          storage_path: string
+        }
+        Update: {
+          checklist_item_id?: string
+          created_at?: string
+          id?: string
+          nome_arquivo?: string | null
+          storage_path?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: 'checklist_item_fotos_checklist_item_id_fkey'
+            columns: ['checklist_item_id']
+            isOneToOne: false
+            referencedRelation: 'checklist_itens'
+            referencedColumns: ['id']
+          }
+        ]
+      }
       checklist_itens: {
         Row: {
           categoria: string
@@ -174,19 +206,65 @@ export type Database = {
         }
         Relationships: []
       }
+      ordem_itens: {
+        Row: {
+          created_at: string
+          descricao: string
+          id: string
+          ordem: number
+          ordem_servico_id: string
+          quantidade: number
+          tipo: string
+          valor_unitario: number
+        }
+        Insert: {
+          created_at?: string
+          descricao: string
+          id?: string
+          ordem?: number
+          ordem_servico_id: string
+          quantidade?: number
+          tipo: string
+          valor_unitario?: number
+        }
+        Update: {
+          created_at?: string
+          descricao?: string
+          id?: string
+          ordem?: number
+          ordem_servico_id?: string
+          quantidade?: number
+          tipo?: string
+          valor_unitario?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: 'ordem_itens_ordem_servico_id_fkey'
+            columns: ['ordem_servico_id']
+            isOneToOne: false
+            referencedRelation: 'ordens_servico'
+            referencedColumns: ['id']
+          }
+        ]
+      }
       ordens_servico: {
         Row: {
           aberta_em: string
           aberto_por: string
           concluida_em: string | null
           created_at: string
+          forma_pagamento: string | null
           id: string
           km_entrada: number | null
           numero: string
           observacoes: string | null
+          orcamento_status: string
+          pago: boolean
+          pago_em: string | null
           reclamacao: string | null
           status: string
           updated_at: string
+          valor_total: number | null
           veiculo_id: string
         }
         Insert: {
@@ -194,13 +272,18 @@ export type Database = {
           aberto_por: string
           concluida_em?: string | null
           created_at?: string
+          forma_pagamento?: string | null
           id?: string
           km_entrada?: number | null
           numero?: string
           observacoes?: string | null
+          orcamento_status?: string
+          pago?: boolean
+          pago_em?: string | null
           reclamacao?: string | null
           status?: string
           updated_at?: string
+          valor_total?: number | null
           veiculo_id: string
         }
         Update: {
@@ -208,13 +291,18 @@ export type Database = {
           aberto_por?: string
           concluida_em?: string | null
           created_at?: string
+          forma_pagamento?: string | null
           id?: string
           km_entrada?: number | null
           numero?: string
           observacoes?: string | null
+          orcamento_status?: string
+          pago?: boolean
+          pago_em?: string | null
           reclamacao?: string | null
           status?: string
           updated_at?: string
+          valor_total?: number | null
           veiculo_id?: string
         }
         Relationships: [
@@ -239,16 +327,46 @@ export type Database = {
           created_at: string
           id: string
           nome: string
+          papel: string
         }
         Insert: {
           created_at?: string
           id: string
           nome: string
+          papel?: string
         }
         Update: {
           created_at?: string
           id?: string
           nome?: string
+          papel?: string
+        }
+        Relationships: []
+      }
+      servicos_catalogo: {
+        Row: {
+          ativo: boolean
+          created_at: string
+          id: string
+          nome: string
+          tipo: string
+          valor_padrao: number
+        }
+        Insert: {
+          ativo?: boolean
+          created_at?: string
+          id?: string
+          nome: string
+          tipo: string
+          valor_padrao?: number
+        }
+        Update: {
+          ativo?: boolean
+          created_at?: string
+          id?: string
+          nome?: string
+          tipo?: string
+          valor_padrao?: number
         }
         Relationships: []
       }
@@ -312,6 +430,10 @@ export type Database = {
         Args: Record<PropertyKey, never>
         Returns: Json
       }
+      financeiro_resumo: {
+        Args: { p_mes: string }
+        Returns: Json
+      }
     }
     Enums: {
       [_ in never]: never
@@ -334,3 +456,7 @@ export type OrdemServicoInsert = Database['public']['Tables']['ordens_servico'][
 export type OrdemServicoUpdate = Database['public']['Tables']['ordens_servico']['Update']
 export type Checklist = Database['public']['Tables']['checklists']['Row']
 export type ChecklistItem = Database['public']['Tables']['checklist_itens']['Row']
+export type ChecklistItemFoto = Database['public']['Tables']['checklist_item_fotos']['Row']
+export type OrdemItem = Database['public']['Tables']['ordem_itens']['Row']
+export type OrdemItemInsert = Database['public']['Tables']['ordem_itens']['Insert']
+export type ServicoCatalogo = Database['public']['Tables']['servicos_catalogo']['Row']
