@@ -1,4 +1,5 @@
 import type { ChecklistItem } from '~~/shared/types/database'
+import type { ChecklistResultado } from '~~/shared/types/oficina'
 import type { ChecklistWithItems } from '../types/orders'
 
 export function useChecklistMutations() {
@@ -18,6 +19,21 @@ export function useChecklistMutations() {
 
     if (error) {
       toast.add({ title: 'Erro ao salvar item', description: error.message, color: 'error' })
+    }
+
+    return { error }
+  }
+
+  async function bulkSetResultado(itemIds: string[], resultado: ChecklistResultado) {
+    if (itemIds.length === 0) return { error: null }
+
+    const { error } = await supabase
+      .from('checklist_itens')
+      .update({ resultado })
+      .in('id', itemIds)
+
+    if (error) {
+      toast.add({ title: 'Erro ao atualizar itens', description: error.message, color: 'error' })
     }
 
     return { error }
@@ -50,6 +66,7 @@ export function useChecklistMutations() {
 
   return {
     saveChecklistItem,
+    bulkSetResultado,
     concludeChecklist
   }
 }

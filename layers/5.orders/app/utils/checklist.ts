@@ -1,4 +1,21 @@
 import type { ChecklistItem } from '~~/shared/types/database'
+import type { ChecklistResultado } from '~~/shared/types/oficina'
+
+export const CHECKLIST_RESULTADO_OPTIONS: {
+  value: ChecklistResultado
+  label: string
+  shortLabel: string
+  color: 'success' | 'warning' | 'error' | 'neutral'
+}[] = [
+  { value: 'ok', label: 'OK', shortLabel: 'OK', color: 'success' },
+  { value: 'atencao', label: 'Atenção', shortLabel: '!', color: 'warning' },
+  { value: 'ruim', label: 'Ruim', shortLabel: 'Ruim', color: 'error' },
+  { value: 'na', label: 'N/A', shortLabel: 'N/A', color: 'neutral' }
+]
+
+export function needsChecklistObservacao(resultado: string | null): boolean {
+  return resultado === 'atencao' || resultado === 'ruim'
+}
 
 export function checklistResultadoColor(
   resultado: string | null

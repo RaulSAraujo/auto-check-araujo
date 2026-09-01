@@ -7,10 +7,11 @@ export function useChecklistPage(
   readOnly: Ref<boolean>,
   refresh: () => Promise<void>
 ) {
-  const { saveChecklistItem, concludeChecklist } = useChecklistMutations()
+  const { saveChecklistItem, bulkSetResultado, concludeChecklist } = useChecklistMutations()
 
   const saving = ref(false)
   const concluding = ref(false)
+  const bulkSaving = ref(false)
 
   async function onSaveItem(item: ChecklistItem) {
     saving.value = true
@@ -30,12 +31,44 @@ export function useChecklistPage(
     item.observacao = value
   }
 
+  function scrollToFirstPending() {
+    const el = document.querySelector('[data-checklist-pending]')
+    el?.scrollIntoView({ behavior: 'smooth', block: 'center' })
+  }
+
+  async function onMarkItemsOk(items: ChecklistItem[]) {
+    if (readOnly.value) return
+
+    const pendingIds = items
+      .filter(item => item.resultado !== 'ok')
+      .map(item => item.id)
+
+    if (pendingIds.length === 0) return
+
+    bulkSaving.value = true
+    try {
+      const { error } = await bulkSetResultado(pendingIds, 'ok')
+      if (!error) {
+        for (const item of items) {
+          if (pendingIds.includes(item.id)) {
+            item.resultado = 'ok'
+          }
+        }
+      }
+    } finally {
+      bulkSaving.value = false
+    }
+  }
+
   async function onConcludeChecklist() {
     if (!checklist.value) return
 
     concluding.value = true
     try {
       const { error, incomplete } = await concludeChecklist(checklist.value)
+      if (incomplete) {
+        scrollToFirstPending()
+      }
       if (!error && !incomplete) {
         await refresh()
       }
@@ -47,9 +80,11 @@ export function useChecklistPage(
   return {
     saving,
     concluding,
+    bulkSaving,
     onSaveItem,
     onUpdateResultado,
     onUpdateObservacao,
+    onMarkItemsOk,
     onConcludeChecklist
   }
 }
