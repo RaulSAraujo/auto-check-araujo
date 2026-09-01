@@ -2,8 +2,11 @@
 import type { OrderFormState } from '../utils/order-form'
 import { ORDER_ROUTES } from '../utils/order-routes'
 
+defineOptions({ name: 'OrdersNewForm' })
+
+const state = defineModel<OrderFormState>({ required: true })
+
 defineProps<{
-  state: OrderFormState
   veiculoItems: { label: string, value: string }[]
   loading: boolean
 }>()

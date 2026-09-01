@@ -52,7 +52,7 @@ async function onSubmit() {
     <template #body>
       <div class="p-4 sm:p-6 max-w-xl">
         <OrdersNewForm
-          :state="state"
+          v-model="state"
           :veiculo-items="veiculoItems"
           :loading="loading"
           @submit="onSubmit"
