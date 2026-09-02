@@ -14,7 +14,7 @@ auto-check-araujo/
 ├── app/                          # App raiz (prioridade máxima)
 │   └── app.vue                   # UApp + NuxtLayout + SEO global
 ├── layers/
-│   ├── 1.base/                   # UI, tema, layout app, APP_ROUTES, ESLint, dayjs
+│   ├── 1.base/                   # UI, tema, layout default, APP_ROUTES, ESLint, dayjs
 │   ├── 2.auth/                   # Auth + equipe ($meta.name: auth)
 │   ├── 3.home/                   # Dashboard ($meta.name: home)
 │   ├── 4.customers/              # CRUD clientes ($meta.name: customers)
@@ -44,7 +44,7 @@ auto-check-araujo/
 |------|-------|
 | Auth (login, logout, client tipado, equipe) | `layers/2.auth/` |
 | Dashboard / home | `layers/3.home/` |
-| Layout app, tema, `APP_ROUTES` | `layers/1.base/` |
+| Layout `default`, tema, `APP_ROUTES` | `layers/1.base/` |
 | Páginas `/clientes/*` | `layers/4.customers/app/pages/` |
 | Páginas `/ordens/*`, `/orcamento/:token` | `layers/5.orders/app/pages/` |
 | Páginas `/catalogo` | `layers/6.catalog/app/pages/` |
@@ -106,11 +106,29 @@ Importar tipos cross-layer via `~~/shared/types/...`. Paths de arquivo na layer 
 | demais domains | — |
 | raiz | `@nuxt/content`, `nuxt-charts`, `devtools`, `runtimeConfig` |
 
+## Shell / layouts
+
+Único layout autenticado: `layers/1.base/app/layouts/default.vue`.
+
+```
+app.vue → UApp → NuxtLayout → NuxtPage
+                  └── layouts/default.vue
+                        ├── BaseAppHeader  (pill flutuante fixed, sem sidebar)
+                        └── <div class="pt-20 sm:pt-24"><slot /></div>
+```
+
+Regras:
+
+- **Só existe** `default` — não criar `layouts/app.vue`, `layouts/dashboard.vue` nem outros shells
+- **Sem** `UDashboardGroup` / `UDashboardSidebar` / `UDashboardNavbar` no shell
+- Páginas autenticadas: omitir `layout` no `definePageMeta` (usam `default` automaticamente)
+- Páginas sem shell (`login`, `confirm`, prints, orçamento público): `layout: false`
+- Título da página fica no body via `BasePageHeader` (não no layout)
+
 ## Nuxt UI v4
 
 - `UApp` em `app.vue` raiz
-- Layout `app` com `UDashboardGroup` + `UDashboardSidebar` (`layers/1.base`)
-- `definePageMeta({ layout: 'app' })` em todas as páginas autenticadas do dashboard
+- Layout `default` com `BaseAppHeader` + offset `pt-20 sm:pt-24` (`layers/1.base`)
 - Status de ordem: `ORDEM_STATUS_COLOR` / `ORDEM_STATUS_LABEL` de `shared/types/oficina.ts`
 
 ## Checklist antes de PR
@@ -119,4 +137,4 @@ Importar tipos cross-layer via `~~/shared/types/...`. Paths de arquivo na layer 
 - [ ] `npx nuxt typecheck` passa
 - [ ] Página nova na layer do domínio correto
 - [ ] Sem import de páginas entre layers de domínio
-- [ ] Páginas autenticadas usam `layout: 'app'`
+- [ ] Páginas autenticadas usam layout `default` (sem declarar outro layout); exceções com `layout: false`

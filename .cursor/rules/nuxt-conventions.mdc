@@ -48,8 +48,7 @@ Regras:
 <!-- pages/customers-new.vue -->
 <script setup lang="ts">
 definePageMeta({
-  path: '/clientes/novo',
-  layout: 'app'
+  path: '/clientes/novo'
 })
 </script>
 ```
@@ -125,6 +124,37 @@ export default defineNuxtConfig({
 - Componentes ficam em `app/components/` da layer correspondente.
 - Nunca criar componente genérico (`Form.vue`, `Table.vue`) sem prefix — colide entre layers.
 - Cross-domain: usar componentes de outra layer só via import explícito, nunca depender de auto-import ambíguo.
+
+## Layouts
+
+Só existe **um** layout de app: `layers/1.base/app/layouts/default.vue` (`BaseAppHeader` + conteúdo).
+
+```vue
+<!-- layouts/default.vue -->
+<template>
+  <div>
+    <UMain>
+      <BaseAppHeader />
+      <div class="pt-20 sm:pt-24">
+        <slot />
+      </div>
+    </UMain>
+  </div>
+</template>
+```
+
+| Caso | `definePageMeta` |
+|------|------------------|
+| Página autenticada | omitir `layout` (usa `default`) |
+| Login / confirm / print / público | `layout: false` |
+
+```
+❌ layouts/app.vue / layouts/dashboard.vue
+❌ UDashboardGroup / UDashboardSidebar no shell
+❌ definePageMeta({ layout: 'app' })
+✅ layouts/default.vue + BaseAppHeader
+✅ páginas autenticadas sem `layout`; exceções com `layout: false`
+```
 
 ## Separação de responsabilidades
 
