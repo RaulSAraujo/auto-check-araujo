@@ -23,3 +23,11 @@ logs
 .env
 .env.*
 !.env.example
+
+# Stitch downloaded previews (source of truth is labs.google/stitch)
+.stitch/screenshots/
+.stitch/html/
+.stitch/assets/
+
+# Supabase CLI local cache
+supabase/.temp/
