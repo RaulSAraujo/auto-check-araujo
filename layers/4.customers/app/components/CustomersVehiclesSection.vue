@@ -52,9 +52,20 @@ const { can } = usePermissions()
       </template>
 
       <template #empty>
-        <div class="text-center py-6 text-muted">
-          Nenhum Veículo vinculado.
-        </div>
+        <BaseEmptyState icon="i-lucide-car">
+          Nenhum veículo vinculado.
+          <template
+            v-if="can('vehicles.write')"
+            #actions
+          >
+            <UButton
+              :to="CUSTOMER_ROUTES.newVehicle(clienteId)"
+              icon="i-lucide-plus"
+              label="Adicionar veículo"
+              size="sm"
+            />
+          </template>
+        </BaseEmptyState>
       </template>
     </UTable>
   </section>

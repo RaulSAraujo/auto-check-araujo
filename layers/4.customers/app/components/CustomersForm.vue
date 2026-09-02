@@ -38,26 +38,32 @@ defineEmits<{
       </UFormField>
 
       <UFormField
-        label="Telefone"
-        name="telefone"
+        label="Telefones"
+        name="telefones"
+        hint="Enter para adicionar"
+        :class="{ 'sm:col-span-2': !compact }"
       >
-        <UInput
-          v-model="state.telefone"
+        <UInputTags
+          v-model="state.telefones"
           class="w-full"
-          placeholder="(11) 99999-9999"
+          placeholder="(16) 99999-9999"
           :disabled="disabled"
+          add-on-blur
         />
       </UFormField>
 
       <UFormField
-        label="E-mail"
-        name="email"
+        label="E-mails"
+        name="emails"
+        hint="Enter para adicionar"
+        :class="{ 'sm:col-span-2': !compact }"
       >
-        <UInput
-          v-model="state.email"
-          type="email"
+        <UInputTags
+          v-model="state.emails"
           class="w-full"
+          placeholder="email@exemplo.com"
           :disabled="disabled"
+          add-on-blur
         />
       </UFormField>
 
@@ -70,7 +76,23 @@ defineEmits<{
         <UInput
           v-model="state.documento"
           class="w-full"
+          placeholder="CPF ou CNPJ"
           :disabled="disabled"
+        />
+      </UFormField>
+
+      <UFormField
+        label="Status"
+        name="ativo"
+      >
+        <USelect
+          v-model="state.ativo"
+          class="w-full"
+          :disabled="disabled"
+          :items="[
+            { label: 'Ativo', value: true },
+            { label: 'Inativo', value: false }
+          ]"
         />
       </UFormField>
 

@@ -9,10 +9,11 @@ export function useCustomerDetailPage(
   refresh: () => Promise<void>
 ) {
   const router = useRouter()
-  const { updateCustomer, deleteCustomer } = useCustomerMutations()
+  const { updateCustomer, setCustomerAtivo, deleteCustomer } = useCustomerMutations()
 
   const editing = ref(false)
   const saving = ref(false)
+  const togglingAtivo = ref(false)
   const deleting = ref(false)
   const deleteOpen = ref(false)
 
@@ -31,6 +32,20 @@ export function useCustomerDetailPage(
       }
     } finally {
       saving.value = false
+    }
+  }
+
+  async function toggleAtivo() {
+    if (!cliente.value) return
+
+    togglingAtivo.value = true
+    try {
+      const { error } = await setCustomerAtivo(toValue(id), !cliente.value.ativo)
+      if (!error) {
+        await refresh()
+      }
+    } finally {
+      togglingAtivo.value = false
     }
   }
 
@@ -57,10 +72,12 @@ export function useCustomerDetailPage(
   return {
     editing,
     saving,
+    togglingAtivo,
     deleting,
     deleteOpen,
     cancelEdit,
     save,
+    toggleAtivo,
     removeCustomer
   }
 }

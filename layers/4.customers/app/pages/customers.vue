@@ -1,4 +1,7 @@
 <script setup lang="ts">
+import type { CustomerStatusFilter } from '../utils/customer-status'
+import { CUSTOMER_STATUS_FILTER_ACTIVE } from '../utils/customer-status'
+
 defineOptions({ name: 'CustomersIndexPage' })
 
 definePageMeta({
@@ -6,7 +9,21 @@ definePageMeta({
   layout: 'app'
 })
 
-const { q, page, pageSize, total, clientes, pending } = await useCustomersList()
+const route = useRoute()
+
+const {
+  q,
+  page,
+  pageSize,
+  total,
+  statusFilter,
+  statusItems,
+  clientes,
+  pending
+} = await useCustomersList(
+  (route.query.status as CustomerStatusFilter | undefined) ?? CUSTOMER_STATUS_FILTER_ACTIVE
+)
+
 const { can } = usePermissions()
 </script>
 
@@ -30,12 +47,19 @@ const { can } = usePermissions()
 
     <template #body>
       <div class="p-4 sm:p-6 space-y-4">
-        <UInput
-          v-model="q"
-          icon="i-lucide-search"
-          placeholder="Buscar por nome, telefone, documento ou e-mail"
-          class="max-w-md"
-        />
+        <div class="flex flex-col sm:flex-row gap-3 max-w-2xl">
+          <UInput
+            v-model="q"
+            icon="i-lucide-search"
+            placeholder="Buscar por nome, telefone, documento ou e-mail"
+            class="flex-1"
+          />
+          <USelect
+            v-model="statusFilter"
+            :items="[...statusItems]"
+            class="sm:w-40"
+          />
+        </div>
 
         <CustomersTable
           :clientes="clientes"

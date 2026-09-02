@@ -12,15 +12,18 @@ const id = computed(() => route.params.id as string)
 
 const { data: cliente, pending, refresh } = await useCustomerQuery(id)
 const { data: veiculos, pending: pendingVeiculos, refresh: refreshVeiculos } = await useCustomerVehicles(id)
+const { data: ordens, pending: pendingOrdens, refresh: refreshOrdens } = await useCustomerOrders(id)
 const { state } = useCustomerForm(cliente)
 
 const {
   editing,
   saving,
+  togglingAtivo,
   deleting,
   deleteOpen,
   cancelEdit,
   save,
+  toggleAtivo,
   removeCustomer
 } = useCustomerDetailPage(id, cliente, veiculos, state, refresh)
 
@@ -28,6 +31,7 @@ const { can } = usePermissions()
 
 onMounted(() => {
   refreshVeiculos()
+  refreshOrdens()
 })
 </script>
 
@@ -60,14 +64,32 @@ onMounted(() => {
 
       <div
         v-else-if="cliente"
-        class="p-4 sm:p-6 space-y-8 max-w-3xl"
+        class="p-4 sm:p-6 space-y-8 max-w-5xl"
       >
         <section class="space-y-4">
           <div class="flex items-center justify-between gap-3">
-            <h2 class="text-lg font-semibold text-highlighted">
-              Dados do Cliente
-            </h2>
-            <div class="flex gap-2">
+            <div class="flex items-center gap-3 min-w-0">
+              <h2 class="text-lg font-semibold text-highlighted truncate">
+                Dados do cliente
+              </h2>
+              <UBadge
+                :color="cliente.ativo ? 'success' : 'neutral'"
+                variant="subtle"
+              >
+                {{ cliente.ativo ? 'Ativo' : 'Inativo' }}
+              </UBadge>
+            </div>
+            <div class="flex gap-2 shrink-0">
+              <UButton
+                v-if="can('customers.write') && !editing"
+                :label="cliente.ativo ? 'Desativar' : 'Reativar'"
+                :icon="cliente.ativo ? 'i-lucide-eye-off' : 'i-lucide-eye'"
+                :color="cliente.ativo ? 'warning' : 'success'"
+                variant="soft"
+                size="sm"
+                :loading="togglingAtivo"
+                @click="toggleAtivo"
+              />
               <UButton
                 v-if="can('customers.write') && !editing"
                 label="Editar"
@@ -114,9 +136,16 @@ onMounted(() => {
         </section>
 
         <CustomersVehiclesSection
+          class="border-t border-default pt-8"
           :cliente-id="id"
           :veiculos="veiculos || []"
           :loading="pendingVeiculos"
+        />
+
+        <CustomersOrdersSection
+          class="border-t border-default pt-8"
+          :ordens="ordens || []"
+          :loading="pendingOrdens"
         />
       </div>
 

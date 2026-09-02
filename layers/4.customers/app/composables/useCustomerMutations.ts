@@ -1,4 +1,5 @@
 import type { CustomerFormState } from '../utils/customer-form'
+import type { Cliente } from '~~/shared/types/database'
 import {
   customerFormToInsert,
   customerFormToUpdate,
@@ -52,6 +53,28 @@ export function useCustomerMutations() {
     return { error: null }
   }
 
+  async function setCustomerAtivo(id: string, ativo: boolean) {
+    const { error } = await supabase
+      .from('clientes')
+      .update({ ativo } satisfies Partial<Cliente>)
+      .eq('id', id)
+
+    if (error) {
+      toast.add({
+        title: ativo ? 'Erro ao reativar cliente' : 'Erro ao desativar cliente',
+        description: error.message,
+        color: 'error'
+      })
+      return { error }
+    }
+
+    toast.add({
+      title: ativo ? 'Cliente reativado' : 'Cliente desativado',
+      color: 'success'
+    })
+    return { error: null }
+  }
+
   async function deleteCustomer(id: string, vehicleCount: number) {
     if (vehicleCount > 0) {
       toast.add({
@@ -79,6 +102,7 @@ export function useCustomerMutations() {
   return {
     createCustomer,
     updateCustomer,
+    setCustomerAtivo,
     deleteCustomer
   }
 }

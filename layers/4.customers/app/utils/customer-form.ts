@@ -1,30 +1,34 @@
 import type { Cliente, ClienteInsert, ClienteUpdate } from '~~/shared/types/database'
+import { normalizeContactList } from '~~/shared/utils/contact'
 
 export interface CustomerFormState {
   nome: string
-  telefone: string
-  email: string
+  telefones: string[]
+  emails: string[]
   documento: string
   observacoes: string
+  ativo: boolean
 }
 
 export function emptyCustomerForm(): CustomerFormState {
   return {
     nome: '',
-    telefone: '',
-    email: '',
+    telefones: [],
+    emails: [],
     documento: '',
-    observacoes: ''
+    observacoes: '',
+    ativo: true
   }
 }
 
 export function customerFormFromRow(cliente: Cliente): CustomerFormState {
   return {
     nome: cliente.nome,
-    telefone: cliente.telefone || '',
-    email: cliente.email || '',
+    telefones: [...(cliente.telefones || [])],
+    emails: [...(cliente.emails || [])],
     documento: cliente.documento || '',
-    observacoes: cliente.observacoes || ''
+    observacoes: cliente.observacoes || '',
+    ativo: cliente.ativo
   }
 }
 
@@ -36,10 +40,11 @@ function trimOrNull(value: string): string | null {
 export function customerFormToInsert(state: CustomerFormState): ClienteInsert {
   return {
     nome: state.nome.trim(),
-    telefone: trimOrNull(state.telefone),
-    email: trimOrNull(state.email),
+    telefones: normalizeContactList(state.telefones),
+    emails: normalizeContactList(state.emails),
     documento: trimOrNull(state.documento),
-    observacoes: trimOrNull(state.observacoes)
+    observacoes: trimOrNull(state.observacoes),
+    ativo: state.ativo
   }
 }
 
