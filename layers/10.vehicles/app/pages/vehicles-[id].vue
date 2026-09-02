@@ -2,8 +2,7 @@
 defineOptions({ name: 'VehiclesDetailPage' })
 
 definePageMeta({
-  path: '/veiculos/:id',
-  layout: 'app'
+  path: '/veiculos/:id'
 })
 
 const route = useRoute()
@@ -30,35 +29,31 @@ const { can } = usePermissions()
 
 <template>
   <UDashboardPanel>
-    <template #header>
-      <UDashboardNavbar :title="veiculo ? formatPlaca(veiculo.placa) : 'Veículo'">
-        <template #leading>
-          <UDashboardSidebarToggle />
-        </template>
-        <template #right>
-          <UButton
-            :to="VEHICLE_ROUTES.list"
-            color="neutral"
-            variant="ghost"
-            label="Voltar"
-            icon="i-lucide-arrow-left"
-          />
-        </template>
-      </UDashboardNavbar>
-    </template>
-
     <template #body>
       <div
         v-if="pending && !veiculo"
         class="p-6"
       >
-        <USkeleton class="h-40 w-full max-w-xl" />
+        <BasePageHeader title="Veículo" />
+        <USkeleton class="mt-4 h-40 w-full max-w-xl" />
       </div>
 
       <div
         v-else-if="veiculo"
         class="p-4 sm:p-6 space-y-8 max-w-3xl"
       >
+        <BasePageHeader :title="formatPlaca(veiculo.placa)">
+          <template #actions>
+            <UButton
+              :to="VEHICLE_ROUTES.list"
+              color="neutral"
+              variant="ghost"
+              label="Voltar"
+              icon="i-lucide-arrow-left"
+            />
+          </template>
+        </BasePageHeader>
+
         <div class="space-y-4 max-w-xl">
           <div class="flex items-center justify-between gap-3">
             <div>
