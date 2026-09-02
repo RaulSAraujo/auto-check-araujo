@@ -102,7 +102,7 @@ async function onSubmit() {
 
     <main class="relative flex w-full flex-1 items-center justify-center bg-muted p-8 md:w-[55%] md:p-16">
       <div
-        class="auth-login__card w-full max-w-[400px] rounded-[6px] border border-default bg-default p-8 shadow-sm md:p-10"
+        class="auth-login__card w-full max-w-[400px] rounded-lg border border-default bg-default p-8 shadow-sm md:p-10"
       >
         <header class="mb-8">
           <p class="mb-2 text-xs font-semibold uppercase tracking-wider text-dimmed">

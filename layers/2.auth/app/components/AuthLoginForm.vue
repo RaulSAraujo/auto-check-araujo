@@ -39,7 +39,7 @@ const passwordInputId = useId()
         :spellcheck="false"
         class="w-full"
         :ui="{
-          base: 'rounded-[6px] border-default bg-default text-highlighted caret-highlighted font-medium placeholder:text-dimmed'
+          base: 'rounded-lg border-default bg-default text-highlighted caret-highlighted font-medium placeholder:text-dimmed'
         }"
       />
     </UFormField>
@@ -63,7 +63,7 @@ const passwordInputId = useId()
         size="lg"
         class="w-full"
         :ui="{
-          base: 'rounded-[6px] border-default bg-default text-highlighted caret-highlighted font-medium placeholder:text-dimmed',
+          base: 'rounded-lg border-default bg-default text-highlighted caret-highlighted font-medium placeholder:text-dimmed',
           trailing: 'pe-1'
         }"
       >
@@ -91,7 +91,7 @@ const passwordInputId = useId()
       block
       class="auth-login-form__submit mt-4 font-bold shadow-sm"
       :ui="{
-        base: 'rounded-[6px] py-3'
+        base: 'rounded-lg py-3'
       }"
       :loading="loading"
       :disabled="loading"

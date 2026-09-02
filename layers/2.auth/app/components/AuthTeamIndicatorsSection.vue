@@ -26,7 +26,7 @@ function formatPct(value: number | null | undefined) {
     </div>
 
     <template v-else-if="indicators">
-      <div class="overflow-hidden rounded-md border border-default">
+      <div class="overflow-hidden rounded-lg border border-default">
         <div class="grid gap-px bg-default sm:grid-cols-3">
           <div class="bg-default px-4 py-4">
             <p class="text-xs font-semibold uppercase tracking-wide text-muted">
@@ -62,7 +62,7 @@ function formatPct(value: number | null | undefined) {
 
         <div
           v-if="indicators.por_colaborador.length"
-          class="overflow-x-auto rounded-md border border-default"
+          class="overflow-x-auto rounded-lg border border-default"
         >
           <table class="w-full text-sm">
             <thead class="border-b border-default bg-elevated/50 text-left text-xs uppercase tracking-wide text-muted">

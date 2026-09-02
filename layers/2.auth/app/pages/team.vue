@@ -15,8 +15,7 @@ import {
 defineOptions({ name: 'AuthTeamPage' })
 
 definePageMeta({
-  path: '/equipe',
-  layout: 'app'
+  path: '/equipe'
 })
 
 useRequirePermission('collaborators.manage')
@@ -125,19 +124,12 @@ async function onIncidentChanged() {
 
 <template>
   <UDashboardPanel>
-    <template #header>
-      <UDashboardNavbar title="Gestão da Equipe">
-        <template #leading>
-          <UDashboardSidebarToggle />
-        </template>
-      </UDashboardNavbar>
-    </template>
-
     <template #body>
       <div class="p-4 sm:p-6 space-y-6 max-w-6xl">
-        <p class="text-sm text-muted max-w-2xl">
-          Controle de desempenho e produtividade.
-        </p>
+        <BasePageHeader
+          title="Gestão da Equipe"
+          description="Controle de desempenho e produtividade."
+        />
 
         <UTabs
           v-model="tab"
