@@ -34,7 +34,7 @@ const responsibleName = computed(() =>
 <template>
   <NuxtLink
     :to="ORDER_ROUTES.detail(order.id)"
-    class="block rounded-md border border-default bg-default p-3 shadow-sm transition-[transform,opacity,background-color] duration-150 hover:bg-elevated/50 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+    class="block rounded-lg border border-default bg-default p-3 shadow-sm transition-[transform,opacity,background-color] duration-150 hover:bg-elevated/50 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
     :class="order.overdue ? 'border-error/40 bg-error/5' : ''"
   >
     <div class="flex items-start justify-between gap-2">

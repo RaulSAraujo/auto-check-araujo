@@ -15,7 +15,7 @@ defineProps<{
 
 <template>
   <section
-    class="flex min-h-0 min-w-[16.5rem] flex-1 flex-col rounded-md border border-default bg-elevated/30"
+    class="flex min-h-0 min-w-[16.5rem] flex-1 flex-col rounded-lg border border-default bg-elevated/30"
     :aria-labelledby="`kanban-col-${columnId}`"
   >
     <header class="flex items-center justify-between gap-2 border-b border-default px-3 py-2.5">
@@ -54,7 +54,7 @@ defineProps<{
         <USkeleton
           v-for="n in 3"
           :key="n"
-          class="h-28 w-full rounded-md"
+          class="h-28 w-full rounded-lg"
         />
       </template>
 
