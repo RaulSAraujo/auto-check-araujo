@@ -9,7 +9,7 @@ defineProps<{
 </script>
 
 <template>
-  <div class="overflow-hidden rounded-md border border-default bg-elevated/25">
+  <div class="overflow-hidden rounded-lg border border-default bg-elevated/25">
     <div class="flex flex-wrap items-center gap-3 border-b border-default px-4 py-3">
       <UBadge
         :color="ORDEM_STATUS_COLOR[ordem.status as OrdemStatus]"

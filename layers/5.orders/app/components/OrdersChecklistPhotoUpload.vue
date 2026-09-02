@@ -79,7 +79,7 @@ function openFilePicker() {
       <div
         v-for="photo in photos"
         :key="photo.id"
-        class="relative h-20 w-20 overflow-hidden rounded-md border border-default bg-elevated"
+        class="relative h-20 w-20 overflow-hidden rounded-lg border border-default bg-elevated"
       >
         <img
           :src="photo.url"

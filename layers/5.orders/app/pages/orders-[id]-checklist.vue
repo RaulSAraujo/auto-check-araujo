@@ -12,8 +12,7 @@ import { primaryPhone } from '~~/shared/utils/contact'
 defineOptions({ name: 'OrdersChecklistPage' })
 
 definePageMeta({
-  path: '/ordens/:id/checklist',
-  layout: 'app'
+  path: '/ordens/:id/checklist'
 })
 
 const route = useRoute()
@@ -120,49 +119,45 @@ async function onDownloadChecklistPdf() {
 
 <template>
   <UDashboardPanel>
-    <template #header>
-      <UDashboardNavbar title="Checklist">
-        <template #leading>
-          <UDashboardSidebarToggle />
-        </template>
-        <template #right>
-          <div class="flex flex-wrap items-center gap-2">
-            <OrdersPrintActions
-              v-if="checklist"
-              :print-to="ORDER_ROUTES.checklistPrint(ordemId)"
-              :whatsapp-url="checklistWhatsappUrl"
-              print-label="Imprimir checklist"
-              show-pdf
-              :pdf-loading="downloadingPdf"
-              @download-pdf="onDownloadChecklistPdf"
-            />
-            <UButton
-              :to="ORDER_ROUTES.detail(ordemId)"
-              color="neutral"
-              variant="ghost"
-              label="Voltar à OS"
-              icon="i-lucide-arrow-left"
-            />
-          </div>
-        </template>
-      </UDashboardNavbar>
-      <div class="border-b border-default px-4 py-2 sm:px-6">
-        <UBreadcrumb :items="breadcrumbItems" />
-      </div>
-    </template>
-
     <template #body>
       <div
         v-if="pending && !checklist"
         class="p-6"
       >
-        <USkeleton class="h-64 w-full max-w-3xl" />
+        <BasePageHeader title="Checklist" />
+        <USkeleton class="mt-4 h-64 w-full max-w-3xl" />
       </div>
 
       <div
         v-else-if="checklist"
-        class="p-4 sm:p-6 max-w-3xl"
+        class="p-4 sm:p-6 max-w-3xl space-y-6"
       >
+        <BasePageHeader title="Checklist">
+          <template #below>
+            <UBreadcrumb :items="breadcrumbItems" />
+          </template>
+          <template #actions>
+            <div class="flex flex-wrap items-center gap-2">
+              <OrdersPrintActions
+                v-if="checklist"
+                :print-to="ORDER_ROUTES.checklistPrint(ordemId)"
+                :whatsapp-url="checklistWhatsappUrl"
+                print-label="Imprimir checklist"
+                show-pdf
+                :pdf-loading="downloadingPdf"
+                @download-pdf="onDownloadChecklistPdf"
+              />
+              <UButton
+                :to="ORDER_ROUTES.detail(ordemId)"
+                color="neutral"
+                variant="ghost"
+                label="Voltar à OS"
+                icon="i-lucide-arrow-left"
+              />
+            </div>
+          </template>
+        </BasePageHeader>
+
         <div class="space-y-6 pb-24">
           <div class="flex flex-wrap items-center justify-between gap-3">
             <div>

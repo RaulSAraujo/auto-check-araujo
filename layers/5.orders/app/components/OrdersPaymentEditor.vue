@@ -36,7 +36,7 @@ const emit = defineEmits<{
 
     <div
       v-if="ordem.valor_total == null"
-      class="rounded-md border border-dashed border-default px-4 py-3 text-sm text-muted"
+      class="rounded-lg border border-dashed border-default px-4 py-3 text-sm text-muted"
     >
       Valor total indisponível. Aprove o orçamento para liberar o faturamento.
     </div>
@@ -63,7 +63,7 @@ const emit = defineEmits<{
 
       <div
         v-if="canEdit"
-        class="space-y-3 rounded-md border border-default p-4"
+        class="space-y-3 rounded-lg border border-default p-4"
       >
         <UCheckbox
           v-model="state.pago"

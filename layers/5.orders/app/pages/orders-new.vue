@@ -5,8 +5,7 @@ import { ORDER_ROUTES } from '../utils/order-routes'
 defineOptions({ name: 'OrdersNewPage' })
 
 definePageMeta({
-  path: '/ordens/novo',
-  layout: 'app'
+  path: '/ordens/novo'
 })
 
 const route = useRoute()
@@ -33,25 +32,20 @@ async function onSubmit() {
 
 <template>
   <UDashboardPanel>
-    <template #header>
-      <UDashboardNavbar title="Nova Ordem de Serviço">
-        <template #leading>
-          <UDashboardSidebarToggle />
-        </template>
-        <template #right>
-          <UButton
-            :to="ORDER_ROUTES.list"
-            color="neutral"
-            variant="ghost"
-            label="Voltar"
-            icon="i-lucide-arrow-left"
-          />
-        </template>
-      </UDashboardNavbar>
-    </template>
-
     <template #body>
-      <div class="p-4 sm:p-6 max-w-xl">
+      <div class="p-4 sm:p-6 max-w-xl space-y-4">
+        <BasePageHeader title="Nova Ordem de Serviço">
+          <template #actions>
+            <UButton
+              :to="ORDER_ROUTES.list"
+              color="neutral"
+              variant="ghost"
+              label="Voltar"
+              icon="i-lucide-arrow-left"
+            />
+          </template>
+        </BasePageHeader>
+
         <OrdersNewForm
           v-model="state"
           :veiculo-items="veiculoItems"

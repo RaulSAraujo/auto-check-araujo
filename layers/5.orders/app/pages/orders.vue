@@ -6,8 +6,7 @@ import { ORDEM_STATUS_FILTER_ALL } from '../utils/order-select-items'
 defineOptions({ name: 'OrdersIndexPage' })
 
 definePageMeta({
-  path: '/ordens',
-  layout: 'app'
+  path: '/ordens'
 })
 
 const route = useRoute()
@@ -28,27 +27,21 @@ const { can } = usePermissions()
 
 <template>
   <UDashboardPanel>
-    <template #header>
-      <UDashboardNavbar title="Ordens de Serviço Digitais">
-        <template #leading>
-          <UDashboardSidebarToggle />
-        </template>
-        <template #right>
-          <UButton
-            v-if="can('orders.create')"
-            :to="ORDER_ROUTES.new"
-            icon="i-lucide-plus"
-            label="Nova OS"
-          />
-        </template>
-      </UDashboardNavbar>
-    </template>
-
     <template #body>
       <div class="p-4 sm:p-6 space-y-4">
-        <p class="text-sm text-muted max-w-2xl">
-          Controle completo da operação da oficina.
-        </p>
+        <BasePageHeader
+          title="Ordens de Serviço Digitais"
+          description="Controle completo da operação da oficina."
+        >
+          <template #actions>
+            <UButton
+              v-if="can('orders.create')"
+              :to="ORDER_ROUTES.new"
+              icon="i-lucide-plus"
+              label="Nova OS"
+            />
+          </template>
+        </BasePageHeader>
 
         <div class="flex flex-col sm:flex-row gap-3 max-w-2xl">
           <UInput

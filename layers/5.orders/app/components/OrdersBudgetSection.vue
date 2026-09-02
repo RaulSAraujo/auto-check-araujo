@@ -72,7 +72,7 @@ const draftModel = defineModel<OrderItemDraft>('draft', { required: true })
 
     <div
       v-else
-      class="overflow-x-auto rounded-md border border-default"
+      class="overflow-x-auto rounded-lg border border-default"
     >
       <table class="w-full text-sm">
         <thead class="border-b border-default bg-elevated/50 text-left text-xs uppercase tracking-wide text-muted">
@@ -153,7 +153,7 @@ const draftModel = defineModel<OrderItemDraft>('draft', { required: true })
 
     <div
       v-if="canEditItems"
-      class="overflow-hidden rounded-md border border-default bg-elevated/25 p-4 space-y-3"
+      class="overflow-hidden rounded-lg border border-default bg-elevated/25 p-4 space-y-3"
     >
       <p class="text-sm font-medium text-highlighted">
         Adicionar item

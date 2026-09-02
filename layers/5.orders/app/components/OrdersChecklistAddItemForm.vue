@@ -28,7 +28,7 @@ const categorias = computed(() => {
 </script>
 
 <template>
-  <div class="rounded-md border border-default p-4 space-y-3">
+  <div class="rounded-lg border border-default p-4 space-y-3">
     <p class="text-sm font-medium text-highlighted">
       Adicionar item
     </p>

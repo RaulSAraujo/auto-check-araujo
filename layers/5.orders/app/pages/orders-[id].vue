@@ -11,8 +11,7 @@ import { primaryPhone } from '~~/shared/utils/contact'
 defineOptions({ name: 'OrdersDetailPage' })
 
 definePageMeta({
-  path: '/ordens/:id',
-  layout: 'app'
+  path: '/ordens/:id'
 })
 
 const route = useRoute()
@@ -147,35 +146,31 @@ async function onDownloadBudgetPdf() {
 
 <template>
   <UDashboardPanel>
-    <template #header>
-      <UDashboardNavbar :title="ordem?.numero || 'Ordem de Serviço'">
-        <template #leading>
-          <UDashboardSidebarToggle />
-        </template>
-        <template #right>
-          <UButton
-            :to="ORDER_ROUTES.list"
-            color="neutral"
-            variant="ghost"
-            label="Voltar"
-            icon="i-lucide-arrow-left"
-          />
-        </template>
-      </UDashboardNavbar>
-    </template>
-
     <template #body>
       <div
         v-if="pending && !ordem"
         class="p-6"
       >
-        <USkeleton class="h-48 w-full max-w-2xl" />
+        <BasePageHeader title="Ordem de Serviço" />
+        <USkeleton class="mt-4 h-48 w-full max-w-2xl" />
       </div>
 
       <div
         v-else-if="ordem"
         class="p-4 sm:p-6 space-y-8 max-w-3xl"
       >
+        <BasePageHeader :title="ordem.numero || 'Ordem de Serviço'">
+          <template #actions>
+            <UButton
+              :to="ORDER_ROUTES.list"
+              color="neutral"
+              variant="ghost"
+              label="Voltar"
+              icon="i-lucide-arrow-left"
+            />
+          </template>
+        </BasePageHeader>
+
         <section class="space-y-4">
           <div class="flex items-center justify-between gap-3">
             <h2 class="text-lg font-semibold text-highlighted">
