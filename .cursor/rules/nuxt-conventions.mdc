@@ -103,15 +103,22 @@ Cada layer **deve** declarar `components` com `prefix` no seu `nuxt.config.ts` p
 | `app/` (raiz) | `App` | `<AppDashboardStats />` |
 | `1.base` | `Base` | `<BasePageHeader />` |
 | `2.auth` | `Auth` | `<AuthLoginForm />` |
-| `3.customers` | `Customers` | `<CustomersForm />` |
-| `4.orders` | `Orders` | `<OrdersChecklistItem />` |
-| `5.vehicles` | `Vehicles` | `<VehiclesPlacaInput />` |
+| `3.home` | `Home` | `<HomeOperationalSummary />` |
+| `4.customers` | `Customers` | `<CustomersForm />` |
+| `5.orders` | `Orders` | `<OrdersChecklistItem />` |
+| `6.catalog` | `Catalog` | `<CatalogForm />` |
+| `7.pricing` | `Pricing` | `<PricingForm />` |
+| `8.finance` | `Finance` | `<FinanceTable />` |
+| `9.sales` | `Sales` | `<SalesKpiStrip />` |
+| `10.vehicles` | `Vehicles` | `<VehiclesForm />` |
+| `11.scheduling` | `Scheduling` | `<SchedulingCalendar />` |
+| `12.kanban` | `Kanban` | `<KanbanBoard />` |
 
 ```ts
-// layers/3.customers/nuxt.config.ts
+// layers/4.customers/nuxt.config.ts
 export default defineNuxtConfig({
   $meta: { name: 'customers' },
-  components: [{ path: '~/components', prefix: 'Customers' }]
+  components: [{ path: 'components', pathPrefix: true, prefix: 'Customers' }]
 })
 ```
 

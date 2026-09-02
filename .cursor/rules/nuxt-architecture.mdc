@@ -5,54 +5,60 @@ alwaysApply: true
 
 # Arquitetura — Auto Check Araujo
 
-Projeto Nuxt 4 com **layers locais** em `layers/`. O app raiz (`app/`) contém bootstrap e shell do dashboard; cada domínio tem sua layer.
+Projeto Nuxt 4 com **layers locais** em `layers/`. O app raiz (`app/`) contém bootstrap; cada domínio tem sua layer.
 
 ## Estrutura de layers
 
 ```
 auto-check-araujo/
 ├── app/                          # App raiz (prioridade máxima)
-│   ├── app.vue                   # UApp + NuxtLayout + SEO global
-│   ├── layouts/                  # app.vue (UDashboard), default.vue
-│   ├── pages/index.vue           # Dashboard (agrega domínios)
-│   ├── composables/              # useOficina, useColaboradorNome
-│   └── utils/app-routes.ts       # APP_ROUTES
+│   └── app.vue                   # UApp + NuxtLayout + SEO global
 ├── layers/
-│   ├── 1.base/                   # UI, tema, ESLint, dayjs
-│   ├── 2.auth/                   # Supabase Auth ($meta.name: auth)
-│   ├── 3.customers/              # CRUD clientes ($meta.name: customers)
-│   ├── 4.orders/                 # Ordens + checklist ($meta.name: orders)
-│   └── 5.vehicles/               # CRUD veículos ($meta.name: vehicles)
+│   ├── 1.base/                   # UI, tema, layout app, APP_ROUTES, ESLint, dayjs
+│   ├── 2.auth/                   # Auth + equipe ($meta.name: auth)
+│   ├── 3.home/                   # Dashboard ($meta.name: home)
+│   ├── 4.customers/              # CRUD clientes ($meta.name: customers)
+│   ├── 5.orders/                 # OS, checklist, orçamento ($meta.name: orders)
+│   ├── 6.catalog/                # Catálogo + fornecedores ($meta.name: catalog)
+│   ├── 7.pricing/                # Precificação ($meta.name: pricing)
+│   ├── 8.finance/                # Financeiro ($meta.name: finance)
+│   ├── 9.sales/                  # Vendas ($meta.name: sales)
+│   ├── 10.vehicles/              # CRUD veículos ($meta.name: vehicles)
+│   ├── 11.scheduling/            # Agendamentos ($meta.name: scheduling)
+│   └── 12.kanban/                # Board visual de OS ($meta.name: kanban)
 ├── shared/types/
 │   ├── database.ts               # Schema Supabase
 │   └── oficina.ts                # OrdemStatus, labels, cores
-└── nuxt.config.ts                # runtimeConfig, nuxt-zod, nuxt-charts, @nuxt/content
+└── nuxt.config.ts                # runtimeConfig, nuxt-charts, @nuxt/content
 ```
 
 ### Prioridade de override (maior → menor)
 
 1. `app/` raiz
-2. Layers auto-scanned (`5.vehicles` > `4.orders` > `3.customers` > `2.auth` > `1.base`)
+2. Layers auto-scanned (número maior = prioridade maior; ex.: `11.scheduling` > `5.orders` > `1.base`)
 3. `extends` explícito no `nuxt.config.ts`
 
 ### Onde colocar código novo
 
 | Tipo | Local |
 |------|-------|
-| Auth (login, logout, client tipado) | `layers/2.auth/` |
-| Dashboard, layout app, composables compartilhados | `app/` raiz |
-| Rotas do app (`APP_ROUTES`) | `app/utils/app-routes.ts` |
-| Páginas `/clientes/*` | `layers/3.customers/app/pages/` (`customers.vue`, `customers-new.vue`, …) |
-| Páginas `/ordens/*` | `layers/4.orders/app/pages/` (`orders.vue`, `orders-new.vue`, …) |
-| Páginas `/veiculos/*` | `layers/5.vehicles/app/pages/` (`vehicles.vue`, `vehicles-new.vue`, …) |
-| Composable específico de clientes | `layers/3.customers/app/composables/` |
-| Composable específico de ordens | `layers/4.orders/app/composables/` |
-| Composable específico de veículos | `layers/5.vehicles/app/composables/` |
+| Auth (login, logout, client tipado, equipe) | `layers/2.auth/` |
+| Dashboard / home | `layers/3.home/` |
+| Layout app, tema, `APP_ROUTES` | `layers/1.base/` |
+| Páginas `/clientes/*` | `layers/4.customers/app/pages/` |
+| Páginas `/ordens/*`, `/orcamento/:token` | `layers/5.orders/app/pages/` |
+| Páginas `/catalogo` | `layers/6.catalog/app/pages/` |
+| Páginas `/precificacao` | `layers/7.pricing/app/pages/` |
+| Páginas `/financeiro` | `layers/8.finance/app/pages/` |
+| Páginas `/vendas` | `layers/9.sales/app/pages/` |
+| Páginas `/veiculos/*` | `layers/10.vehicles/app/pages/` |
+| Páginas `/agendamentos` | `layers/11.scheduling/app/pages/` |
+| Páginas `/kanban` | `layers/12.kanban/app/pages/` |
 | Tipo Supabase (schema) | `shared/types/database.ts` |
 | Tipo/constante de domínio | `shared/types/oficina.ts` |
-| Tema, cores, CSS global | `layers/1.base/` (`app/app.config.ts` na raiz para cores) |
+| Formatadores compartilhados | `shared/utils/` |
 
-**Cross-domain links** (ex.: ordem → veículo) usam URLs de `APP_ROUTES` ou paths literais `/ordens`, `/clientes`, `/veiculos` — não importar páginas de outra layer. Rotas em português são declaradas via `definePageMeta({ path })`; ver `nuxt-conventions.mdc`.
+**Cross-domain links** usam URLs de `APP_ROUTES` ou paths literais — não importar páginas de outra layer. Utils/composables de outra layer: import explícito via `#layers/{name}/...`. Rotas em português via `definePageMeta({ path })`; ver `nuxt-conventions.mdc`.
 
 ## Aliases
 
@@ -61,21 +67,35 @@ auto-check-araujo/
 | `~` / `@` | `app/` da layer ou raiz onde o arquivo está |
 | `~~` / `@@` | raiz do projeto |
 | `#layers/auth` | layer `2.auth` |
-| `#layers/customers` | layer `3.customers` |
-| `#layers/orders` | layer `4.orders` |
-| `#layers/vehicles` | layer `5.vehicles` |
+| `#layers/home` | layer `3.home` |
+| `#layers/customers` | layer `4.customers` |
+| `#layers/orders` | layer `5.orders` |
+| `#layers/catalog` | layer `6.catalog` |
+| `#layers/pricing` | layer `7.pricing` |
+| `#layers/finance` | layer `8.finance` |
+| `#layers/sales` | layer `9.sales` |
+| `#layers/vehicles` | layer `10.vehicles` |
+| `#layers/scheduling` | layer `11.scheduling` |
+| `#layers/kanban` | layer `12.kanban` |
 
-Importar tipos cross-layer via `~~/shared/types/...`.
+Importar tipos cross-layer via `~~/shared/types/...`. Paths de arquivo na layer usam `app/` (ex.: `#layers/orders/app/utils/order-routes`).
 
 ## Composables por responsabilidade
 
 | Local | Composables |
 |-------|-------------|
-| `layers/2.auth` | `useAuth`, `useTypedSupabaseClient` |
-| `app/` raiz | `useOficina` (formatPlaca, formatDateTime), `useColaboradorNome` |
-| `layers/3.customers` | composables só de clientes (se necessário) |
-| `layers/4.orders` | composables só de ordens (se necessário) |
-| `layers/5.vehicles` | composables só de veículos (se necessário) |
+| `layers/2.auth` | `useAuth`, `useTypedSupabaseClient`, equipe/HR |
+| `layers/1.base` | `useOficina`, `useColaboradorNome` |
+| `layers/3.home` | dashboard |
+| `layers/4.customers` | clientes |
+| `layers/5.orders` | OS, checklist, orçamento |
+| `layers/6.catalog` | catálogo, fornecedores |
+| `layers/7.pricing` | parâmetros de precificação |
+| `layers/8.finance` | financeiro, contas a pagar |
+| `layers/9.sales` | relatório de vendas |
+| `layers/10.vehicles` | veículos |
+| `layers/11.scheduling` | agendamentos |
+| `layers/12.kanban` | board kanban de OS |
 
 ## Módulos por layer
 
@@ -83,15 +103,13 @@ Importar tipos cross-layer via `~~/shared/types/...`.
 |--------------|---------|
 | `1.base` | `@nuxt/eslint`, `@nuxt/ui`, `dayjs-nuxt` |
 | `2.auth` | `@nuxtjs/supabase` |
-| `3.customers` | — |
-| `4.orders` | — |
-| `5.vehicles` | — |
-| raiz | `@nuxt/content`, `nuxt-zod`, `nuxt-charts`, `devtools`, `runtimeConfig` |
+| demais domains | — |
+| raiz | `@nuxt/content`, `nuxt-charts`, `devtools`, `runtimeConfig` |
 
 ## Nuxt UI v4
 
 - `UApp` em `app.vue` raiz
-- Layout `app` com `UDashboardGroup` + `UDashboardSidebar`
+- Layout `app` com `UDashboardGroup` + `UDashboardSidebar` (`layers/1.base`)
 - `definePageMeta({ layout: 'app' })` em todas as páginas autenticadas do dashboard
 - Status de ordem: `ORDEM_STATUS_COLOR` / `ORDEM_STATUS_LABEL` de `shared/types/oficina.ts`
 
@@ -100,5 +118,5 @@ Importar tipos cross-layer via `~~/shared/types/...`.
 - [ ] `npx nuxt prepare` sem erros
 - [ ] `npx nuxt typecheck` passa
 - [ ] Página nova na layer do domínio correto
-- [ ] Sem import de componentes/páginas entre layers de domínio
+- [ ] Sem import de páginas entre layers de domínio
 - [ ] Páginas autenticadas usam `layout: 'app'`
