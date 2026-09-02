@@ -4,21 +4,22 @@ useHead({
     { name: 'viewport', content: 'width=device-width, initial-scale=1' }
   ],
   link: [
-    { rel: 'icon', href: '/favicon.ico' }
+    { rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' }
   ],
   htmlAttrs: {
     lang: 'pt-BR'
   }
 })
 
-const title = 'Auto Check Araujo'
-const description = 'Sistema interno da oficina — clientes e veículos.'
+const title = BRAND_DISPLAY_NAME
+const description = 'Sistema interno da oficina: clientes, veículos e ordens de serviço.'
 
 useSeoMeta({
   title,
   description,
   ogTitle: title,
-  ogDescription: description
+  ogDescription: description,
+  ogImage: BRAND.logoSrc
 })
 </script>
 

@@ -1,9 +1,12 @@
+import { EMPTY_VALUE } from '~~/shared/utils/empty'
+
 export {
   CHECKLIST_RESULTADO_LABEL,
   ORDEM_STATUS_COLOR,
   ORDEM_STATUS_LABEL
 } from '~~/shared/types/oficina'
 export type { ChecklistResultado, OrdemStatus } from '~~/shared/types/oficina'
+export { EMPTY_VALUE } from '~~/shared/utils/empty'
 
 /** Normaliza placa para 7 caracteres alfanuméricos em maiúsculas. */
 export function normalizePlaca(placa: string): string {
@@ -19,7 +22,7 @@ export function formatPlaca(placa: string): string {
 }
 
 export function formatDateTime(value: string | null | undefined) {
-  if (!value) return '—'
+  if (!value) return EMPTY_VALUE
   return new Intl.DateTimeFormat('pt-BR', {
     dateStyle: 'short',
     timeStyle: 'short'

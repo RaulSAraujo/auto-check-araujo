@@ -29,6 +29,16 @@ const items = computed<NavigationMenuItem[]>(() => {
       to: APP_ROUTES.orders
     },
     {
+      label: 'Kanban',
+      icon: 'i-lucide-columns-3',
+      to: APP_ROUTES.kanban
+    },
+    {
+      label: 'Agendamentos',
+      icon: 'i-lucide-calendar-days',
+      to: APP_ROUTES.scheduling
+    },
+    {
       label: 'Clientes',
       icon: 'i-lucide-users',
       to: APP_ROUTES.customers
@@ -42,9 +52,30 @@ const items = computed<NavigationMenuItem[]>(() => {
 
   if (can('finance.view')) {
     navigation.push({
-      label: 'Financeiro',
-      icon: 'i-lucide-banknote',
-      to: APP_ROUTES.finance
+      label: 'Vendas',
+      icon: 'i-lucide-trending-up',
+      to: APP_ROUTES.sales
+    })
+  }
+
+  if (can('catalog.manage')) {
+    navigation.push({
+      label: 'Serviços e Peças',
+      icon: 'i-lucide-package',
+      to: APP_ROUTES.catalog
+    })
+    navigation.push({
+      label: 'Precificação',
+      icon: 'i-lucide-calculator',
+      to: APP_ROUTES.pricing
+    })
+  }
+
+  if (can('collaborators.manage')) {
+    navigation.push({
+      label: 'Equipe',
+      icon: 'i-lucide-user-cog',
+      to: APP_ROUTES.team
     })
   }
 
@@ -60,24 +91,26 @@ const items = computed<NavigationMenuItem[]>(() => {
     <UDashboardSidebar
       collapsible
       resizable
-      class="bg-elevated/25"
-      :ui="{ footer: 'border-t border-default' }"
+      class="bg-default"
+      :ui="{
+        root: 'border-e border-default',
+        footer: 'border-t border-default gap-3'
+      }"
     >
       <template #header="{ collapsed }">
         <NuxtLink
           :to="APP_ROUTES.home"
-          class="flex items-center gap-2 min-w-0"
+          class="min-w-0"
         >
-          <UIcon
-            name="i-lucide-wrench"
-            class="size-5 text-primary shrink-0"
+          <BaseBrandLogo
+            v-if="collapsed"
+            variant="icon"
+            size="sm"
           />
-          <span
-            v-if="!collapsed"
-            class="font-semibold text-highlighted truncate"
-          >
-            Auto Check Araujo
-          </span>
+          <BaseBrandLogo
+            v-else
+            size="sm"
+          />
         </NuxtLink>
       </template>
 
@@ -86,18 +119,35 @@ const items = computed<NavigationMenuItem[]>(() => {
           :collapsed="collapsed"
           :items="items"
           orientation="vertical"
+          highlight
+          highlight-color="primary"
+          :ui="{
+            link: 'before:rounded-md',
+            linkLeadingIcon: 'size-4.5'
+          }"
         />
       </template>
 
       <template #footer="{ collapsed }">
-        <div class="flex flex-col gap-1 w-full">
+        <div class="flex w-full flex-col gap-3">
+          <UButton
+            v-if="can('orders.create')"
+            :to="APP_ROUTES.ordersNew"
+            icon="i-lucide-plus"
+            :label="collapsed ? undefined : 'Nova OS'"
+            :block="collapsed"
+            class="justify-center"
+            :class="collapsed ? undefined : 'w-full'"
+          />
+
           <div
             v-if="!collapsed"
-            class="px-2 py-1 text-xs text-muted truncate"
+            class="px-1 text-xs text-muted truncate"
           >
             {{ profileNome }}
             <span class="text-dimmed">· {{ COLABORADOR_PAPEL_LABEL[papel] }}</span>
           </div>
+
           <div class="flex items-center gap-1">
             <UColorModeButton />
             <UButton
