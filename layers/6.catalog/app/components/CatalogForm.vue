@@ -141,7 +141,7 @@ function removeKitLine(index: number) {
 
       <div
         v-if="showKitBuilder"
-        class="space-y-2 rounded-md border border-default p-3"
+        class="space-y-2 rounded-lg border border-default p-3"
       >
         <div class="flex items-center justify-between gap-2">
           <p class="text-xs font-semibold uppercase tracking-wide text-muted">

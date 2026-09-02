@@ -9,8 +9,7 @@ import { emptyChecklistItemDraft } from '#layers/orders/app/utils/checklist'
 defineOptions({ name: 'CatalogIndexPage' })
 
 definePageMeta({
-  path: '/catalogo',
-  layout: 'app'
+  path: '/catalogo'
 })
 
 useRequirePermission('catalog.manage')
@@ -194,19 +193,12 @@ async function onChecklistToggleAtivo(payload: { id: string, ativo: boolean }) {
 
 <template>
   <UDashboardPanel>
-    <template #header>
-      <UDashboardNavbar title="Cadastro de Serviços e Peças">
-        <template #leading>
-          <UDashboardSidebarToggle />
-        </template>
-      </UDashboardNavbar>
-    </template>
-
     <template #body>
       <div class="p-4 sm:p-6 space-y-6 max-w-6xl">
-        <p class="text-sm text-muted max-w-2xl">
-          Base completa para acelerar os orçamentos.
-        </p>
+        <BasePageHeader
+          title="Cadastro de Serviços e Peças"
+          description="Base completa para acelerar os orçamentos."
+        />
 
         <UTabs
           v-model="tab"
