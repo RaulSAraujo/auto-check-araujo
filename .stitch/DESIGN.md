@@ -120,12 +120,12 @@ Hierarquia (espelha light: canvas atrás, painel na frente):
 ## 5. Component Stylings
 
 ### Buttons
-- Primary: Araujo Blue, radius 6px (`--ui-radius: 0.375rem`)
+- Primary: Araujo Blue, radius 8px (`--ui-radius: 0.5rem`) — balanced, not boxy nor pill
 - Active: `scale(0.98)`; hover sem glow
 - Icon-only: `aria-label` obrigatório (ex.: “Mostrar senha” / “Ocultar senha”)
 
 ### Panels
-- `rounded-[6px] border border-default bg-default shadow-sm dark:shadow-none`
+- `rounded-lg border border-default bg-default shadow-sm dark:shadow-none`
 - Listas densas: `divide-y divide-default`
 - Só quando agrupa dados/interação
 
@@ -137,8 +137,11 @@ Hierarquia (espelha light: canvas atrás, painel na frente):
 - Login placeholders Stitch: `j.silva` / `••••••••` (sem prefixo “ex.:” se o mock não tiver)
 
 ### Navigation
-- Logo / marca na sidebar; item ativo `primary/10` + texto primary
-- CTA “Nova OS” no footer; nome · papel · Sair · color mode
+- Shell: layout `default` + `BaseAppHeader` com `UNavigationMenu` (`variant="link"`, pill `bg-muted/80 backdrop-blur-sm rounded-full`)
+- Categorias via `children`: **Início** | **Operação** | **Cadastros** | **Gestão**
+- Trailing: `UColorModeButton` + avatar (`Sair`)
+- Sem sidebar; sem `UDashboardGroup` / `UDashboardSidebar` — só header pill flutuante
+- Conteúdo do layout `default` com `pt-20 sm:pt-24` sob o header fixo
 
 ### Loaders / Empty
 - Skeleton shimmer (não spinner como padrão)
@@ -156,7 +159,7 @@ Hierarquia (espelha light: canvas atrás, painel na frente):
 - Sempre `colorMode: 'light'`
 
 ### Início `/` (Stitch `…/screens/b2aa12536086403799553cbf63697570`)
-- Shell = `layout: 'app'` (sidebar existente)
+- Shell = layout `default` (`BaseAppHeader` + slot da página)
 - Body `bg-muted`, conteúdo `max-w-5xl space-y-8`
 1. **Ordens:** label + “Ver todas”; linhas label← →número+chevron (Abertas=`text-primary`, Em andamento=`text-warning`)
 2. **Cadastro:** 2 colunas centralizadas, números `text-4xl` mono
@@ -168,7 +171,8 @@ Hierarquia (espelha light: canvas atrás, painel na frente):
 
 ## 7. Layout Principles
 
-- Shell: `UDashboardGroup` + sidebar + `UDashboardPanel`
+- Shell: único layout `default` + **header pill flutuante** (`BaseAppHeader`); título da página via `BasePageHeader` no body
+- Sem sidebar / `UDashboardGroup` / `UDashboardNavbar` no shell
 - `min-h-dvh` — nunca `h-screen`
 - Collapse single-column abaixo de 768px
 - Sem grid de 3 cards iguais decorativos
@@ -189,9 +193,11 @@ Hierarquia (espelha light: canvas atrás, painel na frente):
 
 - Spring: stiffness 100, damping 20 (quando Motion Vue)
 - Só `transform` + `opacity`; nunca `transition: all`
+- Tokens: `--ease-out`, `--ease-in-out`, `--duration-press` / `--duration-ui` / `--duration-nav` em `main.css`
 - `prefers-reduced-motion: reduce` desliga loops e stagger
 - Login: rise + pulse + press
 - Home: section stagger + row press + KPI hover scale
+- Header pill: indicador ativo desliza entre links; press em links/ícones
 
 ---
 
@@ -233,7 +239,7 @@ Score alvo 10/10 — Don’t Make Me Think. Trunk test em toda página autentica
 | neutral | `workshop` ← surface `#fcf9f8` / on_surface `#1c1b1b` |
 | success | `ok` / `#16a34a` |
 | warning | `caution` / `#b45e00` (400 = `#d97706` Pendente) |
-| radius | `--ui-radius: 0.375rem` |
+| radius | `--ui-radius: 0.5rem` (8px / ROUND_EIGHT) |
 | sans / mono | Public Sans / JetBrains Mono |
 | tokens JS | `STITCH_COLORS` em `layers/1.base/app/utils/brand.ts` |
 | tokens CSS | `--stitch-*` + escalas em `main.css` |

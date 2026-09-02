@@ -13,6 +13,7 @@ Mapa de telas para geração no Stitch. Todas seguem `.stitch/DESIGN.md`.
 
 | # | Tela | Path | Objetivo UX |
 |---|------|------|-------------|
+| 0 | Shell (header pill) | — | Pill flutuante central; sem sidebar |
 | 1 | Login | `/login` | Brand-first; um CTA “Entrar”; zero fluff |
 | 2 | Início | `/` | KPIs escaneáveis; um destino óbvio por linha |
 | 3 | Ordens | `/ordens` | Lista densa + filtros + “Nova OS” |
@@ -25,6 +26,22 @@ Mapa de telas para geração no Stitch. Todas seguem `.stitch/DESIGN.md`.
 | 10 | Controle de Vendas | `/vendas` | Ticket médio, faturamento, comissão; filtros período/colaborador |
 | 11 | Precificação | `/precificacao` | Parâmetros de mão de obra e peças; sugestão de preço |
 | 12 | Gestão da Equipe | `/equipe` | Desempenho e produtividade; abas Colaboradores → Ocorrências |
+
+---
+
+## 0. Shell — Header pill flutuante — código Nuxt
+
+**Referência visual:** pill central glass (`rounded-full`, blur, borda whisper) — ativo em mini-pill interna + texto bold.
+
+**Shell (obrigatório):**
+- Header fixo centralizado no topo — **sem** sidebar e **sem** TopAppBar sticky full-width
+- Pill: links principais + “Mais” + lua/sol + avatar (Nova OS / Sair)
+- Mobile: Menu → slideover
+- Título da página **inline no body** (H1 + descrição muted)
+
+**Main:** canvas muted; painéis `rounded-lg`; offset no layout `default`: `pt-20 sm:pt-24` sob o header fixo.
+
+**Implementação Nuxt:** único layout `default.vue` em `layers/1.base` com `BaseAppHeader`; título de página em `BasePageHeader`. Sem `UDashboardGroup` / sidebar.
 
 ---
 
@@ -61,7 +78,7 @@ Mapa de telas para geração no Stitch. Todas seguem `.stitch/DESIGN.md`.
 2. **Cadastro** — painel 2 colunas centralizadas: Clientes | Veículos (números `text-4xl` mono)
 3. **Financeiro** — “Detalhes →”; faixa 3 colunas: Faturamento / Recebido (`#16a34a`) / Pendente (`#d97706`)
 
-**Painel:** branco, borda `#E5E5E5`, radius 6px, sombra suave.
+**Painel:** branco, borda `#E5E5E5`, radius 8px (`rounded-lg`), sombra suave.
 
 **Motion:** stagger das seções (60ms); hover scale leve nos números de OS; `prefers-reduced-motion`.
 
@@ -314,7 +331,7 @@ Cada card (painel com borda Whisper, não decorativo):
 ```
 Desktop dashboard for Araujo Auto Center workshop OS system (Portuguese UI).
 Follow the project Design System exactly: Public Sans, Araujo Blue #1B7ACE primary,
-workshop neutrals #FAFAFA/#171717, 6px radius, no purple, no Inter, no 3 equal feature cards,
+workshop neutrals #FAFAFA/#171717, 8px radius (rounded-lg), no purple, no Inter, no 3 equal feature cards,
 no emojis, no AI marketing copy. Dense practical software UI. Sidebar + main panel.
 ```
 
