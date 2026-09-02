@@ -1,5 +1,4 @@
 import type { OrderDetail } from '../types/orders'
-import type { FormaPagamento } from '~~/shared/types/oficina'
 import type { PaymentFormState } from '../utils/payment'
 import { emptyPaymentForm, paymentFormFromOrder } from '../utils/payment'
 

@@ -1,12 +1,13 @@
 <script setup lang="ts">
 import type { TableColumn } from '@nuxt/ui'
-import type { FinanceOrderRow } from '../utils/payment'
+import type { FinanceOrderRow } from '../utils/finance'
 import type { FormaPagamento } from '~~/shared/types/oficina'
 import { FORMA_PAGAMENTO_LABEL } from '~~/shared/types/oficina'
-import { formatMoney } from '../utils/budget'
-import { ORDER_ROUTES } from '../utils/order-routes'
+import { formatMoney } from '~~/shared/utils/money'
+import { ORDER_ROUTES } from '#layers/orders/app/utils/order-routes'
+import { EMPTY_VALUE } from '~~/shared/utils/empty'
 
-defineOptions({ name: 'OrdersFinanceTable' })
+defineOptions({ name: 'FinanceTable' })
 
 defineProps<{
   orders: FinanceOrderRow[]
@@ -23,7 +24,7 @@ const columns: TableColumn<FinanceOrderRow>[] = [
 ]
 
 function paymentLabel(forma: string | null): string {
-  if (!forma) return '—'
+  if (!forma) return EMPTY_VALUE
   return FORMA_PAGAMENTO_LABEL[forma as FormaPagamento] || forma
 }
 </script>
@@ -38,7 +39,7 @@ function paymentLabel(forma: string | null): string {
     <template #numero-cell="{ row }">
       <NuxtLink
         :to="ORDER_ROUTES.detail(row.original.id)"
-        class="font-medium text-primary hover:underline"
+        class="font-mono font-medium tabular-nums text-primary hover:underline"
       >
         {{ row.original.numero }}
       </NuxtLink>
@@ -46,17 +47,19 @@ function paymentLabel(forma: string | null): string {
 
     <template #placa-cell="{ row }">
       <span class="font-mono tracking-wide">
-        {{ row.original.veiculos ? formatPlaca(row.original.veiculos.placa) : '—' }}
+        {{ row.original.veiculos ? formatPlaca(row.original.veiculos.placa) : EMPTY_VALUE }}
       </span>
     </template>
 
     <template #concluida_em-cell="{ row }">
-      {{ row.original.concluida_em ? formatDateTime(row.original.concluida_em) : '—' }}
+      <span class="font-mono tabular-nums">
+        {{ row.original.concluida_em ? formatDateTime(row.original.concluida_em) : EMPTY_VALUE }}
+      </span>
     </template>
 
     <template #valor_total-cell="{ row }">
-      <span class="tabular-nums">
-        {{ row.original.valor_total != null ? formatMoney(Number(row.original.valor_total)) : '—' }}
+      <span class="font-mono tabular-nums">
+        {{ row.original.valor_total != null ? formatMoney(Number(row.original.valor_total)) : EMPTY_VALUE }}
       </span>
     </template>
 
@@ -90,9 +93,9 @@ function paymentLabel(forma: string | null): string {
     </template>
 
     <template #empty>
-      <div class="text-center py-8 text-muted">
+      <BaseEmptyState icon="i-lucide-wallet">
         Nenhuma OS concluída com valor neste mês.
-      </div>
+      </BaseEmptyState>
     </template>
   </UTable>
 </template>
