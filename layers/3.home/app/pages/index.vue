@@ -1,10 +1,6 @@
 <script setup lang="ts">
 defineOptions({ name: 'HomeIndexPage' })
 
-definePageMeta({
-  layout: 'app'
-})
-
 useSeoMeta({
   title: 'Início',
   description: 'Resumo operacional da oficina.'
@@ -24,16 +20,13 @@ const { data: financeSummary, pending: pendingFinance } = await useFinanceSummar
 
 <template>
   <UDashboardPanel>
-    <template #header>
-      <UDashboardNavbar title="Início">
-        <template #leading>
-          <UDashboardSidebarToggle />
-        </template>
-      </UDashboardNavbar>
-    </template>
-
     <template #body>
-      <div class="bg-muted p-4 sm:p-6">
+      <div class="bg-muted p-4 sm:p-6 space-y-6">
+        <BasePageHeader
+          title="Início"
+          description="Resumo operacional da oficina."
+        />
+
         <HomeOperationalSummary
           :pending="pending"
           :os-abertas="osAbertas"

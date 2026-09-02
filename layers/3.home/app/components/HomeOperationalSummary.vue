@@ -42,7 +42,7 @@ defineProps<{
         />
       </div>
 
-      <ul class="home-summary__panel divide-y divide-default overflow-hidden rounded-[6px] border border-default bg-default shadow-sm dark:border-accented dark:bg-elevated dark:shadow-none">
+      <ul class="home-summary__panel divide-y divide-default overflow-hidden rounded-lg border border-default bg-default shadow-sm dark:border-accented dark:bg-elevated dark:shadow-none">
         <li>
           <NuxtLink
             :to="`${APP_ROUTES.orders}?status=aberta`"
@@ -110,7 +110,7 @@ defineProps<{
         Cadastro
       </h2>
 
-      <dl class="home-summary__panel grid overflow-hidden rounded-[6px] border border-default bg-default shadow-sm dark:border-accented dark:bg-elevated dark:shadow-none sm:grid-cols-2 sm:divide-x sm:divide-default">
+      <dl class="home-summary__panel grid overflow-hidden rounded-lg border border-default bg-default shadow-sm dark:border-accented dark:bg-elevated dark:shadow-none sm:grid-cols-2 sm:divide-x sm:divide-default">
         <NuxtLink
           :to="APP_ROUTES.customers"
           class="flex flex-col items-center justify-center px-4 py-6 text-center transition-colors hover:bg-elevated/60"
@@ -173,7 +173,7 @@ defineProps<{
         />
       </div>
 
-      <div class="home-summary__panel grid overflow-hidden rounded-[6px] border border-default bg-default shadow-sm dark:border-accented dark:bg-elevated dark:shadow-none sm:grid-cols-3 sm:divide-x sm:divide-default">
+      <div class="home-summary__panel grid overflow-hidden rounded-lg border border-default bg-default shadow-sm dark:border-accented dark:bg-elevated dark:shadow-none sm:grid-cols-3 sm:divide-x sm:divide-default">
         <div class="px-5 py-5 transition-colors hover:bg-elevated/60">
           <p class="mb-2 text-xs font-medium uppercase tracking-wide text-muted">
             Faturamento
