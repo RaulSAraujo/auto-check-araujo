@@ -8,8 +8,7 @@ import {
 defineOptions({ name: 'PricingIndexPage' })
 
 definePageMeta({
-  path: '/precificacao',
-  layout: 'app'
+  path: '/precificacao'
 })
 
 useRequirePermission('catalog.manage')
@@ -43,37 +42,31 @@ async function onSave() {
 
 <template>
   <UDashboardPanel>
-    <template #header>
-      <UDashboardNavbar title="Precificação">
-        <template #leading>
-          <UDashboardSidebarToggle />
-        </template>
-        <template #right>
-          <UButton
-            icon="i-lucide-refresh-cw"
-            color="neutral"
-            variant="ghost"
-            aria-label="Atualizar parâmetros"
-            :loading="pending"
-            @click="refresh()"
-          />
-          <UButton
-            icon="i-lucide-save"
-            label="Salvar parâmetros"
-            :loading="saving"
-            :disabled="!hydrated || !isPricingDraftValid(draft)"
-            class="hidden sm:inline-flex"
-            @click="onSave"
-          />
-        </template>
-      </UDashboardNavbar>
-    </template>
-
     <template #body>
       <div class="mx-auto max-w-4xl space-y-6 p-4 sm:p-6">
-        <p class="text-sm text-muted">
-          Parâmetros de mão de obra e peças para orçamentos.
-        </p>
+        <BasePageHeader
+          title="Precificação"
+          description="Parâmetros de mão de obra e peças para orçamentos."
+        >
+          <template #actions>
+            <UButton
+              icon="i-lucide-refresh-cw"
+              color="neutral"
+              variant="ghost"
+              aria-label="Atualizar parâmetros"
+              :loading="pending"
+              @click="refresh()"
+            />
+            <UButton
+              icon="i-lucide-save"
+              label="Salvar parâmetros"
+              :loading="saving"
+              :disabled="!hydrated || !isPricingDraftValid(draft)"
+              class="hidden sm:inline-flex"
+              @click="onSave"
+            />
+          </template>
+        </BasePageHeader>
 
         <UAlert
           v-if="error"

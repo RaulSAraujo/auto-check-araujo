@@ -105,7 +105,7 @@ const creditCharge = computed(() =>
         </UFormField>
       </div>
 
-      <div class="mt-4 rounded-md border border-primary/20 bg-primary/5 px-4 py-3">
+      <div class="mt-4 rounded-lg border border-primary/20 bg-primary/5 px-4 py-3">
         <div class="flex flex-col gap-1 sm:flex-row sm:items-end sm:justify-between">
           <div>
             <p class="text-sm font-medium text-highlighted">
@@ -156,7 +156,7 @@ const creditCharge = computed(() =>
         </UFormField>
       </div>
 
-      <div class="mt-4 rounded-md border border-default bg-elevated/50 px-4 py-3">
+      <div class="mt-4 rounded-lg border border-default bg-elevated/50 px-4 py-3">
         <p class="font-mono text-sm tabular-nums text-muted">
           Custo {{ formatMoney(PRICING_EXAMPLE_PART_COST) }}
           → Preço sugerido
@@ -217,7 +217,7 @@ const creditCharge = computed(() =>
         </UFormField>
       </div>
 
-      <div class="mt-4 space-y-2 rounded-md border border-default bg-elevated/50 px-4 py-3 text-sm">
+      <div class="mt-4 space-y-2 rounded-lg border border-default bg-elevated/50 px-4 py-3 text-sm">
         <p class="font-mono tabular-nums text-muted">
           Venda {{ formatMoney(PRICING_EXAMPLE_SALE) }}
           → líquido débito
