@@ -9,8 +9,8 @@ defineProps<{
 </script>
 
 <template>
-  <section class="space-y-4">
-    <div class="flex flex-wrap items-center gap-3">
+  <div class="overflow-hidden rounded-md border border-default bg-elevated/25">
+    <div class="flex flex-wrap items-center gap-3 border-b border-default px-4 py-3">
       <UBadge
         :color="ORDEM_STATUS_COLOR[ordem.status as OrdemStatus]"
         variant="subtle"
@@ -18,77 +18,88 @@ defineProps<{
       >
         {{ ORDEM_STATUS_LABEL[ordem.status as OrdemStatus] }}
       </UBadge>
-      <span class="text-sm text-muted">
+      <span class="font-mono text-sm tabular-nums text-muted">
         Aberta em {{ formatDateTime(ordem.aberta_em) }}
       </span>
     </div>
 
-    <div class="grid gap-3 text-sm">
-      <div>
-        <p class="text-muted">
+    <dl class="grid gap-px bg-default sm:grid-cols-2">
+      <div class="bg-elevated/25 px-4 py-3">
+        <dt class="text-sm text-muted">
           Veículo
-        </p>
-        <NuxtLink
-          v-if="ordem.veiculos"
-          :to="`/veiculos/${ordem.veiculos.id}`"
-          class="font-mono text-primary hover:underline"
-        >
-          {{ formatPlaca(ordem.veiculos.placa) }}
-        </NuxtLink>
-        <p
-          v-if="ordem.veiculos"
-          class="text-muted"
-        >
-          {{ [ordem.veiculos.marca, ordem.veiculos.modelo].filter(Boolean).join(' ') || '—' }}
-          <template v-if="ordem.veiculos.clientes">
-            ·
-            <NuxtLink
-              :to="`/clientes/${ordem.veiculos.clientes.id}`"
-              class="text-primary hover:underline"
-            >
-              {{ ordem.veiculos.clientes.nome }}
-            </NuxtLink>
-          </template>
-        </p>
+        </dt>
+        <dd class="mt-1">
+          <NuxtLink
+            v-if="ordem.veiculos"
+            :to="`/veiculos/${ordem.veiculos.id}`"
+            class="font-mono text-primary hover:underline"
+          >
+            {{ formatPlaca(ordem.veiculos.placa) }}
+          </NuxtLink>
+          <p
+            v-if="ordem.veiculos"
+            class="mt-0.5 text-sm text-muted"
+          >
+            {{ [ordem.veiculos.marca, ordem.veiculos.modelo].filter(Boolean).join(' ') || EMPTY_VALUE }}
+            <template v-if="ordem.veiculos.clientes">
+              ·
+              <NuxtLink
+                :to="`/clientes/${ordem.veiculos.clientes.id}`"
+                class="text-primary hover:underline"
+              >
+                {{ ordem.veiculos.clientes.nome }}
+              </NuxtLink>
+            </template>
+          </p>
+        </dd>
       </div>
 
-      <div>
-        <p class="text-muted">
+      <div class="bg-elevated/25 px-4 py-3">
+        <dt class="text-sm text-muted">
           Aberta por
-        </p>
-        <p class="text-highlighted">
-          {{ ordem.profiles?.nome || '—' }}
-        </p>
+        </dt>
+        <dd class="mt-1 text-highlighted">
+          {{ ordem.profiles?.nome || EMPTY_VALUE }}
+        </dd>
       </div>
 
       <template v-if="!hideFields">
-        <div v-if="ordem.km_entrada != null">
-          <p class="text-muted">
+        <div
+          v-if="ordem.km_entrada != null"
+          class="bg-elevated/25 px-4 py-3"
+        >
+          <dt class="text-sm text-muted">
             Km de entrada
-          </p>
-          <p class="text-highlighted">
+          </dt>
+          <dd class="mt-1 font-mono tabular-nums text-highlighted">
             {{ ordem.km_entrada.toLocaleString('pt-BR') }}
-          </p>
+          </dd>
         </div>
 
-        <div>
-          <p class="text-muted">
+        <div
+          class="bg-elevated/25 px-4 py-3"
+          :class="ordem.km_entrada != null ? 'sm:col-span-2' : 'sm:col-span-2'"
+        >
+          <dt class="text-sm text-muted">
             Reclamação
-          </p>
-          <p class="text-highlighted whitespace-pre-wrap">
-            {{ ordem.reclamacao || '—' }}
-          </p>
+          </dt>
+          <dd class="mt-1 whitespace-pre-wrap text-highlighted">
+            {{ ordem.reclamacao || EMPTY_VALUE }}
+          </dd>
         </div>
 
-        <div v-if="ordem.observacoes">
-          <p class="text-muted">
+        <div
+          v-if="ordem.observacoes"
+          class="bg-elevated/25 px-4 py-3 sm:col-span-2"
+        >
+          <dt class="text-sm text-muted">
             Observações
-          </p>
-          <p class="text-highlighted whitespace-pre-wrap">
+          </dt>
+          <dd class="mt-1 whitespace-pre-wrap text-highlighted">
             {{ ordem.observacoes }}
-          </p>
+          </dd>
         </div>
       </template>
-    </div>
-  </section>
+    </dl>
+  </div>
 </template>

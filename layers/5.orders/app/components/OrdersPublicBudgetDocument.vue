@@ -1,20 +1,21 @@
 <script setup lang="ts">
-import type { OrdemItem } from '~~/shared/types/database'
-import type { OrderDetail } from '../types/orders'
 import type { OrcamentoStatus } from '~~/shared/types/oficina'
+import type { PublicBudget } from '../composables/usePublicBudget'
 import { ORCAMENTO_STATUS_LABEL, ORDEM_ITEM_TIPO_LABEL } from '~~/shared/types/oficina'
-import { calcItemSubtotal, calcItemsTotal, formatMoney } from '../utils/budget'
+import { calcItemSubtotal, formatMoney } from '../utils/budget'
 import { WORKSHOP_NAME } from '../utils/print'
 
-defineOptions({ name: 'OrdersBudgetPrintDocument' })
+defineOptions({ name: 'OrdersPublicBudgetDocument' })
 
 const props = defineProps<{
-  ordem: OrderDetail
-  items: OrdemItem[]
-  budgetStatus: OrcamentoStatus
+  budget: PublicBudget
 }>()
 
-const total = computed(() => calcItemsTotal(props.items))
+const budgetStatus = computed(
+  () => props.budget.orcamento_status as OrcamentoStatus
+)
+
+const total = computed(() => Number(props.budget.valor_total || 0))
 </script>
 
 <template>
@@ -25,11 +26,11 @@ const total = computed(() => calcItemsTotal(props.items))
           {{ WORKSHOP_NAME }}
         </p>
         <p class="print-subtitle">
-          Orçamento - {{ ordem.numero }}
+          Orçamento - {{ budget.numero }}
         </p>
       </div>
       <div class="text-right text-sm">
-        <p>{{ formatDateTime(ordem.aberta_em) }}</p>
+        <p>{{ formatDateTime(budget.aberta_em) }}</p>
         <p class="text-muted mt-1">
           {{ ORCAMENTO_STATUS_LABEL[budgetStatus] }}
         </p>
@@ -39,33 +40,30 @@ const total = computed(() => calcItemsTotal(props.items))
     <dl class="print-meta-grid">
       <div>
         <dt>Cliente</dt>
-        <dd>{{ ordem.veiculos?.clientes?.nome || '-' }}</dd>
+        <dd>{{ budget.cliente.nome }}</dd>
       </div>
       <div>
         <dt>Veículo</dt>
-        <dd>
-          <span v-if="ordem.veiculos">{{ formatPlaca(ordem.veiculos.placa) }}</span>
-          <span v-else>-</span>
-        </dd>
+        <dd>{{ formatPlaca(budget.veiculo.placa) }}</dd>
       </div>
       <div>
         <dt>Modelo</dt>
         <dd>
-          {{ [ordem.veiculos?.marca, ordem.veiculos?.modelo].filter(Boolean).join(' ') || '-' }}
+          {{ [budget.veiculo.marca, budget.veiculo.modelo].filter(Boolean).join(' ') || '-' }}
         </dd>
       </div>
       <div>
         <dt>Km de entrada</dt>
-        <dd>{{ ordem.km_entrada?.toLocaleString('pt-BR') ?? '-' }}</dd>
+        <dd>{{ budget.km_entrada?.toLocaleString('pt-BR') ?? '-' }}</dd>
       </div>
     </dl>
 
-    <div v-if="ordem.reclamacao">
+    <div v-if="budget.reclamacao">
       <p class="print-section-title">
         Reclamação
       </p>
       <p class="text-sm whitespace-pre-wrap">
-        {{ ordem.reclamacao }}
+        {{ budget.reclamacao }}
       </p>
     </div>
 
@@ -74,7 +72,7 @@ const total = computed(() => calcItemsTotal(props.items))
     </p>
 
     <table
-      v-if="items.length > 0"
+      v-if="budget.itens.length > 0"
       class="print-table"
     >
       <thead>
@@ -94,7 +92,7 @@ const total = computed(() => calcItemsTotal(props.items))
       </thead>
       <tbody>
         <tr
-          v-for="item in items"
+          v-for="item in budget.itens"
           :key="item.id"
         >
           <td>{{ ORDEM_ITEM_TIPO_LABEL[item.tipo as keyof typeof ORDEM_ITEM_TIPO_LABEL] }}</td>

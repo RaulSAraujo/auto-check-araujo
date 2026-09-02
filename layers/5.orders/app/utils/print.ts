@@ -1,4 +1,4 @@
-export const WORKSHOP_NAME = 'Auto Check Araujo'
+export const WORKSHOP_NAME = BRAND.businessName
 
 export function normalizePhoneForWhatsApp(telefone: string | null | undefined): string | null {
   if (!telefone) return null

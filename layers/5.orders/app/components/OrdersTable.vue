@@ -22,7 +22,7 @@ defineProps<{
     <template #numero-cell="{ row }">
       <NuxtLink
         :to="ORDER_ROUTES.detail(row.original.id)"
-        class="font-medium text-primary hover:underline"
+        class="font-mono font-medium tabular-nums text-primary hover:underline"
       >
         {{ row.original.numero }}
       </NuxtLink>
@@ -30,7 +30,7 @@ defineProps<{
 
     <template #placa-cell="{ row }">
       <span class="font-mono tracking-wide">
-        {{ row.original.veiculos ? formatPlaca(row.original.veiculos.placa) : '—' }}
+        {{ row.original.veiculos ? formatPlaca(row.original.veiculos.placa) : EMPTY_VALUE }}
       </span>
     </template>
 
@@ -55,11 +55,13 @@ defineProps<{
       <span
         v-else
         class="text-muted"
-      >—</span>
+      >{{ EMPTY_VALUE }}</span>
     </template>
 
     <template #aberta_em-cell="{ row }">
-      {{ formatDateTime(row.original.aberta_em) }}
+      <span class="font-mono tabular-nums">
+        {{ formatDateTime(row.original.aberta_em) }}
+      </span>
     </template>
 
     <template #actions-cell="{ row }">
@@ -74,9 +76,17 @@ defineProps<{
     </template>
 
     <template #empty>
-      <div class="text-center py-8 text-muted">
-        Nenhuma Ordem de Serviço encontrada.
-      </div>
+      <BaseEmptyState icon="i-lucide-clipboard-list">
+        Nenhuma OS encontrada.
+        <template #actions>
+          <UButton
+            :to="ORDER_ROUTES.new"
+            icon="i-lucide-plus"
+            label="Nova OS"
+            size="sm"
+          />
+        </template>
+      </BaseEmptyState>
     </template>
   </UTable>
 </template>

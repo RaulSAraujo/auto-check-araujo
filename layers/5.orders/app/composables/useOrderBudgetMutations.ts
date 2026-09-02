@@ -81,7 +81,7 @@ export function useOrderBudgetMutations() {
     }
 
     const labels: Record<OrcamentoStatus, string> = {
-      rascunho: 'Orçamento em rascunho',
+      rascunho: 'Voltou para pré-orçamento',
       aguardando_aprovacao: 'Orçamento enviado para aprovação',
       aprovado: 'Orçamento aprovado',
       rejeitado: 'Orçamento rejeitado'

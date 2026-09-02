@@ -39,7 +39,52 @@ export function useChecklistMutations() {
     return { error }
   }
 
+  async function addChecklistItem(
+    checklistId: string,
+    draft: { categoria: string, label: string },
+    ordem: number
+  ) {
+    const { data, error } = await supabase
+      .from('checklist_itens')
+      .insert({
+        checklist_id: checklistId,
+        categoria: draft.categoria.trim(),
+        label: draft.label.trim(),
+        ordem
+      })
+      .select()
+      .single()
+
+    if (error) {
+      toast.add({ title: 'Erro ao adicionar item', description: error.message, color: 'error' })
+    }
+
+    return { data, error }
+  }
+
+  async function deleteChecklistItem(itemId: string) {
+    const { error } = await supabase
+      .from('checklist_itens')
+      .delete()
+      .eq('id', itemId)
+
+    if (error) {
+      toast.add({ title: 'Erro ao remover item', description: error.message, color: 'error' })
+    }
+
+    return { error }
+  }
+
   async function concludeChecklist(checklist: ChecklistWithItems) {
+    if (checklist.checklist_itens.length === 0) {
+      toast.add({
+        title: 'Checklist vazio',
+        description: 'Adicione ao menos um item antes de concluir.',
+        color: 'warning'
+      })
+      return { error: null, incomplete: true }
+    }
+
     const pendingItems = checklist.checklist_itens.filter(i => !i.resultado)
     if (pendingItems.length > 0) {
       toast.add({
@@ -67,6 +112,8 @@ export function useChecklistMutations() {
   return {
     saveChecklistItem,
     bulkSetResultado,
+    addChecklistItem,
+    deleteChecklistItem,
     concludeChecklist
   }
 }

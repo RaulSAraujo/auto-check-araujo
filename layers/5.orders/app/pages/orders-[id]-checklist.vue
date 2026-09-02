@@ -1,10 +1,13 @@
 <script setup lang="ts">
 import { ORDER_ROUTES } from '../utils/order-routes'
+import { collectChecklistCategorias } from '../utils/checklist'
 import {
   absolutePrintUrl,
   buildChecklistWhatsAppMessage,
   buildWhatsAppUrl
 } from '../utils/print'
+import { downloadChecklistPdf } from '../utils/pdf'
+import { primaryPhone } from '~~/shared/utils/contact'
 
 defineOptions({ name: 'OrdersChecklistPage' })
 
@@ -32,12 +35,27 @@ const {
 const {
   concluding,
   bulkSaving,
+  adding,
+  deletingId,
+  importing,
+  itemDraft,
   onSaveItem,
   onUpdateResultado,
   onUpdateObservacao,
   onMarkItemsOk,
-  onConcludeChecklist
+  onConcludeChecklist,
+  onAddItem,
+  onDeleteItem,
+  onImportFromCatalog
 } = useChecklistPage(checklist, readOnly, refresh)
+
+const { data: catalogItems } = await useChecklistCatalogActive()
+
+const hasCatalogItems = computed(() => (catalogItems.value?.length || 0) > 0)
+
+const catalogCategorias = computed(() =>
+  collectChecklistCategorias(catalogItems.value || [])
+)
 
 const allItems = computed(() => checklist.value?.checklist_itens ?? [])
 
@@ -53,6 +71,15 @@ const {
 
 const pendingCount = computed(() => totalCount.value - filledCount.value)
 
+const breadcrumbItems = computed(() => [
+  {
+    label: checklist.value?.ordens_servico?.numero || 'OS',
+    to: ORDER_ROUTES.detail(ordemId.value),
+    ui: { linkLabel: 'font-mono tabular-nums' }
+  },
+  { label: 'Checklist' }
+])
+
 async function onMarkAllOk() {
   await onMarkItemsOk(allItems.value)
 }
@@ -60,19 +87,41 @@ async function onMarkAllOk() {
 const checklistWhatsappUrl = computed(() => {
   if (!ordem.value) return null
   return buildWhatsAppUrl(
-    ordem.value.veiculos?.clientes?.telefone,
+    primaryPhone(ordem.value.veiculos?.clientes?.telefones),
     buildChecklistWhatsAppMessage(
       ordem.value.numero,
       absolutePrintUrl(ORDER_ROUTES.checklistPrint(ordemId.value))
     )
   )
 })
+
+const downloadingPdf = ref(false)
+
+async function onDownloadChecklistPdf() {
+  if (!ordem.value || !checklist.value || !import.meta.client) return
+  downloadingPdf.value = true
+  try {
+    const veiculo = ordem.value.veiculos
+    await downloadChecklistPdf({
+      numero: ordem.value.numero,
+      createdAt: formatDateTime(checklist.value.created_at),
+      statusLabel: checklist.value.status === 'concluida' ? 'Concluída' : 'Em preenchimento',
+      clienteNome: veiculo?.clientes?.nome ?? null,
+      placa: veiculo?.placa ?? null,
+      veiculoLabel: [veiculo?.marca, veiculo?.modelo].filter(Boolean).join(' ') || null,
+      kmEntrada: ordem.value.km_entrada,
+      itensByCategoria: itensByCategoria.value
+    })
+  } finally {
+    downloadingPdf.value = false
+  }
+}
 </script>
 
 <template>
   <UDashboardPanel>
     <template #header>
-      <UDashboardNavbar :title="checklist ? `Checklist — ${checklist.ordens_servico?.numero}` : 'Checklist'">
+      <UDashboardNavbar title="Checklist">
         <template #leading>
           <UDashboardSidebarToggle />
         </template>
@@ -83,6 +132,9 @@ const checklistWhatsappUrl = computed(() => {
               :print-to="ORDER_ROUTES.checklistPrint(ordemId)"
               :whatsapp-url="checklistWhatsappUrl"
               print-label="Imprimir checklist"
+              show-pdf
+              :pdf-loading="downloadingPdf"
+              @download-pdf="onDownloadChecklistPdf"
             />
             <UButton
               :to="ORDER_ROUTES.detail(ordemId)"
@@ -94,6 +146,9 @@ const checklistWhatsappUrl = computed(() => {
           </div>
         </template>
       </UDashboardNavbar>
+      <div class="border-b border-default px-4 py-2 sm:px-6">
+        <UBreadcrumb :items="breadcrumbItems" />
+      </div>
     </template>
 
     <template #body>
@@ -111,10 +166,10 @@ const checklistWhatsappUrl = computed(() => {
         <div class="space-y-6 pb-24">
           <div class="flex flex-wrap items-center justify-between gap-3">
             <div>
-              <p class="text-sm text-muted">
-                {{ filledCount }} de {{ totalCount }} itens
+              <p class="font-mono text-sm tabular-nums text-muted">
+                {{ filledCount }}/{{ totalCount }} itens
                 <span v-if="pendingCount > 0 && !readOnly">
-                  · {{ pendingCount }} pendente(s)
+                  ({{ pendingCount }} pendente{{ pendingCount === 1 ? '' : 's' }})
                 </span>
               </p>
               <UProgress
@@ -130,6 +185,16 @@ const checklistWhatsappUrl = computed(() => {
                 {{ checklist.status === 'concluida' ? 'Concluída' : 'Em preenchimento' }}
               </UBadge>
               <UButton
+                v-if="!readOnly && hasCatalogItems"
+                label="Importar do catálogo"
+                icon="i-lucide-download"
+                color="neutral"
+                variant="soft"
+                size="sm"
+                :loading="importing"
+                @click="onImportFromCatalog"
+              />
+              <UButton
                 v-if="!readOnly && pendingCount > 0"
                 label="Marcar tudo OK"
                 icon="i-lucide-check-check"
@@ -142,12 +207,25 @@ const checklistWhatsappUrl = computed(() => {
             </div>
           </div>
 
+          <BaseEmptyState v-if="totalCount === 0 && !readOnly">
+            Nenhum item no checklist. Adicione abaixo.
+          </BaseEmptyState>
+
+          <OrdersChecklistAddItemForm
+            v-if="!readOnly"
+            v-model:draft="itemDraft"
+            :items="allItems"
+            :catalog-categorias="catalogCategorias"
+            :adding="adding"
+            @add="onAddItem"
+          />
+
           <section
             v-for="[categoria, itens] in itensByCategoria"
             :key="categoria"
-            class="space-y-2"
+            class="border-t border-default pt-6 first:border-t-0 first:pt-0"
           >
-            <div class="flex flex-wrap items-center justify-between gap-2 border-b border-default pb-2">
+            <div class="mb-3 flex flex-wrap items-center justify-between gap-2 border-b border-default pb-2">
               <h2 class="text-base font-semibold text-highlighted">
                 {{ categoria }}
               </h2>
@@ -163,20 +241,24 @@ const checklistWhatsappUrl = computed(() => {
               />
             </div>
 
-            <OrdersChecklistItem
-              v-for="item in itens"
-              :key="item.id"
-              :item="item"
-              :read-only="readOnly"
-              :photos="getPhotos(item.id)"
-              :uploading-photos="uploadingItemId === item.id"
-              :deleting-photo-id="deletingPhotoId"
-              @save="onSaveItem"
-              @update:resultado="onUpdateResultado"
-              @update:observacao="onUpdateObservacao"
-              @upload-photo="uploadPhoto"
-              @delete-photo="deletePhoto"
-            />
+            <div class="divide-y divide-default">
+              <OrdersChecklistItem
+                v-for="item in itens"
+                :key="item.id"
+                :item="item"
+                :read-only="readOnly"
+                :photos="getPhotos(item.id)"
+                :uploading-photos="uploadingItemId === item.id"
+                :deleting-photo-id="deletingPhotoId"
+                :deleting-item-id="deletingId"
+                @save="onSaveItem"
+                @update:resultado="onUpdateResultado"
+                @update:observacao="onUpdateObservacao"
+                @upload-photo="uploadPhoto"
+                @delete-photo="deletePhoto"
+                @delete="onDeleteItem"
+              />
+            </div>
           </section>
         </div>
 

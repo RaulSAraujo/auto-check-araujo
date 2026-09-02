@@ -1,5 +1,4 @@
-import type { ChecklistItem } from '~~/shared/types/database'
-import type { ChecklistItemFoto } from '~~/shared/types/database'
+import type { ChecklistItem, ChecklistItemFoto } from '~~/shared/types/database'
 import {
   CHECKLIST_PHOTOS_ALLOWED_TYPES,
   CHECKLIST_PHOTOS_BUCKET,

@@ -13,6 +13,7 @@ const props = defineProps<{
   photos: ChecklistPhotoWithUrl[]
   uploadingPhotos: boolean
   deletingPhotoId: string | null
+  deletingItemId: string | null
 }>()
 
 const emit = defineEmits<{
@@ -21,6 +22,7 @@ const emit = defineEmits<{
   'update:observacao': [item: ChecklistItem, value: string]
   'uploadPhoto': [itemId: string, file: File]
   'deletePhoto': [photo: ChecklistPhotoWithUrl]
+  'delete': [itemId: string]
 }>()
 
 const showObservacao = computed(() => {
@@ -36,8 +38,8 @@ const showPhotos = computed(() => {
 
 <template>
   <div
-    class="rounded-lg border border-default px-3 py-2.5 space-y-2"
-    :class="!item.resultado ? 'border-warning/40 bg-warning/5' : ''"
+    class="space-y-2 py-3"
+    :class="!item.resultado ? 'bg-warning/5 -mx-1 px-1 rounded-sm' : ''"
     :data-checklist-pending="!item.resultado ? '' : undefined"
   >
     <div class="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
@@ -45,35 +47,43 @@ const showPhotos = computed(() => {
         {{ item.label }}
       </p>
 
-      <div
-        v-if="readOnly"
-        class="shrink-0"
-      >
-        <UBadge
-          v-if="item.resultado"
-          :color="CHECKLIST_RESULTADO_OPTIONS.find(o => o.value === item.resultado)?.color ?? 'neutral'"
-          variant="subtle"
-          size="sm"
+      <div class="flex shrink-0 items-center gap-1">
+        <div
+          v-if="readOnly"
+          class="shrink-0"
         >
-          {{ CHECKLIST_RESULTADO_LABEL[item.resultado as ChecklistResultado] || item.resultado }}
-        </UBadge>
-      </div>
+          <UBadge
+            v-if="item.resultado"
+            :color="CHECKLIST_RESULTADO_OPTIONS.find(o => o.value === item.resultado)?.color ?? 'neutral'"
+            variant="subtle"
+            size="sm"
+          >
+            {{ CHECKLIST_RESULTADO_LABEL[item.resultado as ChecklistResultado] || item.resultado }}
+          </UBadge>
+        </div>
 
-      <div
-        v-else
-        class="flex shrink-0 gap-1"
-      >
-        <UButton
-          v-for="option in CHECKLIST_RESULTADO_OPTIONS"
-          :key="option.value"
-          :label="option.shortLabel"
-          :color="option.color"
-          :variant="item.resultado === option.value ? 'solid' : 'outline'"
-          size="sm"
-          class="min-w-11 justify-center"
-          :aria-label="option.label"
-          @click="emit('update:resultado', item, option.value)"
-        />
+        <template v-else>
+          <UButton
+            v-for="option in CHECKLIST_RESULTADO_OPTIONS"
+            :key="option.value"
+            :label="option.shortLabel"
+            :color="option.color"
+            :variant="item.resultado === option.value ? 'solid' : 'outline'"
+            size="sm"
+            class="min-w-11 justify-center"
+            :aria-label="option.label"
+            @click="emit('update:resultado', item, option.value)"
+          />
+          <UButton
+            icon="i-lucide-trash"
+            color="error"
+            variant="ghost"
+            size="sm"
+            :loading="deletingItemId === item.id"
+            aria-label="Remover item"
+            @click="emit('delete', item.id)"
+          />
+        </template>
       </div>
     </div>
 

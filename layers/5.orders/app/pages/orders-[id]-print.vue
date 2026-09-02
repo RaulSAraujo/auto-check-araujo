@@ -1,11 +1,13 @@
 <script setup lang="ts">
-import type { OrcamentoStatus } from '~~/shared/types/oficina'
 import { ORDER_ROUTES } from '../utils/order-routes'
 import {
   absolutePrintUrl,
   buildBudgetWhatsAppMessage,
   buildWhatsAppUrl
 } from '../utils/print'
+import { downloadBudgetPdf } from '../utils/pdf'
+import { primaryPhone } from '~~/shared/utils/contact'
+import type { OrcamentoStatus } from '~~/shared/types/oficina'
 
 defineOptions({ name: 'OrdersPrintPage' })
 
@@ -24,14 +26,40 @@ const budgetStatus = computed(
   () => (ordem.value?.orcamento_status || 'rascunho') as OrcamentoStatus
 )
 
-const printPath = computed(() => ORDER_ROUTES.print(id.value))
+const { ensureToken } = useOrderPublicToken()
+const publicToken = ref<string | null>(null)
+
+const canShareBudget = computed(() =>
+  budgetStatus.value === 'aguardando_aprovacao' || budgetStatus.value === 'aprovado'
+)
+
+watch(
+  [ordem, canShareBudget],
+  async () => {
+    if (!ordem.value || !canShareBudget.value) {
+      publicToken.value = null
+      return
+    }
+
+    publicToken.value = await ensureToken(
+      id.value,
+      ordem.value.orcamento_public_token ?? null
+    )
+  },
+  { immediate: true }
+)
+
+const budgetPublicUrl = computed(() => {
+  if (!publicToken.value) return null
+  return absolutePrintUrl(ORDER_ROUTES.publicBudget(publicToken.value))
+})
 
 const whatsappUrl = computed(() => {
-  if (!ordem.value) return null
-  const telefone = ordem.value.veiculos?.clientes?.telefone
+  if (!ordem.value || !budgetPublicUrl.value) return null
+  const telefone = primaryPhone(ordem.value.veiculos?.clientes?.telefones)
   const message = buildBudgetWhatsAppMessage(
     ordem.value.numero,
-    absolutePrintUrl(printPath.value)
+    budgetPublicUrl.value
   )
   return buildWhatsAppUrl(telefone, message)
 })
@@ -39,6 +67,29 @@ const whatsappUrl = computed(() => {
 useHead({
   title: computed(() => ordem.value ? `Orçamento ${ordem.value.numero}` : 'Orçamento')
 })
+
+const downloadingPdf = ref(false)
+
+async function onDownloadBudgetPdf() {
+  if (!ordem.value || !import.meta.client) return
+  downloadingPdf.value = true
+  try {
+    const veiculo = ordem.value.veiculos
+    await downloadBudgetPdf({
+      numero: ordem.value.numero,
+      abertaEm: formatDateTime(ordem.value.aberta_em),
+      budgetStatus: budgetStatus.value,
+      clienteNome: veiculo?.clientes?.nome ?? null,
+      placa: veiculo?.placa ?? null,
+      veiculoLabel: [veiculo?.marca, veiculo?.modelo].filter(Boolean).join(' ') || null,
+      kmEntrada: ordem.value.km_entrada,
+      reclamacao: ordem.value.reclamacao,
+      items: items.value || []
+    })
+  } finally {
+    downloadingPdf.value = false
+  }
+}
 </script>
 
 <template>
@@ -46,7 +97,11 @@ useHead({
     <OrdersPrintToolbar
       :back-to="ORDER_ROUTES.detail(id)"
       back-label="Voltar à OS"
+      :public-url="budgetPublicUrl"
       :whatsapp-url="whatsappUrl"
+      show-pdf
+      :pdf-loading="downloadingPdf"
+      @download-pdf="onDownloadBudgetPdf"
     />
 
     <div

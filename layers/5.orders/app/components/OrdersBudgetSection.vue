@@ -20,7 +20,9 @@ defineProps<{
   deletingId: string | null
   updatingStatus: boolean
   printTo?: string
+  publicUrl?: string | null
   whatsappUrl?: string | null
+  pdfLoading?: boolean
 }>()
 
 const emit = defineEmits<{
@@ -31,6 +33,7 @@ const emit = defineEmits<{
   'approve': []
   'reject': []
   'reopen': []
+  'downloadPdf': []
 }>()
 
 const draftModel = defineModel<OrderItemDraft>('draft', { required: true })
@@ -44,10 +47,14 @@ const draftModel = defineModel<OrderItemDraft>('draft', { required: true })
       </h2>
       <div class="flex flex-wrap items-center gap-2">
         <OrdersPrintActions
-          v-if="printTo"
+          v-if="printTo || publicUrl"
           :print-to="printTo"
+          :public-url="publicUrl"
           :whatsapp-url="whatsappUrl"
           print-label="Imprimir orçamento"
+          show-pdf
+          :pdf-loading="pdfLoading"
+          @download-pdf="emit('downloadPdf')"
         />
         <UBadge
           :color="ORCAMENTO_STATUS_COLOR[budgetStatus]"
@@ -59,19 +66,16 @@ const draftModel = defineModel<OrderItemDraft>('draft', { required: true })
       </div>
     </div>
 
-    <div
-      v-if="items.length === 0"
-      class="rounded-lg border border-dashed border-default px-4 py-6 text-center text-sm text-muted"
-    >
-      Nenhum item no orçamento.
-    </div>
+    <BaseEmptyState v-if="items.length === 0">
+      Nenhum item no orçamento. Adicione abaixo.
+    </BaseEmptyState>
 
     <div
       v-else
-      class="overflow-x-auto rounded-lg border border-default"
+      class="overflow-x-auto rounded-md border border-default"
     >
       <table class="w-full text-sm">
-        <thead class="border-b border-default bg-elevated/50 text-left text-muted">
+        <thead class="border-b border-default bg-elevated/50 text-left text-xs uppercase tracking-wide text-muted">
           <tr>
             <th class="px-3 py-2 font-medium">
               Tipo
@@ -105,13 +109,13 @@ const draftModel = defineModel<OrderItemDraft>('draft', { required: true })
             <td class="px-3 py-2 text-highlighted">
               {{ item.descricao }}
             </td>
-            <td class="px-3 py-2 text-right tabular-nums">
+            <td class="px-3 py-2 text-right font-mono tabular-nums">
               {{ Number(item.quantidade).toLocaleString('pt-BR') }}
             </td>
-            <td class="px-3 py-2 text-right tabular-nums">
+            <td class="px-3 py-2 text-right font-mono tabular-nums">
               {{ formatMoney(Number(item.valor_unitario)) }}
             </td>
-            <td class="px-3 py-2 text-right tabular-nums font-medium">
+            <td class="px-3 py-2 text-right font-mono tabular-nums font-medium">
               {{ formatMoney(calcItemSubtotal(item)) }}
             </td>
             <td
@@ -138,7 +142,7 @@ const draftModel = defineModel<OrderItemDraft>('draft', { required: true })
             >
               Total
             </td>
-            <td class="px-3 py-2 text-right font-semibold text-highlighted tabular-nums">
+            <td class="px-3 py-2 text-right font-semibold font-mono tabular-nums text-highlighted">
               {{ formatMoney(total) }}
             </td>
             <td v-if="canEditItems" />
@@ -149,21 +153,11 @@ const draftModel = defineModel<OrderItemDraft>('draft', { required: true })
 
     <div
       v-if="canEditItems"
-      class="rounded-lg border border-default p-4 space-y-3"
+      class="overflow-hidden rounded-md border border-default bg-elevated/25 p-4 space-y-3"
     >
       <p class="text-sm font-medium text-highlighted">
         Adicionar item
       </p>
-
-      <UFormField label="Do catálogo">
-        <USelect
-          :model-value="selectedCatalogId"
-          :items="catalogItems"
-          placeholder="Selecione ou preencha manualmente"
-          class="w-full"
-          @update:model-value="emit('update:selectedCatalogId', $event)"
-        />
-      </UFormField>
 
       <div class="grid gap-3 sm:grid-cols-2">
         <UFormField
@@ -185,7 +179,7 @@ const draftModel = defineModel<OrderItemDraft>('draft', { required: true })
           <UInput
             v-model="draftModel.descricao"
             class="w-full"
-            placeholder="Ex.: Troca de óleo"
+            placeholder="Ex.: Troca de óleo, Filtro de ar"
           />
         </UFormField>
 
@@ -223,6 +217,27 @@ const draftModel = defineModel<OrderItemDraft>('draft', { required: true })
         :disabled="!isOrderItemDraftValid(draftModel)"
         @click="emit('add')"
       />
+
+      <details
+        v-if="catalogItems.length > 0"
+        class="text-sm"
+      >
+        <summary class="cursor-pointer text-muted hover:text-highlighted">
+          Atalho do catálogo (opcional)
+        </summary>
+        <UFormField
+          label="Preencher a partir do catálogo"
+          class="mt-2"
+        >
+          <USelect
+            :model-value="selectedCatalogId"
+            :items="catalogItems"
+            placeholder="Selecione um item do catálogo"
+            class="w-full"
+            @update:model-value="emit('update:selectedCatalogId', $event)"
+          />
+        </UFormField>
+      </details>
     </div>
 
     <div class="flex flex-wrap gap-2">

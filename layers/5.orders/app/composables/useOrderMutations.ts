@@ -73,7 +73,7 @@ export function useOrderMutations() {
 
     if (newStatus === 'concluida') {
       patch.concluida_em = new Date().toISOString()
-    } else if (currentStatus === 'concluida') {
+    } else if (currentStatus === 'concluida' || newStatus === 'retrabalho') {
       patch.concluida_em = null
     }
 

@@ -5,6 +5,8 @@ import {
   buildBudgetWhatsAppMessage,
   buildWhatsAppUrl
 } from '../utils/print'
+import { downloadBudgetPdf } from '../utils/pdf'
+import { primaryPhone } from '~~/shared/utils/contact'
 
 defineOptions({ name: 'OrdersDetailPage' })
 
@@ -65,6 +67,40 @@ const {
   savePayment
 } = useOrderPayment(id, ordem, refresh)
 
+const { ensureToken } = useOrderPublicToken()
+const publicToken = ref<string | null>(null)
+
+const canShareBudget = computed(() =>
+  budgetStatus.value === 'aguardando_aprovacao' || budgetStatus.value === 'aprovado'
+)
+
+watch(
+  [ordem, canShareBudget],
+  async () => {
+    if (!ordem.value || !canShareBudget.value) {
+      publicToken.value = null
+      return
+    }
+
+    const token = await ensureToken(
+      id.value,
+      ordem.value.orcamento_public_token ?? null
+    )
+
+    publicToken.value = token
+
+    if (token && !ordem.value.orcamento_public_token) {
+      await refresh()
+    }
+  },
+  { immediate: true }
+)
+
+const budgetPublicUrl = computed(() => {
+  if (!publicToken.value) return null
+  return absolutePrintUrl(ORDER_ROUTES.publicBudget(publicToken.value))
+})
+
 async function onStartChecklist() {
   startingChecklist.value = true
   try {
@@ -75,15 +111,38 @@ async function onStartChecklist() {
 }
 
 const budgetWhatsappUrl = computed(() => {
-  if (!ordem.value) return null
+  if (!ordem.value || !budgetPublicUrl.value) return null
   return buildWhatsAppUrl(
-    ordem.value.veiculos?.clientes?.telefone,
+    primaryPhone(ordem.value.veiculos?.clientes?.telefones),
     buildBudgetWhatsAppMessage(
       ordem.value.numero,
-      absolutePrintUrl(ORDER_ROUTES.print(id.value))
+      budgetPublicUrl.value
     )
   )
 })
+
+const downloadingPdf = ref(false)
+
+async function onDownloadBudgetPdf() {
+  if (!ordem.value || !import.meta.client) return
+  downloadingPdf.value = true
+  try {
+    const veiculo = ordem.value.veiculos
+    await downloadBudgetPdf({
+      numero: ordem.value.numero,
+      abertaEm: formatDateTime(ordem.value.aberta_em),
+      budgetStatus: budgetStatus.value,
+      clienteNome: veiculo?.clientes?.nome ?? null,
+      placa: veiculo?.placa ?? null,
+      veiculoLabel: [veiculo?.marca, veiculo?.modelo].filter(Boolean).join(' ') || null,
+      kmEntrada: ordem.value.km_entrada,
+      reclamacao: ordem.value.reclamacao,
+      items: budgetItems.value || []
+    })
+  } finally {
+    downloadingPdf.value = false
+  }
+}
 </script>
 
 <template>
@@ -162,6 +221,7 @@ const budgetWhatsappUrl = computed(() => {
 
         <OrdersBudgetSection
           v-model:draft="draft"
+          class="border-t border-default pt-8"
           :items="budgetItems || []"
           :budget-status="budgetStatus"
           :can-edit-items="canEditItems"
@@ -172,6 +232,10 @@ const budgetWhatsappUrl = computed(() => {
           :adding="adding"
           :deleting-id="deletingId"
           :updating-status="updatingStatus"
+          :print-to="ORDER_ROUTES.print(id)"
+          :public-url="budgetPublicUrl"
+          :whatsapp-url="budgetWhatsappUrl"
+          :pdf-loading="downloadingPdf"
           @update:selected-catalog-id="selectedCatalogId = $event"
           @add="onAddItem"
           @delete="onDeleteItem"
@@ -179,12 +243,12 @@ const budgetWhatsappUrl = computed(() => {
           @approve="onApprove"
           @reject="onReject"
           @reopen="onReopen"
-          :print-to="ORDER_ROUTES.print(id)"
-          :whatsapp-url="budgetWhatsappUrl"
+          @download-pdf="onDownloadBudgetPdf"
         />
 
         <OrdersStatusEditor
           v-if="statusItems.length > 1"
+          class="border-t border-default pt-8"
           :ordem="ordem"
           :selected-status="selectedStatus"
           :status-items="statusItems"
@@ -194,6 +258,7 @@ const budgetWhatsappUrl = computed(() => {
         />
 
         <OrdersChecklistActions
+          class="border-t border-default pt-8"
           :ordem="ordem"
           :ordem-id="id"
           :starting-checklist="startingChecklist"
@@ -203,6 +268,7 @@ const budgetWhatsappUrl = computed(() => {
         <OrdersPaymentEditor
           v-if="showPaymentSection"
           v-model="paymentState"
+          class="border-t border-default pt-8"
           :ordem="ordem"
           :can-edit="canEditPayment"
           :saving="savingPayment"

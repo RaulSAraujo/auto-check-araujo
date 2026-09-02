@@ -1,6 +1,5 @@
 import type { ChecklistItem } from '~~/shared/types/database'
-import type { ChecklistWithItems } from '../types/orders'
-import type { OrderDetail } from '../types/orders'
+import type { ChecklistWithItems, OrderDetail } from '../types/orders'
 import { CHECKLIST_PHOTOS_BUCKET } from '../utils/checklist-photos'
 import { groupChecklistItensByCategoria } from '../utils/checklist'
 
@@ -19,7 +18,7 @@ export function useChecklistPrintQuery(ordemId: MaybeRefOrGetter<string>) {
 
       const { data: ordem, error: ordemError } = await supabase
         .from('ordens_servico')
-        .select('*, veiculos(id, placa, marca, modelo, clientes(id, nome, telefone)), profiles!ordens_servico_aberto_por_fkey(nome)')
+        .select('*, veiculos(id, placa, marca, modelo, clientes(id, nome, telefones)), profiles!ordens_servico_aberto_por_fkey(nome)')
         .eq('id', id)
         .single()
 

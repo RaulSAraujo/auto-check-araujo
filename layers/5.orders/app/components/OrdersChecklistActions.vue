@@ -18,9 +18,6 @@ const emit = defineEmits<{
     <h2 class="text-lg font-semibold text-highlighted">
       Checklist
     </h2>
-    <p class="text-sm text-muted">
-      Inspeção de entrada vinculada a esta Ordem de Serviço.
-    </p>
     <div class="flex flex-wrap gap-2">
       <UButton
         v-if="ordem.checklists"

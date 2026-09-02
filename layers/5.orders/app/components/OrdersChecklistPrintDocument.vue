@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import type { ChecklistItem } from '~~/shared/types/database'
-import type { ChecklistWithItems } from '../types/orders'
-import type { OrderDetail } from '../types/orders'
+import type { ChecklistWithItems, OrderDetail } from '../types/orders'
 import type { ChecklistResultado } from '~~/shared/types/oficina'
 import { CHECKLIST_RESULTADO_LABEL } from '~~/shared/types/oficina'
 import type { ChecklistPrintPhoto } from '../composables/useChecklistPrintQuery'
@@ -30,7 +29,7 @@ function resultadoLabel(resultado: string | null): string {
           {{ WORKSHOP_NAME }}
         </p>
         <p class="print-subtitle">
-          Checklist de inspeção — {{ ordem.numero }}
+          Checklist de inspeção - {{ ordem.numero }}
         </p>
       </div>
       <div class="text-right text-sm">
@@ -44,24 +43,24 @@ function resultadoLabel(resultado: string | null): string {
     <dl class="print-meta-grid">
       <div>
         <dt>Cliente</dt>
-        <dd>{{ ordem.veiculos?.clientes?.nome || '—' }}</dd>
+        <dd>{{ ordem.veiculos?.clientes?.nome || '-' }}</dd>
       </div>
       <div>
         <dt>Veículo</dt>
         <dd>
           <span v-if="ordem.veiculos">{{ formatPlaca(ordem.veiculos.placa) }}</span>
-          <span v-else>—</span>
+          <span v-else>-</span>
         </dd>
       </div>
       <div>
         <dt>Modelo</dt>
         <dd>
-          {{ [ordem.veiculos?.marca, ordem.veiculos?.modelo].filter(Boolean).join(' ') || '—' }}
+          {{ [ordem.veiculos?.marca, ordem.veiculos?.modelo].filter(Boolean).join(' ') || '-' }}
         </dd>
       </div>
       <div>
         <dt>Km de entrada</dt>
-        <dd>{{ ordem.km_entrada?.toLocaleString('pt-BR') ?? '—' }}</dd>
+        <dd>{{ ordem.km_entrada?.toLocaleString('pt-BR') ?? '-' }}</dd>
       </div>
     </dl>
 
@@ -110,7 +109,7 @@ function resultadoLabel(resultado: string | null): string {
 
     <footer class="print-signature">
       <div class="print-signature-line">
-        Assinatura do cliente — ciência das condições registradas na entrada
+        Assinatura do cliente - ciência das condições registradas na entrada
       </div>
     </footer>
   </article>

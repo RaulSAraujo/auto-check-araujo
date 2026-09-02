@@ -29,7 +29,7 @@ const { can } = usePermissions()
 <template>
   <UDashboardPanel>
     <template #header>
-      <UDashboardNavbar title="Ordens de serviço">
+      <UDashboardNavbar title="Ordens de Serviço Digitais">
         <template #leading>
           <UDashboardSidebarToggle />
         </template>
@@ -46,6 +46,10 @@ const { can } = usePermissions()
 
     <template #body>
       <div class="p-4 sm:p-6 space-y-4">
+        <p class="text-sm text-muted max-w-2xl">
+          Controle completo da operação da oficina.
+        </p>
+
         <div class="flex flex-col sm:flex-row gap-3 max-w-2xl">
           <UInput
             v-model="q"

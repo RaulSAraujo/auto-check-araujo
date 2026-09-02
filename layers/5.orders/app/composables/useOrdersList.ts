@@ -1,4 +1,3 @@
-import type { OrdemStatus } from '~~/shared/types/oficina'
 import type { OrderListItem } from '../types/orders'
 import { ORDEM_STATUS_FILTER_ALL, ORDEM_STATUS_FILTER_ITEMS, type OrdemStatusFilter } from '../utils/order-select-items'
 

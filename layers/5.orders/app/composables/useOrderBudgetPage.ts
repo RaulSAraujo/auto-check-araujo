@@ -1,12 +1,13 @@
 import type { OrderDetail } from '../types/orders'
 import type { OrdemItem } from '~~/shared/types/database'
 import type { OrcamentoStatus, OrdemStatus } from '~~/shared/types/oficina'
-import { isBudgetEditable } from '~~/shared/types/oficina'
+import { isBudgetEditable, ORDEM_ITEM_TIPO_LABEL } from '~~/shared/types/oficina'
 import {
   calcItemsTotal,
   emptyOrderItemDraft,
   type OrderItemDraft
 } from '../utils/budget'
+import { resolveCatalogUnitPrice } from '#layers/pricing/app/utils/pricing'
 
 export function useOrderBudgetPage(
   orderId: MaybeRefOrGetter<string>,
@@ -16,6 +17,7 @@ export function useOrderBudgetPage(
   refreshItems: () => Promise<void>
 ) {
   const { data: catalog } = useServiceCatalog()
+  const { params: pricingParams } = usePricingParams()
   const { can } = usePermissions()
   const {
     addOrderItem,
@@ -46,7 +48,7 @@ export function useOrderBudgetPage(
 
   const catalogItems = computed(() => {
     return (catalog.value || []).map(item => ({
-      label: `${item.nome} — ${formatMoney(Number(item.valor_padrao))}`,
+      label: `${item.nome} · ${ORDEM_ITEM_TIPO_LABEL[item.tipo as keyof typeof ORDEM_ITEM_TIPO_LABEL] || item.tipo} · ${formatMoney(Number(item.valor_padrao))}`,
       value: item.id
     }))
   })
@@ -57,7 +59,13 @@ export function useOrderBudgetPage(
     if (!entry) return
     draft.tipo = entry.tipo as OrderItemDraft['tipo']
     draft.descricao = entry.nome
-    draft.valor_unitario = Number(entry.valor_padrao)
+    draft.valor_unitario = resolveCatalogUnitPrice({
+      tipo: entry.tipo,
+      valorPadrao: Number(entry.valor_padrao),
+      custo: Number(entry.custo) || 0,
+      markupPecas: Number(pricingParams.value?.markup_pecas) || 0,
+      precificacaoAutomatica: Boolean(pricingParams.value?.precificacao_automatica)
+    })
     if (!draft.quantidade || draft.quantidade < 1) {
       draft.quantidade = 1
     }

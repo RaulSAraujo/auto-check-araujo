@@ -41,3 +41,25 @@ export function groupChecklistItensByCategoria(
 export function countFilledChecklistItens(itens: ChecklistItem[]): number {
   return itens.filter(i => i.resultado).length
 }
+
+export interface ChecklistItemDraft {
+  categoria: string
+  label: string
+}
+
+export function emptyChecklistItemDraft(): ChecklistItemDraft {
+  return { categoria: '', label: '' }
+}
+
+export function isChecklistItemDraftValid(draft: ChecklistItemDraft): boolean {
+  return draft.categoria.trim().length > 0 && draft.label.trim().length > 0
+}
+
+export function collectChecklistCategorias(itens: { categoria: string }[]): string[] {
+  const seen = new Set<string>()
+  for (const item of itens) {
+    const categoria = item.categoria.trim()
+    if (categoria) seen.add(categoria)
+  }
+  return [...seen]
+}

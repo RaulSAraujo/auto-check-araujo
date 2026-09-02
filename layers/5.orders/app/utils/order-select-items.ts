@@ -7,6 +7,7 @@ export type OrdemStatusFilter = typeof ORDEM_STATUS_FILTER_ALL | OrdemStatus
 export const ORDEM_STATUS_SELECT_ITEMS = [
   { label: 'Aberta', value: 'aberta' },
   { label: 'Em andamento', value: 'em_andamento' },
+  { label: 'Retrabalho', value: 'retrabalho' },
   { label: 'Concluída', value: 'concluida' },
   { label: 'Cancelada', value: 'cancelada' }
 ] as const

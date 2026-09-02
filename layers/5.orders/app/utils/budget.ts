@@ -1,8 +1,6 @@
 import type { OrdemItem } from '~~/shared/types/database'
 
-export function formatMoney(value: number): string {
-  return value.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })
-}
+export { formatMoney } from '~~/shared/utils/money'
 
 export function calcItemSubtotal(item: Pick<OrdemItem, 'quantidade' | 'valor_unitario'>): number {
   return Number(item.quantidade) * Number(item.valor_unitario)
@@ -13,7 +11,7 @@ export function calcItemsTotal(items: Pick<OrdemItem, 'quantidade' | 'valor_unit
 }
 
 export interface OrderItemDraft {
-  tipo: 'servico' | 'peca'
+  tipo: 'servico' | 'peca' | 'kit'
   descricao: string
   quantidade: number
   valor_unitario: number

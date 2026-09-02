@@ -15,7 +15,7 @@ export async function useOrderVehicleOptions() {
 
   const veiculoItems = computed(() =>
     (veiculos.value || []).map(v => ({
-      label: `${formatPlaca(v.placa)}${v.marca || v.modelo ? ` — ${[v.marca, v.modelo].filter(Boolean).join(' ')}` : ''}${v.clientes?.nome ? ` (${v.clientes.nome})` : ''}`,
+      label: `${formatPlaca(v.placa)}${v.marca || v.modelo ? ` - ${[v.marca, v.modelo].filter(Boolean).join(' ')}` : ''}${v.clientes?.nome ? ` (${v.clientes.nome})` : ''}`,
       value: v.id
     }))
   )
