@@ -14,8 +14,8 @@ export function useAuth() {
 
     if (error) {
       toast.add({
-        title: 'Falha no login',
-        description: error.message,
+        title: 'Não foi possível entrar',
+        description: 'Usuário ou senha incorretos. Tente de novo.',
         color: 'error'
       })
     }

@@ -27,21 +27,23 @@ Mapa de telas para geração no Stitch. Todas seguem `.stitch/DESIGN.md`.
 
 ---
 
-## 1. Login (`/login`)
+## 1. Login (`/login`) — gerada no Stitch
 
-**Layout:** centrado, `min-h-dvh`, fundo Workshop Canvas. Card Surface com borda Whisper.
+**Screen id:** `projects/11367835346806593695/screens/ce416a8e3a574b4ebbacf0c39798deab`  
+**Preview:** `.stitch/screenshots/login.png`
 
-**Conteúdo (ordem):**
-1. Logo Araujo (herói)
-2. H1: “Sistema Interno”
-3. Tagline: “Acesso exclusivo para colaboradores da oficina.”
-4. Campos: Usuário, Senha
-5. Botão primary full-width: “Entrar”
-6. Footer: “Esqueceu a senha? Contate o administrador.”
+**Layout:** split-screen assimétrico (~45/55). Esquerda: gradiente marca + logo + Franca/SP + “Sistema interno da oficina.” + status “Sistema online”. Direita: canvas muted + coluna form.
 
-**Motion (código):** card fade+rise; botão press scale.
+**Conteúdo (form):**
+1. Eyebrow: “Acesso colaboradores”
+2. H1: “Entrar”
+3. Apoio: “Use seu usuário e senha da oficina.”
+4. Campos Usuário / Senha + CTA “Entrar”
+5. Footer: “Esqueceu a senha? Contate o administrador.”
 
-**Não incluir:** stats, links “saiba mais”, dark hero marketing, 3 feature cards.
+**Motion (código):** rise fade no brand/form; pulse no status; press scale no botão; `prefers-reduced-motion`.
+
+**Não incluir:** stats, “saiba mais”, 3 feature cards, fluff AI.
 
 ---
 

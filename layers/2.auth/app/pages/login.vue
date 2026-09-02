@@ -5,7 +5,13 @@ defineOptions({ name: 'AuthLoginPage' })
 
 definePageMeta({
   path: '/login',
-  layout: false
+  layout: false,
+  colorMode: 'light'
+})
+
+useSeoMeta({
+  title: 'Entrar',
+  description: BRAND.tagline
 })
 
 const session = useSupabaseSession()
@@ -25,6 +31,7 @@ const state = reactive({
 const loading = ref(false)
 
 async function onSubmit() {
+  if (loading.value) return
   loading.value = true
   try {
     const { error } = await signInWithPassword(state.username, state.password)
@@ -38,29 +45,197 @@ async function onSubmit() {
 </script>
 
 <template>
-  <div class="flex min-h-dvh items-center justify-center bg-muted p-4">
-    <div class="w-full max-w-md overflow-hidden rounded-md border border-default bg-default shadow-sm">
-      <div class="flex flex-col items-center border-b border-default px-6 py-6 text-center">
-        <BaseBrandLogo size="lg" />
-        <h1 class="mt-4 text-xl font-semibold text-highlighted">
-          Sistema Interno
-        </h1>
-        <p class="mt-1 text-sm text-muted">
-          Acesso exclusivo para colaboradores da oficina.
+  <div class="auth-login light flex min-h-dvh flex-col antialiased text-[#171717] md:flex-row">
+    <!-- Left: branding ~45% (Stitch) -->
+    <aside
+      class="auth-login__brand relative z-10 flex min-h-[19rem] w-full shrink-0 flex-col justify-between overflow-hidden p-8 shadow-[4px_0_24px_rgba(0,0,0,0.1)] md:min-h-dvh md:w-[45%] md:p-16 lg:p-24"
+      aria-label="Marca Araujo Auto Center"
+    >
+      <div
+        class="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_top_left,rgb(255_255_255_/_0.1),transparent_55%)] opacity-50 mix-blend-overlay"
+        aria-hidden="true"
+      />
+      <div
+        class="auth-login__noise pointer-events-none absolute inset-0 opacity-30"
+        aria-hidden="true"
+      />
+      <div
+        class="auth-login__streak pointer-events-none absolute inset-y-0"
+        aria-hidden="true"
+      />
+
+      <div class="relative z-10 mt-auto flex max-w-md flex-col gap-4 md:mt-0">
+        <div class="mb-2 flex items-center gap-3">
+          <UIcon
+            name="i-lucide-car"
+            class="size-10 shrink-0 fill-white text-white md:size-11"
+            aria-hidden="true"
+          />
+          <div>
+            <p class="text-3xl font-black leading-tight tracking-tight text-white md:text-4xl lg:text-5xl">
+              Araujo<br>
+              Auto Center
+            </p>
+            <p class="mt-1 text-sm font-medium uppercase tracking-[0.2em] text-white/60">
+              {{ BRAND.location }}
+            </p>
+          </div>
+        </div>
+
+        <div
+          class="my-4 hidden h-1 w-12 rounded-full bg-white/20 md:block"
+          aria-hidden="true"
+        />
+
+        <p class="hidden max-w-sm text-lg font-light leading-relaxed text-white/80 md:block md:text-xl">
+          Sistema interno da oficina.
         </p>
       </div>
 
-      <div class="px-6 py-6">
+      <div class="relative z-10 mt-10 hidden items-center gap-2 font-mono text-xs uppercase tracking-[0.2em] text-white/40 md:mt-0 md:flex">
+        <span
+          class="auth-login__pulse size-2 shrink-0 rounded-full bg-green-500"
+          aria-hidden="true"
+        />
+        Sistema Operacional
+      </div>
+    </aside>
+
+    <!-- Right: form ~55% (Stitch) -->
+    <main class="relative flex w-full flex-1 items-center justify-center bg-[#FAFAFA] p-8 md:w-[55%] md:p-16">
+      <div
+        class="auth-login__card w-full max-w-[400px] rounded-lg border border-[#E5E5E5] bg-white p-8 shadow-sm md:p-10"
+      >
+        <header class="mb-8">
+          <p class="mb-2 text-xs font-semibold uppercase tracking-wider text-[#717783]">
+            Acesso colaboradores
+          </p>
+          <h1 class="mb-2 text-3xl font-semibold tracking-tight text-[#171717] text-balance">
+            Entrar
+          </h1>
+          <p class="text-sm font-medium text-[#414752] text-pretty">
+            Use seu usuário e senha da oficina.
+          </p>
+        </header>
+
         <AuthLoginForm
           v-model="state"
           :loading="loading"
           @submit="onSubmit"
         />
-      </div>
 
-      <p class="border-t border-default px-6 py-3 text-center text-xs text-muted">
-        Esqueceu a senha? Contate o administrador.
-      </p>
-    </div>
+        <div class="mt-8 border-t border-[#E5E5E5] pt-6 text-center">
+          <p class="text-xs font-medium text-[#717783]">
+            Esqueceu a senha?
+            <a
+              :href="BRAND.facebookUrl"
+              class="font-semibold text-[#1B7ACE] underline-offset-2 decoration-[#1B7ACE]/30 transition-colors hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >Contate o administrador.</a>
+          </p>
+        </div>
+      </div>
+    </main>
   </div>
 </template>
+
+<style scoped>
+.auth-login {
+  color-scheme: light;
+}
+
+.auth-login :deep(input) {
+  color: #171717;
+}
+
+.auth-login :deep(input::placeholder) {
+  color: #a3a3a3;
+  -webkit-text-fill-color: #a3a3a3;
+  opacity: 1;
+}
+
+.auth-login :deep(input:not(:placeholder-shown)) {
+  -webkit-text-fill-color: #171717;
+}
+
+.auth-login :deep(input:-webkit-autofill),
+.auth-login :deep(input:-webkit-autofill:hover),
+.auth-login :deep(input:-webkit-autofill:focus) {
+  -webkit-text-fill-color: #171717;
+  box-shadow: 0 0 0 1000px #fff inset;
+  transition: background-color 99999s ease-out;
+}
+
+.auth-login__brand {
+  background: linear-gradient(to bottom right, #1b7ace, #0a0a0a);
+}
+
+.auth-login__noise {
+  background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0IiBoZWlnaHQ9IjQiPgo8cmVjdCB3aWR0aD0iNCIgaGVpZ2h0PSI0IiBmaWxsPSJub25lIi8+CjxyZWN0IHdpZHRoPSIxIiBoZWlnaHQ9IjEiIGZpbGw9InJnYmEoMjU1LDI1NSwyNTUsMC4wNSkiLz4KPC9zdmc+");
+}
+
+.auth-login__streak {
+  top: 0;
+  left: -100%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(
+    to right,
+    rgb(255 255 255 / 0) 0%,
+    rgb(255 255 255 / 0.03) 50%,
+    rgb(255 255 255 / 0) 100%
+  );
+  transform: skewX(-45deg);
+  animation: auth-login-sweep 8s linear infinite;
+}
+
+.auth-login__card {
+  animation: auth-login-rise 420ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.auth-login__pulse {
+  animation: auth-login-pulse 2s ease-in-out infinite;
+}
+
+@keyframes auth-login-sweep {
+  0% {
+    left: -100%;
+  }
+
+  100% {
+    left: 200%;
+  }
+}
+
+@keyframes auth-login-rise {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes auth-login-pulse {
+  0%,
+  100% {
+    opacity: 0.55;
+  }
+
+  50% {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .auth-login__streak,
+  .auth-login__card,
+  .auth-login__pulse {
+    animation: none;
+  }
+}
+</style>
