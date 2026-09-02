@@ -102,7 +102,9 @@ const navUi = {
   item: 'py-0',
   link: 'px-2.5 py-1.5 rounded-full',
   linkLeadingIcon: 'hidden',
-  linkTrailingIcon: 'size-3.5 text-dimmed'
+  linkTrailingIcon: 'size-3.5 text-dimmed',
+  viewportWrapper: 'pt-3',
+  viewport: 'bg-muted/80 backdrop-blur-md border border-default/60 dark:border-accented/40 shadow-lg shadow-neutral-950/10 dark:shadow-none ring-0 rounded-xl'
 } as const
 
 async function onSignOut() {
