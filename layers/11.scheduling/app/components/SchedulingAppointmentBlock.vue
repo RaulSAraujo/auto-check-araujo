@@ -23,7 +23,7 @@ const vehicleLabel = computed(() => {
 
 <template>
   <article
-    class="rounded-md border border-default bg-default p-3 shadow-sm transition-[transform,opacity,background-color] duration-150 hover:bg-elevated/40 active:scale-[0.99]"
+    class="rounded-lg border border-default bg-default p-3 shadow-sm transition-[transform,opacity,background-color] duration-150 hover:bg-elevated/40 active:scale-[0.99]"
   >
     <div class="flex flex-wrap items-start justify-between gap-2">
       <p class="font-mono text-sm font-semibold tabular-nums tracking-tight text-highlighted">

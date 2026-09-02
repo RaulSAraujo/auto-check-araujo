@@ -13,8 +13,7 @@ import { downloadSchedulingDayPdf } from '../utils/pdf'
 defineOptions({ name: 'SchedulingIndexPage' })
 
 definePageMeta({
-  path: '/agendamentos',
-  layout: 'app'
+  path: '/agendamentos'
 })
 
 const { can } = usePermissions()
@@ -105,66 +104,53 @@ function onSelectCalendarDay(day: Date) {
 
 <template>
   <UDashboardPanel>
-    <template #header>
-      <UDashboardNavbar title="Agendamentos">
-        <template #leading>
-          <UDashboardSidebarToggle />
-        </template>
-        <template #right>
-          <div class="hidden min-w-56 max-w-xs sm:block">
-            <UInput
-              v-model="search"
-              icon="i-lucide-search"
-              placeholder="Buscar cliente ou placa…"
-              autocomplete="off"
-            />
-          </div>
-          <UButton
-            icon="i-lucide-refresh-cw"
-            color="neutral"
-            variant="ghost"
-            aria-label="Atualizar agenda"
-            :loading="pending"
-            @click="refresh()"
-          />
-          <UButton
-            icon="i-lucide-file-down"
-            color="neutral"
-            variant="outline"
-            label="Exportar PDF"
-            class="hidden sm:inline-flex"
-            @click="onExportPdf"
-          />
-          <UButton
-            v-if="canWrite"
-            icon="i-lucide-plus"
-            label="Novo agendamento"
-            @click="formOpen = true"
-          />
-        </template>
-      </UDashboardNavbar>
-    </template>
-
     <template #body>
       <div class="flex h-full min-h-0 flex-col gap-4 p-4 sm:p-6">
-        <div class="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
-          <div>
-            <h1 class="text-lg font-semibold tracking-tight text-highlighted text-balance sm:text-xl">
-              Agenda da oficina
-            </h1>
-            <p class="mt-0.5 text-sm text-muted">
-              Horários, pátio e não comparecimento em um painel.
-            </p>
-          </div>
+        <BasePageHeader
+          title="Agendamentos"
+          description="Horários, pátio e não comparecimento em um painel."
+        >
+          <template #actions>
+            <div class="hidden min-w-56 max-w-xs sm:block">
+              <UInput
+                v-model="search"
+                icon="i-lucide-search"
+                placeholder="Buscar cliente ou placa…"
+                autocomplete="off"
+              />
+            </div>
+            <UButton
+              icon="i-lucide-refresh-cw"
+              color="neutral"
+              variant="ghost"
+              aria-label="Atualizar agenda"
+              :loading="pending"
+              @click="refresh()"
+            />
+            <UButton
+              icon="i-lucide-file-down"
+              color="neutral"
+              variant="outline"
+              label="Exportar PDF"
+              class="hidden sm:inline-flex"
+              @click="onExportPdf"
+            />
+            <UButton
+              v-if="canWrite"
+              icon="i-lucide-plus"
+              label="Novo agendamento"
+              @click="formOpen = true"
+            />
+          </template>
+        </BasePageHeader>
 
-          <UInput
-            v-model="search"
-            icon="i-lucide-search"
-            placeholder="Buscar cliente ou placa…"
-            autocomplete="off"
-            class="sm:hidden"
-          />
-        </div>
+        <UInput
+          v-model="search"
+          icon="i-lucide-search"
+          placeholder="Buscar cliente ou placa…"
+          autocomplete="off"
+          class="sm:hidden"
+        />
 
         <UAlert
           v-if="error"

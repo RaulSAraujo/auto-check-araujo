@@ -95,7 +95,7 @@ function isOutsideMonth(day: Date): boolean {
           v-for="day in days"
           :key="day.toISOString()"
           type="button"
-          class="flex min-h-16 flex-col items-start rounded-md border border-transparent px-1.5 py-1 text-left transition-[transform,background-color] duration-150 hover:bg-elevated/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary active:scale-[0.98]"
+          class="flex min-h-16 flex-col items-start rounded-lg border border-transparent px-1.5 py-1 text-left transition-[transform,background-color] duration-150 hover:bg-elevated/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary active:scale-[0.98]"
           :class="[
             isSameLocalDay(day, selectedDate) ? 'border-primary bg-primary/10' : 'border-default/60',
             isOutsideMonth(day) ? 'opacity-40' : '',

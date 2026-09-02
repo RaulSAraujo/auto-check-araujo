@@ -30,7 +30,7 @@ defineProps<{
       <li
         v-for="item in slots"
         :key="item.slot"
-        class="rounded-md border border-default px-2.5 py-2"
+        class="rounded-lg border border-default px-2.5 py-2"
         :class="item.appointment ? 'bg-primary/5 border-primary/20' : 'bg-elevated/30'"
       >
         <p class="text-xs font-semibold uppercase tracking-wide text-muted">
