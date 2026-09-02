@@ -3,54 +3,126 @@
 
 @theme static {
   --font-sans: 'Public Sans', sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, monospace;
 
-  /* Araujo blue — gradiente metálico da logo (ARAÚJO) */
-  --color-brand-50: #eff8fd;
-  --color-brand-100: #d9eef9;
-  --color-brand-200: #b7dff4;
-  --color-brand-300: #85c8eb;
-  --color-brand-400: #0889e6;
-  --color-brand-500: #1b7ace;
-  --color-brand-600: #0366b2;
-  --color-brand-700: #08487e;
-  --color-brand-800: #035599;
-  --color-brand-900: #014495;
-  --color-brand-950: #012a4a;
+  /*
+   * Stitch namedColors → Nuxt UI scales
+   * asset: assets/18253519892564423504
+   * primary Material: #005ea4 | secondary: #b6171e | surface: #fcf9f8
+   */
 
-  /* Araujo red — texto AUTO CENTER na logo */
-  --color-accent-50: #fef2f2;
-  --color-accent-100: #fde8e8;
-  --color-accent-200: #fbd0d0;
-  --color-accent-300: #f7a8a8;
-  --color-accent-400: #ef6b6b;
-  --color-accent-500: #d32f2f;
-  --color-accent-600: #b71c1c;
-  --color-accent-700: #991b1b;
-  --color-accent-800: #7f1d1d;
-  --color-accent-900: #591c1c;
-  --color-accent-950: #3b0f0f;
+  /* brand ← Stitch primary */
+  --color-brand-50: #eef5fc;
+  --color-brand-100: #d3e4ff;
+  --color-brand-200: #a2c9ff;
+  --color-brand-300: #6baef0;
+  --color-brand-400: #1477cb;
+  --color-brand-500: #005ea4;
+  --color-brand-600: #0060a8;
+  --color-brand-700: #004881;
+  --color-brand-800: #00345e;
+  --color-brand-900: #001c38;
+  --color-brand-950: #001225;
 
-  /* Neutro — preto e cinzas frios */
-  --color-workshop-50: #fafafa;
-  --color-workshop-100: #f5f5f5;
-  --color-workshop-200: #e5e5e5;
-  --color-workshop-300: #d4d4d4;
-  --color-workshop-400: #a3a3a3;
-  --color-workshop-500: #737373;
-  --color-workshop-600: #525252;
-  --color-workshop-700: #404040;
-  --color-workshop-800: #262626;
-  --color-workshop-900: #171717;
-  --color-workshop-950: #0a0a0a;
+  /* accent ← Stitch secondary (destrutivo / logo) */
+  --color-accent-50: #fff5f4;
+  --color-accent-100: #ffdad6;
+  --color-accent-200: #ffb3ac;
+  --color-accent-300: #f28b84;
+  --color-accent-400: #da3433;
+  --color-accent-500: #b6171e;
+  --color-accent-600: #930010;
+  --color-accent-700: #7a000d;
+  --color-accent-800: #5c0009;
+  --color-accent-900: #410003;
+  --color-accent-950: #2a0002;
+
+  /* workshop ← Stitch surface / on_surface / outline
+   * Dark steps must stay distinct: Nuxt maps
+   * bg → 900, muted/elevated → 800, accented/border → 700
+   */
+  --color-workshop-50: #fcf9f8;
+  --color-workshop-100: #f6f3f2;
+  --color-workshop-200: #e5e2e1;
+  --color-workshop-300: #c0c7d3;
+  --color-workshop-400: #717783;
+  --color-workshop-500: #414752;
+  --color-workshop-600: #3a4250;
+  --color-workshop-700: #2a3140;
+  --color-workshop-800: #1e2533;
+  --color-workshop-900: #161b24;
+  --color-workshop-950: #0c0e12;
+
+  /* ok ← Stitch home Recebido #16a34a */
+  --color-ok-50: #f0fdf4;
+  --color-ok-100: #dcfce7;
+  --color-ok-200: #bbf7d0;
+  --color-ok-300: #86efac;
+  --color-ok-400: #4ade80;
+  --color-ok-500: #16a34a;
+  --color-ok-600: #15803d;
+  --color-ok-700: #166534;
+  --color-ok-800: #14532d;
+  --color-ok-900: #14532d;
+  --color-ok-950: #052e16;
+
+  /* caution ← Stitch Pendente #d97706 / Em andamento tertiary #b45e00 */
+  --color-caution-50: #fffbeb;
+  --color-caution-100: #fef3c7;
+  --color-caution-200: #fde68a;
+  --color-caution-300: #fcd34d;
+  --color-caution-400: #d97706;
+  --color-caution-500: #b45e00;
+  --color-caution-600: #8f4900;
+  --color-caution-700: #703800;
+  --color-caution-800: #5a2e00;
+  --color-caution-900: #451f00;
+  --color-caution-950: #2a1200;
 }
 
 :root {
   --ui-radius: 0.375rem;
   --ui-primary: var(--color-brand-500);
   --ui-bg: var(--color-workshop-50);
+  --stitch-primary: #005ea4;
+  --stitch-primary-container: #1477cb;
+  --stitch-secondary: #b6171e;
+  --stitch-tertiary: #8f4900;
+  --stitch-tertiary-container: #b45e00;
+  --stitch-background: #fcf9f8;
+  --stitch-surface: #fcf9f8;
+  --stitch-surface-lowest: #ffffff;
+  --stitch-on-surface: #1c1b1b;
+  --stitch-on-surface-variant: #414752;
+  --stitch-outline: #717783;
+  --stitch-outline-variant: #c0c7d3;
+  --stitch-success: #16a34a;
+  --stitch-warning: #d97706;
+  --stitch-error: #ba1a1a;
+  --stitch-charcoal-dark: #0a0a0a;
 }
 
 .dark {
+  color-scheme: dark;
   --ui-primary: var(--color-brand-400);
-  --ui-bg: var(--color-workshop-950);
+
+  /*
+   * Hierarquia dark (espelha light: muted = canvas, default = painel):
+   * canvas mais fundo → painéis levantados → hover ainda mais claro.
+   * Bordas usam outline Stitch com alpha para não sumir no fundo.
+   */
+  --ui-bg: var(--color-workshop-900);
+  --ui-bg-muted: var(--color-workshop-950);
+  --ui-bg-elevated: var(--color-workshop-800);
+  --ui-bg-accented: var(--color-workshop-700);
+
+  --ui-border: rgb(192 199 211 / 0.16);
+  --ui-border-muted: rgb(192 199 211 / 0.12);
+  --ui-border-accented: rgb(192 199 211 / 0.24);
+
+  --ui-text-dimmed: #8b93a7;
+  --ui-text-muted: #a8b0c0;
+  --ui-text-toned: #c8ceda;
+  --ui-text: #e5e8ef;
+  --ui-text-highlighted: #f5f6f8;
 }

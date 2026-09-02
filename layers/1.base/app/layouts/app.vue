@@ -115,12 +115,10 @@ const items = computed<NavigationMenuItem[]>(() => {
       </template>
 
       <template #default="{ collapsed }">
-        <UNavigationMenu
+          <UNavigationMenu
           :collapsed="collapsed"
           :items="items"
           orientation="vertical"
-          highlight
-          highlight-color="primary"
           :ui="{
             link: 'before:rounded-md',
             linkLeadingIcon: 'size-4.5'

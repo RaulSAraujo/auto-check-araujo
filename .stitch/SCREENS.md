@@ -3,8 +3,9 @@
 Mapa de telas para geração no Stitch. Todas seguem `.stitch/DESIGN.md`.
 
 **Projeto Stitch:** `projects/11367835346806593695`  
-**Design System:** `assets/18253519892564423504` — *Araujo Workshop OS*  
-**Device padrão:** `DESKTOP` (com variante mental mobile `< 768px`)
+**Design System:** `assets/18253519892564423504` — *Araujo Workshop OS* (v4 — namedColors Stitch ↔ Nuxt)  
+**Fonte de verdade:** `.stitch/DESIGN.md` + `STITCH_COLORS` / `main.css`  
+**Device padrão:** `DESKTOP` (com variante mental mobile abaixo de 768px)
 
 ---
 
@@ -47,18 +48,24 @@ Mapa de telas para geração no Stitch. Todas seguem `.stitch/DESIGN.md`.
 
 ---
 
-## 2. Início (`/`)
+## 2. Início (`/`) — gerada no Stitch
 
-**Shell:** sidebar (logo, nav, Nova OS, perfil) + navbar “Início”.
+**Screen id:** `projects/11367835346806593695/screens/b2aa12536086403799553cbf63697570`  
+**Preview:** `.stitch/screenshots/inicio.png`  
+**HTML:** `.stitch/html/inicio.html`
 
-**Body (max-w-5xl):**
-- Seção **Ordens de serviço** — lista divide-y: Abertas | Em andamento (números mono grandes) + link “Ver todas”
-- Seção **Cadastro** — grid 2: Clientes | Veículos
-- Seção **Financeiro** (se permissão) — Faturamento | Recebido | Pendente + link “Detalhes”
+**Shell:** sidebar do app + navbar “Início” (não redesignar shell nesta tela).
 
-**Proibido:** 3 KPI cards iguais com ícones decorativos flutuantes.
+**Body (max-w-5xl, canvas `#FAFAFA`, space-y-8):**
+1. **Ordens de serviço** — label + “Ver todas →”; painel com divide-y: linha label à esquerda, número mono à direita (Abertas = primary, Em andamento = `#b45e00`) + chevron
+2. **Cadastro** — painel 2 colunas centralizadas: Clientes | Veículos (números `text-4xl` mono)
+3. **Financeiro** — “Detalhes →”; faixa 3 colunas: Faturamento / Recebido (`#16a34a`) / Pendente (`#d97706`)
 
-**Motion:** stagger das seções e linhas (40–60ms).
+**Painel:** branco, borda `#E5E5E5`, radius 6px, sombra suave.
+
+**Motion:** stagger das seções (60ms); hover scale leve nos números de OS; `prefers-reduced-motion`.
+
+**Proibido:** 3 KPI cards iguais com ícones decorativos.
 
 ---
 

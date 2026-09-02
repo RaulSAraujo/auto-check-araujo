@@ -2,277 +2,240 @@
 
 Sistema interno da **Araujo Auto Center** (Franca/SP) — ordens de serviço, clientes, veículos e financeiro para colaboradores da oficina. Interface de software operacional: clara, rápida de escanear e com micro-animações que confirmam ações sem distrair o trabalho.
 
+**Stitch project:** `projects/11367835346806593695`  
+**Stitch asset:** `assets/18253519892564423504`  
+**Código:** Nuxt 4 + Nuxt UI v4 + layers (`1.base`, `2.auth`, `3.home`, …)
+
 ---
 
 ## Configuration — Style Dials
 
 | Dial | Level | Rationale |
 |------|-------|-----------|
-| **Creativity** | `5` | Personalidade de marca sem editorial exagerado — é um dashboard de oficina, não landing page |
-| **Density** | `6` | App diário: tabelas, filtros e KPIs visíveis; whitespace suficiente para respirar, sem “galeria” |
-| **Variance** | `4` | Layouts previsíveis e consistentes (mesma sidebar, mesmos headers) — usuários muddling through |
-| **Motion Intent** | `7` | Experiência viva: springs, stagger de listas, feedback tátil; nunca cinema que atrasa a tarefa |
+| **Creativity** | `5` | Personalidade de marca sem editorial exagerado — dashboard de oficina, não landing |
+| **Density** | `6` | App diário: tabelas, filtros e KPIs visíveis; whitespace para respirar |
+| **Variance** | `4` | Layouts previsíveis (mesma sidebar, mesmos headers) |
+| **Motion Intent** | `7` | Springs, stagger, feedback tátil; nunca cinema que atrasa a tarefa |
 
-> Stitch gera telas estáticas. A seção **Motion** documenta a intenção para implementação em Nuxt + Motion Vue (`motion-v`).
+> Stitch gera telas estáticas. **Motion** documenta a intenção para CSS / Motion Vue no Nuxt.
 
 ---
 
 ## 1. Visual Theme & Atmosphere
 
-Oficina moderna sob luz fria de LED — **prático, metálico, confiável**. Densidade de cockpit leve (Level 6): o colaborador enxerga status da OS, placa e valores sem caçar. Atmosfera **workshop-clean**: superfícies claras, azul da marca como único accent de ação, tipografia sem serifa legível em tablet e desktop.
+Oficina moderna sob luz fria de LED — **prático, metálico, confiável**. Cockpit leve: status da OS, placa e valores sem caçar. Atmosfera **workshop-clean**: azul da marca como único accent de ação.
 
-Sensação alvo: ferramenta profissional que “responde” ao toque — cada clique tem peso (spring), cada lista entra em cascata, cada salvamento confirma status. Sem marketing fluff. Sem purple neon. Sem cards decorativos sem função.
+Sensação alvo: ferramenta que “responde” ao toque. Sem marketing fluff, purple neon ou cards decorativos sem função.
 
-**Brand test (login):** a primeira viewport deve ser inequivocamente Araujo — logo herói, azul da marca, copy curta de acesso interno. Remover a nav e ainda reconhecer a oficina.
+**Brand test (login):** viewport inequivocamente Araujo — tipografia branca + ícone carro no painel marca, azul `#1B7ACE`, copy curta. Remover a nav e ainda reconhecer a oficina.
 
 ---
 
 ## 2. Color Palette & Roles
 
-### Surfaces & Neutrals (workshop)
-- **Workshop Canvas** (#FAFAFA / workshop-50) — Fundo de página / painel body
-- **Workshop Surface** (#FFFFFF) — Cards, tabelas, formulários, sidebar
-- **Workshop Elevated** (#F5F5F5 / workshop-100) — Hover de linhas, inputs muted
-- **Charcoal Ink** (#171717 / workshop-900) — Texto principal — nunca `#000000`
-- **Steel Mute** (#737373 / workshop-500) — Labels secundários, metadados, helper
-- **Dimmed** (#A3A3A3 / workshop-400) — Placeholders, disabled
-- **Whisper Border** (#E5E5E5 / workshop-200) — Bordas 1px estruturais
-- **Deep Workshop** (#0A0A0A / workshop-950) — Fundo dark mode
+**Fonte de verdade:** Stitch `namedColors` do asset `assets/18253519892564423504` (Material FIDELITY a partir do seed). O código Nuxt espelha esses tokens em `main.css` + `STITCH_COLORS` (`brand.ts`).
 
-### Accent (único — primary)
-- **Araujo Blue** (#1B7ACE / brand-500) — CTAs primários, nav ativa, focus rings, links de ação
-- **Araujo Blue Bright** (#0889E6 / brand-400) — Primary em dark mode / hover claro
-- **Araujo Blue Deep** (#035599 / brand-800) — Texto sobre fundos claros de destaque, estados pressed
+### Stitch → Nuxt
 
-### Semantic (não são “segundo accent” de marca)
-- **Signal Red** (#D32F2F / accent-500) — Destrutivo, erros, badge “AUTO CENTER” da logo — **nunca** como CTA primário de fluxo feliz
-- **Success Green** — Recebido / concluído (Nuxt UI `green`)
-- **Warning Amber** — Pendente / atenção (Nuxt UI `amber`)
+| Stitch token | Hex | Nuxt / CSS |
+|--------------|-----|------------|
+| `primary` | `#005ea4` | `brand-500` / `--stitch-primary` / `text-primary` |
+| `primary_container` | `#1477cb` | `brand-400` (dark primary) |
+| `secondary` | `#b6171e` | `accent-500` / secondary |
+| `background` / `surface` | `#fcf9f8` | `workshop-50` / `bg-muted` |
+| `surface_container_lowest` | `#ffffff` | `bg-default` |
+| `surface_variant` | `#e5e2e1` | `workshop-200` / `border-default` |
+| `on_surface` | `#1c1b1b` | `workshop-900` / `text-highlighted` |
+| `on_surface_variant` | `#414752` | `workshop-500` / `text-muted` |
+| `outline` | `#717783` | `workshop-400` / `text-dimmed` |
+| `outline_variant` | `#c0c7d3` | `workshop-300` |
+| `tertiary_container` | `#b45e00` | `caution-500` / `text-warning` (Em andamento) |
+| finance success | `#16a34a` | `ok-500` / `text-success` |
+| finance warning | `#d97706` | `caution-400` / Pendente |
+| `error` | `#ba1a1a` | erros de sistema |
+
+### Accent de ação
+- Primary único: Stitch `primary` `#005ea4` — CTAs, nav ativa, links, KPI “Abertas”
+- Secondary Stitch: destrutivo / ênfase vermelha — **nunca** CTA feliz
 
 ### Shadows
-- **Diffused Panel** — `0 1px 2px rgba(10,10,10,0.04), 0 4px 12px -4px rgba(10,10,10,0.06)` — painéis e tabelas
-- Sem glow externo, sem sombra colorida azul/roxa
-
-### Banned colors
-- Purple / violet / indigo neon gradients (“AI purple”)
-- Pure black `#000000` em texto ou fundo
-- Accent saturado > 80% fora da escala brand já definida
-- Misturar cinzas quentes (cream/terracotta) com este sistema frio
-
----
-
-## 3. Typography Rules
-
-- **Display / UI headings:** `Public Sans` — weight 600–700, tracking tight (`-0.02em` em títulos), hierarchy por peso e cor, não por tamanho gritante
-- **Body:** `Public Sans` 400 — leading `1.5–1.65`, máx. ~65ch em textos longos (raros no app)
-- **Mono / Numbers:** `JetBrains Mono` ou `ui-monospace` — placas, valores monetários, contadores KPI, IDs — sempre `tabular-nums`
-- **Section labels:** `Public Sans` 600, `0.75rem`, `uppercase`, `tracking-wide`, cor Steel Mute
-
-### Scale (dashboard)
-| Token | Size | Use |
-|-------|------|-----|
-| Page title | `1.25rem` / `1.5rem` | Navbar / H1 da página |
-| Section | `0.75rem` uppercase | “Ordens de serviço”, “Financeiro” |
-| KPI number | `1.875rem`–`2.25rem` mono | Contadores do Início |
-| Body | `0.875rem`–`1rem` | Tabelas, formulários |
-| Meta | `0.75rem`–`0.8125rem` | Timestamps, papel do colaborador |
+- Light: `shadow-sm` em painéis
+- Dark: `dark:shadow-none`
 
 ### Banned
-- `Inter` como fonte de marca (Public Sans já é a voz do produto)
-- Serif em qualquer tela do dashboard
-- Títulos com gradient text
-
-### Copy (UX — Krug)
-- Labels óbvios em português: “Entrar”, “Nova OS”, “Salvar”, “Excluir”
-- Cortar metade das palavras; sem happy-talk (“Bem-vindo ao nosso sistema…”)
-- Erros = o quê + como corrigir: “Usuário ou senha incorretos. Tente de novo.”
-- Loading: “Salvando…”, “Carregando…” (ellipsis tipográfico `…`)
-- Um termo por conceito: sempre “Ordens de serviço” / “OS”, não misturar “Pedidos”
+- Purple neon; pure black `#000000`
+- Hex de marca legado `#1B7ACE` / `#D32F2F` / `#FAFAFA` fora de `STITCH_COLORS` / CSS vars
+- Escala Material do Stitch **divergente** do código (sempre sincronizar `namedColors` → `main.css`)
 
 ---
 
-## 4. Component Stylings
+## 3. Dark Mode (obrigatório no dashboard)
+
+Hierarquia (espelha light: canvas atrás, painel na frente):
+
+| Papel | Light | Dark |
+|-------|-------|------|
+| Canvas (`bg-muted`) | `#fcf9f8` | `#0c0e12` |
+| Surface (`bg-default`) | `#ffffff` | `#161b24` |
+| Elevated (painéis) | `#f6f3f2` | `#1e2533` |
+| Border | whisper | `rgb(192 199 211 / 0.16–0.24)` |
+| Primary | `#005ea4` | `#1477cb` (tint `/15`, sem fill sólido) |
+| Texto muted | `#414752` | `#a8b0c0` |
+
+**Regras:**
+1. Tokens semânticos Nuxt UI em páginas autenticadas
+2. Home: `bg-default dark:bg-elevated` + `dark:border-accented`
+3. Nav ativa: `bg-primary/10` (dark `/15`) — sem highlight sólido
+4. Login sempre light
+5. Escala workshop 700–950 **distinta** (800 ≠ 900)
+6. `--ui-bg-muted` no dark deve ser o tom **mais fundo**; `--ui-bg` / elevated mais claros
+
+---
+
+## 4. Typography Rules
+
+- **UI:** `Public Sans` 400–700, tracking tight em títulos
+- **Mono / KPI:** `JetBrains Mono` (`--font-mono`) + `tabular-nums` — placas, dinheiro, contadores
+- **Section labels:** 600, `text-sm`, `uppercase`, `tracking-widest`, `text-muted`
+
+### Scale
+| Token | Size | Use |
+|-------|------|-----|
+| Login brand title | `text-3xl`–`text-5xl` font-black | “Araujo / Auto Center” no painel esquerdo |
+| Page title | `1.25rem` | Navbar |
+| Section | `text-sm` uppercase tracking-widest | “Ordens de serviço” |
+| KPI row | `text-3xl` mono bold | Abertas / Em andamento |
+| KPI cadastro | `text-4xl` mono bold | Clientes / Veículos |
+| Money | `text-xl` mono bold | Faixa financeira |
+| Body | `0.875rem`–`1rem` | Forms / tabelas |
+
+### Copy (Krug)
+- PT claro: “Entrar”, “Nova OS”, “Ver todas”, “Detalhes”
+- Erro login: “Não foi possível entrar” + “Usuário ou senha incorretos. Tente de novo.”
+- Loading: “Salvando…”, “Carregando…”
+- Um termo: “Ordens de serviço” / “OS”
+
+---
+
+## 5. Component Stylings
 
 ### Buttons
-- Primary: fill Araujo Blue, texto branco, radius `0.375rem` (6px — alinha `--ui-radius`)
-- Secondary: ghost / outline neutral
-- Destructive: Signal Red outline ou soft
-- Active: `scale(0.98)` + spring — feedback tátil
-- Hover: escurece 1 step da escala, **sem** glow
-- Min touch target `44×44px`; em mobile primary full-width quando for CTA de formulário
-- Label específico: “Salvar OS”, não “Continuar”
-- Icon-only: obrigatório `aria-label`
+- Primary: Araujo Blue, radius 6px (`--ui-radius: 0.375rem`)
+- Active: `scale(0.98)`; hover sem glow
+- Icon-only: `aria-label` obrigatório (ex.: “Mostrar senha” / “Ocultar senha”)
 
-### Panels / Tables (cards com propósito)
-- Usar painel com borda Whisper + Diffused Panel **somente** quando agrupa interação ou dados
-- Preferir `divide-y` em listas densas em vez de grid de 3 cards iguais
-- Radius `0.375rem`–`0.5rem` (software, não “pill blob” 2.5rem)
-- Padding interno `1rem`–`1.5rem` (mobile `1rem`)
+### Panels
+- `rounded-[6px] border border-default bg-default shadow-sm dark:shadow-none`
+- Listas densas: `divide-y divide-default`
+- Só quando agrupa dados/interação
 
 ### Inputs / Forms
-- Label acima; helper opcional; erro abaixo em Signal Red
-- Focus ring: Araujo Blue `2px` com offset — nunca `outline-none` sem substituto
-- `autocomplete` / `name` / `type` corretos; username com `spellcheck="false"`
-- Placeholder termina com `…` e mostra exemplo real: `ex.: joao.silva`
-- Submit permanece habilitado até o request iniciar; depois loading no botão
-- Unsaved changes: avisar antes de sair
+- Label acima; erro abaixo
+- Placeholder: Dimmed `#A3A3A3` (não azul-acinzentado fraco; não mesma cor do valor)
+- Senha: toggle olho no `#trailing` (`type` text/password); esconder `::-ms-reveal`
+- Username: `spellcheck="false"`, placeholder exemplo `j.silva`
+- Login placeholders Stitch: `j.silva` / `••••••••` (sem prefixo “ex.:” se o mock não tiver)
 
-### Navigation (Trunk Test)
-- Logo Araujo sempre visível (sidebar header)
-- Item ativo: fundo `primary/10` + texto primary + highlight
-- Página atual: título claro na navbar (“Início”, “Clientes”, “Financeiro”)
-- CTA contextual “Nova OS” no footer da sidebar (quem tem permissão)
-- Footer: nome do colaborador · papel · Sair · color mode
-- Sidebar colapsável; ícones com labels quando expandida
+### Navigation
+- Logo / marca na sidebar; item ativo `primary/10` + texto primary
+- CTA “Nova OS” no footer; nome · papel · Sair · color mode
 
-### Loaders
-- Skeleton shimmer alinhado ao layout (KPI, linhas de tabela) — **não** spinner circular genérico como padrão
-- Toasts / validação: `aria-live="polite"`
-
-### Empty states
-- Ícone Lucide + uma linha + CTA: “Nenhuma OS aberta. Criar OS”
-- Nunca só “No data”
-
-### Status badges (OS)
-- Cores de `ORDEM_STATUS_COLOR` / labels em PT — consistentes em tabela, detalhe e print
+### Loaders / Empty
+- Skeleton shimmer (não spinner como padrão)
+- Empty: ícone + uma linha + CTA
 
 ---
 
-## 5. Layout Principles
+## 6. Screen Patterns (implementados)
 
-### Shell do app
-- `UDashboardGroup` + sidebar esquerda + painel
-- Conteúdo: `max-w-5xl`–`max-w-6xl` para resumos; tabelas full-bleed do painel
-- Body background Workshop Canvas; surfaces brancas
+### Login `/login` (Stitch `…/screens/ce416a8e3a574b4ebbacf0c39798deab`)
+- Split **45% / 55%** (`md:w-[45%]` / `md:w-[55%]`)
+- Esquerda: gradiente `#1B7ACE → #0A0A0A`, noise, streak diagonal, ícone carro + “Araujo / Auto Center” font-black, Franca/SP, “Sistema interno da oficina.”, status “Sistema Operacional” com pulse
+- Direita: canvas `#FAFAFA`, **card** branco `max-w-[400px]` borda whisper: eyebrow “Acesso colaboradores”, H1 “Entrar”, form, footer com link “Contate o administrador.”
+- Motion: rise no card; pulse no status; press no botão
+- Sempre `colorMode: 'light'`
+
+### Início `/` (Stitch `…/screens/b2aa12536086403799553cbf63697570`)
+- Shell = `layout: 'app'` (sidebar existente)
+- Body `bg-muted`, conteúdo `max-w-5xl space-y-8`
+1. **Ordens:** label + “Ver todas”; linhas label← →número+chevron (Abertas=`text-primary`, Em andamento=`text-warning`)
+2. **Cadastro:** 2 colunas centralizadas, números `text-4xl` mono
+3. **Financeiro** (permissão): faixa 3 colunas — Faturamento / Recebido=`text-success` / Pendente=`text-warning`; “Detalhes” → `/financeiro`
+- Motion: stagger seções 60ms; hover scale nos números de OS
+- Dark: tokens semânticos (ver §3)
+
+---
+
+## 7. Layout Principles
+
+- Shell: `UDashboardGroup` + sidebar + `UDashboardPanel`
 - `min-h-dvh` — nunca `h-screen`
-
-### Page anatomy (toda página autenticada)
-1. Navbar com título + sidebar toggle  
-2. Uma ação primária óbvia (se aplicável)  
-3. Conteúdo escaneável: seção → dados → ações secundárias  
-
-### Home / KPIs
-- **Proibido** grid de 3 cards iguais decorativos
-- Usar listas com `divide-y` (Ordens) + grid 2 colunas (Cadastro) + faixa financeira em `1fr`×3 com divisores — hierarquia por densidade, não por sombra
-
-### Login (brand-first)
-- Fundo muted; card central compacto
-- Logo herói → título “Sistema Interno” → tagline curta → formulário → ajuda senha
-- Sem stats, sem promo, sem “scroll to explore”
-
-### Grid
-- CSS Grid para estruturas; collapse single-column `< 768px`
+- Collapse single-column abaixo de 768px
+- Sem grid de 3 cards iguais decorativos
 - Sem `calc(33% - 1rem)` hacks
-- Sem sobreposição de texto/imagem (sem z-index de conteúdo)
 
 ---
 
-## 6. Responsive Rules
+## 8. Responsive Rules
 
-- Mobile-first: colunas empilham; sidebar vira overlay/drawer
-- Sem scroll horizontal
-- Tipografia: body ≥ `14px` / `0.875rem`
-- Touch targets ≥ `44px`
-- Safe areas: `env(safe-area-inset-*)` em full-bleed
-- Testar: `375`, `768`, `1024`, `1440`
+- Mobile-first; sem scroll horizontal
+- Body ≥ 14px; touch ≥ 44px
+- Login: brand empilha acima do form
+- Testar: 375, 768, 1024, 1440
 
 ---
 
-## 7. Motion & Interaction (implementação Nuxt)
+## 9. Motion & Interaction
 
-> Stitch = estático. Código = `motion-v` + CSS. Respeitar **sempre** `prefers-reduced-motion: reduce` (desligar loops e reduzir a fade simples).
-
-### Physics
-- Spring padrão: `stiffness: 100`, `damping: 20`
-- Sem easing linear em UI interativa
-- Animar **somente** `transform` e `opacity` — nunca `top`/`left`/`width`/`height`
-- Nunca `transition: all` — listar propriedades
-
-### Core motion set (mínimo 2–3 por superfície)
-1. **Page enter** — painel body: fade + `translateY(6px→0)` spring, 200–300ms  
-2. **List stagger** — linhas de tabela / KPIs: delay `index * 40–60ms`, waterfall  
-3. **Press feedback** — botões e rows clicáveis: `scale(0.98)` no tap  
-4. **Nav active** — highlight da sidebar com layout transition suave  
-5. **Skeleton shimmer** — loading; para sob reduced-motion  
-6. **Toast / status** — slide+fade; interruptível  
-
-### Perpetual (só onde agrega status)
-- Pulse suave em badge “em andamento” / “pendente” (opacity 0.7↔1), pausa com reduced-motion
-- Shimmer só em skeletons
-
-### Performance
-- Motion em componentes folha; não animar layouts pais pesados
-- Listas > 50 itens: virtualizar; não stagger milhares de nós
+- Spring: stiffness 100, damping 20 (quando Motion Vue)
+- Só `transform` + `opacity`; nunca `transition: all`
+- `prefers-reduced-motion: reduce` desliga loops e stagger
+- Login: rise + pulse + press
+- Home: section stagger + row press + KPI hover scale
 
 ---
 
-## 8. UX Heuristics (obrigatório em toda tela)
+## 10. UX Heuristics
 
-**Score alvo: 10/10** — “Don’t Make Me Think”.
-
-| Heurística | Aplicação no produto |
-|------------|----------------------|
-| Visibilidade de status | Skeleton, botão loading, toast “Salvo”, badges de OS |
-| Linguagem do mundo real | Placa, cliente, OS, orçamento — jargão de oficina, não de SaaS |
-| Controle do usuário | Cancelar modais, voltar, undo quando possível; confirmar exclusão |
-| Consistência | Mesmos labels/rotas PT; mesmos padrões de tabela Nuxt UI |
-| Prevenção de erro | Inputs mascarados (placa), defaults sensatos, warn unsaved |
-| Reconhecimento | Filtros na URL, breadcrumbs/título, opções visíveis |
-| Flexibilidade | Atalhos futuros (Cmd+K); CTA Nova OS sempre à mão |
-| Estética minimalista | Um CTA primário por vista; cortar copy |
-| Recuperação de erro | Mensagem + próximo passo; preservar input |
-| Trunk test | Logo + título da página + nav + opções locais sempre óbvios |
-
-### Severity ao auditar
-- 4 = bloqueia tarefa (ex.: sem feedback de save) → corrigir imediatamente  
-- 3 = falha frequente de tarefa → em breve  
-- 2/1 = atrito cosmético  
+Score alvo 10/10 — Don’t Make Me Think. Trunk test em toda página autenticada. Status visível (skeleton/toast). Um CTA primário. Erros com próximo passo.
 
 ---
 
-## 9. Web Interface Guidelines (checklist de implementação)
+## 11. Web Interface Guidelines
 
-- Focus visível com `:focus-visible`; sticky não cobre o foco
-- `button` = ação; `NuxtLink`/`a` = navegação
-- Imagens com `width`/`height` ou aspect; logo acima da dobra com prioridade
-- Formatos: `Intl.NumberFormat` / `DateTimeFormat` (pt-BR)
-- Destructive: modal de confirmação ou janela de undo — nunca delete imediato
-- `touch-action: manipulation`; modais com `overscroll-behavior: contain`
-- Dark: `color-scheme` coerente; superfícies workshop-950
-- Headings `text-wrap: balance` / `pretty` onde couber
-- Conteúdo longo: `truncate` / `min-w-0` em flex
+- `:focus-visible`; `button` vs `NuxtLink`
+- `Intl.*` pt-BR; destructive com confirmação
+- Dark: `color-scheme: dark`; login isolado em light
+- Headings `text-balance` / `text-pretty` onde couber
 
 ---
 
-## 10. Anti-Patterns (Banned)
+## 12. Anti-Patterns (Banned)
 
-- Emojis na UI
-- `Inter` / serif genérica / gradient text em headers
-- Pure black `#000000`
-- Neon glow, purple AI aesthetic, cream+terracotta “AI brochure”
-- Cards iguais em 3 colunas para “features”
-- Hero centralizado com fluff (login pode ser centrado — é auth, não marketing hero editorial)
-- “Scroll to explore”, chevrons quicando, happy-talk
-- Nomes genéricos “John Doe”, “Acme”
-- Copy AI: “Elevate”, “Seamless”, “Unleash”, “Next-Gen”
+- Emojis; Inter; serif; gradient text; pure black
+- Purple neon; cream+terracotta brochure
+- 3 feature cards iguais; fluff “Scroll to explore”
 - Spinner circular como único loading
-- `h-screen`, `transition: all`, `outline-none` sem ring
+- `h-screen`; `transition: all`; `outline-none` sem ring
 - Icon button sem `aria-label`
-- Gesture-only sem alternativa teclado/click
-- Sobreposição de texto em imagem
-- Segundo accent competindo com Araujo Blue nos CTAs (vermelho só destrutivo/logo)
+- Hex de superfície em dashboard (quebra dark mode)
+- Forçar `-webkit-text-fill-color` no input sem exceção para `::placeholder`
+- Vermelho como CTA de fluxo feliz
 
 ---
 
-## 11. Tokens → código (Nuxt UI)
+## 13. Tokens → código (Nuxt UI)
 
-| Token | Onde |
-|-------|------|
-| primary | `brand` / `#1B7ACE` |
-| secondary (destrutivo/logo) | `accent` / `#D32F2F` |
-| neutral | `workshop` |
+| Token | Código |
+|-------|--------|
+| primary | `brand` / Stitch `#005ea4` (dark: brand-400 `#1477cb`) |
+| secondary (destrutivo) | `accent` / Stitch `#b6171e` |
+| neutral | `workshop` ← surface `#fcf9f8` / on_surface `#1c1b1b` |
+| success | `ok` / `#16a34a` |
+| warning | `caution` / `#b45e00` (400 = `#d97706` Pendente) |
 | radius | `--ui-radius: 0.375rem` |
-| font | `--font-sans: 'Public Sans'` |
-| Layout | `layers/1.base` + `UDashboard*` |
+| sans / mono | Public Sans / JetBrains Mono |
+| tokens JS | `STITCH_COLORS` em `layers/1.base/app/utils/brand.ts` |
+| tokens CSS | `--stitch-*` + escalas em `main.css` |
 
-Manter este `DESIGN.md` como fonte de verdade para Stitch e para PRs de UI.
+Fonte de verdade: este arquivo + `.stitch/SCREENS.md`. Atualizar ambos ao fechar uma tela no Stitch/código.

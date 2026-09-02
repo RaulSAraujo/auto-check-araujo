@@ -26,7 +26,7 @@ const passwordInputId = useId()
       name="username"
       required
       :ui="{
-        label: 'text-sm font-semibold text-[#171717]'
+        label: 'text-sm font-semibold text-highlighted'
       }"
     >
       <UInput
@@ -39,7 +39,7 @@ const passwordInputId = useId()
         :spellcheck="false"
         class="w-full"
         :ui="{
-          base: 'rounded-[6px] border-[#E5E5E5] bg-white text-[#171717] caret-[#171717] font-medium placeholder:text-[#a3a3a3]'
+          base: 'rounded-[6px] border-default bg-default text-highlighted caret-highlighted font-medium placeholder:text-dimmed'
         }"
       />
     </UFormField>
@@ -49,7 +49,7 @@ const passwordInputId = useId()
       name="password"
       required
       :ui="{
-        label: 'text-sm font-semibold text-[#171717]'
+        label: 'text-sm font-semibold text-highlighted'
       }"
     >
       <UInput
@@ -63,7 +63,7 @@ const passwordInputId = useId()
         size="lg"
         class="w-full"
         :ui="{
-          base: 'rounded-[6px] border-[#E5E5E5] bg-white text-[#171717] caret-[#171717] font-medium placeholder:text-[#a3a3a3]',
+          base: 'rounded-[6px] border-default bg-default text-highlighted caret-highlighted font-medium placeholder:text-dimmed',
           trailing: 'pe-1'
         }"
       >
@@ -120,7 +120,6 @@ const passwordInputId = useId()
   }
 }
 
-/* Esconde o reveal nativo do Edge */
 :deep(::-ms-reveal) {
   display: none;
 }

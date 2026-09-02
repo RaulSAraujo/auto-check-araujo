@@ -7,8 +7,8 @@ export default defineAppConfig({
       secondary: 'accent',
       neutral: 'workshop',
       info: 'brand',
-      success: 'green',
-      warning: 'amber',
+      success: 'ok',
+      warning: 'caution',
       error: 'red'
     },
     dashboardSidebar: {
@@ -27,8 +27,8 @@ export default defineAppConfig({
           active: true,
           variant: 'pill',
           class: {
-            link: 'bg-primary/10 text-primary',
-            linkLeadingIcon: 'text-primary'
+            link: 'bg-primary/10 text-primary dark:bg-primary/15 dark:text-brand-300',
+            linkLeadingIcon: 'text-primary dark:text-brand-300'
           }
         }
       ]

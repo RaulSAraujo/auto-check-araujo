@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { formatMoney } from '~~/shared/utils/money'
+
 defineOptions({ name: 'HomeOperationalSummary' })
 
 defineProps<{
@@ -16,115 +18,132 @@ defineProps<{
 </script>
 
 <template>
-  <div class="mx-auto w-full max-w-5xl space-y-6">
-    <section aria-labelledby="home-orders-heading">
-      <div class="flex items-center justify-between gap-3">
+  <div class="home-summary mx-auto w-full max-w-5xl space-y-8">
+    <section
+      class="home-summary__section"
+      style="--home-stagger: 0"
+      aria-labelledby="home-orders-heading"
+    >
+      <div class="mb-3 flex items-end justify-between gap-3">
         <h2
           id="home-orders-heading"
-          class="text-xs font-semibold uppercase tracking-wide text-muted"
+          class="text-sm font-semibold uppercase tracking-widest text-muted"
         >
           Ordens de serviço
         </h2>
         <UButton
-          to="/ordens"
+          :to="APP_ROUTES.orders"
           label="Ver todas"
           variant="link"
           size="sm"
+          color="primary"
           trailing-icon="i-lucide-arrow-right"
+          class="font-medium"
         />
       </div>
 
-      <div
-        class="mt-3 overflow-hidden rounded-md border border-default bg-default divide-y divide-default shadow-sm"
-      >
-        <NuxtLink
-          to="/ordens?status=aberta"
-          class="flex min-h-14 items-center justify-between gap-4 px-4 py-3.5 transition-colors hover:bg-elevated/60"
-        >
-          <div>
-            <p class="text-sm text-muted">
+      <ul class="home-summary__panel divide-y divide-default overflow-hidden rounded-[6px] border border-default bg-default shadow-sm dark:border-accented dark:bg-elevated dark:shadow-none">
+        <li>
+          <NuxtLink
+            :to="`${APP_ROUTES.orders}?status=aberta`"
+            class="home-summary__row group flex min-h-14 items-center justify-between gap-4 px-4 py-4 transition-colors hover:bg-elevated/60"
+          >
+            <span class="text-base font-medium text-highlighted">
               Abertas
-            </p>
-            <p class="mt-0.5 text-3xl font-semibold font-mono tabular-nums tracking-tight text-highlighted">
-              <USkeleton
-                v-if="pending"
-                class="h-9 w-12"
+            </span>
+            <div class="flex items-center gap-4">
+              <span class="home-summary__num text-3xl font-bold tabular-nums tracking-tight text-primary transition-transform group-hover:scale-105">
+                <USkeleton
+                  v-if="pending"
+                  class="inline-block h-9 w-10"
+                />
+                <template v-else>
+                  {{ osAbertas }}
+                </template>
+              </span>
+              <UIcon
+                name="i-lucide-chevron-right"
+                class="size-5 shrink-0 text-dimmed"
+                aria-hidden="true"
               />
-              <span v-else>{{ osAbertas }}</span>
-            </p>
-          </div>
-          <UIcon
-            name="i-lucide-chevron-right"
-            class="size-5 shrink-0 text-muted"
-            aria-hidden="true"
-          />
-        </NuxtLink>
-
-        <NuxtLink
-          to="/ordens?status=em_andamento"
-          class="flex min-h-14 items-center justify-between gap-4 px-4 py-3.5 transition-colors hover:bg-elevated/60"
-        >
-          <div>
-            <p class="text-sm text-muted">
+            </div>
+          </NuxtLink>
+        </li>
+        <li>
+          <NuxtLink
+            :to="`${APP_ROUTES.orders}?status=em_andamento`"
+            class="home-summary__row group flex min-h-14 items-center justify-between gap-4 px-4 py-4 transition-colors hover:bg-elevated/60"
+          >
+            <span class="text-base font-medium text-highlighted">
               Em andamento
-            </p>
-            <p class="mt-0.5 text-3xl font-semibold font-mono tabular-nums tracking-tight text-highlighted">
-              <USkeleton
-                v-if="pending"
-                class="h-9 w-12"
+            </span>
+            <div class="flex items-center gap-4">
+              <span class="home-summary__num text-3xl font-bold tabular-nums tracking-tight text-warning transition-transform group-hover:scale-105">
+                <USkeleton
+                  v-if="pending"
+                  class="inline-block h-9 w-10"
+                />
+                <template v-else>
+                  {{ osAndamento }}
+                </template>
+              </span>
+              <UIcon
+                name="i-lucide-chevron-right"
+                class="size-5 shrink-0 text-dimmed"
+                aria-hidden="true"
               />
-              <span v-else>{{ osAndamento }}</span>
-            </p>
-          </div>
-          <UIcon
-            name="i-lucide-chevron-right"
-            class="size-5 shrink-0 text-muted"
-            aria-hidden="true"
-          />
-        </NuxtLink>
-      </div>
+            </div>
+          </NuxtLink>
+        </li>
+      </ul>
     </section>
 
-    <section aria-labelledby="home-registry-heading">
+    <section
+      class="home-summary__section"
+      style="--home-stagger: 1"
+      aria-labelledby="home-registry-heading"
+    >
       <h2
         id="home-registry-heading"
-        class="text-xs font-semibold uppercase tracking-wide text-muted"
+        class="mb-3 text-sm font-semibold uppercase tracking-widest text-muted"
       >
         Cadastro
       </h2>
 
-      <dl
-        class="mt-3 grid overflow-hidden rounded-md border border-default bg-default shadow-sm sm:grid-cols-2 sm:divide-x divide-default"
-      >
+      <dl class="home-summary__panel grid overflow-hidden rounded-[6px] border border-default bg-default shadow-sm dark:border-accented dark:bg-elevated dark:shadow-none sm:grid-cols-2 sm:divide-x sm:divide-default">
         <NuxtLink
-          to="/clientes"
-          class="block px-4 py-5 transition-colors hover:bg-elevated/60"
+          :to="APP_ROUTES.customers"
+          class="flex flex-col items-center justify-center px-4 py-6 text-center transition-colors hover:bg-elevated/60"
         >
-          <dt class="text-sm text-muted">
+          <dt class="mb-1 text-sm text-muted">
             Clientes
           </dt>
-          <dd class="mt-1 text-2xl font-semibold font-mono tabular-nums tracking-tight text-highlighted">
+          <dd class="home-summary__num text-4xl font-bold tabular-nums tracking-tight text-highlighted">
             <USkeleton
               v-if="pending"
-              class="h-8 w-14"
+              class="mx-auto h-10 w-16"
             />
-            <span v-else>{{ clientesCount }}</span>
+            <template v-else>
+              {{ clientesCount }}
+            </template>
           </dd>
         </NuxtLink>
 
         <NuxtLink
-          to="/veiculos"
-          class="block border-t border-default px-4 py-5 transition-colors hover:bg-elevated/60 sm:border-t-0"
+          :to="APP_ROUTES.vehicles"
+          class="flex flex-col items-center justify-center border-t border-default px-4 py-6 text-center transition-colors hover:bg-elevated/60 sm:border-t-0"
         >
-          <dt class="text-sm text-muted">
+          <dt class="mb-1 text-sm text-muted">
             Veículos
           </dt>
-          <dd class="mt-1 text-2xl font-semibold font-mono tabular-nums tracking-tight text-highlighted">
+          <dd class="home-summary__num text-4xl font-bold tabular-nums tracking-tight text-highlighted">
             <USkeleton
               v-if="pending"
-              class="h-8 w-14"
+              class="mx-auto h-10 w-16"
             />
-            <span v-else>{{ veiculosCount }}</span>
+            <template v-else>
+              {{ veiculosCount }}
+            </template>
           </dd>
         </NuxtLink>
       </dl>
@@ -132,64 +151,110 @@ defineProps<{
 
     <section
       v-if="showFinance"
+      class="home-summary__section"
+      style="--home-stagger: 2"
       aria-labelledby="home-finance-heading"
     >
-      <div class="flex items-center justify-between gap-3">
+      <div class="mb-3 flex items-end justify-between gap-3">
         <h2
           id="home-finance-heading"
-          class="text-xs font-semibold uppercase tracking-wide text-muted"
+          class="text-sm font-semibold uppercase tracking-widest text-muted"
         >
           Financeiro
         </h2>
         <UButton
-          :to="APP_ROUTES.sales"
+          :to="APP_ROUTES.finance"
           label="Detalhes"
           variant="link"
           size="sm"
+          color="primary"
           trailing-icon="i-lucide-arrow-right"
+          class="font-medium"
         />
       </div>
 
-      <div
-        class="mt-3 grid gap-px overflow-hidden rounded-md border border-default bg-default shadow-sm sm:grid-cols-3"
-      >
-        <div class="bg-default px-4 py-5">
-          <p class="text-sm text-muted">
+      <div class="home-summary__panel grid overflow-hidden rounded-[6px] border border-default bg-default shadow-sm dark:border-accented dark:bg-elevated dark:shadow-none sm:grid-cols-3 sm:divide-x sm:divide-default">
+        <div class="px-5 py-5 transition-colors hover:bg-elevated/60">
+          <p class="mb-2 text-xs font-medium uppercase tracking-wide text-muted">
             Faturamento
           </p>
-          <p class="mt-1 text-lg font-semibold font-mono tabular-nums text-highlighted">
+          <p class="home-summary__num text-xl font-bold tabular-nums text-highlighted">
             <USkeleton
               v-if="pendingFinance"
               class="h-7 w-28"
             />
-            <span v-else>{{ formatMoney(totalFaturado) }}</span>
+            <template v-else>
+              {{ formatMoney(totalFaturado) }}
+            </template>
           </p>
         </div>
-        <div class="bg-default px-4 py-5">
-          <p class="text-sm text-muted">
+        <div class="border-t border-default px-5 py-5 transition-colors hover:bg-elevated/60 sm:border-t-0">
+          <p class="mb-2 text-xs font-medium uppercase tracking-wide text-muted">
             Recebido
           </p>
-          <p class="mt-1 text-lg font-semibold font-mono tabular-nums text-success">
+          <p class="home-summary__num text-xl font-bold tabular-nums text-success">
             <USkeleton
               v-if="pendingFinance"
               class="h-7 w-28"
             />
-            <span v-else>{{ formatMoney(totalPago) }}</span>
+            <template v-else>
+              {{ formatMoney(totalPago) }}
+            </template>
           </p>
         </div>
-        <div class="bg-default px-4 py-5">
-          <p class="text-sm text-muted">
+        <div class="border-t border-default px-5 py-5 transition-colors hover:bg-elevated/60 sm:border-t-0">
+          <p class="mb-2 text-xs font-medium uppercase tracking-wide text-muted">
             Pendente
           </p>
-          <p class="mt-1 text-lg font-semibold font-mono tabular-nums text-warning">
+          <p class="home-summary__num text-xl font-bold tabular-nums text-caution-400">
             <USkeleton
               v-if="pendingFinance"
               class="h-7 w-28"
             />
-            <span v-else>{{ formatMoney(totalPendente) }}</span>
+            <template v-else>
+              {{ formatMoney(totalPendente) }}
+            </template>
           </p>
         </div>
       </div>
     </section>
   </div>
 </template>
+
+<style scoped>
+.home-summary__num {
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+}
+
+.home-summary__section {
+  animation: home-summary-rise 420ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: calc(var(--home-stagger, 0) * 60ms);
+}
+
+.home-summary__row:active {
+  transform: scale(0.995);
+}
+
+@keyframes home-summary-rise {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .home-summary__section {
+    animation: none;
+  }
+
+  .home-summary__row:active,
+  .home-summary__row:hover .home-summary__num {
+    transform: none;
+  }
+}
+</style>

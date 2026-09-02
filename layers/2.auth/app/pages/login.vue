@@ -45,8 +45,7 @@ async function onSubmit() {
 </script>
 
 <template>
-  <div class="auth-login light flex min-h-dvh flex-col antialiased text-[#171717] md:flex-row">
-    <!-- Left: branding ~45% (Stitch) -->
+  <div class="auth-login light flex min-h-dvh flex-col antialiased text-highlighted md:flex-row">
     <aside
       class="auth-login__brand relative z-10 flex min-h-[19rem] w-full shrink-0 flex-col justify-between overflow-hidden p-8 shadow-[4px_0_24px_rgba(0,0,0,0.1)] md:min-h-dvh md:w-[45%] md:p-16 lg:p-24"
       aria-label="Marca Araujo Auto Center"
@@ -94,26 +93,25 @@ async function onSubmit() {
 
       <div class="relative z-10 mt-10 hidden items-center gap-2 font-mono text-xs uppercase tracking-[0.2em] text-white/40 md:mt-0 md:flex">
         <span
-          class="auth-login__pulse size-2 shrink-0 rounded-full bg-green-500"
+          class="auth-login__pulse size-2 shrink-0 rounded-full bg-ok-500"
           aria-hidden="true"
         />
         Sistema Operacional
       </div>
     </aside>
 
-    <!-- Right: form ~55% (Stitch) -->
-    <main class="relative flex w-full flex-1 items-center justify-center bg-[#FAFAFA] p-8 md:w-[55%] md:p-16">
+    <main class="relative flex w-full flex-1 items-center justify-center bg-muted p-8 md:w-[55%] md:p-16">
       <div
-        class="auth-login__card w-full max-w-[400px] rounded-lg border border-[#E5E5E5] bg-white p-8 shadow-sm md:p-10"
+        class="auth-login__card w-full max-w-[400px] rounded-[6px] border border-default bg-default p-8 shadow-sm md:p-10"
       >
         <header class="mb-8">
-          <p class="mb-2 text-xs font-semibold uppercase tracking-wider text-[#717783]">
+          <p class="mb-2 text-xs font-semibold uppercase tracking-wider text-dimmed">
             Acesso colaboradores
           </p>
-          <h1 class="mb-2 text-3xl font-semibold tracking-tight text-[#171717] text-balance">
+          <h1 class="mb-2 text-3xl font-semibold tracking-tight text-highlighted text-balance">
             Entrar
           </h1>
-          <p class="text-sm font-medium text-[#414752] text-pretty">
+          <p class="text-sm font-medium text-muted text-pretty">
             Use seu usuário e senha da oficina.
           </p>
         </header>
@@ -124,12 +122,12 @@ async function onSubmit() {
           @submit="onSubmit"
         />
 
-        <div class="mt-8 border-t border-[#E5E5E5] pt-6 text-center">
-          <p class="text-xs font-medium text-[#717783]">
+        <div class="mt-8 border-t border-default pt-6 text-center">
+          <p class="text-xs font-medium text-dimmed">
             Esqueceu a senha?
             <a
               :href="BRAND.facebookUrl"
-              class="font-semibold text-[#1B7ACE] underline-offset-2 decoration-[#1B7ACE]/30 transition-colors hover:underline"
+              class="font-semibold text-primary underline-offset-2 decoration-primary/30 transition-colors hover:underline"
               target="_blank"
               rel="noopener noreferrer"
             >Contate o administrador.</a>
@@ -146,29 +144,33 @@ async function onSubmit() {
 }
 
 .auth-login :deep(input) {
-  color: #171717;
+  color: var(--stitch-on-surface);
 }
 
 .auth-login :deep(input::placeholder) {
-  color: #a3a3a3;
-  -webkit-text-fill-color: #a3a3a3;
+  color: color-mix(in srgb, var(--stitch-outline-variant) 60%, transparent);
+  -webkit-text-fill-color: color-mix(in srgb, var(--stitch-outline-variant) 60%, transparent);
   opacity: 1;
 }
 
 .auth-login :deep(input:not(:placeholder-shown)) {
-  -webkit-text-fill-color: #171717;
+  -webkit-text-fill-color: var(--stitch-on-surface);
 }
 
 .auth-login :deep(input:-webkit-autofill),
 .auth-login :deep(input:-webkit-autofill:hover),
 .auth-login :deep(input:-webkit-autofill:focus) {
-  -webkit-text-fill-color: #171717;
-  box-shadow: 0 0 0 1000px #fff inset;
+  -webkit-text-fill-color: var(--stitch-on-surface);
+  box-shadow: 0 0 0 1000px var(--stitch-surface-lowest) inset;
   transition: background-color 99999s ease-out;
 }
 
 .auth-login__brand {
-  background: linear-gradient(to bottom right, #1b7ace, #0a0a0a);
+  background: linear-gradient(
+    to bottom right,
+    var(--stitch-primary),
+    var(--stitch-charcoal-dark)
+  );
 }
 
 .auth-login__noise {

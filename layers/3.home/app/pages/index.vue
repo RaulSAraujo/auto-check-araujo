@@ -5,6 +5,11 @@ definePageMeta({
   layout: 'app'
 })
 
+useSeoMeta({
+  title: 'Início',
+  description: 'Resumo operacional da oficina.'
+})
+
 const {
   pending,
   osAbertas,
@@ -28,7 +33,7 @@ const { data: financeSummary, pending: pendingFinance } = await useFinanceSummar
     </template>
 
     <template #body>
-      <div class="p-4 sm:p-6">
+      <div class="bg-muted p-4 sm:p-6">
         <HomeOperationalSummary
           :pending="pending"
           :os-abertas="osAbertas"
