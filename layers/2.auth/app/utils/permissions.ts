@@ -1,17 +1,19 @@
 import type { ColaboradorPapel, OrdemStatus } from '~~/shared/types/oficina'
 
-export type PermissionAction =
-  | 'customers.write'
-  | 'customers.delete'
-  | 'vehicles.write'
-  | 'vehicles.delete'
-  | 'orders.create'
-  | 'orders.edit'
-  | 'budget.edit'
-  | 'budget.approve'
-  | 'checklist.fill'
-  | 'finance.view'
-  | 'catalog.manage'
+export type PermissionAction
+  = | 'customers.write'
+    | 'customers.delete'
+    | 'vehicles.write'
+    | 'vehicles.delete'
+    | 'orders.create'
+    | 'orders.edit'
+    | 'budget.edit'
+    | 'budget.approve'
+    | 'checklist.fill'
+    | 'finance.view'
+    | 'catalog.manage'
+    | 'scheduling.write'
+    | 'collaborators.manage'
 
 export function can(papel: ColaboradorPapel, action: PermissionAction): boolean {
   switch (action) {
@@ -21,12 +23,14 @@ export function can(papel: ColaboradorPapel, action: PermissionAction): boolean 
     case 'orders.edit':
     case 'budget.edit':
     case 'budget.approve':
+    case 'scheduling.write':
       return papel === 'recepcao' || papel === 'gerente'
 
     case 'customers.delete':
     case 'vehicles.delete':
     case 'finance.view':
     case 'catalog.manage':
+    case 'collaborators.manage':
       return papel === 'gerente'
 
     case 'checklist.fill':
@@ -44,5 +48,5 @@ export function canChangeOrderStatus(
 ): boolean {
   if (from === to) return true
   if (papel === 'gerente' || papel === 'recepcao') return true
-  return from === 'em_andamento' && to === 'concluida'
+  return (from === 'em_andamento' || from === 'retrabalho') && to === 'concluida'
 }

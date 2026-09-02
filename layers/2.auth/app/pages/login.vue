@@ -18,7 +18,7 @@ watch(session, (value) => {
 })
 
 const state = reactive({
-  email: '',
+  username: '',
   password: ''
 })
 
@@ -27,7 +27,7 @@ const loading = ref(false)
 async function onSubmit() {
   loading.value = true
   try {
-    const { error } = await signInWithPassword(state.email, state.password)
+    const { error } = await signInWithPassword(state.username, state.password)
     if (!error) {
       await navigateTo(AUTH_ROUTES.app)
     }
@@ -38,30 +38,29 @@ async function onSubmit() {
 </script>
 
 <template>
-  <div class="min-h-svh flex items-center justify-center p-4 bg-default">
-    <UCard class="w-full max-w-md">
-      <template #header>
-        <div class="flex flex-col gap-1">
-          <div class="flex items-center gap-2">
-            <UIcon
-              name="i-lucide-wrench"
-              class="size-5 text-primary"
-            />
-            <h1 class="text-lg font-semibold text-highlighted">
-              Auto Check Araujo
-            </h1>
-          </div>
-          <p class="text-sm text-muted">
-            Acesso exclusivo para Colaboradores da oficina.
-          </p>
-        </div>
-      </template>
+  <div class="flex min-h-dvh items-center justify-center bg-muted p-4">
+    <div class="w-full max-w-md overflow-hidden rounded-md border border-default bg-default shadow-sm">
+      <div class="flex flex-col items-center border-b border-default px-6 py-6 text-center">
+        <BaseBrandLogo size="lg" />
+        <h1 class="mt-4 text-xl font-semibold text-highlighted">
+          Sistema Interno
+        </h1>
+        <p class="mt-1 text-sm text-muted">
+          Acesso exclusivo para colaboradores da oficina.
+        </p>
+      </div>
 
-      <AuthLoginForm
-        v-model="state"
-        :loading="loading"
-        @submit="onSubmit"
-      />
-    </UCard>
+      <div class="px-6 py-6">
+        <AuthLoginForm
+          v-model="state"
+          :loading="loading"
+          @submit="onSubmit"
+        />
+      </div>
+
+      <p class="border-t border-default px-6 py-3 text-center text-xs text-muted">
+        Esqueceu a senha? Contate o administrador.
+      </p>
+    </div>
   </div>
 </template>

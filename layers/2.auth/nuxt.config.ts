@@ -13,7 +13,7 @@ export default defineNuxtConfig({
       login: '/login',
       callback: '/confirm',
       include: ['/*'],
-      exclude: ['/login', '/confirm'],
+      exclude: ['/login', '/confirm', '/orcamento/*'],
       saveRedirectToCookie: true
     },
     types: '~~/shared/types/database'

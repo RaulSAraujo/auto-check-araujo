@@ -18,7 +18,7 @@ watch(user, () => {
 </script>
 
 <template>
-  <div class="min-h-svh flex items-center justify-center p-4">
+  <div class="flex min-h-dvh items-center justify-center p-4">
     <div class="flex flex-col items-center gap-3 text-muted">
       <UIcon
         name="i-lucide-loader-circle"

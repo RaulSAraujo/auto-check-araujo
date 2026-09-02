@@ -1,7 +1,7 @@
 <script setup lang="ts">
 defineOptions({ name: 'AuthLoginForm' })
 
-const state = defineModel<{ email: string, password: string }>({ required: true })
+const state = defineModel<{ username: string, password: string }>({ required: true })
 
 defineProps<{
   loading?: boolean
@@ -19,15 +19,16 @@ defineEmits<{
     @submit="$emit('submit')"
   >
     <UFormField
-      label="E-mail"
-      name="email"
+      label="Usuário"
+      name="username"
       required
     >
       <UInput
-        v-model="state.email"
-        type="email"
+        v-model="state.username"
         autocomplete="username"
-        placeholder="voce@oficina.com"
+        placeholder="ex: j.silva"
+        icon="i-lucide-user"
+        size="lg"
         class="w-full"
       />
     </UFormField>
@@ -42,6 +43,8 @@ defineEmits<{
         type="password"
         autocomplete="current-password"
         placeholder="••••••••"
+        icon="i-lucide-lock"
+        size="lg"
         class="w-full"
       />
     </UFormField>
@@ -49,6 +52,8 @@ defineEmits<{
     <UButton
       type="submit"
       label="Entrar"
+      trailing-icon="i-lucide-log-in"
+      size="lg"
       block
       :loading="loading"
     />

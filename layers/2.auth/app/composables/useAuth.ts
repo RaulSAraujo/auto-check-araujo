@@ -1,13 +1,14 @@
 import { AUTH_ROUTES } from '../utils/auth-routes'
+import { usernameToAuthEmail } from '~~/shared/utils/username'
 
 export function useAuth() {
   const user = useSupabaseUser()
   const supabase = useTypedSupabaseClient()
   const toast = useToast()
 
-  async function signInWithPassword(email: string, password: string) {
+  async function signInWithPassword(username: string, password: string) {
     const { error } = await supabase.auth.signInWithPassword({
-      email,
+      email: usernameToAuthEmail(username),
       password
     })
 
