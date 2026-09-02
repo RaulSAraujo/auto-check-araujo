@@ -7,7 +7,9 @@ export const VEHICLE_LIST_COLUMNS: TableColumn<VeiculoComCliente>[] = [
   { accessorKey: 'marca', header: 'Marca' },
   { accessorKey: 'modelo', header: 'Modelo' },
   { accessorKey: 'ano', header: 'Ano' },
-  { id: 'cliente', header: 'Cliente' },
+  { accessorKey: 'cor', header: 'Cor' },
+  { accessorKey: 'km_atual', header: 'KM Atual' },
+  { id: 'cliente', header: 'Proprietário' },
   { id: 'actions', header: '' }
 ]
 

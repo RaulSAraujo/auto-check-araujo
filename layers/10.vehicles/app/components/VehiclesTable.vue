@@ -9,6 +9,11 @@ defineProps<{
   veiculos: VeiculoComCliente[]
   loading?: boolean
 }>()
+
+function formatKm(value: number | null | undefined) {
+  if (value == null) return EMPTY_VALUE
+  return value.toLocaleString('pt-BR')
+}
 </script>
 
 <template>
@@ -27,6 +32,30 @@ defineProps<{
       </NuxtLink>
     </template>
 
+    <template #marca-cell="{ row }">
+      {{ row.original.marca || EMPTY_VALUE }}
+    </template>
+
+    <template #modelo-cell="{ row }">
+      {{ row.original.modelo || EMPTY_VALUE }}
+    </template>
+
+    <template #ano-cell="{ row }">
+      <span class="font-mono tabular-nums">
+        {{ row.original.ano ?? EMPTY_VALUE }}
+      </span>
+    </template>
+
+    <template #cor-cell="{ row }">
+      {{ row.original.cor || EMPTY_VALUE }}
+    </template>
+
+    <template #km_atual-cell="{ row }">
+      <span class="font-mono tabular-nums">
+        {{ formatKm(row.original.km_atual) }}
+      </span>
+    </template>
+
     <template #cliente-cell="{ row }">
       <NuxtLink
         v-if="row.original.clientes"
@@ -38,7 +67,7 @@ defineProps<{
       <span
         v-else
         class="text-muted"
-      >—</span>
+      >{{ EMPTY_VALUE }}</span>
     </template>
 
     <template #actions-cell="{ row }">
@@ -53,9 +82,17 @@ defineProps<{
     </template>
 
     <template #empty>
-      <div class="text-center py-8 text-muted">
-        Nenhum Veículo encontrado.
-      </div>
+      <BaseEmptyState icon="i-lucide-car">
+        Nenhum veículo encontrado.
+        <template #actions>
+          <UButton
+            :to="VEHICLE_ROUTES.new"
+            icon="i-lucide-plus"
+            label="Novo veículo"
+            size="sm"
+          />
+        </template>
+      </BaseEmptyState>
     </template>
   </UTable>
 </template>

@@ -7,6 +7,7 @@ export interface VehicleFormState {
   modelo: string
   ano: number | undefined
   cor: string
+  km_atual: number | undefined
   observacoes: string
 }
 
@@ -18,6 +19,7 @@ export function emptyVehicleForm(initialClienteId = ''): VehicleFormState {
     modelo: '',
     ano: undefined,
     cor: '',
+    km_atual: undefined,
     observacoes: ''
   }
 }
@@ -30,6 +32,7 @@ export function vehicleFormFromRow(veiculo: Veiculo): VehicleFormState {
     modelo: veiculo.modelo || '',
     ano: veiculo.ano ?? undefined,
     cor: veiculo.cor || '',
+    km_atual: veiculo.km_atual ?? undefined,
     observacoes: veiculo.observacoes || ''
   }
 }
@@ -51,6 +54,9 @@ export function vehicleFormToInsert(state: VehicleFormState): VeiculoInsert {
     modelo: trimOrNull(state.modelo),
     ano: state.ano || null,
     cor: trimOrNull(state.cor),
+    km_atual: state.km_atual == null || Number.isNaN(Number(state.km_atual))
+      ? null
+      : Number(state.km_atual),
     observacoes: trimOrNull(state.observacoes)
   }
 }

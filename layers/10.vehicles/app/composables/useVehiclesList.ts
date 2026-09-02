@@ -31,7 +31,7 @@ export async function useVehiclesList() {
 
       if (pattern) {
         const placa = placaPattern || pattern
-        query = query.or(`placa.ilike.${placa},marca.ilike.${pattern},modelo.ilike.${pattern}`)
+        query = query.ilike('placa', placa)
       }
 
       const { data: rows, count, error } = await query

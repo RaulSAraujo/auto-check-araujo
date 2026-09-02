@@ -66,7 +66,7 @@ const { can } = usePermissions()
                 v-if="veiculo.clientes"
                 class="text-sm text-muted"
               >
-                Cliente:
+                Proprietário:
                 <NuxtLink
                   :to="VEHICLE_ROUTES.customerDetail(veiculo.clientes.id)"
                   class="text-primary hover:underline"
@@ -123,6 +123,7 @@ const { can } = usePermissions()
         </div>
 
         <VehiclesOrdersSection
+          class="border-t border-default pt-8"
           :veiculo-id="id"
           :ordens="ordens || []"
           :loading="pendingOrdens"

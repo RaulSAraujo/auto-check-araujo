@@ -19,7 +19,7 @@ const { can } = usePermissions()
   <section class="space-y-4">
     <div class="flex items-center justify-between gap-3">
       <h2 class="text-lg font-semibold text-highlighted">
-        Ordens de serviço
+        Histórico de ordens
       </h2>
       <UButton
         v-if="can('orders.create')"
@@ -39,7 +39,7 @@ const { can } = usePermissions()
       <template #numero-cell="{ row }">
         <NuxtLink
           :to="`/ordens/${row.original.id}`"
-          class="text-primary hover:underline font-medium"
+          class="font-mono font-medium tabular-nums text-primary hover:underline"
         >
           {{ row.original.numero }}
         </NuxtLink>
@@ -55,7 +55,9 @@ const { can } = usePermissions()
       </template>
 
       <template #aberta_em-cell="{ row }">
-        {{ formatDateTime(row.original.aberta_em) }}
+        <span class="font-mono tabular-nums">
+          {{ formatDateTime(row.original.aberta_em) }}
+        </span>
       </template>
 
       <template #actions-cell="{ row }">
@@ -69,9 +71,20 @@ const { can } = usePermissions()
       </template>
 
       <template #empty>
-        <div class="text-center py-6 text-muted">
-          Nenhuma Ordem de Serviço para este Veículo.
-        </div>
+        <BaseEmptyState>
+          Nenhuma OS para este veículo.
+          <template
+            v-if="can('orders.create')"
+            #actions
+          >
+            <UButton
+              :to="VEHICLE_ROUTES.newOrder(veiculoId)"
+              icon="i-lucide-plus"
+              label="Nova OS"
+              size="sm"
+            />
+          </template>
+        </BaseEmptyState>
       </template>
     </UTable>
   </section>

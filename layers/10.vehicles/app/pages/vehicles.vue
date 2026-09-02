@@ -13,7 +13,7 @@ const { can } = usePermissions()
 <template>
   <UDashboardPanel>
     <template #header>
-      <UDashboardNavbar title="Veículos">
+      <UDashboardNavbar title="Gestão de Veículos">
         <template #leading>
           <UDashboardSidebarToggle />
         </template>
@@ -30,11 +30,17 @@ const { can } = usePermissions()
 
     <template #body>
       <div class="p-4 sm:p-6 space-y-4">
+        <p class="text-sm text-muted max-w-2xl">
+          Todo o histórico de cada veículo em poucos segundos.
+        </p>
+
         <UInput
           v-model="q"
           icon="i-lucide-search"
-          placeholder="Buscar por placa, marca ou modelo"
-          class="max-w-md"
+          placeholder="Pesquisar por placa…"
+          class="max-w-md font-mono uppercase"
+          autocomplete="off"
+          spellcheck="false"
         />
 
         <VehiclesTable

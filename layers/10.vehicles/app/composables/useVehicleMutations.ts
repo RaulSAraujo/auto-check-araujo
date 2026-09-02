@@ -17,7 +17,7 @@ export function useVehicleMutations() {
 
   function validateForm(state: VehicleFormState): boolean {
     if (!state.cliente_id) {
-      toast.add({ title: 'Selecione o Cliente', color: 'warning' })
+      toast.add({ title: 'Selecione o proprietário', color: 'warning' })
       return false
     }
 
@@ -25,6 +25,15 @@ export function useVehicleMutations() {
       toast.add({
         title: 'Placa inválida',
         description: 'Informe 7 caracteres (ex.: ABC1D23).',
+        color: 'warning'
+      })
+      return false
+    }
+
+    if (state.km_atual != null && state.km_atual < 0) {
+      toast.add({
+        title: 'KM inválido',
+        description: 'O KM atual não pode ser negativo.',
         color: 'warning'
       })
       return false

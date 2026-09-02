@@ -23,14 +23,14 @@ defineEmits<{
     @submit="$emit('submit')"
   >
     <UFormField
-      label="Cliente"
+      label="Proprietário"
       name="cliente_id"
       required
     >
       <USelect
         v-model="state.cliente_id"
         :items="clienteItems"
-        placeholder="Selecione o Cliente"
+        placeholder="Selecione o proprietário"
         class="w-full"
         :disabled="disabled"
       />
@@ -94,6 +94,20 @@ defineEmits<{
         <UInput
           v-model="state.cor"
           class="w-full"
+          :disabled="disabled"
+        />
+      </UFormField>
+
+      <UFormField
+        label="KM Atual"
+        name="km_atual"
+      >
+        <UInput
+          v-model.number="state.km_atual"
+          type="number"
+          min="0"
+          class="w-full font-mono tabular-nums"
+          placeholder="ex.: 45000"
           :disabled="disabled"
         />
       </UFormField>
