@@ -12,7 +12,7 @@ defineProps<{
 
 <template>
   <div class="space-y-4">
-    <div class="grid gap-px overflow-hidden rounded-md border border-default bg-default shadow-sm sm:grid-cols-3">
+    <div class="grid gap-px overflow-hidden rounded-lg border border-default bg-default shadow-sm sm:grid-cols-3">
       <div class="bg-default px-4 py-5">
         <p class="text-xs font-semibold uppercase tracking-wide text-muted">
           Faturamento
@@ -51,7 +51,7 @@ defineProps<{
       </div>
     </div>
 
-    <div class="grid gap-px overflow-hidden rounded-md border border-default bg-default shadow-sm sm:grid-cols-3">
+    <div class="grid gap-px overflow-hidden rounded-lg border border-default bg-default shadow-sm sm:grid-cols-3">
       <div class="bg-default px-4 py-5">
         <p class="text-xs font-semibold uppercase tracking-wide text-muted">
           A pagar
@@ -90,7 +90,7 @@ defineProps<{
       </div>
     </div>
 
-    <div class="grid gap-px overflow-hidden rounded-md border border-default bg-default shadow-sm sm:grid-cols-3">
+    <div class="grid gap-px overflow-hidden rounded-lg border border-default bg-default shadow-sm sm:grid-cols-3">
       <div class="bg-default px-4 py-5">
         <p class="text-xs font-semibold uppercase tracking-wide text-muted">
           Entradas (caixa)

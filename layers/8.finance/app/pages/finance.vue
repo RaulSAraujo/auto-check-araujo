@@ -11,8 +11,7 @@ import {
 defineOptions({ name: 'FinanceIndexPage' })
 
 definePageMeta({
-  path: '/financeiro',
-  layout: 'app'
+  path: '/financeiro'
 })
 
 useRequirePermission('finance.view')
@@ -151,16 +150,10 @@ async function onToggleCategory(payload: { id: string, ativo: boolean }) {
 
 <template>
   <UDashboardPanel>
-    <template #header>
-      <UDashboardNavbar title="Financeiro">
-        <template #leading>
-          <UDashboardSidebarToggle />
-        </template>
-      </UDashboardNavbar>
-    </template>
-
     <template #body>
       <div class="p-4 sm:p-6 space-y-6">
+        <BasePageHeader title="Financeiro" />
+
         <div class="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
           <UTabs
             v-model="tab"

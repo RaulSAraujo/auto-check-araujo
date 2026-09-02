@@ -78,7 +78,7 @@ watch(() => props.savingId, (id) => {
       </div>
     </BasePanel>
 
-    <div class="overflow-x-auto rounded-md border border-default">
+    <div class="overflow-x-auto rounded-lg border border-default">
       <table class="w-full text-sm">
         <thead class="border-b border-default bg-elevated/50 text-left text-xs uppercase tracking-wide text-muted">
           <tr>

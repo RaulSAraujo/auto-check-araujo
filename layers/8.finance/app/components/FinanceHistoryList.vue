@@ -37,7 +37,7 @@ defineProps<{
 
     <ul
       v-else
-      class="divide-y divide-default overflow-hidden rounded-md border border-default"
+      class="divide-y divide-default overflow-hidden rounded-lg border border-default"
     >
       <li
         v-for="item in items"
