@@ -9,7 +9,7 @@ withDefaults(defineProps<{
 </script>
 
 <template>
-  <div class="rounded-md border border-dashed border-default px-4 py-6 text-center">
+  <div class="rounded-lg border border-dashed border-default px-4 py-6 text-center">
     <UIcon
       v-if="icon"
       :name="icon"

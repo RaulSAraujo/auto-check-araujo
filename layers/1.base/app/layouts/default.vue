@@ -1,5 +1,6 @@
 <template>
-  <div>
+  <UMain class="bg-muted">
+    <BaseAppHeader />
     <slot />
-  </div>
+  </UMain>
 </template>

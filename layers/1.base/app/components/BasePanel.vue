@@ -7,7 +7,7 @@ defineProps<{
 </script>
 
 <template>
-  <section class="overflow-hidden rounded-md border border-default bg-elevated/25">
+  <section class="overflow-hidden rounded-lg border border-default bg-elevated/25">
     <div
       v-if="title || $slots.header"
       class="border-b border-default px-4 py-3"

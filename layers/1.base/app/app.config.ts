@@ -11,11 +11,6 @@ export default defineAppConfig({
       warning: 'caution',
       error: 'red'
     },
-    dashboardSidebar: {
-      slots: {
-        root: 'bg-default'
-      }
-    },
     dashboardPanel: {
       slots: {
         body: 'bg-muted'
@@ -27,7 +22,7 @@ export default defineAppConfig({
           active: true,
           variant: 'pill',
           class: {
-            link: 'bg-primary/10 text-primary dark:bg-primary/15 dark:text-brand-300',
+            link: 'before:bg-primary/10 text-primary font-semibold dark:before:bg-primary/15 dark:text-brand-300',
             linkLeadingIcon: 'text-primary dark:text-brand-300'
           }
         }
