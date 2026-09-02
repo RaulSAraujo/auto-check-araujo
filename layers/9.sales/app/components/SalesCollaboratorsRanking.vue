@@ -12,7 +12,7 @@ defineProps<{
 
 <template>
   <section
-    class="overflow-hidden rounded-md border border-default bg-default shadow-sm"
+    class="overflow-hidden rounded-lg border border-default bg-default shadow-sm"
     aria-labelledby="sales-collaborators-heading"
   >
     <div class="border-b border-default px-4 py-3">

@@ -4,8 +4,7 @@ import { SALES_PERIOD_ITEMS } from '../utils/sales'
 defineOptions({ name: 'SalesIndexPage' })
 
 definePageMeta({
-  path: '/vendas',
-  layout: 'app'
+  path: '/vendas'
 })
 
 useRequirePermission('finance.view')
@@ -29,39 +28,31 @@ const periodItems = [...SALES_PERIOD_ITEMS]
 
 <template>
   <UDashboardPanel>
-    <template #header>
-      <UDashboardNavbar title="Controle de Vendas">
-        <template #leading>
-          <UDashboardSidebarToggle />
-        </template>
-        <template #right>
-          <UButton
-            icon="i-lucide-refresh-cw"
-            color="neutral"
-            variant="ghost"
-            aria-label="Atualizar vendas"
-            :loading="pending"
-            @click="refresh()"
-          />
-          <UButton
-            icon="i-lucide-download"
-            color="neutral"
-            variant="outline"
-            label="Exportar"
-            :disabled="pending || !orders.length"
-            @click="exportCsv()"
-          />
-        </template>
-      </UDashboardNavbar>
-    </template>
-
     <template #body>
       <div class="p-4 sm:p-6 space-y-6">
-        <div class="flex flex-col gap-1">
-          <p class="text-sm text-muted">
-            Gerencie todas as vendas da oficina.
-          </p>
-        </div>
+        <BasePageHeader
+          title="Controle de Vendas"
+          description="Gerencie todas as vendas da oficina."
+        >
+          <template #actions>
+            <UButton
+              icon="i-lucide-refresh-cw"
+              color="neutral"
+              variant="ghost"
+              aria-label="Atualizar vendas"
+              :loading="pending"
+              @click="refresh()"
+            />
+            <UButton
+              icon="i-lucide-download"
+              color="neutral"
+              variant="outline"
+              label="Exportar"
+              :disabled="pending || !orders.length"
+              @click="exportCsv()"
+            />
+          </template>
+        </BasePageHeader>
 
         <div class="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
           <div class="flex flex-col gap-4 sm:flex-row sm:items-end">

@@ -12,7 +12,7 @@ defineProps<{
 
 <template>
   <div
-    class="overflow-hidden rounded-md border border-default bg-default shadow-sm divide-y divide-default"
+    class="overflow-hidden rounded-lg border border-default bg-default shadow-sm divide-y divide-default"
     aria-labelledby="sales-status-heading"
   >
     <div class="px-4 py-3">

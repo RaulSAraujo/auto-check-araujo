@@ -13,7 +13,7 @@ defineProps<{
 
 <template>
   <div
-    class="grid gap-px overflow-hidden rounded-md border border-default bg-default shadow-sm sm:grid-cols-3"
+    class="grid gap-px overflow-hidden rounded-lg border border-default bg-default shadow-sm sm:grid-cols-3"
   >
     <div class="bg-default px-4 py-5">
       <p class="text-xs font-semibold uppercase tracking-wide text-muted">
