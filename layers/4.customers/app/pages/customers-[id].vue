@@ -2,8 +2,7 @@
 defineOptions({ name: 'CustomersDetailPage' })
 
 definePageMeta({
-  path: '/clientes/:id',
-  layout: 'app'
+  path: '/clientes/:id'
 })
 
 const route = useRoute()
@@ -37,35 +36,31 @@ onMounted(() => {
 
 <template>
   <UDashboardPanel>
-    <template #header>
-      <UDashboardNavbar :title="cliente?.nome || 'Cliente'">
-        <template #leading>
-          <UDashboardSidebarToggle />
-        </template>
-        <template #right>
-          <UButton
-            :to="CUSTOMER_ROUTES.list"
-            color="neutral"
-            variant="ghost"
-            label="Voltar"
-            icon="i-lucide-arrow-left"
-          />
-        </template>
-      </UDashboardNavbar>
-    </template>
-
     <template #body>
       <div
         v-if="pending && !cliente"
         class="p-6"
       >
-        <USkeleton class="h-40 w-full max-w-xl" />
+        <BasePageHeader title="Cliente" />
+        <USkeleton class="mt-4 h-40 w-full max-w-xl" />
       </div>
 
       <div
         v-else-if="cliente"
         class="p-4 sm:p-6 space-y-8 max-w-5xl"
       >
+        <BasePageHeader :title="cliente.nome || 'Cliente'">
+          <template #actions>
+            <UButton
+              :to="CUSTOMER_ROUTES.list"
+              color="neutral"
+              variant="ghost"
+              label="Voltar"
+              icon="i-lucide-arrow-left"
+            />
+          </template>
+        </BasePageHeader>
+
         <section class="space-y-4">
           <div class="flex items-center justify-between gap-3">
             <div class="flex items-center gap-3 min-w-0">

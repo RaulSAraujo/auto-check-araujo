@@ -2,8 +2,7 @@
 defineOptions({ name: 'CustomersNewPage' })
 
 definePageMeta({
-  path: '/clientes/novo',
-  layout: 'app'
+  path: '/clientes/novo'
 })
 
 const router = useRouter()
@@ -28,25 +27,20 @@ async function onSubmit() {
 
 <template>
   <UDashboardPanel>
-    <template #header>
-      <UDashboardNavbar title="Novo cliente">
-        <template #leading>
-          <UDashboardSidebarToggle />
-        </template>
-        <template #right>
-          <UButton
-            :to="CUSTOMER_ROUTES.list"
-            color="neutral"
-            variant="ghost"
-            label="Voltar"
-            icon="i-lucide-arrow-left"
-          />
-        </template>
-      </UDashboardNavbar>
-    </template>
-
     <template #body>
-      <div class="p-4 sm:p-6 max-w-xl">
+      <div class="p-4 sm:p-6 max-w-xl space-y-4">
+        <BasePageHeader title="Novo cliente">
+          <template #actions>
+            <UButton
+              :to="CUSTOMER_ROUTES.list"
+              color="neutral"
+              variant="ghost"
+              label="Voltar"
+              icon="i-lucide-arrow-left"
+            />
+          </template>
+        </BasePageHeader>
+
         <CustomersForm
           v-model="state"
           compact
