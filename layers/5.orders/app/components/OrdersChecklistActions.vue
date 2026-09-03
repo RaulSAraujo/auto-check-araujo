@@ -1,44 +1,46 @@
 <script setup lang="ts">
 import type { OrderDetail } from '../types/orders'
-import { ORDER_ROUTES } from '../utils/order-routes'
+
+defineOptions({ name: 'OrdersChecklistActions' })
 
 defineProps<{
   ordem: OrderDetail
-  ordemId: string
-  startingChecklist: boolean
 }>()
 
 const emit = defineEmits<{
-  startChecklist: []
+  open: []
 }>()
 </script>
 
 <template>
-  <section class="space-y-3">
-    <h2 class="text-lg font-semibold text-highlighted">
-      Checklist
-    </h2>
-    <div class="flex flex-wrap gap-2">
+  <div aria-labelledby="os-checklist-heading">
+    <div class="flex flex-wrap items-center justify-between gap-3">
+      <div class="flex items-center gap-2.5">
+        <h2
+          id="os-checklist-heading"
+          class="text-lg font-semibold text-highlighted"
+        >
+          Checklist
+        </h2>
+        <UBadge
+          v-if="ordem.checklists"
+          :color="ordem.checklists.status === 'concluida' ? 'success' : 'warning'"
+          variant="subtle"
+        >
+          {{ ordem.checklists.status === 'concluida' ? 'Concluída' : 'Em preenchimento' }}
+        </UBadge>
+      </div>
+
       <UButton
-        v-if="ordem.checklists"
-        :to="ORDER_ROUTES.checklist(ordemId)"
-        :label="ordem.checklists.status === 'concluida' ? 'Ver checklist' : 'Continuar checklist'"
-        icon="i-lucide-clipboard-check"
+        :label="!ordem.checklists
+          ? 'Iniciar checklist'
+          : ordem.checklists.status === 'concluida'
+            ? 'Ver checklist'
+            : 'Continuar checklist'"
+        :icon="ordem.checklists ? 'i-lucide-clipboard-check' : 'i-lucide-clipboard-list'"
+        size="sm"
+        @click="emit('open')"
       />
-      <UButton
-        v-else
-        label="Iniciar checklist"
-        icon="i-lucide-clipboard-list"
-        :loading="startingChecklist"
-        @click="emit('startChecklist')"
-      />
-      <UBadge
-        v-if="ordem.checklists"
-        :color="ordem.checklists.status === 'concluida' ? 'success' : 'warning'"
-        variant="subtle"
-      >
-        {{ ordem.checklists.status === 'concluida' ? 'Checklist concluída' : 'Em preenchimento' }}
-      </UBadge>
     </div>
-  </section>
+  </div>
 </template>

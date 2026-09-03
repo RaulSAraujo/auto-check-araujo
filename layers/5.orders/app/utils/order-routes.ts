@@ -2,7 +2,7 @@ export const ORDER_ROUTES = {
   list: '/ordens',
   new: '/ordens/novo',
   detail: (id: string) => `/ordens/${id}`,
-  checklist: (id: string) => `/ordens/${id}/checklist`,
+  checklist: (id: string) => `/ordens/${id}?checklist=1`,
   print: (id: string) => `/ordens/${id}/impressao`,
   checklistPrint: (id: string) => `/ordens/${id}/checklist/impressao`,
   publicBudget: (token: string) => `/orcamento/${token}`,

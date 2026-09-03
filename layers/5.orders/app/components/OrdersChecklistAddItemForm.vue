@@ -28,46 +28,47 @@ const categorias = computed(() => {
 </script>
 
 <template>
-  <div class="rounded-lg border border-default p-4 space-y-3">
-    <p class="text-sm font-medium text-highlighted">
-      Adicionar item
-    </p>
-
-    <div class="grid gap-3 sm:grid-cols-2">
-      <UFormField
-        label="Categoria"
-        required
-      >
-        <UInput
-          v-model="draftModel.categoria"
-          class="w-full"
-          placeholder="Ex.: Exterior, Motor"
-          list="checklist-categorias"
+  <div class="space-y-4">
+    <UFormField
+      label="Categoria"
+      name="categoria"
+      required
+    >
+      <UInput
+        v-model="draftModel.categoria"
+        class="w-full"
+        placeholder="Ex.: Exterior…"
+        list="checklist-categorias"
+        autocomplete="off"
+        name="categoria"
+      />
+      <datalist id="checklist-categorias">
+        <option
+          v-for="categoria in categorias"
+          :key="categoria"
+          :value="categoria"
         />
-        <datalist id="checklist-categorias">
-          <option
-            v-for="categoria in categorias"
-            :key="categoria"
-            :value="categoria"
-          />
-        </datalist>
-      </UFormField>
+      </datalist>
+    </UFormField>
 
-      <UFormField
-        label="Item"
-        required
-      >
-        <UInput
-          v-model="draftModel.label"
-          class="w-full"
-          placeholder="Ex.: Pneus e estepe"
-        />
-      </UFormField>
-    </div>
+    <UFormField
+      label="Item"
+      name="item"
+      required
+    >
+      <UInput
+        v-model="draftModel.label"
+        class="w-full"
+        placeholder="Ex.: Pneus e estepe…"
+        autocomplete="off"
+        name="item"
+      />
+    </UFormField>
 
     <UButton
-      label="Adicionar item"
+      label="Adicionar"
       icon="i-lucide-plus"
+      block
       :loading="adding"
       :disabled="!isChecklistItemDraftValid(draftModel)"
       @click="emit('add')"

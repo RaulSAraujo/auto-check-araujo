@@ -65,7 +65,7 @@ async function onDownloadChecklistPdf() {
   <div class="print-root">
     <OrdersPrintToolbar
       :back-to="ORDER_ROUTES.checklist(id)"
-      back-label="Voltar ao checklist"
+      back-label="Voltar à OS"
       :whatsapp-url="whatsappUrl"
       :show-pdf="Boolean(data?.checklist)"
       :pdf-loading="downloadingPdf"

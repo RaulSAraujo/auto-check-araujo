@@ -5,16 +5,42 @@ export const CHECKLIST_RESULTADO_OPTIONS: {
   value: ChecklistResultado
   label: string
   shortLabel: string
-  color: 'success' | 'warning' | 'error' | 'neutral'
+  color: 'success' | 'error' | 'neutral'
 }[] = [
   { value: 'ok', label: 'OK', shortLabel: 'OK', color: 'success' },
-  { value: 'atencao', label: 'Atenção', shortLabel: '!', color: 'warning' },
   { value: 'ruim', label: 'Ruim', shortLabel: 'Ruim', color: 'error' },
   { value: 'na', label: 'N/A', shortLabel: 'N/A', color: 'neutral' }
 ]
 
 export function needsChecklistObservacao(resultado: string | null): boolean {
-  return resultado === 'atencao' || resultado === 'ruim'
+  return resultado === 'ruim' || resultado === 'atencao'
+}
+
+export function hasChecklistItemEvidence(
+  observacao: string | null | undefined,
+  photoCount: number
+): boolean {
+  return Boolean(observacao?.trim()) || photoCount > 0
+}
+
+export function confirmClearChecklistEvidence(options: {
+  hasObservacao: boolean
+  photoCount: number
+}): boolean {
+  const { hasObservacao, photoCount } = options
+
+  let message: string
+  if (hasObservacao && photoCount > 0) {
+    message = `Ao mudar o resultado, a observação e ${photoCount} foto${photoCount === 1 ? '' : 's'} deste item serão apagadas. Continuar?`
+  } else if (photoCount > 0) {
+    message = photoCount === 1
+      ? 'Ao mudar o resultado, a foto deste item será apagada. Continuar?'
+      : `Ao mudar o resultado, ${photoCount} fotos deste item serão apagadas. Continuar?`
+  } else {
+    message = 'Ao mudar o resultado, a observação deste item será apagada. Continuar?'
+  }
+
+  return window.confirm(message)
 }
 
 export function checklistResultadoColor(

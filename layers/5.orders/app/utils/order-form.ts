@@ -101,6 +101,35 @@ export function orderEditFromRow(
   }
 }
 
+export interface OrderEditFieldError {
+  name: 'km_entrada' | 'reclamacao' | 'observacoes'
+  message: string
+}
+
+export function validateOrderEditForm(state: Partial<OrderEditState>): OrderEditFieldError[] {
+  const errors: OrderEditFieldError[] = []
+
+  if (state.km_entrada != null && Number.isFinite(state.km_entrada) && state.km_entrada < 0) {
+    errors.push({
+      name: 'km_entrada',
+      message: 'Km de entrada não pode ser negativo'
+    })
+  }
+
+  return errors
+}
+
+export function isOrderEditDirty(
+  state: OrderEditState,
+  baseline: OrderEditState
+): boolean {
+  return (
+    state.reclamacao !== baseline.reclamacao
+    || state.observacoes !== baseline.observacoes
+    || state.km_entrada !== baseline.km_entrada
+  )
+}
+
 export function orderEditToUpdate(state: OrderEditState): Pick<
   OrdemServicoUpdate,
   'reclamacao' | 'km_entrada' | 'observacoes'

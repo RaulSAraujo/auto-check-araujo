@@ -3,6 +3,7 @@ import {
   countFilledChecklistItens,
   groupChecklistItensByCategoria
 } from '../utils/checklist'
+import { CHECKLIST_DETAIL_SELECT } from '../utils/order-selects'
 
 export function useChecklistQuery(ordemId: MaybeRefOrGetter<string>) {
   const supabase = useTypedSupabaseClient()
@@ -10,21 +11,37 @@ export function useChecklistQuery(ordemId: MaybeRefOrGetter<string>) {
   const { data: checklist, pending, refresh } = useAsyncData(
     () => `checklist-os-${toValue(ordemId)}`,
     async () => {
-      const { error: rpcError } = await supabase.rpc('criar_checklist_da_os', {
-        p_ordem_servico_id: toValue(ordemId)
-      })
-      if (rpcError) throw rpcError
+      const id = toValue(ordemId)
 
-      const { data, error } = await supabase
+      // Lê primeiro (índice único em ordem_servico_id). RPC só se ainda não existir.
+      let { data, error } = await supabase
         .from('checklists')
-        .select('*, checklist_itens(*), ordens_servico(id, numero, status)')
-        .eq('ordem_servico_id', toValue(ordemId))
-        .single()
+        .select(CHECKLIST_DETAIL_SELECT)
+        .eq('ordem_servico_id', id)
+        .order('ordem', { referencedTable: 'checklist_itens' })
+        .maybeSingle()
 
       if (error) throw error
 
+      if (!data) {
+        const { error: rpcError } = await supabase.rpc('criar_checklist_da_os', {
+          p_ordem_servico_id: id
+        })
+        if (rpcError) throw rpcError
+
+        const created = await supabase
+          .from('checklists')
+          .select(CHECKLIST_DETAIL_SELECT)
+          .eq('ordem_servico_id', id)
+          .order('ordem', { referencedTable: 'checklist_itens' })
+          .single()
+
+        if (created.error) throw created.error
+        data = created.data
+      }
+
       const row = data as ChecklistWithItems
-      row.checklist_itens = [...(row.checklist_itens || [])].sort((a, b) => a.ordem - b.ordem)
+      row.checklist_itens = row.checklist_itens || []
       return row
     }
   )

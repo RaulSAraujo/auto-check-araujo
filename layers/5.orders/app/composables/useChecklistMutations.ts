@@ -19,17 +19,27 @@ export function useChecklistMutations() {
 
     if (error) {
       toast.add({ title: 'Erro ao salvar item', description: error.message, color: 'error' })
+      return { error }
     }
 
-    return { error }
+    return { error: null }
   }
 
-  async function bulkSetResultado(itemIds: string[], resultado: ChecklistResultado) {
+  async function bulkSetResultado(
+    itemIds: string[],
+    resultado: ChecklistResultado,
+    options?: { clearObservacao?: boolean }
+  ) {
     if (itemIds.length === 0) return { error: null }
+
+    const payload: { resultado: ChecklistResultado, observacao?: null } = { resultado }
+    if (options?.clearObservacao) {
+      payload.observacao = null
+    }
 
     const { error } = await supabase
       .from('checklist_itens')
-      .update({ resultado })
+      .update(payload)
       .in('id', itemIds)
 
     if (error) {
@@ -52,7 +62,7 @@ export function useChecklistMutations() {
         label: draft.label.trim(),
         ordem
       })
-      .select()
+      .select('id, checklist_id, categoria, label, ordem, resultado, observacao')
       .single()
 
     if (error) {

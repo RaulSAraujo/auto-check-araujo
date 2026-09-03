@@ -47,6 +47,8 @@ export function canChangeOrderStatus(
   to: OrdemStatus
 ): boolean {
   if (from === to) return true
+  // OS concluída é definitiva — sem mudança de status
+  if (from === 'concluida') return false
   if (papel === 'gerente' || papel === 'recepcao') return true
   return (from === 'em_andamento' || from === 'retrabalho') && to === 'concluida'
 }

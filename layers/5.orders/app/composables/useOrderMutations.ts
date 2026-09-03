@@ -4,7 +4,7 @@ import {
   orderEditToUpdate,
   orderFormToInsert
 } from '../utils/order-form'
-import { ORDER_ROUTES } from '../utils/order-routes'
+import { canConcludeOrder } from '~~/shared/types/oficina'
 
 export function useOrderMutations() {
   const supabase = useTypedSupabaseClient()
@@ -52,21 +52,40 @@ export function useOrderMutations() {
 
   async function updateOrder(id: string, state: OrderEditState) {
     if (state.km_entrada != null && state.km_entrada < 0) {
-      toast.add({ title: 'Km de entrada inválido', color: 'warning' })
+      toast.add({
+        title: 'Km inválido',
+        description: 'Informe um km de entrada zero ou positivo.',
+        color: 'warning'
+      })
       return { error: null }
     }
 
-    const { error } = await supabase
+    const { data, error } = await supabase
       .from('ordens_servico')
       .update(orderEditToUpdate(state))
       .eq('id', id)
+      .select('id')
+      .maybeSingle()
 
     if (error) {
-      toast.add({ title: 'Erro ao salvar OS', description: error.message, color: 'error' })
+      toast.add({
+        title: 'Não foi possível salvar a OS',
+        description: error.message || 'Tente de novo em instantes.',
+        color: 'error'
+      })
       return { error }
     }
 
-    toast.add({ title: 'Ordem de Serviço atualizada', color: 'success' })
+    if (!data) {
+      toast.add({
+        title: 'Não foi possível salvar a OS',
+        description: 'Nenhuma linha atualizada. Verifique permissões ou se a OS ainda existe.',
+        color: 'error'
+      })
+      return { error: new Error('update returned no rows') }
+    }
+
+    toast.add({ title: 'OS atualizada', color: 'success' })
     return { error: null }
   }
 
@@ -77,6 +96,28 @@ export function useOrderMutations() {
   ) {
     if (newStatus === currentStatus) {
       return { error: null, unchanged: true }
+    }
+
+    if (newStatus === 'concluida') {
+      const { data: order, error: fetchError } = await supabase
+        .from('ordens_servico')
+        .select('orcamento_status')
+        .eq('id', id)
+        .maybeSingle()
+
+      if (fetchError) {
+        toast.add({ title: 'Erro ao atualizar status', description: fetchError.message, color: 'error' })
+        return { error: fetchError, unchanged: false }
+      }
+
+      if (!order || !canConcludeOrder(order)) {
+        toast.add({
+          title: 'Orçamento necessário',
+          description: 'Aprove o orçamento antes de concluir a OS.',
+          color: 'warning'
+        })
+        return { error: new Error('budget not approved'), unchanged: false }
+      }
     }
 
     const patch: { status: string, concluida_em?: string | null } = {
@@ -113,7 +154,6 @@ export function useOrderMutations() {
       return { data: null, error }
     }
 
-    await navigateTo(ORDER_ROUTES.checklist(ordemId))
     return { data, error: null }
   }
 

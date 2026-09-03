@@ -1,5 +1,6 @@
 import type { Checklist } from '~~/shared/types/database'
 import type { OrderDetail } from '../types/orders'
+import { ORDER_DETAIL_SELECT } from '../utils/order-selects'
 
 export function useOrderQuery(id: MaybeRefOrGetter<string>) {
   const supabase = useTypedSupabaseClient()
@@ -9,7 +10,7 @@ export function useOrderQuery(id: MaybeRefOrGetter<string>) {
     async () => {
       const { data, error } = await supabase
         .from('ordens_servico')
-        .select('*, veiculos(id, placa, marca, modelo, clientes(id, nome, telefones)), profiles!ordens_servico_aberto_por_fkey(nome), checklists(id, status)')
+        .select(ORDER_DETAIL_SELECT)
         .eq('id', toValue(id))
         .single()
 

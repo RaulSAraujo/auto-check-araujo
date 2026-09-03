@@ -1,6 +1,11 @@
 import type { OrderDetail } from '../types/orders'
 import type { OrderEditState } from '../utils/order-form'
-import { orderEditFromRow } from '../utils/order-form'
+import {
+  emptyOrderEditForm,
+  isOrderEditDirty,
+  orderEditFromRow,
+  validateOrderEditForm
+} from '../utils/order-form'
 import { isOrderEditable, type OrdemStatus } from '~~/shared/types/oficina'
 
 export function useOrderDetailEditor(
@@ -12,8 +17,8 @@ export function useOrderDetailEditor(
   const { updateOrder } = useOrderMutations()
   const { can } = usePermissions()
 
-  const editing = ref(false)
   const saving = ref(false)
+  const baseline = reactive(emptyOrderEditForm())
 
   const canEdit = computed(() => {
     if (!can('orders.edit')) return false
@@ -21,20 +26,30 @@ export function useOrderDetailEditor(
     return isOrderEditable(ordem.value.status as OrdemStatus)
   })
 
-  function cancelEdit() {
-    editing.value = false
-    if (ordem.value) {
-      Object.assign(state, orderEditFromRow(ordem.value))
-    }
+  const isDirty = computed(() => canEdit.value && isOrderEditDirty(state, baseline))
+
+  function syncFromOrder(value: OrderDetail) {
+    const next = orderEditFromRow(value)
+    Object.assign(baseline, next)
+    Object.assign(state, next)
+  }
+
+  function discard() {
+    if (ordem.value) syncFromOrder(ordem.value)
   }
 
   async function save() {
+    if (!canEdit.value) return
+
+    const errors = validateOrderEditForm(state)
+    if (errors.length) return
+
     saving.value = true
     try {
       const { error } = await updateOrder(toValue(id), state)
       if (!error) {
-        editing.value = false
         await refresh()
+        if (ordem.value) syncFromOrder(ordem.value)
       }
     } finally {
       saving.value = false
@@ -42,16 +57,15 @@ export function useOrderDetailEditor(
   }
 
   watch(ordem, (value) => {
-    if (!value || !isOrderEditable(value.status as OrdemStatus)) {
-      editing.value = false
-    }
-  })
+    if (!value) return
+    syncFromOrder(value)
+  }, { immediate: true })
 
   return {
-    editing,
     saving,
     canEdit,
-    cancelEdit,
+    isDirty,
+    discard,
     save
   }
 }

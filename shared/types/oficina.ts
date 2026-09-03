@@ -161,3 +161,10 @@ export function isBudgetEditable(
   if (!isOrderEditable(orderStatus)) return false
   return budgetStatus === 'rascunho' || budgetStatus === 'rejeitado'
 }
+
+/** Conclusão exige orçamento aprovado (valor pode ser R$ 0). */
+export function canConcludeOrder(order: {
+  orcamento_status: string | null
+}): boolean {
+  return order.orcamento_status === 'aprovado'
+}

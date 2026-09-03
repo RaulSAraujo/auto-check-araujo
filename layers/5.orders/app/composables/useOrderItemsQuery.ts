@@ -1,4 +1,5 @@
 import type { OrdemItem } from '~~/shared/types/database'
+import { ORDER_ITEM_SELECT } from '../utils/order-selects'
 
 export function useOrderItemsQuery(orderId: MaybeRefOrGetter<string>) {
   const supabase = useTypedSupabaseClient()
@@ -8,7 +9,7 @@ export function useOrderItemsQuery(orderId: MaybeRefOrGetter<string>) {
     async () => {
       const { data, error } = await supabase
         .from('ordem_itens')
-        .select('*')
+        .select(ORDER_ITEM_SELECT)
         .eq('ordem_servico_id', toValue(orderId))
         .order('ordem')
 

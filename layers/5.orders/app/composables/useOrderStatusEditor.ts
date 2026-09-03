@@ -1,5 +1,6 @@
 import type { OrderDetail } from '../types/orders'
 import type { OrdemStatus } from '~~/shared/types/oficina'
+import { canConcludeOrder } from '~~/shared/types/oficina'
 import { ORDEM_STATUS_SELECT_ITEMS } from '../utils/order-select-items'
 
 export function useOrderStatusEditor(
@@ -9,6 +10,7 @@ export function useOrderStatusEditor(
 ) {
   const { updateOrderStatus } = useOrderMutations()
   const { canChangeOrderStatus } = usePermissions()
+  const toast = useToast()
 
   const selectedStatus = ref('')
   const savingStatus = ref(false)
@@ -34,6 +36,26 @@ export function useOrderStatusEditor(
     if (!canChangeOrderStatus(current, next)) {
       selectedStatus.value = ordem.value.status
       return
+    }
+
+    if (next === 'concluida') {
+      if (!canConcludeOrder(ordem.value)) {
+        toast.add({
+          title: 'Orçamento necessário',
+          description: 'Aprove o orçamento antes de concluir a OS.',
+          color: 'warning'
+        })
+        selectedStatus.value = ordem.value.status
+        return
+      }
+
+      const confirmed = window.confirm(
+        'Concluir esta OS?\n\nApós concluir, não será possível alterar os dados nem o status.'
+      )
+      if (!confirmed) {
+        selectedStatus.value = ordem.value.status
+        return
+      }
     }
 
     savingStatus.value = true

@@ -19,7 +19,6 @@ export const ORDEM_STATUS_FILTER_ITEMS = [
 
 export const CHECKLIST_RESULTADO_SELECT_ITEMS = [
   { label: 'OK', value: 'ok' },
-  { label: 'Atenção', value: 'atencao' },
   { label: 'Ruim', value: 'ruim' },
   { label: 'N/A', value: 'na' }
 ] as const
