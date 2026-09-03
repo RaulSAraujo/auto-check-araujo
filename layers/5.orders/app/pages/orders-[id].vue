@@ -7,6 +7,7 @@ import {
 } from '../utils/print'
 import { downloadBudgetPdf } from '../utils/pdf'
 import { primaryPhone } from '~~/shared/utils/contact'
+import { formatTimeRange, schedulingDayPath } from '#layers/scheduling/app/utils/scheduling'
 
 defineOptions({ name: 'OrdersDetailPage' })
 
@@ -160,6 +161,17 @@ function confirmLeave(): boolean {
   return window.confirm('Há alterações não salvas. Sair sem salvar a OS?')
 }
 
+const linkedAppointment = computed(() => {
+  const rel = ordem.value?.agendamentos
+  if (!rel) return null
+  return Array.isArray(rel) ? rel[0] ?? null : rel
+})
+
+const appointmentAgendaHref = computed(() => {
+  if (!linkedAppointment.value) return null
+  return schedulingDayPath(new Date(linkedAppointment.value.inicio))
+})
+
 onBeforeRouteLeave((_to, _from, next) => {
   if (allowLeave.value || saving.value || !isDirty.value) {
     next()
@@ -227,6 +239,27 @@ onMounted(() => {
           @update:selected-status="selectedStatus = $event"
           @save-status="saveStatus"
         />
+
+        <UAlert
+          v-if="linkedAppointment"
+          color="info"
+          variant="subtle"
+          :title="`Agendado ${formatTimeRange(linkedAppointment.inicio, linkedAppointment.fim)}`"
+          :description="linkedAppointment.patio_vaga ? `Vaga ${linkedAppointment.patio_vaga} do pátio.` : 'Horário vinculado na agenda.'"
+        >
+          <template
+            v-if="appointmentAgendaHref"
+            #actions
+          >
+            <UButton
+              :to="appointmentAgendaHref"
+              color="neutral"
+              variant="outline"
+              size="xs"
+              label="Ver na agenda"
+            />
+          </template>
+        </UAlert>
 
         <div class="grid items-stretch gap-6 lg:grid-cols-2">
           <!-- Coluna esquerda: dados da OS + checklist -->

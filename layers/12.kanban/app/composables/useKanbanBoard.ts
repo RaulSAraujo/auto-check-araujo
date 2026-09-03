@@ -8,6 +8,14 @@ import {
   resolveStageStartedAt
 } from '../utils/kanban'
 
+export type KanbanAppointment = {
+  id: string
+  inicio: string
+  fim: string
+  patio_vaga: number | null
+  status: string
+}
+
 export type KanbanOrderCard = OrdemServico & {
   veiculos: {
     id: string
@@ -17,6 +25,7 @@ export type KanbanOrderCard = OrdemServico & {
     clientes: { id: string, nome: string } | null
   } | null
   profiles: { nome: string } | null
+  appointment: KanbanAppointment | null
   column: KanbanColumnId
   stageStartedAt: string
   stageDurationLabel: string
@@ -26,6 +35,7 @@ export type KanbanOrderCard = OrdemServico & {
 type KanbanQueryRow = OrdemServico & {
   veiculos: KanbanOrderCard['veiculos']
   profiles: KanbanOrderCard['profiles']
+  agendamentos: KanbanAppointment[] | KanbanAppointment | null
 }
 
 const FINALIZED_LOOKBACK_DAYS = 14
@@ -41,7 +51,8 @@ export async function useKanbanBoard() {
         .select(`
           *,
           veiculos(id, placa, marca, modelo, clientes(id, nome)),
-          profiles!ordens_servico_aberto_por_fkey(nome)
+          profiles!ordens_servico_aberto_por_fkey(nome),
+          agendamentos(id, inicio, fim, patio_vaga, status)
         `)
         .neq('status', 'cancelada')
         .order('updated_at', { ascending: false })
@@ -91,8 +102,12 @@ export async function useKanbanBoard() {
       }
 
       const stageStartedAt = resolveStageStartedAt(row)
+      const { agendamentos: _linked, ...order } = row
+      const appointment = Array.isArray(_linked) ? _linked[0] ?? null : _linked
+
       result.push({
-        ...row,
+        ...order,
+        appointment,
         column,
         stageStartedAt,
         stageDurationLabel: formatStageDuration(stageStartedAt, stamp),

@@ -1,12 +1,14 @@
 <script setup lang="ts">
+import type { DropdownMenuItem } from '@nuxt/ui'
+import type { SchedulingAppointment } from '../composables/useSchedulingBoard'
 import {
   formatDayHeading,
+  formatMonthHeading,
   isSameLocalDay,
   SCHEDULING_STATUS_FILTER_ITEMS,
   SCHEDULING_VIEW_ITEMS,
   startOfLocalDay,
-  type AppointmentDraft,
-  type SchedulingView
+  type AppointmentDraft
 } from '../utils/scheduling'
 import { downloadSchedulingDayPdf } from '../utils/pdf'
 
@@ -18,14 +20,24 @@ definePageMeta({
 
 const { can } = usePermissions()
 const canWrite = computed(() => can('scheduling.write'))
+const canCreateOrder = computed(() => can('orders.create'))
 
-const view = ref<SchedulingView>('daily')
 const formOpen = ref(false)
 const saving = ref(false)
 const markingId = ref<string | null>(null)
+const editingAppointment = ref<SchedulingAppointment | null>(null)
+
+const confirmOpen = ref(false)
+const confirmLoading = ref(false)
+const pendingConfirm = ref<{
+  kind: 'no-show' | 'handle-no-show'
+  id: string
+  label: string
+} | null>(null)
 
 const {
   selectedDate,
+  view,
   search,
   statusFilter,
   dayAppointments,
@@ -42,18 +54,63 @@ const {
 
 const {
   createAppointment,
+  updateAppointment,
   markNoShow,
-  markHandledNoShow
+  markHandledNoShow,
+  undoNoShow
 } = useSchedulingMutations()
 
-const isToday = computed(() => isSameLocalDay(selectedDate.value, new Date()))
+const toast = useToast()
 
-async function onCreate(draft: AppointmentDraft) {
+const isToday = computed(() => isSameLocalDay(selectedDate.value, new Date()))
+const isCalendarView = computed(() => view.value === 'calendar')
+
+const confirmTitle = computed(() =>
+  pendingConfirm.value?.kind === 'handle-no-show'
+    ? 'Marcar como tratado?'
+    : 'Marcar não comparecimento?'
+)
+
+const confirmDescription = computed(() => {
+  const name = pendingConfirm.value?.label || 'este agendamento'
+  if (pendingConfirm.value?.kind === 'handle-no-show') {
+    return `${name} sairá da lista de não comparecimentos. O status passará a Tratado.`
+  }
+  return `${name} será marcado como não compareceu.`
+})
+
+const confirmLabel = computed(() =>
+  pendingConfirm.value?.kind === 'handle-no-show' ? 'Marcar tratado' : 'Não compareceu'
+)
+
+const moreMenuItems = computed<DropdownMenuItem[][]>(() => [[
+  {
+    label: 'Exportar PDF',
+    icon: 'i-lucide-file-down',
+    onSelect: () => onExportPdf()
+  }
+]])
+
+function openCreate() {
+  editingAppointment.value = null
+  formOpen.value = true
+}
+
+function openEdit(appointment: SchedulingAppointment) {
+  editingAppointment.value = appointment
+  formOpen.value = true
+}
+
+async function onSave(draft: AppointmentDraft) {
   saving.value = true
   try {
-    const { error: createError } = await createAppointment(draft)
-    if (!createError) {
+    const result = editingAppointment.value
+      ? await updateAppointment(editingAppointment.value.id, draft)
+      : await createAppointment(draft)
+
+    if (!result.error) {
       formOpen.value = false
+      editingAppointment.value = null
       await refresh()
     }
   } finally {
@@ -61,22 +118,65 @@ async function onCreate(draft: AppointmentDraft) {
   }
 }
 
-async function onMarkNoShow(id: string) {
-  markingId.value = id
-  try {
-    const { error: updateError } = await markNoShow(id)
-    if (!updateError) await refresh()
-  } finally {
-    markingId.value = null
+function requestNoShow(id: string) {
+  const row = dayAppointments.value.find(item => item.id === id)
+    || noShows.value.find(item => item.id === id)
+  pendingConfirm.value = {
+    kind: 'no-show',
+    id,
+    label: row?.clientes?.nome?.trim() || 'Este agendamento'
   }
+  confirmOpen.value = true
 }
 
-async function onHandleNoShow(id: string) {
+function requestHandleNoShow(id: string) {
+  const row = noShows.value.find(item => item.id === id)
+  pendingConfirm.value = {
+    kind: 'handle-no-show',
+    id,
+    label: row?.clientes?.nome?.trim() || 'Este agendamento'
+  }
+  confirmOpen.value = true
+}
+
+async function onConfirmAction() {
+  if (!pendingConfirm.value) return
+  const { kind, id } = pendingConfirm.value
+  confirmLoading.value = true
   markingId.value = id
   try {
-    const { error: updateError } = await markHandledNoShow(id)
-    if (!updateError) await refresh()
+    const { error: updateError } = kind === 'no-show'
+      ? await markNoShow(id, { silent: true })
+      : await markHandledNoShow(id)
+
+    if (!updateError) {
+      confirmOpen.value = false
+      pendingConfirm.value = null
+      await refresh()
+
+      if (kind === 'no-show') {
+        toast.add({
+          title: 'Não comparecimento registrado',
+          color: 'neutral',
+          actions: [{
+            label: 'Desfazer',
+            color: 'neutral',
+            variant: 'outline',
+            onClick: async () => {
+              markingId.value = id
+              try {
+                const { error: undoError } = await undoNoShow(id)
+                if (!undoError) await refresh()
+              } finally {
+                markingId.value = null
+              }
+            }
+          }]
+        })
+      }
+    }
   } finally {
+    confirmLoading.value = false
     markingId.value = null
   }
 }
@@ -99,6 +199,16 @@ function onExportPdf() {
 function onSelectCalendarDay(day: Date) {
   selectedDate.value = startOfLocalDay(day)
   view.value = 'daily'
+}
+
+function onShiftPrev() {
+  if (isCalendarView.value) shiftMonth(-1)
+  else shiftDay(-1)
+}
+
+function onShiftNext() {
+  if (isCalendarView.value) shiftMonth(1)
+  else shiftDay(1)
 }
 </script>
 
@@ -135,11 +245,23 @@ function onSelectCalendarDay(day: Date) {
               class="hidden sm:inline-flex"
               @click="onExportPdf"
             />
+            <UDropdownMenu
+              :items="moreMenuItems"
+              :content="{ align: 'end' }"
+              class="sm:hidden"
+            >
+              <UButton
+                icon="i-lucide-ellipsis"
+                color="neutral"
+                variant="outline"
+                aria-label="Mais ações"
+              />
+            </UDropdownMenu>
             <UButton
               v-if="canWrite"
               icon="i-lucide-plus"
               label="Novo agendamento"
-              @click="formOpen = true"
+              @click="openCreate"
             />
           </template>
         </BasePageHeader>
@@ -174,6 +296,7 @@ function onSelectCalendarDay(day: Date) {
           <UTabs
             v-model="view"
             :items="SCHEDULING_VIEW_ITEMS"
+            :content="false"
             class="w-full max-w-md"
           />
 
@@ -191,19 +314,19 @@ function onSelectCalendarDay(day: Date) {
               color="neutral"
               variant="ghost"
               size="sm"
-              aria-label="Dia anterior"
-              @click="shiftDay(-1)"
+              :aria-label="isCalendarView ? 'Mês anterior' : 'Dia anterior'"
+              @click="onShiftPrev"
             />
-            <span class="min-w-40 text-center text-sm font-medium text-highlighted">
-              {{ formatDayHeading(selectedDate) }}
+            <span class="min-w-40 text-center text-sm font-medium text-highlighted text-balance">
+              {{ isCalendarView ? formatMonthHeading(selectedDate) : formatDayHeading(selectedDate) }}
             </span>
             <UButton
               icon="i-lucide-chevron-right"
               color="neutral"
               variant="ghost"
               size="sm"
-              aria-label="Próximo dia"
-              @click="shiftDay(1)"
+              :aria-label="isCalendarView ? 'Próximo mês' : 'Próximo dia'"
+              @click="onShiftNext"
             />
           </div>
         </div>
@@ -228,20 +351,27 @@ function onSelectCalendarDay(day: Date) {
             :appointments="dayAppointments"
             :pending="pending"
             :can-write="canWrite"
-            @create="formOpen = true"
-            @mark-no-show="onMarkNoShow"
+            :can-create-order="canCreateOrder"
+            :marking-id="markingId"
+            @create="openCreate"
+            @edit="openEdit"
+            @mark-no-show="requestNoShow"
           />
 
           <div class="space-y-4">
             <SchedulingPatioPanel
               :slots="patioSlots"
               :pending="pending"
+              :can-write="canWrite"
+              @edit="openEdit"
             />
             <SchedulingNoShowList
               :items="noShows"
               :pending="pending"
               :can-write="canWrite"
-              @handle="onHandleNoShow"
+              :marking-id="markingId"
+              @handle="requestHandleNoShow"
+              @edit="openEdit"
             />
           </div>
         </div>
@@ -257,12 +387,23 @@ function onSelectCalendarDay(day: Date) {
         />
       </div>
 
-      <SchedulingFormModal
+      <SchedulingFormSlideover
         v-if="canWrite"
         v-model:open="formOpen"
         :day="selectedDate"
+        :appointment="editingAppointment"
         :saving="saving"
-        @submit="onCreate"
+        :can-create-order="canCreateOrder"
+        @submit="onSave"
+      />
+
+      <SchedulingConfirmDialog
+        v-model:open="confirmOpen"
+        :title="confirmTitle"
+        :description="confirmDescription"
+        :confirm-label="confirmLabel"
+        :loading="confirmLoading"
+        @confirm="onConfirmAction"
       />
     </template>
   </UDashboardPanel>

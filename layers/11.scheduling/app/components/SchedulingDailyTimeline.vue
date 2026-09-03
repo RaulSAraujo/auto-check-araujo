@@ -8,11 +8,14 @@ defineProps<{
   appointments: SchedulingAppointment[]
   pending?: boolean
   canWrite?: boolean
+  canCreateOrder?: boolean
+  markingId?: string | null
 }>()
 
 const emit = defineEmits<{
   'mark-no-show': [id: string]
   'create': []
+  'edit': [appointment: SchedulingAppointment]
 }>()
 
 const hours = timelineHours()
@@ -30,6 +33,8 @@ function appointmentsForHour(list: SchedulingAppointment[], hour: number) {
     <div
       v-if="pending"
       class="space-y-3"
+      role="status"
+      aria-label="Carregando agenda…"
     >
       <USkeleton
         v-for="n in 4"
@@ -82,7 +87,10 @@ function appointmentsForHour(list: SchedulingAppointment[], hour: number) {
             :key="appointment.id"
             :appointment="appointment"
             :can-write="canWrite"
+            :can-create-order="canCreateOrder"
+            :marking="markingId === appointment.id"
             @mark-no-show="emit('mark-no-show', $event)"
+            @edit="emit('edit', $event)"
           />
         </div>
       </li>

@@ -16,9 +16,17 @@ export function useOrderQuery(id: MaybeRefOrGetter<string>) {
 
       if (error) throw error
 
-      const raw = data as OrderDetail & { checklists: OrderDetail['checklists'] | Checklist[] }
+      const raw = data as OrderDetail & {
+        checklists: OrderDetail['checklists'] | Checklist[]
+        agendamentos?: OrderDetail['agendamentos']
+      }
       const checklistRel = Array.isArray(raw.checklists) ? raw.checklists[0] || null : raw.checklists
-      return { ...raw, checklists: checklistRel } as OrderDetail
+      const appointmentsRel = Array.isArray(raw.agendamentos)
+        ? raw.agendamentos
+        : raw.agendamentos
+          ? [raw.agendamentos]
+          : []
+      return { ...raw, checklists: checklistRel, agendamentos: appointmentsRel } as OrderDetail
     }
   )
 }

@@ -17,7 +17,7 @@ const { columns, overdueTotal, pending, error, refresh } = await useKanbanBoard(
       <div class="flex h-full min-h-0 flex-col gap-4 p-4 sm:p-6">
         <BasePageHeader
           title="Kanban"
-          description="Tempo por etapa, responsáveis e alertas de atraso."
+          description="Tempo por etapa. OS vindas da agenda mostram o horário."
         >
           <template #actions>
             <UButton

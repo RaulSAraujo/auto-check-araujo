@@ -11,7 +11,7 @@ export function useOrderMutations() {
   const userId = useAuthUserId()
   const toast = useToast()
 
-  async function createOrder(state: OrderFormState) {
+  async function createOrder(state: OrderFormState, options?: { agendamentoId?: string }) {
     if (!isOrderFormValid(state)) {
       toast.add({
         title: 'Falta o veículo',
@@ -47,6 +47,27 @@ export function useOrderMutations() {
     }
 
     toast.add({ title: 'OS aberta', color: 'success' })
+
+    const agendamentoId = options?.agendamentoId?.trim()
+    if (agendamentoId && data.id) {
+      const { error: linkError } = await supabase
+        .from('agendamentos')
+        .update({
+          ordem_servico_id: data.id,
+          status: 'em_atendimento'
+        })
+        .eq('id', agendamentoId)
+        .is('ordem_servico_id', null)
+
+      if (linkError) {
+        toast.add({
+          title: 'OS aberta, mas o agendamento não foi vinculado',
+          description: linkError.message,
+          color: 'warning'
+        })
+      }
+    }
+
     return { data, error: null }
   }
 

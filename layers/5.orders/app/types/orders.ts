@@ -4,6 +4,14 @@ export type OrderListItem = OrdemServico & {
   veiculos: { id: string, placa: string, marca: string | null, modelo: string | null } | null
 }
 
+export type OrderLinkedAppointment = {
+  id: string
+  inicio: string
+  fim: string
+  patio_vaga: number | null
+  status: string
+}
+
 export type OrderDetail = OrdemServico & {
   veiculos: {
     id: string
@@ -14,6 +22,7 @@ export type OrderDetail = OrdemServico & {
   } | null
   profiles: { nome: string } | null
   checklists: Pick<Checklist, 'id' | 'status'> | null
+  agendamentos?: OrderLinkedAppointment[] | OrderLinkedAppointment | null
 }
 
 export type OrderVehicleOption = Pick<Veiculo, 'id' | 'placa' | 'marca' | 'modelo'> & {

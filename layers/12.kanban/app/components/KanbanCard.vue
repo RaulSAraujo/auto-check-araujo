@@ -2,6 +2,7 @@
 import type { KanbanOrderCard } from '../composables/useKanbanBoard'
 import { ORDER_ROUTES } from '#layers/orders/app/utils/order-routes'
 import { EMPTY_VALUE } from '~~/shared/utils/empty'
+import { formatTimeShort } from '#layers/scheduling/app/utils/scheduling'
 
 defineOptions({ name: 'KanbanCard' })
 
@@ -84,6 +85,18 @@ const responsibleName = computed(() =>
           aria-hidden="true"
         />
         {{ order.stageDurationLabel }}
+      </span>
+
+      <span
+        v-if="order.appointment"
+        class="inline-flex items-center gap-1 font-mono tabular-nums"
+      >
+        <UIcon
+          name="i-lucide-calendar-clock"
+          class="size-3.5 shrink-0"
+          aria-hidden="true"
+        />
+        {{ formatTimeShort(order.appointment.inicio) }}
       </span>
     </div>
   </NuxtLink>

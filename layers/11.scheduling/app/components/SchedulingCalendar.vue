@@ -31,13 +31,25 @@ function countFor(day: Date): number {
 function isOutsideMonth(day: Date): boolean {
   return day.getMonth() !== props.selectedDate.getMonth()
 }
+
+function dayLabel(day: Date): string {
+  const dateLabel = new Intl.DateTimeFormat('pt-BR', {
+    weekday: 'long',
+    day: 'numeric',
+    month: 'long'
+  }).format(day)
+  const count = countFor(day)
+  if (count === 0) return `${dateLabel}, sem agendamentos`
+  if (count === 1) return `${dateLabel}, 1 agendamento`
+  return `${dateLabel}, ${count} agendamentos`
+}
 </script>
 
 <template>
   <BasePanel>
     <template #header>
       <div class="flex items-center justify-between gap-2">
-        <h2 class="font-semibold text-highlighted">
+        <h2 class="font-semibold text-highlighted text-balance">
           {{ formatMonthHeading(selectedDate) }}
         </h2>
         <div class="flex items-center gap-1">
@@ -64,6 +76,8 @@ function isOutsideMonth(day: Date): boolean {
     <div
       v-if="pending"
       class="grid grid-cols-7 gap-1"
+      role="status"
+      aria-label="Carregando calendário…"
     >
       <USkeleton
         v-for="n in 28"
@@ -76,7 +90,10 @@ function isOutsideMonth(day: Date): boolean {
       v-else
       class="space-y-2"
     >
-      <div class="grid grid-cols-7 gap-1">
+      <div
+        class="grid grid-cols-7 gap-1"
+        aria-hidden="true"
+      >
         <span
           v-for="label in weekdays"
           :key="label"
@@ -95,12 +112,16 @@ function isOutsideMonth(day: Date): boolean {
           v-for="day in days"
           :key="day.toISOString()"
           type="button"
-          class="flex min-h-16 flex-col items-start rounded-lg border border-transparent px-1.5 py-1 text-left transition-[transform,background-color] duration-150 hover:bg-elevated/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary active:scale-[0.98]"
+          role="gridcell"
+          class="flex min-h-16 flex-col items-start rounded-lg border border-transparent px-1.5 py-1 text-left transition-[transform,background-color] duration-150 hover:bg-elevated/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary motion-safe:active:scale-[0.98]"
           :class="[
             isSameLocalDay(day, selectedDate) ? 'border-primary bg-primary/10' : 'border-default/60',
             isOutsideMonth(day) ? 'opacity-40' : '',
             isSameLocalDay(day, today) && !isSameLocalDay(day, selectedDate) ? 'ring-1 ring-inset ring-primary/30' : ''
           ]"
+          :aria-label="dayLabel(day)"
+          :aria-selected="isSameLocalDay(day, selectedDate)"
+          :aria-current="isSameLocalDay(day, today) ? 'date' : undefined"
           @click="emit('select', day)"
         >
           <span class="font-mono text-xs tabular-nums text-muted">
@@ -110,7 +131,7 @@ function isOutsideMonth(day: Date): boolean {
             v-if="countFor(day) > 0"
             class="mt-auto font-mono text-[0.6875rem] font-semibold tabular-nums text-primary"
           >
-            {{ countFor(day) }}
+            {{ countFor(day) }} agend.
           </span>
         </button>
       </div>

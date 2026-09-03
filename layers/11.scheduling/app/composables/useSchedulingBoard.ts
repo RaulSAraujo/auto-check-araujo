@@ -9,7 +9,8 @@ import {
   PATIO_SLOT_COUNT,
   startOfLocalDay,
   startOfMonth,
-  type SchedulingStatusFilter
+  type SchedulingStatusFilter,
+  type SchedulingView
 } from '../utils/scheduling'
 
 export type SchedulingAppointment = Agendamento & {
@@ -82,6 +83,18 @@ export async function useSchedulingBoard() {
     }
   })
 
+  const view = computed({
+    get(): SchedulingView {
+      return route.query.vista === 'calendar' ? 'calendar' : 'daily'
+    },
+    set(value: SchedulingView) {
+      const next = { ...route.query }
+      if (value === 'daily') delete next.vista
+      else next.vista = value
+      router.replace({ query: next })
+    }
+  })
+
   const search = computed({
     get: () => (typeof route.query.q === 'string' ? route.query.q : ''),
     set(value: string) {
@@ -144,7 +157,10 @@ export async function useSchedulingBoard() {
       .filter(row => isSameLocalDay(new Date(row.inicio), day))
       .filter(row => matchesSearch(row, search.value))
       .filter(row => matchesStatusFilter(row, statusFilter.value))
-      .filter(row => row.status !== 'cancelado' || statusFilter.value === 'all')
+      .filter(row =>
+        (row.status !== 'cancelado' && row.status !== 'tratado')
+        || statusFilter.value === 'all'
+      )
   })
 
   const patioSlots = computed<PatioSlot[]>(() => {
@@ -181,7 +197,7 @@ export async function useSchedulingBoard() {
   const monthCounts = computed(() => {
     const map = new Map<string, number>()
     for (const row of appointments.value) {
-      if (row.status === 'cancelado') continue
+      if (row.status === 'cancelado' || row.status === 'tratado') continue
       if (search.value && !matchesSearch(row, search.value)) continue
       const key = startOfLocalDay(new Date(row.inicio)).toISOString()
       map.set(key, (map.get(key) ?? 0) + 1)
@@ -206,6 +222,7 @@ export async function useSchedulingBoard() {
 
   return {
     selectedDate,
+    view,
     search,
     statusFilter,
     appointments,

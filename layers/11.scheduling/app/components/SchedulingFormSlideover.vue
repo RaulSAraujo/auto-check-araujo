@@ -1,18 +1,25 @@
 <script setup lang="ts">
+import type { FormError, FormSubmitEvent } from '@nuxt/ui'
+import type { SchedulingAppointment } from '../composables/useSchedulingBoard'
+import { ORDER_ROUTES } from '#layers/orders/app/utils/order-routes'
 import {
   AGENDAMENTO_STATUS_SELECT_ITEMS,
+  appointmentToDraft,
   emptyAppointmentDraft,
   PATIO_SLOT_ITEMS,
+  validateAppointmentDraft,
   type AppointmentDraft
 } from '../utils/scheduling'
 
-defineOptions({ name: 'SchedulingFormModal' })
+defineOptions({ name: 'SchedulingFormSlideover' })
 
 const open = defineModel<boolean>('open', { required: true })
 
 const props = defineProps<{
   day: Date
+  appointment?: SchedulingAppointment | null
   saving?: boolean
+  canCreateOrder?: boolean
 }>()
 
 const emit = defineEmits<{
@@ -22,25 +29,56 @@ const emit = defineEmits<{
 const { veiculoItems } = await useSchedulingVehicleOptions()
 
 const draft = reactive(emptyAppointmentDraft(props.day))
+const isEdit = computed(() => !!props.appointment)
+const orderHref = computed(() =>
+  props.appointment?.ordem_servico_id
+    ? ORDER_ROUTES.detail(props.appointment.ordem_servico_id)
+    : null
+)
 
-watch(open, (isOpen) => {
-  if (isOpen) Object.assign(draft, emptyAppointmentDraft(props.day))
+const openOrderHref = computed(() => {
+  if (!props.canCreateOrder || !props.appointment || props.appointment.ordem_servico_id) return null
+  return ORDER_ROUTES.newFromAppointment(props.appointment.veiculo_id, props.appointment.id)
+})
+const statusItems = computed(() => {
+  if (isEdit.value) return AGENDAMENTO_STATUS_SELECT_ITEMS
+  return AGENDAMENTO_STATUS_SELECT_ITEMS.filter(item =>
+    item.value === 'agendado'
+    || item.value === 'confirmado'
+    || item.value === 'em_atendimento'
+  )
 })
 
-function onSubmit() {
+watch(open, (isOpen) => {
+  if (!isOpen) return
+  if (props.appointment) Object.assign(draft, appointmentToDraft(props.appointment))
+  else Object.assign(draft, emptyAppointmentDraft(props.day))
+})
+
+function validate(state: Partial<AppointmentDraft>): FormError[] {
+  return validateAppointmentDraft(state as AppointmentDraft)
+}
+
+function onSubmit(_event: FormSubmitEvent<AppointmentDraft>) {
   emit('submit', { ...draft })
 }
 </script>
 
 <template>
-  <UModal
+  <USlideover
     v-model:open="open"
-    title="Novo agendamento"
-    description="Reserve horário e, se precisar, uma vaga do pátio."
+    :title="isEdit ? 'Editar agendamento' : 'Novo agendamento'"
+    :description="isEdit
+      ? 'Atualize horário, status ou vaga do pátio.'
+      : 'Reserve horário e, se precisar, uma vaga do pátio.'"
+    :dismissible="!saving"
   >
     <template #body>
       <UForm
+        id="scheduling-appointment-form"
         :state="draft"
+        :validate="validate"
+        :disabled="saving"
         class="space-y-4"
         @submit="onSubmit"
       >
@@ -55,7 +93,7 @@ function onSubmit() {
             value-key="value"
             placeholder="Buscar placa ou cliente…"
             class="w-full"
-            searchable
+            :search-input="{ placeholder: 'Buscar…' }"
           />
         </UFormField>
 
@@ -68,6 +106,7 @@ function onSubmit() {
             <UInput
               v-model="draft.date"
               type="date"
+              autocomplete="off"
               class="w-full"
             />
           </UFormField>
@@ -79,6 +118,7 @@ function onSubmit() {
             <UInput
               v-model="draft.startTime"
               type="time"
+              autocomplete="off"
               class="w-full"
             />
           </UFormField>
@@ -90,6 +130,7 @@ function onSubmit() {
             <UInput
               v-model="draft.endTime"
               type="time"
+              autocomplete="off"
               class="w-full"
             />
           </UFormField>
@@ -103,6 +144,7 @@ function onSubmit() {
             v-model="draft.servico"
             class="w-full"
             placeholder="ex.: Revisão preventiva"
+            autocomplete="off"
           />
         </UFormField>
 
@@ -113,7 +155,7 @@ function onSubmit() {
           >
             <USelect
               v-model="draft.status"
-              :items="AGENDAMENTO_STATUS_SELECT_ITEMS"
+              :items="statusItems"
               class="w-full"
             />
           </UFormField>
@@ -142,22 +184,41 @@ function onSubmit() {
             placeholder="Detalhes para a recepção…"
           />
         </UFormField>
-
-        <div class="flex justify-end gap-2 pt-2">
-          <UButton
-            color="neutral"
-            variant="ghost"
-            label="Cancelar"
-            :disabled="saving"
-            @click="open = false"
-          />
-          <UButton
-            type="submit"
-            label="Salvar agendamento"
-            :loading="saving"
-          />
-        </div>
       </UForm>
     </template>
-  </UModal>
+
+    <template #footer="{ close }">
+      <div class="flex flex-wrap items-center justify-end gap-2">
+        <UButton
+          v-if="orderHref"
+          color="neutral"
+          variant="outline"
+          icon="i-lucide-wrench"
+          label="Ver OS"
+          :to="orderHref"
+        />
+        <UButton
+          v-else-if="openOrderHref"
+          color="neutral"
+          variant="outline"
+          icon="i-lucide-plus"
+          label="Abrir OS"
+          :to="openOrderHref"
+        />
+        <UButton
+          color="neutral"
+          variant="ghost"
+          label="Cancelar"
+          :disabled="saving"
+          @click="close()"
+        />
+        <UButton
+          type="submit"
+          form="scheduling-appointment-form"
+          :label="isEdit ? 'Salvar alterações' : 'Salvar agendamento'"
+          :loading="saving"
+        />
+      </div>
+    </template>
+  </USlideover>
 </template>

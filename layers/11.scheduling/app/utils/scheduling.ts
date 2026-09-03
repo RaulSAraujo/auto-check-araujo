@@ -34,6 +34,12 @@ export const AGENDAMENTO_STATUS_SELECT_ITEMS = (
   Object.entries(AGENDAMENTO_STATUS_LABEL) as [AgendamentoStatus, string][]
 ).map(([value, label]) => ({ value, label }))
 
+export const ACTIVE_SCHEDULING_STATUSES: AgendamentoStatus[] = [
+  'agendado',
+  'confirmado',
+  'em_atendimento'
+]
+
 export function startOfLocalDay(date: Date): Date {
   return new Date(date.getFullYear(), date.getMonth(), date.getDate(), 0, 0, 0, 0)
 }
@@ -95,6 +101,10 @@ export function formatTimeShort(value: string): string {
   }).format(new Date(value))
 }
 
+export function schedulingDayPath(date: Date): string {
+  return `/agendamentos?dia=${toDateInputValue(date)}`
+}
+
 export function toDateInputValue(date: Date): string {
   const y = date.getFullYear()
   const m = String(date.getMonth() + 1).padStart(2, '0')
@@ -120,9 +130,7 @@ export function combineLocalDateTime(dateStr: string, timeStr: string): Date {
 }
 
 export function isActivePatioStatus(status: AgendamentoStatus): boolean {
-  return status === 'agendado'
-    || status === 'confirmado'
-    || status === 'em_atendimento'
+  return ACTIVE_SCHEDULING_STATUSES.includes(status)
 }
 
 export function timelineHours(): number[] {
@@ -165,6 +173,56 @@ export function emptyAppointmentDraft(day: Date = new Date()): AppointmentDraft 
     patio_vaga: null,
     observacoes: ''
   }
+}
+
+export function appointmentToDraft(row: {
+  veiculo_id: string
+  inicio: string
+  fim: string
+  status: AgendamentoStatus
+  servico: string | null
+  patio_vaga: number | null
+  observacoes: string | null
+}): AppointmentDraft {
+  return {
+    veiculo_id: row.veiculo_id,
+    date: toDateInputValue(new Date(row.inicio)),
+    startTime: toTimeInputValue(new Date(row.inicio)),
+    endTime: toTimeInputValue(new Date(row.fim)),
+    status: row.status,
+    servico: row.servico?.trim() || '',
+    patio_vaga: row.patio_vaga,
+    observacoes: row.observacoes?.trim() || ''
+  }
+}
+
+export type AppointmentFormError = { name: string, message: string }
+
+export function validateAppointmentDraft(draft: AppointmentDraft): AppointmentFormError[] {
+  const errors: AppointmentFormError[] = []
+
+  if (!draft.veiculo_id) {
+    errors.push({ name: 'veiculo_id', message: 'Selecione o veículo' })
+  }
+  if (!draft.date) {
+    errors.push({ name: 'date', message: 'Informe a data' })
+  }
+  if (!draft.startTime) {
+    errors.push({ name: 'startTime', message: 'Informe o início' })
+  }
+  if (!draft.endTime) {
+    errors.push({ name: 'endTime', message: 'Informe o fim' })
+  }
+
+  if (draft.date && draft.startTime && draft.endTime) {
+    const inicio = combineLocalDateTime(draft.date, draft.startTime)
+    const fim = combineLocalDateTime(draft.date, draft.endTime)
+    if (!(fim > inicio)) {
+      errors.push({ name: 'endTime', message: 'O fim deve ser depois do início' })
+    }
+  }
+
+  return errors
 }
 
 export const PATIO_SLOT_ITEMS = Array.from({ length: PATIO_SLOT_COUNT }, (_, i) => ({

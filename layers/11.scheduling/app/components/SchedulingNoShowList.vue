@@ -8,10 +8,12 @@ defineProps<{
   items: SchedulingAppointment[]
   pending?: boolean
   canWrite?: boolean
+  markingId?: string | null
 }>()
 
 const emit = defineEmits<{
   handle: [id: string]
+  edit: [appointment: SchedulingAppointment]
 }>()
 
 function relativeLabel(inicio: string): string {
@@ -49,6 +51,8 @@ function relativeLabel(inicio: string): string {
     <div
       v-if="pending"
       class="space-y-2"
+      role="status"
+      aria-label="Carregando não comparecimentos…"
     >
       <USkeleton class="h-14 w-full" />
       <USkeleton class="h-14 w-full" />
@@ -71,7 +75,13 @@ function relativeLabel(inicio: string): string {
         :key="item.id"
         class="flex items-start justify-between gap-3 py-3 first:pt-0 last:pb-0"
       >
-        <div class="min-w-0">
+        <button
+          type="button"
+          class="min-w-0 flex-1 rounded-md text-left transition-colors hover:bg-elevated/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+          :disabled="!canWrite"
+          :class="canWrite ? 'cursor-pointer' : 'cursor-default'"
+          @click="canWrite && emit('edit', item)"
+        >
           <p class="truncate text-sm font-medium text-highlighted">
             {{ item.clientes?.nome?.trim() || EMPTY_VALUE }}
           </p>
@@ -82,14 +92,16 @@ function relativeLabel(inicio: string): string {
             >{{ formatPlaca(item.veiculos.placa) }}</span>
             <span>{{ relativeLabel(item.inicio) }}</span>
           </p>
-        </div>
+        </button>
         <UButton
           v-if="canWrite"
           size="xs"
           color="neutral"
           variant="outline"
-          label="Marcar"
-          :aria-label="`Marcar tratado: ${item.clientes?.nome || 'agendamento'}`"
+          label="Tratado"
+          :loading="markingId === item.id"
+          :disabled="markingId === item.id"
+          :aria-label="`Marcar como tratado: ${item.clientes?.nome || 'agendamento'}`"
           @click="emit('handle', item.id)"
         />
       </li>

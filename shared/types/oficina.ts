@@ -11,6 +11,7 @@ export type AgendamentoStatus
     | 'em_atendimento'
     | 'concluido'
     | 'nao_compareceu'
+    | 'tratado'
     | 'cancelado'
 export type PresencaStatus = 'presente' | 'atrasado' | 'ausente' | 'folga'
 export type FaltaTipo = 'justificada' | 'injustificada'
@@ -105,6 +106,7 @@ export const AGENDAMENTO_STATUS_LABEL: Record<AgendamentoStatus, string> = {
   em_atendimento: 'Em atendimento',
   concluido: 'Concluído',
   nao_compareceu: 'Não compareceu',
+  tratado: 'Tratado',
   cancelado: 'Cancelado'
 }
 
@@ -117,6 +119,7 @@ export const AGENDAMENTO_STATUS_COLOR: Record<
   em_atendimento: 'warning',
   concluido: 'neutral',
   nao_compareceu: 'error',
+  tratado: 'neutral',
   cancelado: 'neutral'
 }
 

@@ -6,12 +6,13 @@ export type KanbanColumnId = 'agendados' | 'pre_orcamento' | 'em_andamento' | 'r
 export const KANBAN_COLUMNS: ReadonlyArray<{
   id: KanbanColumnId
   label: string
+  hint: string
 }> = [
-  { id: 'agendados', label: 'Agendados' },
-  { id: 'pre_orcamento', label: 'Pré-orçamento' },
-  { id: 'em_andamento', label: 'Em andamento' },
-  { id: 'retrabalho', label: 'Retrabalho' },
-  { id: 'finalizados', label: 'Finalizados' }
+  { id: 'agendados', label: 'Aguardando execução', hint: 'Orçamento aprovado — o serviço ainda não começou' },
+  { id: 'pre_orcamento', label: 'Pré-orçamento', hint: 'OS aberta, orçamento ainda não aprovado' },
+  { id: 'em_andamento', label: 'Em andamento', hint: 'Serviço em execução' },
+  { id: 'retrabalho', label: 'Retrabalho', hint: 'OS reaberta' },
+  { id: 'finalizados', label: 'Finalizados', hint: 'Concluídas nos últimos 14 dias' }
 ] as const
 
 /** Hours in stage before an overdue alert. */

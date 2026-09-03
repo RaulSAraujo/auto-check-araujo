@@ -7,6 +7,7 @@ defineOptions({ name: 'KanbanColumn' })
 defineProps<{
   columnId: KanbanColumnId
   label: string
+  hint?: string
   items: KanbanOrderCard[]
   overdueCount: number
   pending?: boolean
@@ -26,6 +27,12 @@ defineProps<{
         >
           {{ label }}
         </h2>
+        <p
+          v-if="hint"
+          class="mt-0.5 text-[0.6875rem] leading-tight text-muted"
+        >
+          {{ hint }}
+        </p>
       </div>
       <div class="flex shrink-0 items-center gap-1.5">
         <UBadge

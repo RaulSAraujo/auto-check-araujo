@@ -8,6 +8,7 @@ defineProps<{
   columns: Array<{
     id: KanbanColumnId
     label: string
+    hint: string
     items: KanbanOrderCard[]
     overdueCount: number
   }>
@@ -45,6 +46,7 @@ defineProps<{
         role="listitem"
         :column-id="column.id"
         :label="column.label"
+        :hint="column.hint"
         :items="column.items"
         :overdue-count="column.overdueCount"
         :pending="pending"
