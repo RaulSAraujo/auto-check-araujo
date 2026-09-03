@@ -54,6 +54,43 @@ export function isOrderFormValid(state: OrderFormState): boolean {
   return Boolean(state.veiculo_id)
 }
 
+export interface OrderFormFieldError {
+  name: 'veiculo_id' | 'km_entrada' | 'reclamacao' | 'observacoes'
+  message: string
+}
+
+export function validateOrderForm(state: Partial<OrderFormState>): OrderFormFieldError[] {
+  const errors: OrderFormFieldError[] = []
+
+  if (!state.veiculo_id) {
+    errors.push({
+      name: 'veiculo_id',
+      message: 'Selecione o veículo pela placa'
+    })
+  }
+
+  if (state.km_entrada != null && Number.isFinite(state.km_entrada) && state.km_entrada < 0) {
+    errors.push({
+      name: 'km_entrada',
+      message: 'Km de entrada não pode ser negativo'
+    })
+  }
+
+  return errors
+}
+
+export function isOrderFormDirty(
+  state: OrderFormState,
+  initial: OrderFormState
+): boolean {
+  return (
+    state.veiculo_id !== initial.veiculo_id
+    || state.reclamacao !== initial.reclamacao
+    || state.observacoes !== initial.observacoes
+    || state.km_entrada !== initial.km_entrada
+  )
+}
+
 export function orderEditFromRow(
   ordem: Pick<OrdemServico, 'reclamacao' | 'km_entrada' | 'observacoes'>
 ): OrderEditState {

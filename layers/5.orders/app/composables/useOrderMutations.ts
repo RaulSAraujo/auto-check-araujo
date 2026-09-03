@@ -13,13 +13,21 @@ export function useOrderMutations() {
 
   async function createOrder(state: OrderFormState) {
     if (!isOrderFormValid(state)) {
-      toast.add({ title: 'Selecione o Veículo', color: 'warning' })
+      toast.add({
+        title: 'Falta o veículo',
+        description: 'Selecione a placa para abrir a OS.',
+        color: 'warning'
+      })
       return { data: null, error: null }
     }
 
     const abertoPor = userId.value
     if (!abertoPor) {
-      toast.add({ title: 'Sessão inválida', color: 'error' })
+      toast.add({
+        title: 'Sessão expirada',
+        description: 'Entre de novo e tente abrir a OS.',
+        color: 'error'
+      })
       return { data: null, error: null }
     }
 
@@ -30,11 +38,15 @@ export function useOrderMutations() {
       .single()
 
     if (error) {
-      toast.add({ title: 'Erro ao abrir OS', description: error.message, color: 'error' })
+      toast.add({
+        title: 'Não foi possível abrir a OS',
+        description: error.message || 'Tente de novo em instantes.',
+        color: 'error'
+      })
       return { data: null, error }
     }
 
-    toast.add({ title: 'Ordem de Serviço aberta', color: 'success' })
+    toast.add({ title: 'OS aberta', color: 'success' })
     return { data, error: null }
   }
 
