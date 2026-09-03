@@ -879,6 +879,10 @@ export type Database = {
         Args: Record<PropertyKey, never>
         Returns: Json
       }
+      dashboard_home: {
+        Args: { p_now?: string }
+        Returns: Json
+      }
       equipe_indicadores: {
         Args: { p_inicio: string, p_fim: string }
         Returns: Json
