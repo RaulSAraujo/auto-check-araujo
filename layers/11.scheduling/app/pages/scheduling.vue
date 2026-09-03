@@ -2,12 +2,15 @@
 import type { DropdownMenuItem } from '@nuxt/ui'
 import type { SchedulingAppointment } from '../composables/useSchedulingBoard'
 import {
-  formatDayHeading,
+  formatBoardDate,
   formatMonthHeading,
   isSameLocalDay,
   SCHEDULING_STATUS_FILTER_ITEMS,
   SCHEDULING_VIEW_ITEMS,
   startOfLocalDay,
+  TIMELINE_END_HOUR,
+  TIMELINE_START_HOUR,
+  type AppointmentCreatePrefill,
   type AppointmentDraft
 } from '../utils/scheduling'
 import { downloadSchedulingDayPdf } from '../utils/pdf'
@@ -26,6 +29,7 @@ const formOpen = ref(false)
 const saving = ref(false)
 const markingId = ref<string | null>(null)
 const editingAppointment = ref<SchedulingAppointment | null>(null)
+const createPrefill = ref<AppointmentCreatePrefill | null>(null)
 
 const confirmOpen = ref(false)
 const confirmLoading = ref(false)
@@ -41,6 +45,8 @@ const {
   search,
   statusFilter,
   dayAppointments,
+  dayHasAppointments,
+  hasActiveFilters,
   patioSlots,
   noShows,
   monthCounts,
@@ -64,6 +70,7 @@ const toast = useToast()
 
 const isToday = computed(() => isSameLocalDay(selectedDate.value, new Date()))
 const isCalendarView = computed(() => view.value === 'calendar')
+const boardDate = computed(() => formatBoardDate(selectedDate.value))
 
 const confirmTitle = computed(() =>
   pendingConfirm.value?.kind === 'handle-no-show'
@@ -74,7 +81,7 @@ const confirmTitle = computed(() =>
 const confirmDescription = computed(() => {
   const name = pendingConfirm.value?.label || 'este agendamento'
   if (pendingConfirm.value?.kind === 'handle-no-show') {
-    return `${name} sairá da lista de não comparecimentos. O status passará a Tratado.`
+    return `${name} sai da lista.`
   }
   return `${name} será marcado como não compareceu.`
 })
@@ -85,20 +92,37 @@ const confirmLabel = computed(() =>
 
 const moreMenuItems = computed<DropdownMenuItem[][]>(() => [[
   {
+    label: 'Atualizar',
+    icon: 'i-lucide-refresh-cw',
+    onSelect: () => { refresh() }
+  },
+  {
     label: 'Exportar PDF',
     icon: 'i-lucide-file-down',
     onSelect: () => onExportPdf()
   }
 ]])
 
-function openCreate() {
+function openCreate(prefill?: AppointmentCreatePrefill) {
+  const next: AppointmentCreatePrefill = { ...prefill }
+  if (next.hour == null && isSameLocalDay(selectedDate.value, new Date())) {
+    const hour = new Date().getHours()
+    if (hour >= TIMELINE_START_HOUR && hour <= TIMELINE_END_HOUR) next.hour = hour
+  }
   editingAppointment.value = null
+  createPrefill.value = next
   formOpen.value = true
 }
 
 function openEdit(appointment: SchedulingAppointment) {
+  createPrefill.value = null
   editingAppointment.value = appointment
   formOpen.value = true
+}
+
+function clearFilters() {
+  search.value = ''
+  statusFilter.value = 'all'
 }
 
 async function onSave(draft: AppointmentDraft) {
@@ -111,6 +135,7 @@ async function onSave(draft: AppointmentDraft) {
     if (!result.error) {
       formOpen.value = false
       editingAppointment.value = null
+      createPrefill.value = null
       await refresh()
     }
   } finally {
@@ -215,64 +240,112 @@ function onShiftNext() {
 <template>
   <UDashboardPanel>
     <template #body>
-      <div class="flex h-full min-h-0 flex-col gap-4 p-4 sm:p-6">
-        <BasePageHeader
-          title="Agendamentos"
-          description="Horários, pátio e não comparecimento em um painel."
-        >
-          <template #actions>
-            <div class="hidden min-w-56 max-w-xs sm:block">
-              <UInput
-                v-model="search"
-                icon="i-lucide-search"
-                placeholder="Buscar cliente ou placa…"
-                autocomplete="off"
+      <div class="mx-auto flex h-full min-h-0 w-full max-w-[1400px] flex-col gap-6 p-4 sm:p-6">
+        <header class="flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
+          <div class="min-w-0">
+            <p class="text-xs font-semibold uppercase tracking-widest text-muted">
+              Agendamentos
+            </p>
+            <div class="mt-2 flex items-end gap-4">
+              <p
+                v-if="!isCalendarView"
+                class="font-mono text-4xl font-bold leading-none tabular-nums tracking-tight text-highlighted sm:text-5xl"
+              >
+                {{ boardDate.day }}
+              </p>
+              <div class="min-w-0 pb-0.5">
+                <p class="text-lg font-semibold text-pretty text-highlighted">
+                  {{ isCalendarView ? formatMonthHeading(selectedDate) : boardDate.weekday }}
+                </p>
+                <p
+                  v-if="!isCalendarView"
+                  class="text-sm text-muted"
+                >
+                  {{ boardDate.monthYear }}
+                </p>
+              </div>
+              <span
+                v-if="isToday && !isCalendarView"
+                class="mb-1 size-2 shrink-0 rounded-full bg-primary motion-safe:animate-pulse"
+                aria-label="Hoje"
               />
             </div>
-            <UButton
-              icon="i-lucide-refresh-cw"
-              color="neutral"
-              variant="ghost"
-              aria-label="Atualizar agenda"
-              :loading="pending"
-              @click="refresh()"
-            />
-            <UButton
-              icon="i-lucide-file-down"
-              color="neutral"
-              variant="outline"
-              label="Exportar PDF"
-              class="hidden sm:inline-flex"
-              @click="onExportPdf"
-            />
-            <UDropdownMenu
-              :items="moreMenuItems"
-              :content="{ align: 'end' }"
-              class="sm:hidden"
-            >
+
+            <div class="mt-4 flex flex-wrap items-center gap-1">
               <UButton
-                icon="i-lucide-ellipsis"
+                icon="i-lucide-chevron-left"
                 color="neutral"
-                variant="outline"
-                aria-label="Mais ações"
+                variant="ghost"
+                size="sm"
+                :aria-label="isCalendarView ? 'Mês anterior' : 'Dia anterior'"
+                class="motion-safe:active:scale-[0.98]"
+                @click="onShiftPrev"
               />
-            </UDropdownMenu>
+              <UButton
+                icon="i-lucide-chevron-right"
+                color="neutral"
+                variant="ghost"
+                size="sm"
+                :aria-label="isCalendarView ? 'Próximo mês' : 'Próximo dia'"
+                class="motion-safe:active:scale-[0.98]"
+                @click="onShiftNext"
+              />
+              <UButton
+                color="neutral"
+                :variant="isToday ? 'soft' : 'ghost'"
+                size="sm"
+                label="Hoje"
+                :aria-current="isToday ? 'date' : undefined"
+                @click="goToday"
+              />
+              <UTabs
+                v-model="view"
+                :items="SCHEDULING_VIEW_ITEMS"
+                :content="false"
+                variant="link"
+                size="sm"
+                class="ml-1 w-auto"
+              />
+            </div>
+          </div>
+
+          <div class="flex flex-wrap items-center gap-2">
+            <UInput
+              v-model="search"
+              icon="i-lucide-search"
+              placeholder="Cliente ou placa…"
+              aria-label="Buscar cliente ou placa"
+              autocomplete="off"
+              name="scheduling-search"
+              class="w-full sm:w-56"
+            />
+            <USelect
+              v-model="statusFilter"
+              :items="SCHEDULING_STATUS_FILTER_ITEMS"
+              size="md"
+              class="w-36"
+              aria-label="Filtrar por status"
+            />
             <UButton
               v-if="canWrite"
               icon="i-lucide-plus"
               label="Novo agendamento"
-              @click="openCreate"
+              class="motion-safe:active:scale-[0.98]"
+              @click="openCreate()"
             />
-          </template>
-        </BasePageHeader>
-
-        <UInput
-          v-model="search"
-          icon="i-lucide-search"
-          placeholder="Buscar cliente ou placa…"
-          autocomplete="off"
-          class="sm:hidden"
-        />
+            <UDropdownMenu
+              :items="moreMenuItems"
+              :content="{ align: 'end' }"
+            >
+              <UButton
+                icon="i-lucide-ellipsis"
+                color="neutral"
+                variant="ghost"
+                aria-label="Mais ações"
+              />
+            </UDropdownMenu>
+          </div>
+        </header>
 
         <UAlert
           v-if="error"
@@ -292,60 +365,9 @@ function onShiftNext() {
           </template>
         </UAlert>
 
-        <div class="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
-          <UTabs
-            v-model="view"
-            :items="SCHEDULING_VIEW_ITEMS"
-            :content="false"
-            class="w-full max-w-md"
-          />
-
-          <div class="flex flex-wrap items-center gap-2">
-            <UButton
-              color="neutral"
-              variant="outline"
-              size="sm"
-              label="Hoje"
-              :disabled="isToday"
-              @click="goToday"
-            />
-            <UButton
-              icon="i-lucide-chevron-left"
-              color="neutral"
-              variant="ghost"
-              size="sm"
-              :aria-label="isCalendarView ? 'Mês anterior' : 'Dia anterior'"
-              @click="onShiftPrev"
-            />
-            <span class="min-w-40 text-center text-sm font-medium text-highlighted text-balance">
-              {{ isCalendarView ? formatMonthHeading(selectedDate) : formatDayHeading(selectedDate) }}
-            </span>
-            <UButton
-              icon="i-lucide-chevron-right"
-              color="neutral"
-              variant="ghost"
-              size="sm"
-              :aria-label="isCalendarView ? 'Próximo mês' : 'Próximo dia'"
-              @click="onShiftNext"
-            />
-          </div>
-        </div>
-
-        <div class="flex flex-wrap gap-2">
-          <UButton
-            v-for="item in SCHEDULING_STATUS_FILTER_ITEMS"
-            :key="item.value"
-            size="sm"
-            :color="statusFilter === item.value ? 'primary' : 'neutral'"
-            :variant="statusFilter === item.value ? 'soft' : 'outline'"
-            :label="item.label"
-            @click="statusFilter = item.value"
-          />
-        </div>
-
         <div
           v-if="view === 'daily'"
-          class="grid gap-4 xl:grid-cols-[minmax(0,1.6fr)_minmax(18rem,1fr)]"
+          class="grid min-h-0 gap-4 xl:grid-cols-[minmax(0,1fr)_19rem] xl:items-start"
         >
           <SchedulingDailyTimeline
             :appointments="dayAppointments"
@@ -353,17 +375,21 @@ function onShiftNext() {
             :can-write="canWrite"
             :can-create-order="canCreateOrder"
             :marking-id="markingId"
+            :has-active-filters="hasActiveFilters"
+            :day-has-appointments="dayHasAppointments"
             @create="openCreate"
+            @clear-filters="clearFilters"
             @edit="openEdit"
             @mark-no-show="requestNoShow"
           />
 
-          <div class="space-y-4">
+          <aside class="space-y-4">
             <SchedulingPatioPanel
               :slots="patioSlots"
               :pending="pending"
               :can-write="canWrite"
               @edit="openEdit"
+              @create="openCreate({ patioVaga: $event })"
             />
             <SchedulingNoShowList
               :items="noShows"
@@ -373,7 +399,7 @@ function onShiftNext() {
               @handle="requestHandleNoShow"
               @edit="openEdit"
             />
-          </div>
+          </aside>
         </div>
 
         <SchedulingCalendar
@@ -382,8 +408,6 @@ function onShiftNext() {
           :counts="monthCounts"
           :pending="pending"
           @select="onSelectCalendarDay"
-          @prev-month="shiftMonth(-1)"
-          @next-month="shiftMonth(1)"
         />
       </div>
 
@@ -392,6 +416,7 @@ function onShiftNext() {
         v-model:open="formOpen"
         :day="selectedDate"
         :appointment="editingAppointment"
+        :prefill="createPrefill"
         :saving="saving"
         :can-create-order="canCreateOrder"
         @submit="onSave"
@@ -402,6 +427,7 @@ function onShiftNext() {
         :title="confirmTitle"
         :description="confirmDescription"
         :confirm-label="confirmLabel"
+        :confirm-color="pendingConfirm?.kind === 'handle-no-show' ? 'neutral' : 'error'"
         :loading="confirmLoading"
         @confirm="onConfirmAction"
       />

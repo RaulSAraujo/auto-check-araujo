@@ -167,6 +167,10 @@ Hierarquia (espelha light: canvas atrás, painel na frente):
 - Motion: stagger seções 60ms; hover scale nos números de OS
 - Dark: tokens semânticos (ver §3)
 
+### Agendamentos `/agendamentos`
+
+Spec: `layers/11.scheduling/DESIGN.md`. Masthead com dia mono; blocos com barra de status; pátio 4×2; um CTA.
+
 ---
 
 ## 7. Layout Principles

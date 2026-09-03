@@ -95,15 +95,28 @@ export async function useSchedulingBoard() {
     }
   })
 
-  const search = computed({
-    get: () => (typeof route.query.q === 'string' ? route.query.q : ''),
-    set(value: string) {
+  const search = ref(typeof route.query.q === 'string' ? route.query.q : '')
+  let searchWriteTimer: ReturnType<typeof setTimeout> | undefined
+
+  watch(() => route.query.q, (query) => {
+    const next = typeof query === 'string' ? query : ''
+    if (next !== search.value) search.value = next
+  })
+
+  watch(search, (value) => {
+    clearTimeout(searchWriteTimer)
+    searchWriteTimer = setTimeout(() => {
+      const current = typeof route.query.q === 'string' ? route.query.q : ''
+      const trimmed = value.trim()
+      if (current === trimmed || (!current && !trimmed)) return
       const next = { ...route.query }
-      if (value.trim()) next.q = value
+      if (trimmed) next.q = trimmed
       else delete next.q
       router.replace({ query: next })
-    }
+    }, 300)
   })
+
+  onUnmounted(() => clearTimeout(searchWriteTimer))
 
   const statusFilter = computed({
     get(): SchedulingStatusFilter {
@@ -162,6 +175,17 @@ export async function useSchedulingBoard() {
         || statusFilter.value === 'all'
       )
   })
+
+  const dayHasAppointments = computed(() =>
+    appointments.value.some((row) => {
+      if (!isSameLocalDay(new Date(row.inicio), selectedDate.value)) return false
+      return row.status !== 'cancelado' && row.status !== 'tratado'
+    })
+  )
+
+  const hasActiveFilters = computed(() =>
+    search.value.trim().length > 0 || statusFilter.value !== 'all'
+  )
 
   const patioSlots = computed<PatioSlot[]>(() => {
     const day = selectedDate.value
@@ -227,6 +251,8 @@ export async function useSchedulingBoard() {
     statusFilter,
     appointments,
     dayAppointments,
+    dayHasAppointments,
+    hasActiveFilters,
     patioSlots,
     noShows,
     monthCounts,

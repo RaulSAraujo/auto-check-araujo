@@ -31,53 +31,45 @@ function relativeLabel(inicio: string): string {
 </script>
 
 <template>
-  <BasePanel>
-    <template #header>
-      <div class="flex items-center justify-between gap-2">
-        <h2 class="font-semibold text-highlighted">
-          Não comparecimento
-        </h2>
-        <UBadge
-          v-if="items.length"
-          color="error"
-          variant="subtle"
-          class="font-mono tabular-nums"
-        >
-          {{ items.length }}
-        </UBadge>
-      </div>
-    </template>
+  <section
+    v-if="pending || items.length"
+    class="rounded-lg border border-default bg-default p-4 shadow-sm dark:shadow-none"
+    aria-label="Não comparecimento"
+  >
+    <div class="mb-3 flex items-baseline justify-between gap-2">
+      <h2 class="text-xs font-semibold uppercase tracking-widest text-muted">
+        Faltas
+      </h2>
+      <span
+        v-if="items.length"
+        class="font-mono text-xs tabular-nums text-error"
+      >
+        {{ items.length }}
+      </span>
+    </div>
 
     <div
       v-if="pending"
       class="space-y-2"
       role="status"
-      aria-label="Carregando não comparecimentos…"
+      aria-live="polite"
+      aria-label="Carregando faltas…"
     >
-      <USkeleton class="h-14 w-full" />
-      <USkeleton class="h-14 w-full" />
+      <USkeleton class="h-12 w-full" />
     </div>
-
-    <p
-      v-else-if="!items.length"
-      class="text-sm text-muted"
-    >
-      Nenhum não comparecimento recente.
-    </p>
 
     <ul
       v-else
       class="divide-y divide-default"
-      aria-label="Lista de não comparecimentos"
     >
       <li
         v-for="item in items"
         :key="item.id"
-        class="flex items-start justify-between gap-3 py-3 first:pt-0 last:pb-0"
+        class="flex items-center gap-2 py-2 first:pt-0 last:pb-0"
       >
         <button
           type="button"
-          class="min-w-0 flex-1 rounded-md text-left transition-colors hover:bg-elevated/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+          class="min-h-11 min-w-0 flex-1 rounded-md py-1 text-left hover:bg-elevated/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
           :disabled="!canWrite"
           :class="canWrite ? 'cursor-pointer' : 'cursor-default'"
           @click="canWrite && emit('edit', item)"
@@ -85,20 +77,21 @@ function relativeLabel(inicio: string): string {
           <p class="truncate text-sm font-medium text-highlighted">
             {{ item.clientes?.nome?.trim() || EMPTY_VALUE }}
           </p>
-          <p class="mt-0.5 flex flex-wrap items-center gap-x-2 gap-y-0.5 text-xs text-muted">
+          <p class="truncate text-xs text-muted">
             <span
               v-if="item.veiculos"
               class="font-mono tabular-nums"
             >{{ formatPlaca(item.veiculos.placa) }}</span>
-            <span>{{ relativeLabel(item.inicio) }}</span>
+            <span> · {{ relativeLabel(item.inicio) }}</span>
           </p>
         </button>
         <UButton
           v-if="canWrite"
           size="xs"
           color="neutral"
-          variant="outline"
-          label="Tratado"
+          variant="ghost"
+          icon="i-lucide-check"
+          square
           :loading="markingId === item.id"
           :disabled="markingId === item.id"
           :aria-label="`Marcar como tratado: ${item.clientes?.nome || 'agendamento'}`"
@@ -106,5 +99,5 @@ function relativeLabel(inicio: string): string {
         />
       </li>
     </ul>
-  </BasePanel>
+  </section>
 </template>

@@ -19,14 +19,14 @@ export type SchedulingView = 'daily' | 'calendar'
 export type SchedulingStatusFilter = 'all' | 'agendados' | 'nao_compareceu' | 'patio'
 
 export const SCHEDULING_VIEW_ITEMS = [
-  { label: 'Agenda diária', value: 'daily' as const, icon: 'i-lucide-list' },
-  { label: 'Calendário', value: 'calendar' as const, icon: 'i-lucide-calendar' }
+  { label: 'Agenda', value: 'daily' as const },
+  { label: 'Mês', value: 'calendar' as const }
 ]
 
 export const SCHEDULING_STATUS_FILTER_ITEMS = [
   { label: 'Todos', value: 'all' as const },
   { label: 'Agendados', value: 'agendados' as const },
-  { label: 'Não compareceu', value: 'nao_compareceu' as const },
+  { label: 'Faltas', value: 'nao_compareceu' as const },
   { label: 'Pátio', value: 'patio' as const }
 ]
 
@@ -76,6 +76,35 @@ export function formatDayHeading(date: Date): string {
     year: 'numeric'
   }).format(date)
   return label.charAt(0).toUpperCase() + label.slice(1)
+}
+
+export function formatDayHeadingShort(date: Date): string {
+  const label = new Intl.DateTimeFormat('pt-BR', {
+    weekday: 'short',
+    day: 'numeric',
+    month: 'short'
+  }).format(date)
+  return label.charAt(0).toUpperCase() + label.slice(1)
+}
+
+export function formatBoardDate(date: Date): { day: string, weekday: string, monthYear: string } {
+  const weekday = new Intl.DateTimeFormat('pt-BR', { weekday: 'long' }).format(date)
+  const monthYear = new Intl.DateTimeFormat('pt-BR', { month: 'long', year: 'numeric' }).format(date)
+  return {
+    day: String(date.getDate()).padStart(2, '0'),
+    weekday: weekday.charAt(0).toUpperCase() + weekday.slice(1),
+    monthYear: monthYear.charAt(0).toUpperCase() + monthYear.slice(1)
+  }
+}
+
+export function statusBarClass(status: AgendamentoStatus): string {
+  const color = AGENDAMENTO_STATUS_COLOR[status]
+  if (color === 'info') return 'border-l-info'
+  if (color === 'success') return 'border-l-success'
+  if (color === 'warning') return 'border-l-warning'
+  if (color === 'error') return 'border-l-error'
+  if (color === 'primary') return 'border-l-primary'
+  return 'border-l-muted'
 }
 
 export function formatMonthHeading(date: Date): string {
@@ -157,11 +186,19 @@ export type AppointmentDraft = {
   observacoes: string
 }
 
-export function emptyAppointmentDraft(day: Date = new Date()): AppointmentDraft {
+export type AppointmentCreatePrefill = {
+  hour?: number
+  patioVaga?: number | null
+}
+
+export function emptyAppointmentDraft(
+  day: Date = new Date(),
+  prefill?: AppointmentCreatePrefill
+): AppointmentDraft {
   const start = new Date(day)
-  start.setHours(9, 0, 0, 0)
-  const end = new Date(day)
-  end.setHours(10, 0, 0, 0)
+  start.setHours(prefill?.hour ?? 9, 0, 0, 0)
+  const end = new Date(start)
+  end.setHours(start.getHours() + 1, 0, 0, 0)
 
   return {
     veiculo_id: '',
@@ -170,7 +207,7 @@ export function emptyAppointmentDraft(day: Date = new Date()): AppointmentDraft 
     endTime: toTimeInputValue(end),
     status: 'agendado',
     servico: '',
-    patio_vaga: null,
+    patio_vaga: prefill?.patioVaga ?? null,
     observacoes: ''
   }
 }

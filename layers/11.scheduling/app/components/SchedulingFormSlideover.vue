@@ -8,6 +8,7 @@ import {
   emptyAppointmentDraft,
   PATIO_SLOT_ITEMS,
   validateAppointmentDraft,
+  type AppointmentCreatePrefill,
   type AppointmentDraft
 } from '../utils/scheduling'
 
@@ -18,6 +19,7 @@ const open = defineModel<boolean>('open', { required: true })
 const props = defineProps<{
   day: Date
   appointment?: SchedulingAppointment | null
+  prefill?: AppointmentCreatePrefill | null
   saving?: boolean
   canCreateOrder?: boolean
 }>()
@@ -29,7 +31,10 @@ const emit = defineEmits<{
 const { veiculoItems } = await useSchedulingVehicleOptions()
 
 const draft = reactive(emptyAppointmentDraft(props.day))
+const snapshot = ref('')
+const discardOpen = ref(false)
 const isEdit = computed(() => !!props.appointment)
+const isDirty = computed(() => JSON.stringify(draft) !== snapshot.value)
 const orderHref = computed(() =>
   props.appointment?.ordem_servico_id
     ? ORDER_ROUTES.detail(props.appointment.ordem_servico_id)
@@ -49,11 +54,41 @@ const statusItems = computed(() => {
   )
 })
 
-watch(open, (isOpen) => {
-  if (!isOpen) return
+function resetDraft() {
   if (props.appointment) Object.assign(draft, appointmentToDraft(props.appointment))
-  else Object.assign(draft, emptyAppointmentDraft(props.day))
+  else Object.assign(draft, emptyAppointmentDraft(props.day, props.prefill ?? undefined))
+  snapshot.value = JSON.stringify({ ...draft })
+}
+
+watch(open, (isOpen) => {
+  if (!isOpen) {
+    discardOpen.value = false
+    return
+  }
+  resetDraft()
 })
+
+function onOpenChange(value: boolean) {
+  if (value) {
+    open.value = true
+    return
+  }
+  requestClose()
+}
+
+function requestClose() {
+  if (props.saving) return
+  if (isDirty.value) {
+    discardOpen.value = true
+    return
+  }
+  open.value = false
+}
+
+function discardChanges() {
+  discardOpen.value = false
+  open.value = false
+}
 
 function validate(state: Partial<AppointmentDraft>): FormError[] {
   return validateAppointmentDraft(state as AppointmentDraft)
@@ -66,12 +101,12 @@ function onSubmit(_event: FormSubmitEvent<AppointmentDraft>) {
 
 <template>
   <USlideover
-    v-model:open="open"
+    :open="open"
     :title="isEdit ? 'Editar agendamento' : 'Novo agendamento'"
-    :description="isEdit
-      ? 'Atualize horário, status ou vaga do pátio.'
-      : 'Reserve horário e, se precisar, uma vaga do pátio.'"
-    :dismissible="!saving"
+    :dismissible="!saving && !isDirty"
+    :ui="{ content: 'overscroll-contain' }"
+    @update:open="onOpenChange"
+    @close:prevent="requestClose"
   >
     <template #body>
       <UForm
@@ -91,7 +126,7 @@ function onSubmit(_event: FormSubmitEvent<AppointmentDraft>) {
             v-model="draft.veiculo_id"
             :items="veiculoItems"
             value-key="value"
-            placeholder="Buscar placa ou cliente…"
+            placeholder="Placa ou cliente…"
             class="w-full"
             :search-input="{ placeholder: 'Buscar…' }"
           />
@@ -143,7 +178,7 @@ function onSubmit(_event: FormSubmitEvent<AppointmentDraft>) {
           <UInput
             v-model="draft.servico"
             class="w-full"
-            placeholder="ex.: Revisão preventiva"
+            placeholder="Revisão preventiva…"
             autocomplete="off"
           />
         </UFormField>
@@ -160,7 +195,7 @@ function onSubmit(_event: FormSubmitEvent<AppointmentDraft>) {
             />
           </UFormField>
           <UFormField
-            label="Vaga do pátio"
+            label="Vaga"
             name="patio_vaga"
           >
             <USelect
@@ -181,13 +216,15 @@ function onSubmit(_event: FormSubmitEvent<AppointmentDraft>) {
             v-model="draft.observacoes"
             class="w-full"
             :rows="2"
+            autoresize
+            :maxrows="6"
             placeholder="Detalhes para a recepção…"
           />
         </UFormField>
       </UForm>
     </template>
 
-    <template #footer="{ close }">
+    <template #footer>
       <div class="flex flex-wrap items-center justify-end gap-2">
         <UButton
           v-if="orderHref"
@@ -210,15 +247,36 @@ function onSubmit(_event: FormSubmitEvent<AppointmentDraft>) {
           variant="ghost"
           label="Cancelar"
           :disabled="saving"
-          @click="close()"
+          @click="requestClose"
         />
         <UButton
           type="submit"
           form="scheduling-appointment-form"
-          :label="isEdit ? 'Salvar alterações' : 'Salvar agendamento'"
+          label="Salvar"
           :loading="saving"
         />
       </div>
     </template>
   </USlideover>
+
+  <UModal
+    v-model:open="discardOpen"
+    title="Descartar alterações?"
+    description="O que você digitou não será salvo."
+    :ui="{ content: 'overscroll-contain', footer: 'justify-end' }"
+  >
+    <template #footer>
+      <UButton
+        color="neutral"
+        variant="outline"
+        label="Continuar editando"
+        @click="discardOpen = false"
+      />
+      <UButton
+        color="error"
+        label="Descartar"
+        @click="discardChanges"
+      />
+    </template>
+  </UModal>
 </template>

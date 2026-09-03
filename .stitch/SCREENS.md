@@ -180,30 +180,21 @@ Cada card (painel com borda Whisper, não decorativo):
 
 ## 9. Agendamentos (`/agendamentos`)
 
-**Navbar:** “Agendamentos” + busca “Buscar cliente ou placa…” + “Exportar PDF” + CTA “Novo agendamento”.
+**Spec visual:** `layers/11.scheduling/DESIGN.md` (workshop ledger).
 
-**Subtítulo:** “Agenda da oficina” (sem copy de marketing “inteligentes”).
+**Masthead:** eyebrow “Agendamentos”; número do dia mono grande + weekday; busca + um CTA “Novo agendamento”. Chevrons, Hoje, Agenda | Mês, filtro.
 
-**Toolbar:**
-- Segmented: Agenda diária | Calendário
-- Navegação de data (hoje / anterior / próximo)
-- Filtros: Todos | Agendados | Não compareceu + filtro Pátio
+**Body — Agenda:** split `1fr / 17rem`. Superfície `bg-default shadow-sm`. Blocos com barra esquerda de status. Pátio mapa 4×2. Faltas só com itens.
 
-**Body — Agenda diária (padrão):**
-- Coluna principal: timeline 07:00–18:00 com blocos (horário mono, placa mono, cliente, serviço, badge vaga, status)
-- Coluna lateral: painel **Pátio** (vagas 1–8: placa ou Livre) + lista **Não comparecimento** do dia
+**Body — Mês:** mesma superfície; clique abre o dia.
 
-**Body — Calendário:** grade mensal/semanal com contagem por dia; clique abre o dia na agenda.
+**Empty:** ícone + “Nenhum horário neste dia.” + Novo agendamento.
 
-**Status:** agendado · confirmado · em atendimento · concluído · não compareceu · cancelado
+**Proibido:** hero marketing; grade 07–18 vazia; lista sem superfície; purple.
 
-**Empty:** “Nenhum agendamento neste dia. Novo agendamento”
+**Motion:** stagger 40ms; press; pulse no hoje.
 
-**Proibido:** hero “Agendamentos Inteligentes”, 3 feature cards, purple.
-
-**Motion (código):** page enter; stagger dos blocos da timeline; press no CTA.
-
-**Trunk test:** título Agendamentos, nav ativa, CTA Novo agendamento.
+**Trunk test:** eyebrow, data óbvia, CTA Novo agendamento.
 
 ---
 

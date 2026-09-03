@@ -1,99 +1,118 @@
 <script setup lang="ts">
 import type { SchedulingAppointment } from '../composables/useSchedulingBoard'
-import { LUNCH_HOUR, timelineHours } from '../utils/scheduling'
+import type { AppointmentCreatePrefill } from '../utils/scheduling'
 
 defineOptions({ name: 'SchedulingDailyTimeline' })
 
-defineProps<{
+const props = defineProps<{
   appointments: SchedulingAppointment[]
   pending?: boolean
   canWrite?: boolean
   canCreateOrder?: boolean
   markingId?: string | null
+  hasActiveFilters?: boolean
+  dayHasAppointments?: boolean
 }>()
 
 const emit = defineEmits<{
   'mark-no-show': [id: string]
-  'create': []
+  'create': [prefill?: AppointmentCreatePrefill]
+  'clear-filters': []
   'edit': [appointment: SchedulingAppointment]
 }>()
 
-const hours = timelineHours()
-
-function appointmentsForHour(list: SchedulingAppointment[], hour: number) {
-  return list.filter((row) => {
-    const start = new Date(row.inicio)
-    return start.getHours() === hour
-  })
-}
+const sortedAppointments = computed(() =>
+  [...props.appointments].sort(
+    (a, b) => new Date(a.inicio).getTime() - new Date(b.inicio).getTime()
+  )
+)
 </script>
 
 <template>
-  <BasePanel title="Cronograma diário">
+  <section class="rounded-lg border border-default bg-default px-3 py-4 shadow-sm dark:shadow-none sm:px-4">
+    <h2 class="px-1 text-xs font-semibold uppercase tracking-widest text-muted">
+      Agenda do dia
+    </h2>
+
     <div
       v-if="pending"
-      class="space-y-3"
+      class="mt-3 space-y-2"
       role="status"
+      aria-live="polite"
       aria-label="Carregando agenda…"
     >
       <USkeleton
-        v-for="n in 4"
+        v-for="n in 3"
         :key="n"
-        class="h-20 w-full"
+        class="h-12 w-full"
       />
     </div>
 
-    <BaseEmptyState
-      v-else-if="!appointments.length"
-      icon="i-lucide-calendar-off"
+    <div
+      v-else-if="!appointments.length && hasActiveFilters && dayHasAppointments"
+      class="mt-4 flex items-center justify-between gap-3 px-1"
     >
-      Nenhum agendamento neste dia. Crie um horário para o cliente.
-      <template
-        v-if="canWrite"
-        #actions
-      >
-        <UButton
-          label="Novo agendamento"
-          icon="i-lucide-plus"
-          @click="emit('create')"
-        />
-      </template>
-    </BaseEmptyState>
+      <p class="text-sm text-muted">
+        Nada neste filtro.
+      </p>
+      <UButton
+        label="Limpar filtro"
+        color="neutral"
+        variant="outline"
+        size="sm"
+        @click="emit('clear-filters')"
+      />
+    </div>
 
-    <ol
+    <div
+      v-else-if="!appointments.length"
+      class="mt-4 flex flex-wrap items-center gap-3 px-1"
+    >
+      <p class="text-sm text-muted">
+        Nenhum horário neste dia.
+      </p>
+      <UButton
+        v-if="canWrite"
+        label="Novo agendamento"
+        icon="i-lucide-plus"
+        size="sm"
+        @click="emit('create')"
+      />
+    </div>
+
+    <ul
       v-else
-      class="space-y-0 divide-y divide-default"
+      class="mt-2 divide-y divide-default"
       aria-label="Agenda diária"
     >
       <li
-        v-for="hour in hours"
-        :key="hour"
-        class="grid grid-cols-[3.5rem_1fr] gap-3 py-3 first:pt-0 last:pb-0"
+        v-for="(appointment, index) in sortedAppointments"
+        :key="appointment.id"
+        class="motion-safe:animate-[fade-in_200ms_both]"
+        :style="{ animationDelay: `${index * 40}ms` }"
       >
-        <span class="pt-1 font-mono text-xs tabular-nums text-muted">
-          {{ String(hour).padStart(2, '0') }}:00
-        </span>
-
-        <div class="min-w-0 space-y-2">
-          <p
-            v-if="hour === LUNCH_HOUR"
-            class="border-t border-dashed border-default pt-2 text-xs text-muted"
-          >
-            Horário de almoço
-          </p>
-
-          <SchedulingAppointmentBlock
-            v-for="appointment in appointmentsForHour(appointments, hour)"
-            :key="appointment.id"
-            :appointment="appointment"
-            :can-write="canWrite"
-            :can-create-order="canCreateOrder"
-            :marking="markingId === appointment.id"
-            @mark-no-show="emit('mark-no-show', $event)"
-            @edit="emit('edit', $event)"
-          />
-        </div>
+        <SchedulingAppointmentBlock
+          :appointment="appointment"
+          :can-write="canWrite"
+          :can-create-order="canCreateOrder"
+          :marking="markingId === appointment.id"
+          @mark-no-show="emit('mark-no-show', $event)"
+          @edit="emit('edit', $event)"
+        />
       </li>
-    </ol>
-  </BasePanel>
+    </ul>
+  </section>
 </template>
+
+<style scoped>
+@keyframes fade-in {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  li {
+    animation: none !important;
+  }
+}
+</style>

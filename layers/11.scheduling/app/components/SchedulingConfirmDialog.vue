@@ -22,13 +22,13 @@ const emit = defineEmits<{
     :title="title"
     :description="description"
     :dismissible="!loading"
-    :ui="{ footer: 'justify-end' }"
+    :ui="{ content: 'overscroll-contain', footer: 'justify-end' }"
   >
     <template #footer="{ close }">
       <UButton
         color="neutral"
         variant="outline"
-        label="Voltar"
+        label="Cancelar"
         :disabled="loading"
         @click="close()"
       />
