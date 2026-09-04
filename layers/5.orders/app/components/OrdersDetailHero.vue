@@ -28,21 +28,21 @@ const statusChanged = computed(() => props.selectedStatus !== props.ordem.status
 </script>
 
 <template>
-  <header class="orders-hero rounded-xl border border-default bg-default">
-    <div class="border-b border-default px-5 py-5 sm:px-6 sm:py-6">
+  <header class="orders-hero overflow-hidden rounded-2xl bg-elevated/30 ring-1 ring-default/60">
+    <div class="px-5 pb-5 pt-5 sm:px-6 sm:pb-6 sm:pt-6">
       <div class="flex flex-wrap items-start justify-between gap-4">
-        <div class="min-w-0 space-y-1.5">
+        <div class="min-w-0 space-y-2">
           <div class="flex flex-wrap items-baseline gap-x-3 gap-y-1">
             <NuxtLink
               v-if="vehicle"
               :to="`/veiculos/${vehicle.id}`"
-              class="font-mono text-3xl font-black tabular-nums tracking-tight text-highlighted transition-colors hover:text-primary"
+              class="font-mono text-3xl font-black tracking-tight text-highlighted tabular-nums transition-colors hover:text-primary active:opacity-80"
               translate="no"
             >
               {{ formatPlaca(vehicle.placa) }}
             </NuxtLink>
             <h1
-              class="font-mono text-lg font-semibold tabular-nums tracking-tight text-muted sm:text-xl"
+              class="font-mono text-base font-semibold tracking-tight text-muted tabular-nums sm:text-lg"
               translate="no"
             >
               {{ ordem.numero || 'OS' }}
@@ -52,14 +52,14 @@ const statusChanged = computed(() => props.selectedStatus !== props.ordem.status
           <div class="flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-muted">
             <span
               v-if="vehicleLabel"
-              class="hidden sm:inline"
+              class="text-pretty"
             >
               {{ vehicleLabel }}
             </span>
             <NuxtLink
               v-if="vehicle?.clientes"
               :to="`/clientes/${vehicle.clientes.id}`"
-              class="text-primary hover:underline"
+              class="text-primary transition-colors hover:underline"
             >
               {{ vehicle.clientes.nome }}
             </NuxtLink>
@@ -109,35 +109,35 @@ const statusChanged = computed(() => props.selectedStatus !== props.ordem.status
             variant="ghost"
             label="Voltar"
             icon="i-lucide-arrow-left"
-            class="min-h-11 touch-manipulation"
+            class="min-h-11 touch-manipulation active:scale-[0.98]"
             @click="emit('back')"
           />
         </div>
       </div>
     </div>
 
-    <div class="grid grid-cols-1 divide-y divide-default sm:grid-cols-3 sm:divide-x sm:divide-y-0">
-      <div class="px-4 py-3 text-center sm:px-4">
+    <div class="grid grid-cols-1 gap-px bg-default/50 sm:grid-cols-3">
+      <div class="bg-default/40 px-4 py-3.5 sm:px-5">
         <p class="text-xs font-medium text-muted">
           Aberta em
         </p>
-        <p class="mt-0.5 font-mono text-xs tabular-nums text-highlighted">
+        <p class="mt-1 font-mono text-sm tabular-nums text-highlighted">
           {{ formatDateTime(ordem.aberta_em) }}
         </p>
       </div>
-      <div class="px-4 py-3 text-center">
+      <div class="bg-default/40 px-4 py-3.5 sm:px-5">
         <p class="text-xs font-medium text-muted">
           Aberta por
         </p>
-        <p class="mt-0.5 text-xs text-highlighted">
+        <p class="mt-1 text-sm text-highlighted">
           {{ ordem.profiles?.nome || '—' }}
         </p>
       </div>
-      <div class="px-4 py-3 text-center">
+      <div class="bg-default/40 px-4 py-3.5 sm:px-5">
         <p class="text-xs font-medium text-muted">
           Concluída em
         </p>
-        <p class="mt-0.5 font-mono text-xs tabular-nums text-highlighted">
+        <p class="mt-1 font-mono text-sm tabular-nums text-highlighted">
           {{ ordem.concluida_em ? formatDateTime(ordem.concluida_em) : '—' }}
         </p>
       </div>

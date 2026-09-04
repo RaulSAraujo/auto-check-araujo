@@ -8,7 +8,7 @@ import type { OrderItemDraft } from '../utils/budget'
 
 defineOptions({ name: 'OrdersBudgetSection' })
 
-defineProps<{
+const props = defineProps<{
   items: OrdemItem[]
   budgetStatus: OrcamentoStatus
   canEditItems: boolean
@@ -41,6 +41,10 @@ const draftModel = defineModel<OrderItemDraft>('draft', { required: true })
 const showAddModal = ref(false)
 const rejectConfirmOpen = ref(false)
 
+const showShareMenu = computed(() =>
+  props.items.length > 0 && Boolean(props.printTo || props.publicUrl)
+)
+
 function onAddAndClose() {
   emit('add')
   showAddModal.value = false
@@ -53,9 +57,9 @@ function onConfirmReject() {
 </script>
 
 <template>
-  <section class="flex h-full min-h-0 flex-col gap-4">
+  <section class="flex h-full min-h-0 flex-col gap-5">
     <div class="flex flex-wrap items-center justify-between gap-3">
-      <div class="flex items-center gap-2.5">
+      <div class="flex min-w-0 items-center gap-2.5">
         <h2 class="text-lg font-semibold text-highlighted">
           Orçamento
         </h2>
@@ -67,7 +71,7 @@ function onConfirmReject() {
         </UBadge>
       </div>
       <OrdersPrintActions
-        v-if="items.length > 0 && (printTo || publicUrl)"
+        v-if="showShareMenu"
         :print-to="printTo"
         :public-url="publicUrl"
         :whatsapp-url="whatsappUrl"
@@ -99,13 +103,13 @@ function onConfirmReject() {
 
     <div
       v-if="items.length > 0"
-      class="flex min-h-0 flex-1 flex-col rounded-lg border border-default"
+      class="flex min-h-0 flex-1 flex-col overflow-hidden rounded-lg bg-elevated/25 ring-1 ring-default/60"
     >
-      <div class="min-h-0 flex-1 divide-y divide-default overflow-y-auto overscroll-contain">
+      <div class="min-h-0 flex-1 divide-y divide-default/80 overflow-y-auto overscroll-contain">
         <div
           v-for="item in items"
           :key="item.id"
-          class="flex items-center gap-3 px-3.5 py-3"
+          class="flex items-center gap-3 px-3.5 py-3 transition-colors hover:bg-elevated/40"
         >
           <div class="min-w-0 flex-1">
             <div class="flex items-center gap-2">
@@ -126,7 +130,7 @@ function onConfirmReject() {
               {{ formatMoney(Number(item.valor_unitario)) }}
             </p>
           </div>
-          <p class="shrink-0 font-mono text-sm tabular-nums font-semibold text-highlighted">
+          <p class="shrink-0 font-mono text-sm font-semibold tabular-nums text-highlighted">
             {{ formatMoney(calcItemSubtotal(item)) }}
           </p>
           <UButton
@@ -137,16 +141,17 @@ function onConfirmReject() {
             size="xs"
             :loading="deletingId === item.id"
             aria-label="Remover item"
+            class="touch-manipulation"
             @click="emit('delete', item.id)"
           />
         </div>
       </div>
 
-      <div class="flex items-center justify-between border-t border-default bg-elevated/30 px-3.5 py-2.5">
-        <p class="text-sm font-semibold text-muted">
+      <div class="flex items-baseline justify-between gap-3 border-t border-default bg-default/60 px-3.5 py-3">
+        <p class="text-sm text-muted">
           Total
         </p>
-        <p class="font-mono text-base tabular-nums font-bold text-highlighted">
+        <p class="font-mono text-lg font-bold tabular-nums tracking-tight text-highlighted">
           {{ formatMoney(total) }}
         </p>
       </div>
@@ -161,8 +166,9 @@ function onConfirmReject() {
         label="Adicionar item"
         icon="i-lucide-plus"
         size="sm"
-        color="primary"
+        color="neutral"
         variant="soft"
+        class="touch-manipulation"
         @click="showAddModal = true"
       />
 
@@ -173,8 +179,10 @@ function onConfirmReject() {
         label="Enviar para aprovação"
         icon="i-lucide-send"
         size="sm"
+        color="primary"
         :loading="updatingStatus"
         :disabled="items.length === 0"
+        class="touch-manipulation"
         @click="emit('submitForApproval')"
       />
       <template v-if="canApprove && budgetStatus === 'aguardando_aprovacao'">
@@ -184,6 +192,7 @@ function onConfirmReject() {
           color="success"
           size="sm"
           :loading="updatingStatus"
+          class="touch-manipulation"
           @click="emit('approve')"
         />
         <UButton
@@ -193,6 +202,7 @@ function onConfirmReject() {
           variant="soft"
           size="sm"
           :loading="updatingStatus"
+          class="touch-manipulation"
           @click="rejectConfirmOpen = true"
         />
       </template>
@@ -204,6 +214,7 @@ function onConfirmReject() {
         variant="soft"
         size="sm"
         :loading="updatingStatus"
+        class="touch-manipulation"
         @click="emit('reopen')"
       />
     </div>
@@ -221,7 +232,7 @@ function onConfirmReject() {
     <UModal
       v-model:open="showAddModal"
       title="Adicionar item"
-      :ui="{ width: 'sm:max-w-md' }"
+      :ui="{ content: 'sm:max-w-md' }"
     >
       <template #body>
         <div class="space-y-4 p-1">
@@ -250,7 +261,7 @@ function onConfirmReject() {
               ou preencha manualmente
             </p>
           </div>
-          <div class="grid gap-4 grid-cols-2">
+          <div class="grid grid-cols-2 gap-4">
             <UFormField
               label="Tipo"
               name="draft-tipo"
@@ -318,7 +329,7 @@ function onConfirmReject() {
             <p class="text-xs text-muted">
               Subtotal
             </p>
-            <p class="font-mono text-lg tabular-nums font-semibold text-highlighted">
+            <p class="font-mono text-lg font-semibold tabular-nums text-highlighted">
               {{ formatMoney(draftModel.quantidade * draftModel.valor_unitario) }}
             </p>
           </div>
@@ -343,6 +354,5 @@ function onConfirmReject() {
         </div>
       </template>
     </UModal>
-
   </section>
 </template>

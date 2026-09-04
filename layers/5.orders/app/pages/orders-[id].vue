@@ -338,27 +338,25 @@ onMounted(() => {
         </UAlert>
 
         <div class="grid items-stretch gap-6 lg:grid-cols-2">
-          <!-- Coluna esquerda: dados da OS + checklist -->
-          <div class="flex flex-col gap-6">
-            <section class="flex-1 rounded-xl border border-default bg-default p-5 sm:p-6">
+          <section class="flex flex-col overflow-hidden rounded-2xl bg-default ring-1 ring-default/60">
+            <div class="flex-1 p-5 pb-6 sm:p-6 sm:pb-7">
               <OrdersDetailResumoPanel
                 v-model="state"
                 :ordem="ordem"
                 :can-edit="canEdit"
                 @submit="save"
               />
-            </section>
+            </div>
 
-            <section class="rounded-xl border border-default bg-default px-5 py-4 sm:px-6 sm:py-5">
+            <div class="border-t border-default/80 bg-elevated/20 px-5 py-4 sm:px-6 sm:py-5">
               <OrdersChecklistActions
                 :ordem="ordem"
                 @open="openChecklist"
               />
-            </section>
-          </div>
+            </div>
+          </section>
 
-          <!-- Orçamento estica até a base do checklist -->
-          <section class="flex h-full min-h-0 flex-col rounded-xl border border-default bg-default p-5 sm:p-6">
+          <section class="flex h-full min-h-0 flex-col rounded-2xl bg-default p-5 pb-6 sm:p-6 sm:pb-7 ring-1 ring-default/60">
             <OrdersBudgetSection
               v-model:draft="draft"
               class="flex min-h-0 flex-1 flex-col"
@@ -390,7 +388,7 @@ onMounted(() => {
 
         <section
           v-if="showPaymentSection"
-          class="rounded-xl border border-default bg-default p-5 sm:p-6"
+          class="rounded-2xl bg-default p-5 pb-6 sm:p-6 sm:pb-7 ring-1 ring-default/60"
         >
           <OrdersPaymentEditor
             v-model="paymentState"
@@ -409,7 +407,7 @@ onMounted(() => {
         >
           <div
             v-if="isDirty"
-            class="orders-detail-command fixed inset-x-4 bottom-4 z-30 mx-auto flex max-w-lg items-center gap-3 rounded-full border border-default bg-default/95 px-4 py-2.5 shadow-lg backdrop-blur-md sm:inset-x-auto sm:left-1/2 sm:-translate-x-1/2"
+            class="orders-detail-command fixed inset-x-4 bottom-4 z-30 mx-auto flex max-w-lg items-center gap-3 rounded-full border border-default/80 bg-default/95 px-4 py-2.5 backdrop-blur-md sm:inset-x-auto sm:left-1/2 sm:-translate-x-1/2"
             role="status"
             aria-live="polite"
             style="padding-bottom: max(0.625rem, env(safe-area-inset-bottom))"
@@ -427,6 +425,7 @@ onMounted(() => {
               variant="ghost"
               size="sm"
               :disabled="saving"
+              class="active:scale-[0.98]"
               @click="discard"
             />
             <UButton
@@ -434,6 +433,7 @@ onMounted(() => {
               color="primary"
               size="sm"
               :loading="saving"
+              class="active:scale-[0.98]"
               @click="save"
             />
           </div>

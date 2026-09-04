@@ -52,6 +52,9 @@ const showProgress = computed(() => Boolean(props.ordem.checklists) && totalCoun
             : 'Continuar checklist'"
         :icon="ordem.checklists ? 'i-lucide-clipboard-check' : 'i-lucide-clipboard-list'"
         size="sm"
+        color="neutral"
+        variant="soft"
+        class="touch-manipulation active:scale-[0.98]"
         @click="$emit('open')"
       />
     </div>

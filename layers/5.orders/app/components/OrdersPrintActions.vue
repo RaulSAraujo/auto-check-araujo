@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import type { DropdownMenuItem } from '@nuxt/ui'
+
 defineOptions({ name: 'OrdersPrintActions' })
 
 const props = defineProps<{
@@ -30,50 +32,65 @@ async function copyPublicLink() {
     copying.value = false
   }
 }
+
+const moreItems = computed<DropdownMenuItem[][]>(() => {
+  const items: DropdownMenuItem[] = []
+
+  if (props.printTo) {
+    items.push({
+      label: props.printLabel || 'Imprimir',
+      icon: 'i-lucide-printer',
+      to: props.printTo,
+      target: '_blank'
+    })
+  }
+
+  if (props.showPdf) {
+    items.push({
+      label: props.pdfLoading ? 'Baixando…' : (props.pdfLabel || 'Baixar PDF'),
+      icon: 'i-lucide-file-down',
+      disabled: props.pdfLoading,
+      onSelect: () => { emit('downloadPdf') }
+    })
+  }
+
+  if (props.publicUrl) {
+    items.push({
+      label: copying.value ? 'Copiando…' : 'Copiar link',
+      icon: 'i-lucide-link',
+      disabled: copying.value,
+      onSelect: () => { void copyPublicLink() }
+    })
+  }
+
+  if (props.whatsappUrl) {
+    items.push({
+      label: 'WhatsApp',
+      icon: 'i-simple-icons-whatsapp',
+      to: props.whatsappUrl,
+      target: '_blank'
+    })
+  }
+
+  return items.length ? [items] : []
+})
+
+const hasActions = computed(() => moreItems.value[0]?.length)
 </script>
 
 <template>
-  <div class="flex flex-wrap gap-2">
+  <UDropdownMenu
+    v-if="hasActions"
+    :items="moreItems"
+    :content="{ align: 'end' }"
+  >
     <UButton
-      v-if="printTo"
-      :to="printTo"
-      target="_blank"
-      :label="printLabel || 'Imprimir'"
-      icon="i-lucide-printer"
+      icon="i-lucide-ellipsis"
       color="neutral"
-      variant="soft"
+      variant="ghost"
       size="sm"
+      aria-label="Mais ações do orçamento"
+      class="min-h-9 min-w-9 touch-manipulation"
     />
-    <UButton
-      v-if="showPdf"
-      :label="pdfLabel || 'Baixar PDF'"
-      icon="i-lucide-file-down"
-      color="neutral"
-      variant="soft"
-      size="sm"
-      :loading="pdfLoading"
-      @click="emit('downloadPdf')"
-    />
-    <UButton
-      v-if="publicUrl"
-      label="Copiar link"
-      icon="i-lucide-link"
-      color="neutral"
-      variant="soft"
-      size="sm"
-      :loading="copying"
-      @click="copyPublicLink"
-    />
-    <UButton
-      v-if="whatsappUrl"
-      :href="whatsappUrl"
-      target="_blank"
-      rel="noopener noreferrer"
-      label="WhatsApp"
-      icon="i-simple-icons-whatsapp"
-      color="success"
-      variant="soft"
-      size="sm"
-    />
-  </div>
+  </UDropdownMenu>
 </template>
