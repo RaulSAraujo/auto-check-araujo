@@ -65,6 +65,17 @@ const allowLeave = ref(false)
 const selectedVehicle = computed(() => findVehicle(state.veiculo_id))
 const isDirty = computed(() => isOrderFormDirty(state, initialState))
 
+const backFallback = computed(() => {
+  if (agendamentoId.value) return APP_ROUTES.scheduling
+
+  const origin = resolveOrderBreadcrumbOrigin()
+  if (origin === 'kanban') return APP_ROUTES.kanban
+  if (origin === 'scheduling') return APP_ROUTES.scheduling
+  return ORDER_ROUTES.list
+})
+
+const { back } = useSmartBack(backFallback)
+
 async function onSubmit() {
   loading.value = true
   try {
@@ -122,11 +133,12 @@ onMounted(() => {
         >
           <template #actions>
             <UButton
-              :to="agendamentoId ? APP_ROUTES.scheduling : ORDER_ROUTES.list"
               color="neutral"
               variant="ghost"
               label="Voltar"
               icon="i-lucide-arrow-left"
+              class="min-h-11 touch-manipulation"
+              @click="back"
             />
           </template>
         </BasePageHeader>
@@ -146,6 +158,7 @@ onMounted(() => {
           :loading="loading"
           :vehicles-pending="vehiclesPending"
           :vehicles-error="Boolean(vehiclesError)"
+          :cancel-to="backFallback"
           @submit="onSubmit"
           @retry-vehicles="retryVehicles"
         />

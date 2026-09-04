@@ -9,18 +9,29 @@ defineOptions({ name: 'OrdersNewForm' })
 
 const state = defineModel<OrderFormState>({ required: true })
 
-const props = defineProps<{
+const {
+  veiculoItems,
+  selectedVehicle,
+  loading,
+  vehiclesPending = false,
+  vehiclesError = false,
+  cancelTo = ORDER_ROUTES.list
+} = defineProps<{
   veiculoItems: OrderVehicleSelectItem[]
   selectedVehicle: OrderVehicleSelectItem | null
   loading: boolean
   vehiclesPending?: boolean
   vehiclesError?: boolean
+  /** Fallback when there is no in-app history (e.g. cold open). */
+  cancelTo?: string
 }>()
 
 const emit = defineEmits<{
   submit: []
   retryVehicles: []
 }>()
+
+const { back: cancel } = useSmartBack(() => cancelTo)
 
 const showNotes = ref(Boolean(state.value.observacoes.trim()))
 const isDesktop = ref(false)
@@ -46,7 +57,7 @@ function onSubmit() {
 }
 
 const vehicleLabel = computed(() => {
-  const vehicle = props.selectedVehicle
+  const vehicle = selectedVehicle
   if (!vehicle) return null
   const model = [vehicle.marca, vehicle.modelo].filter(Boolean).join(' ')
   return {
@@ -314,12 +325,12 @@ const vehicleLabel = computed(() => {
     >
       <div class="flex flex-col-reverse gap-2 sm:flex-row sm:items-center sm:justify-between">
         <UButton
-          :to="ORDER_ROUTES.list"
           color="neutral"
           variant="ghost"
           label="Cancelar"
           :disabled="loading"
-          class="justify-center sm:justify-start"
+          class="justify-center touch-manipulation sm:justify-start"
+          @click="cancel"
         />
         <UButton
           type="submit"
