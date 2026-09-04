@@ -7,7 +7,6 @@ import {
   isSameLocalDay,
   SCHEDULING_STATUS_FILTER_ITEMS,
   SCHEDULING_VIEW_ITEMS,
-  startOfLocalDay,
   TIMELINE_END_HOUR,
   TIMELINE_START_HOUR,
   type AppointmentCreatePrefill,
@@ -55,7 +54,8 @@ const {
   refresh,
   goToday,
   shiftDay,
-  shiftMonth
+  shiftMonth,
+  selectDay
 } = await useSchedulingBoard()
 
 const {
@@ -222,8 +222,7 @@ function onExportPdf() {
 }
 
 function onSelectCalendarDay(day: Date) {
-  selectedDate.value = startOfLocalDay(day)
-  view.value = 'daily'
+  selectDay(day)
 }
 
 function onShiftPrev() {

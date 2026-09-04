@@ -58,6 +58,13 @@ function matchesStatusFilter(row: SchedulingAppointment, filter: SchedulingStatu
   return true
 }
 
+function dateQueryValue(value: Date): string {
+  const y = value.getFullYear()
+  const m = String(value.getMonth() + 1).padStart(2, '0')
+  const d = String(value.getDate()).padStart(2, '0')
+  return `${y}-${m}-${d}`
+}
+
 export async function useSchedulingBoard() {
   const supabase = useTypedSupabaseClient()
   const route = useRoute()
@@ -76,10 +83,7 @@ export async function useSchedulingBoard() {
       return startOfLocalDay(new Date())
     },
     set(value: Date) {
-      const y = value.getFullYear()
-      const m = String(value.getMonth() + 1).padStart(2, '0')
-      const d = String(value.getDate()).padStart(2, '0')
-      router.replace({ query: { ...route.query, dia: `${y}-${m}-${d}` } })
+      router.replace({ query: { ...route.query, dia: dateQueryValue(value) } })
     }
   })
 
@@ -244,6 +248,13 @@ export async function useSchedulingBoard() {
     )
   }
 
+  /** Select a day and switch to Agenda in one navigation (avoids racing two replace calls). */
+  function selectDay(day: Date) {
+    const next = { ...route.query, dia: dateQueryValue(startOfLocalDay(day)) }
+    delete next.vista
+    router.replace({ query: next })
+  }
+
   return {
     selectedDate,
     view,
@@ -261,6 +272,7 @@ export async function useSchedulingBoard() {
     refresh,
     goToday,
     shiftDay,
-    shiftMonth
+    shiftMonth,
+    selectDay
   }
 }
