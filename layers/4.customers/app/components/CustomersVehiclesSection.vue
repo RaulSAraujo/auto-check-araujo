@@ -17,7 +17,7 @@ const { can } = usePermissions()
 <template>
   <section class="space-y-4">
     <div class="flex items-center justify-between gap-3">
-      <h2 class="text-lg font-semibold text-highlighted">
+      <h2 class="text-sm font-semibold uppercase tracking-widest text-muted">
         Veículos
       </h2>
       <UButton

@@ -10,16 +10,11 @@ export function useCustomerMutations() {
   const supabase = useTypedSupabaseClient()
   const toast = useToast()
 
-  function validateForm(state: CustomerFormState): boolean {
-    if (!isCustomerFormValid(state)) {
-      toast.add({ title: 'Informe o nome do Cliente', color: 'warning' })
-      return false
-    }
-    return true
-  }
-
   async function createCustomer(state: CustomerFormState) {
-    if (!validateForm(state)) return { data: null, error: null }
+    // Client validation + inline errors live in UForm; silent guard only.
+    if (!isCustomerFormValid(state)) {
+      return { data: null, error: { message: 'validation' } as const }
+    }
 
     const { data, error } = await supabase
       .from('clientes')
@@ -28,7 +23,11 @@ export function useCustomerMutations() {
       .single()
 
     if (error) {
-      toast.add({ title: 'Erro ao salvar', description: error.message, color: 'error' })
+      toast.add({
+        title: 'Não foi possível salvar',
+        description: 'Verifique os dados e tente de novo.',
+        color: 'error'
+      })
       return { data: null, error }
     }
 
@@ -37,7 +36,9 @@ export function useCustomerMutations() {
   }
 
   async function updateCustomer(id: string, state: CustomerFormState) {
-    if (!validateForm(state)) return { error: null }
+    if (!isCustomerFormValid(state)) {
+      return { error: { message: 'validation' } as const }
+    }
 
     const { error } = await supabase
       .from('clientes')
@@ -45,7 +46,11 @@ export function useCustomerMutations() {
       .eq('id', id)
 
     if (error) {
-      toast.add({ title: 'Erro ao salvar', description: error.message, color: 'error' })
+      toast.add({
+        title: 'Não foi possível salvar',
+        description: 'Verifique os dados e tente de novo.',
+        color: 'error'
+      })
       return { error }
     }
 

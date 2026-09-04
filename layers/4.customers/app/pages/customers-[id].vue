@@ -1,4 +1,7 @@
 <script setup lang="ts">
+import type { BreadcrumbItem } from '@nuxt/ui'
+import { CUSTOMER_ROUTES } from '../utils/customer-routes'
+
 defineOptions({ name: 'CustomersDetailPage' })
 
 definePageMeta({
@@ -6,13 +9,24 @@ definePageMeta({
 })
 
 const route = useRoute()
-
 const id = computed(() => route.params.id as string)
 
 const { data: cliente, pending, refresh } = await useCustomerQuery(id)
 const { data: veiculos, pending: pendingVeiculos, refresh: refreshVeiculos } = await useCustomerVehicles(id)
-const { data: ordens, pending: pendingOrdens, refresh: refreshOrdens } = await useCustomerOrders(id)
+const {
+  ordens,
+  total: ordensTotal,
+  page: ordensPage,
+  pageSize: ordensPageSize,
+  pending: pendingOrdens,
+  refresh: refreshOrdens
+} = await useCustomerOrders(id)
 const { state } = useCustomerForm(cliente)
+
+useSeoMeta({
+  title: computed(() => cliente.value?.nome?.trim() || 'Cliente'),
+  description: 'Dados, veículos e ordens do cliente.'
+})
 
 const {
   editing,
@@ -20,13 +34,29 @@ const {
   togglingAtivo,
   deleting,
   deleteOpen,
+  discardOpen,
+  discardTitle,
+  discardDescription,
+  isDirty,
+  startEdit,
   cancelEdit,
+  confirmDiscard,
   save,
   toggleAtivo,
   removeCustomer
 } = useCustomerDetailPage(id, cliente, veiculos, state, refresh)
 
 const { can } = usePermissions()
+
+const breadcrumbItems = computed<BreadcrumbItem[]>(() => [
+  {
+    label: 'Clientes',
+    to: CUSTOMER_ROUTES.list
+  },
+  {
+    label: cliente.value?.nome?.trim() || 'Cliente'
+  }
+])
 
 onMounted(() => {
   refreshVeiculos()
@@ -39,110 +69,137 @@ onMounted(() => {
     <template #body>
       <div
         v-if="pending && !cliente"
-        class="p-6"
+        class="mx-auto w-full max-w-2xl space-y-6 p-4 sm:p-6"
       >
-        <BasePageHeader title="Cliente" />
-        <USkeleton class="mt-4 h-40 w-full max-w-xl" />
+        <div class="space-y-2">
+          <USkeleton class="h-4 w-40" />
+          <div class="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+            <div class="space-y-2">
+              <USkeleton class="h-8 w-56 sm:w-72" />
+              <USkeleton class="h-5 w-16 rounded-full" />
+            </div>
+            <USkeleton class="h-11 w-28 shrink-0 rounded-lg" />
+          </div>
+        </div>
+        <USkeleton class="h-52 w-full rounded-lg" />
+        <USkeleton class="h-36 w-full rounded-lg" />
       </div>
 
       <div
         v-else-if="cliente"
-        class="p-4 sm:p-6 space-y-8 max-w-5xl"
+        class="mx-auto w-full max-w-2xl space-y-6 p-4 sm:p-6"
       >
-        <BasePageHeader :title="cliente.nome || 'Cliente'">
-          <template #actions>
+        <BasePageHeader
+          :title="cliente.nome || 'Cliente'"
+          :description="editing
+            ? 'Altere os dados e salve.'
+            : undefined"
+        >
+          <template #breadcrumb>
+            <UBreadcrumb :items="breadcrumbItems" />
+          </template>
+          <template #below>
+            <UBadge
+              :color="cliente.ativo ? 'success' : 'neutral'"
+              variant="subtle"
+            >
+              {{ cliente.ativo ? 'Ativo' : 'Inativo' }}
+            </UBadge>
+          </template>
+          <template
+            v-if="!editing"
+            #actions
+          >
             <UButton
-              :to="CUSTOMER_ROUTES.list"
-              color="neutral"
+              v-if="can('customers.write')"
+              label="Editar"
+              icon="i-lucide-pencil"
+              color="primary"
+              variant="soft"
+              class="min-h-11 touch-manipulation transition-transform motion-safe:active:scale-[0.98]"
+              style="transition-duration: var(--duration-press)"
+              @click="startEdit"
+            />
+            <UButton
+              v-if="can('customers.write')"
+              :label="cliente.ativo ? 'Desativar' : 'Reativar'"
+              :icon="cliente.ativo ? 'i-lucide-eye-off' : 'i-lucide-eye'"
+              :color="cliente.ativo ? 'warning' : 'success'"
               variant="ghost"
-              label="Voltar"
-              icon="i-lucide-arrow-left"
+              :loading="togglingAtivo"
+              class="min-h-11 touch-manipulation transition-transform motion-safe:active:scale-[0.98]"
+              style="transition-duration: var(--duration-press)"
+              @click="toggleAtivo"
+            />
+            <UButton
+              v-if="can('customers.delete')"
+              label="Excluir"
+              icon="i-lucide-trash"
+              color="error"
+              variant="ghost"
+              class="min-h-11 touch-manipulation transition-transform motion-safe:active:scale-[0.98]"
+              style="transition-duration: var(--duration-press)"
+              @click="deleteOpen = true"
             />
           </template>
         </BasePageHeader>
 
-        <section class="space-y-4">
-          <div class="flex items-center justify-between gap-3">
-            <div class="flex items-center gap-3 min-w-0">
-              <h2 class="text-lg font-semibold text-highlighted truncate">
-                Dados do cliente
-              </h2>
-              <UBadge
-                :color="cliente.ativo ? 'success' : 'neutral'"
-                variant="subtle"
-              >
-                {{ cliente.ativo ? 'Ativo' : 'Inativo' }}
-              </UBadge>
-            </div>
-            <div class="flex gap-2 shrink-0">
-              <UButton
-                v-if="can('customers.write') && !editing"
-                :label="cliente.ativo ? 'Desativar' : 'Reativar'"
-                :icon="cliente.ativo ? 'i-lucide-eye-off' : 'i-lucide-eye'"
-                :color="cliente.ativo ? 'warning' : 'success'"
-                variant="soft"
-                size="sm"
-                :loading="togglingAtivo"
-                @click="toggleAtivo"
-              />
-              <UButton
-                v-if="can('customers.write') && !editing"
-                label="Editar"
-                icon="i-lucide-pencil"
-                color="neutral"
-                variant="soft"
-                size="sm"
-                @click="editing = true"
-              />
-              <UButton
-                v-if="can('customers.delete')"
-                label="Excluir"
-                icon="i-lucide-trash"
-                color="error"
-                variant="ghost"
-                size="sm"
-                @click="deleteOpen = true"
-              />
-            </div>
-          </div>
-
-          <CustomersForm
-            v-model="state"
-            :disabled="!editing"
-            @submit="save"
-          >
-            <div
-              v-if="editing"
-              class="flex gap-2"
-            >
-              <UButton
-                type="submit"
-                label="Salvar"
-                :loading="saving"
-              />
-              <UButton
-                label="Cancelar"
-                color="neutral"
-                variant="ghost"
-                @click="cancelEdit"
-              />
-            </div>
-          </CustomersForm>
-        </section>
-
-        <CustomersVehiclesSection
-          class="border-t border-default pt-8"
-          :cliente-id="id"
-          :veiculos="veiculos || []"
-          :loading="pendingVeiculos"
+        <CustomersEditForm
+          v-if="editing"
+          v-model="state"
+          :loading="saving"
+          :dirty="isDirty"
+          @submit="save"
+          @cancel="cancelEdit"
+        />
+        <CustomersDetailSummary
+          v-else
+          :cliente="cliente"
         />
 
-        <CustomersOrdersSection
-          class="border-t border-default pt-8"
-          :ordens="ordens || []"
-          :loading="pendingOrdens"
+        <template v-if="!editing">
+          <CustomersVehiclesSection
+            class="border-t border-default pt-6"
+            :cliente-id="id"
+            :veiculos="veiculos || []"
+            :loading="pendingVeiculos"
+          />
+
+          <CustomersOrdersSection
+            v-model:page="ordensPage"
+            class="border-t border-default pt-6"
+            :ordens="ordens"
+            :total="ordensTotal"
+            :page-size="ordensPageSize"
+            :loading="pendingOrdens"
+          />
+        </template>
+      </div>
+
+      <div
+        v-else
+        class="mx-auto w-full max-w-2xl space-y-4 p-4 sm:p-6"
+      >
+        <BasePageHeader title="Cliente não encontrado" />
+        <p class="text-sm text-muted">
+          Esse cliente não existe ou foi removido.
+        </p>
+        <UButton
+          :to="CUSTOMER_ROUTES.list"
+          label="Voltar para clientes"
+          icon="i-lucide-arrow-left"
+          color="neutral"
+          variant="soft"
+          class="min-h-11 touch-manipulation"
         />
       </div>
+
+      <CustomersDiscardModal
+        v-model:open="discardOpen"
+        :title="discardTitle"
+        :description="discardDescription"
+        @confirm="confirmDiscard"
+      />
 
       <CustomersDeleteModal
         v-model:open="deleteOpen"

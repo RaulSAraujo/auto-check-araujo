@@ -1,8 +1,16 @@
 <script setup lang="ts">
+import { emptyCustomerForm, isCustomerFormDirty } from '../utils/customer-form'
+import { CUSTOMER_ROUTES } from '../utils/customer-routes'
+
 defineOptions({ name: 'CustomersNewPage' })
 
 definePageMeta({
   path: '/clientes/novo'
+})
+
+useSeoMeta({
+  title: 'Novo cliente',
+  description: 'Cadastrar cliente da oficina.'
 })
 
 const router = useRouter()
@@ -10,26 +18,59 @@ useRequirePermission('customers.write')
 const { state } = useCustomerForm()
 const { createCustomer } = useCustomerMutations()
 
+const initialState = emptyCustomerForm()
 const loading = ref(false)
+const allowLeave = ref(false)
+
+const isDirty = computed(() => isCustomerFormDirty(state, initialState))
 
 async function onSubmit() {
   loading.value = true
   try {
     const { data } = await createCustomer(state)
     if (data) {
+      allowLeave.value = true
       await router.push(CUSTOMER_ROUTES.detail(data.id))
     }
   } finally {
     loading.value = false
   }
 }
+
+onBeforeRouteLeave((_to, _from, next) => {
+  if (allowLeave.value || loading.value || !isDirty.value) {
+    next()
+    return
+  }
+
+  const confirmed = window.confirm(
+    'Há alterações não salvas. Sair sem cadastrar o cliente?'
+  )
+  next(confirmed)
+})
+
+onMounted(() => {
+  const onBeforeUnload = (event: BeforeUnloadEvent) => {
+    if (!isDirty.value || allowLeave.value || loading.value) return
+    event.preventDefault()
+    event.returnValue = ''
+  }
+
+  window.addEventListener('beforeunload', onBeforeUnload)
+  onBeforeUnmount(() => {
+    window.removeEventListener('beforeunload', onBeforeUnload)
+  })
+})
 </script>
 
 <template>
   <UDashboardPanel>
     <template #body>
-      <div class="p-4 sm:p-6 max-w-xl space-y-4">
-        <BasePageHeader title="Novo cliente">
+      <div class="mx-auto w-full max-w-2xl space-y-6 p-4 sm:p-6">
+        <BasePageHeader
+          title="Novo cliente"
+          description="Nome e um telefone para ligar."
+        >
           <template #actions>
             <UButton
               :to="CUSTOMER_ROUTES.list"
@@ -41,25 +82,11 @@ async function onSubmit() {
           </template>
         </BasePageHeader>
 
-        <CustomersForm
+        <CustomersNewForm
           v-model="state"
-          compact
+          :loading="loading"
           @submit="onSubmit"
-        >
-          <div class="flex gap-2">
-            <UButton
-              type="submit"
-              label="Salvar"
-              :loading="loading"
-            />
-            <UButton
-              :to="CUSTOMER_ROUTES.list"
-              label="Cancelar"
-              color="neutral"
-              variant="ghost"
-            />
-          </div>
-        </CustomersForm>
+        />
       </div>
     </template>
   </UDashboardPanel>

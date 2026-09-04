@@ -5,8 +5,12 @@ import { CUSTOMER_ORDER_COLUMNS } from '../utils/customer-table-columns'
 
 defineOptions({ name: 'CustomersOrdersSection' })
 
+const page = defineModel<number>('page', { default: 1 })
+
 defineProps<{
   ordens: CustomerOrderItem[]
+  total?: number
+  pageSize?: number
   loading?: boolean
 }>()
 </script>
@@ -14,9 +18,15 @@ defineProps<{
 <template>
   <section class="space-y-4">
     <div class="flex items-center justify-between gap-3">
-      <h2 class="text-lg font-semibold text-highlighted">
+      <h2 class="text-sm font-semibold uppercase tracking-widest text-muted">
         Histórico de OS
       </h2>
+      <p
+        v-if="total"
+        class="font-mono text-xs tabular-nums text-muted"
+      >
+        {{ total }} {{ total === 1 ? 'ordem' : 'ordens' }}
+      </p>
     </div>
 
     <UTable
@@ -62,6 +72,8 @@ defineProps<{
           color="neutral"
           variant="ghost"
           size="sm"
+          class="motion-safe:active:scale-[0.98]"
+          :aria-label="`Abrir ${row.original.numero}`"
         />
       </template>
 
@@ -71,5 +83,18 @@ defineProps<{
         </BaseEmptyState>
       </template>
     </UTable>
+
+    <div
+      v-if="total && pageSize && total > pageSize"
+      class="flex justify-center pt-1"
+    >
+      <UPagination
+        v-model:page="page"
+        :total="total"
+        :items-per-page="pageSize"
+        show-edges
+        :sibling-count="1"
+      />
+    </div>
   </section>
 </template>
