@@ -26,6 +26,8 @@ const {
   cancelTo?: string
 }>()
 
+const vehicleSearchTerm = defineModel<string>('vehicleSearchTerm', { default: '' })
+
 const emit = defineEmits<{
   submit: []
   retryVehicles: []
@@ -118,18 +120,19 @@ const vehicleLabel = computed(() => {
       >
         <USelectMenu
           v-model="state.veiculo_id"
+          v-model:search-term="vehicleSearchTerm"
           :items="veiculoItems"
           value-key="value"
           label-key="label"
           description-key="description"
           :loading="vehiclesPending"
-          :disabled="vehiclesPending || !veiculoItems.length"
+          :disabled="vehiclesPending"
           :autofocus="isDesktop && !state.veiculo_id"
           icon="i-lucide-search"
           placeholder="Buscar placa, modelo ou cliente…"
           class="w-full"
-          searchable
-          :filter-fields="['label', 'description']"
+          ignore-filter
+          :search-input="{ placeholder: 'Buscar…', loading: vehiclesPending }"
           :virtualize="veiculoItems.length > 50"
           autocomplete="off"
           name="veiculo_id"

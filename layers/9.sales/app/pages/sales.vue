@@ -14,6 +14,10 @@ const {
   collaboratorId,
   collaboratorOptions,
   orders,
+  page,
+  pageSize,
+  total,
+  truncated,
   summary,
   collaborators,
   commissionRate,
@@ -101,6 +105,14 @@ const periodItems = [...SALES_PERIOD_ITEMS]
           </template>
         </UAlert>
 
+        <UAlert
+          v-else-if="truncated"
+          color="warning"
+          variant="subtle"
+          title="Resultados limitados"
+          :description="`KPIs e exportação consideram no máximo ${REPORT_SOFT_LIMIT} OS do período.`"
+        />
+
         <div class="grid gap-4 lg:grid-cols-[minmax(0,1fr)_16rem]">
           <SalesKpiStrip
             :summary="summary"
@@ -122,7 +134,7 @@ const periodItems = [...SALES_PERIOD_ITEMS]
                   v-if="!pending"
                   class="text-sm font-normal text-muted"
                 >
-                  ({{ summary.qtdOs }})
+                  ({{ total }})
                 </span>
               </h2>
               <UButton
@@ -138,6 +150,19 @@ const periodItems = [...SALES_PERIOD_ITEMS]
               :orders="orders"
               :loading="pending"
             />
+
+            <div
+              v-if="total > pageSize"
+              class="flex justify-center pt-2"
+            >
+              <UPagination
+                v-model:page="page"
+                :total="total"
+                :items-per-page="pageSize"
+                show-edges
+                :sibling-count="1"
+              />
+            </div>
           </section>
 
           <SalesCollaboratorsRanking

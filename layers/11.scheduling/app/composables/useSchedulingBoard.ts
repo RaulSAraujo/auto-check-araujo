@@ -9,6 +9,7 @@ import {
   PATIO_SLOT_COUNT,
   startOfLocalDay,
   startOfMonth,
+  ACTIVE_SCHEDULING_STATUSES,
   type SchedulingStatusFilter,
   type SchedulingView
 } from '../utils/scheduling'
@@ -139,25 +140,63 @@ export async function useSchedulingBoard() {
   const rangeStart = computed(() => startOfMonth(addDays(startOfMonth(selectedDate.value), -7)))
   const rangeEnd = computed(() => endOfMonth(addDays(endOfMonth(selectedDate.value), 7)))
 
+  /** Daily: dia selecionado + 7 dias de lookback (no-shows). Calendar: mês ± padding. */
+  const queryStart = computed(() =>
+    view.value === 'calendar'
+      ? rangeStart.value
+      : startOfLocalDay(addDays(selectedDate.value, -7))
+  )
+  const queryEnd = computed(() =>
+    view.value === 'calendar'
+      ? rangeEnd.value
+      : endOfLocalDay(selectedDate.value)
+  )
+
+  const SCHEDULING_SELECT = `
+    id,
+    cliente_id,
+    veiculo_id,
+    ordem_servico_id,
+    inicio,
+    fim,
+    status,
+    servico,
+    patio_vaga,
+    observacoes,
+    criado_por,
+    created_at,
+    updated_at,
+    clientes(id, nome),
+    veiculos(id, placa, marca, modelo)
+  `
+
   const { data, pending, refresh, error } = await useAsyncData(
     'scheduling-board',
     async () => {
-      const { data: rows, error: queryError } = await supabase
+      let query = supabase
         .from('agendamentos')
-        .select(`
-          *,
-          clientes(id, nome),
-          veiculos(id, placa, marca, modelo)
-        `)
-        .gte('inicio', rangeStart.value.toISOString())
-        .lte('inicio', rangeEnd.value.toISOString())
+        .select(SCHEDULING_SELECT)
+        .gte('inicio', queryStart.value.toISOString())
+        .lte('inicio', queryEnd.value.toISOString())
         .order('inicio', { ascending: true })
 
+      const filter = statusFilter.value
+      if (filter === 'nao_compareceu') {
+        query = query.eq('status', 'nao_compareceu')
+      } else if (filter === 'agendados') {
+        query = query.in('status', ['agendado', 'confirmado', 'em_atendimento'])
+      } else if (filter === 'patio') {
+        query = query
+          .not('patio_vaga', 'is', null)
+          .in('status', ACTIVE_SCHEDULING_STATUSES)
+      }
+
+      const { data: rows, error: queryError } = await query
       if (queryError) throw queryError
       return (rows ?? []) as QueryRow[]
     },
     {
-      watch: [rangeStart, rangeEnd]
+      watch: [queryStart, queryEnd, statusFilter]
     }
   )
 
@@ -250,9 +289,10 @@ export async function useSchedulingBoard() {
 
   /** Select a day and switch to Agenda in one navigation (avoids racing two replace calls). */
   function selectDay(day: Date) {
-    const next = { ...route.query, dia: dateQueryValue(startOfLocalDay(day)) }
-    delete next.vista
-    router.replace({ query: next })
+    const { vista: _vista, ...rest } = route.query
+    router.replace({
+      query: { ...rest, dia: dateQueryValue(startOfLocalDay(day)) }
+    })
   }
 
   return {

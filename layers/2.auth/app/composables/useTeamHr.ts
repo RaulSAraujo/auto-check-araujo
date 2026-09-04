@@ -62,10 +62,11 @@ export function useTeamPresences(
       const { start, end } = teamMonthBounds(month.value)
       let query = supabase
         .from('colaborador_presencas')
-        .select('*, profiles!colaborador_presencas_colaborador_id_fkey(nome)')
+        .select('id, colaborador_id, data, status, observacao, registrado_por, created_at, updated_at, profiles!colaborador_presencas_colaborador_id_fkey(nome)')
         .gte('data', start)
         .lte('data', end)
         .order('data', { ascending: false })
+        .limit(REPORT_SOFT_LIMIT)
 
       if (collaboratorId.value !== 'all') {
         query = query.eq('colaborador_id', collaboratorId.value)
@@ -93,10 +94,11 @@ export function useTeamAbsences(
       const { start, end } = teamMonthBounds(month.value)
       let query = supabase
         .from('colaborador_faltas')
-        .select('*, profiles!colaborador_faltas_colaborador_id_fkey(nome)')
+        .select('id, colaborador_id, data, tipo, observacao, registrado_por, created_at, updated_at, profiles!colaborador_faltas_colaborador_id_fkey(nome)')
         .gte('data', start)
         .lte('data', end)
         .order('data', { ascending: false })
+        .limit(REPORT_SOFT_LIMIT)
 
       if (collaboratorId.value !== 'all') {
         query = query.eq('colaborador_id', collaboratorId.value)
@@ -124,10 +126,11 @@ export function useTeamIncidents(
       const { start, end } = teamMonthBounds(month.value)
       let query = supabase
         .from('colaborador_ocorrencias')
-        .select('*, profiles!colaborador_ocorrencias_colaborador_id_fkey(nome)')
+        .select('id, colaborador_id, ocorrido_em, tipo, descricao, registrado_por, created_at, profiles!colaborador_ocorrencias_colaborador_id_fkey(nome)')
         .gte('ocorrido_em', start)
         .lte('ocorrido_em', end)
         .order('ocorrido_em', { ascending: false })
+        .limit(REPORT_SOFT_LIMIT)
 
       if (collaboratorId.value !== 'all') {
         query = query.eq('colaborador_id', collaboratorId.value)

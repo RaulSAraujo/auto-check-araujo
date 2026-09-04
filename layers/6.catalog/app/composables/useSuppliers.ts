@@ -17,9 +17,10 @@ export function useSuppliersList() {
     async () => {
       const { data: rows, error: fetchError } = await supabase
         .from('fornecedores')
-        .select('*')
+        .select('id, nome, telefone, email, observacoes, ativo, created_at')
         .order('ativo', { ascending: false })
         .order('nome')
+        .limit(REPORT_SOFT_LIMIT)
 
       if (fetchError) throw fetchError
       return rows as Fornecedor[]

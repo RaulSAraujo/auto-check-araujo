@@ -31,7 +31,15 @@ const tipoFilterItems = [
 ] as const
 
 // --- Orçamento / catálogo ---
-const { items: budgetItems, pending: budgetPending, refresh: refreshBudget } = await useCatalogList()
+const {
+  items: budgetItems,
+  page: budgetPage,
+  pageSize: budgetPageSize,
+  total: budgetTotal,
+  pending: budgetPending,
+  refresh: refreshBudget
+} = await useCatalogList(tipoFilter)
+const { data: activeCatalogItems } = useServiceCatalog()
 const {
   createCatalogItem,
   updateCatalogItem,
@@ -42,12 +50,6 @@ const budgetDraft = reactive(emptyCatalogItemDraft())
 const budgetAdding = ref(false)
 const budgetSavingId = ref<string | null>(null)
 const budgetTogglingId = ref<string | null>(null)
-
-const filteredBudgetItems = computed(() => {
-  const rows = budgetItems.value || []
-  if (tipoFilter.value === 'all') return rows
-  return rows.filter(item => item.tipo === tipoFilter.value)
-})
 
 async function onBudgetAdd() {
   budgetAdding.value = true
@@ -228,7 +230,7 @@ async function onChecklistToggleAtivo(payload: { id: string, ativo: boolean }) {
               class="lg:col-span-1"
               :adding="budgetAdding"
               :suppliers="activeSuppliers"
-              :catalog-items="budgetItems || []"
+              :catalog-items="activeCatalogItems || []"
               @add="onBudgetAdd"
             />
 
@@ -238,7 +240,7 @@ async function onChecklistToggleAtivo(payload: { id: string, ativo: boolean }) {
               </h2>
 
               <div
-                v-if="budgetPending && !budgetItems?.length"
+                v-if="budgetPending && !budgetItems.length"
                 class="space-y-2"
               >
                 <USkeleton class="h-10 w-full" />
@@ -246,10 +248,10 @@ async function onChecklistToggleAtivo(payload: { id: string, ativo: boolean }) {
               </div>
 
               <CatalogTable
-                v-else-if="filteredBudgetItems.length"
-                :items="filteredBudgetItems"
+                v-else-if="budgetItems.length"
+                :items="budgetItems"
                 :suppliers="activeSuppliers"
-                :catalog-items="budgetItems || []"
+                :catalog-items="activeCatalogItems || []"
                 :saving-id="budgetSavingId"
                 :toggling-id="budgetTogglingId"
                 @save="onBudgetSave"
@@ -259,6 +261,19 @@ async function onChecklistToggleAtivo(payload: { id: string, ativo: boolean }) {
               <BaseEmptyState v-else>
                 Nenhum item no catálogo{{ tipoFilter === 'all' ? '' : ' neste filtro' }}. Adicione ao lado.
               </BaseEmptyState>
+
+              <div
+                v-if="budgetTotal > budgetPageSize"
+                class="flex justify-center pt-2"
+              >
+                <UPagination
+                  v-model:page="budgetPage"
+                  :total="budgetTotal"
+                  :items-per-page="budgetPageSize"
+                  show-edges
+                  :sibling-count="1"
+                />
+              </div>
             </section>
           </div>
         </div>

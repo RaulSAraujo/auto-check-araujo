@@ -11,13 +11,17 @@ const state = defineModel<VehicleFormState>({ required: true })
 const {
   clienteItems,
   loading,
+  clientesPending = false,
   cancelTo = VEHICLE_ROUTES.list
 } = defineProps<{
   clienteItems: { label: string, value: string }[]
   loading: boolean
+  clientesPending?: boolean
   /** Fallback when there is no in-app history (e.g. cold open). */
   cancelTo?: string
 }>()
+
+const clienteSearchTerm = defineModel<string>('clienteSearchTerm', { default: '' })
 
 const emit = defineEmits<{
   submit: []
@@ -67,7 +71,9 @@ function onSubmit() {
     <div class="vehicles-new-panel">
       <VehiclesFormFields
         v-model="state"
+        v-model:cliente-search-term="clienteSearchTerm"
         :cliente-items="clienteItems"
+        :clientes-pending="clientesPending"
         :disabled="loading"
       />
     </div>

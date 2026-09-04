@@ -13,7 +13,7 @@ defineOptions({ name: 'CatalogForm' })
 const props = defineProps<{
   adding: boolean
   suppliers: Fornecedor[]
-  catalogItems: CatalogItemRow[]
+  catalogItems: Pick<CatalogItemRow, 'id' | 'nome' | 'tipo' | 'ativo'>[]
 }>()
 
 const emit = defineEmits<{

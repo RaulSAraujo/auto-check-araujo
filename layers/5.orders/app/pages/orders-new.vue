@@ -17,13 +17,6 @@ useRequirePermission('orders.create')
 
 const supabase = useTypedSupabaseClient()
 const { createOrder } = useOrderMutations()
-const {
-  veiculoItems,
-  findVehicle,
-  pending: vehiclesPending,
-  error: vehiclesError,
-  refresh: refreshVehicles
-} = await useOrderVehicleOptions()
 
 const agendamentoId = computed(() =>
   typeof route.query.agendamento_id === 'string' ? route.query.agendamento_id : ''
@@ -43,6 +36,19 @@ const { data: linkedAppointment } = await useAsyncData(
     return data
   }
 )
+
+const preferredVeiculoId = computed(
+  () => linkedAppointment.value?.veiculo_id || initialVeiculoId || undefined
+)
+
+const {
+  veiculoItems,
+  findVehicle,
+  searchTerm: vehicleSearchTerm,
+  pending: vehiclesPending,
+  error: vehiclesError,
+  refresh: refreshVehicles
+} = await useOrderVehicleOptions(preferredVeiculoId)
 
 if (linkedAppointment.value?.ordem_servico_id) {
   await navigateTo(ORDER_ROUTES.detail(linkedAppointment.value.ordem_servico_id))
@@ -153,6 +159,7 @@ onMounted(() => {
 
         <OrdersNewForm
           v-model="state"
+          v-model:vehicle-search-term="vehicleSearchTerm"
           :veiculo-items="veiculoItems"
           :selected-vehicle="selectedVehicle"
           :loading="loading"

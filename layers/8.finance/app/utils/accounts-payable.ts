@@ -147,6 +147,29 @@ export function filterAccounts(
   }
 }
 
+/** Aplica o filtro de contas no builder PostgREST (paginação server-side). */
+export function applyAccountsStatusFilter<T extends {
+  eq: (column: string, value: string) => T
+  gte: (column: string, value: string) => T
+  lt: (column: string, value: string) => T
+}>(
+  query: T,
+  filter: AccountsFilter,
+  today = todayDateValue()
+): T {
+  switch (filter) {
+    case 'a_pagar':
+      return query.eq('status', 'a_pagar').gte('vencimento', today)
+    case 'pagas':
+      return query.eq('status', 'pago')
+    case 'vencidas':
+      return query.eq('status', 'a_pagar').lt('vencimento', today)
+    case 'todas':
+    default:
+      return query
+  }
+}
+
 export type MarkPaidPayload = {
   forma_pagamento: FormaPagamento
 }

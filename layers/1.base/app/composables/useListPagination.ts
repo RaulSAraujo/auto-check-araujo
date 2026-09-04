@@ -1,6 +1,8 @@
-export function useListPagination(resetTriggers: Array<Ref<unknown>> = []) {
+export function useListPagination(
+  resetTriggers: Array<Ref<unknown>> = [],
+  pageSize: number = LIST_PAGE_SIZE
+) {
   const page = ref(1)
-  const pageSize = LIST_PAGE_SIZE
 
   for (const trigger of resetTriggers) {
     watch(trigger, () => {

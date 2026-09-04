@@ -33,7 +33,7 @@ export async function useCustomersList(
 
       let query = supabase
         .from('clientes')
-        .select('*', { count: 'exact' })
+        .select('id, nome, documento, telefones, emails, ativo, contatos_busca', { count: 'exact' })
         .order('nome', { ascending: true })
         .range(from, to)
 

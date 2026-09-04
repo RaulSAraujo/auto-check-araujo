@@ -12,7 +12,12 @@ const route = useRoute()
 const id = computed(() => route.params.id as string)
 
 const { data: veiculo, pending, refresh } = await useVehicleQuery(id)
-const { clienteItems } = await useCustomerOptions('clientes-options-edit')
+const preferredClienteId = computed(() => veiculo.value?.cliente_id || undefined)
+const {
+  clienteItems,
+  searchTerm: clienteSearchTerm,
+  pending: clientesPending
+} = await useCustomerOptions('clientes-options-edit', preferredClienteId)
 const { data: ordens, pending: pendingOrdens } = await useVehicleOrders(id)
 const { state } = useVehicleForm(veiculo)
 
@@ -160,7 +165,9 @@ const showMoreMenu = computed(() => !editing.value && moreMenuItems.value.length
         <VehiclesEditForm
           v-if="editing"
           v-model="state"
+          v-model:cliente-search-term="clienteSearchTerm"
           :cliente-items="clienteItems"
+          :clientes-pending="clientesPending"
           :loading="saving"
           :dirty="isDirty"
           @submit="save"

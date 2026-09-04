@@ -1,6 +1,8 @@
 import type { OrderListItem } from '../types/orders'
 import { ORDEM_STATUS_FILTER_ALL, ORDEM_STATUS_FILTER_ITEMS, type OrdemStatusFilter } from '../utils/order-select-items'
 
+const ORDER_LIST_SELECT = '*, veiculos!inner(id, placa, marca, modelo)'
+
 export async function useOrdersList(initialStatus: OrdemStatusFilter = ORDEM_STATUS_FILTER_ALL) {
   const supabase = useTypedSupabaseClient()
   const router = useRouter()
@@ -27,7 +29,7 @@ export async function useOrdersList(initialStatus: OrdemStatusFilter = ORDEM_STA
 
       let query = supabase
         .from('ordens_servico')
-        .select('*, veiculos(id, placa, marca, modelo)', { count: 'exact' })
+        .select(ORDER_LIST_SELECT, { count: 'exact' })
         .order('aberta_em', { ascending: false })
         .range(from, to)
 
@@ -37,17 +39,10 @@ export async function useOrdersList(initialStatus: OrdemStatusFilter = ORDEM_STA
 
       if (pattern) {
         const placa = placaPattern || pattern
-        const { data: matchedVeiculos } = await supabase
-          .from('veiculos')
-          .select('id')
-          .ilike('placa', placa)
-
-        const veiculoIds = matchedVeiculos?.map(v => v.id) ?? []
-        let orFilter = `numero.ilike.${pattern},reclamacao.ilike.${pattern}`
-        if (veiculoIds.length > 0) {
-          orFilter += `,veiculo_id.in.(${veiculoIds.join(',')})`
-        }
-        query = query.or(orFilter)
+        // Single round-trip: OR across OS fields + placa via !inner join
+        query = query.or(
+          `numero.ilike.${pattern},reclamacao.ilike.${pattern},veiculos.placa.ilike.${placa}`
+        )
       }
 
       const { data: rows, count, error } = await query

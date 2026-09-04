@@ -17,7 +17,7 @@ export async function useCustomerOrders(clienteId: MaybeRefOrGetter<string>) {
       const { from, to } = rangeBounds()
       const { data: rows, count, error } = await supabase
         .from('ordens_servico')
-        .select('*, veiculos!inner(id, placa, cliente_id)', { count: 'exact' })
+        .select('id, numero, status, aberta_em, veiculo_id, veiculos!inner(id, placa, cliente_id)', { count: 'exact' })
         .eq('veiculos.cliente_id', clienteIdRef.value)
         .order('aberta_em', { ascending: false })
         .range(from, to)

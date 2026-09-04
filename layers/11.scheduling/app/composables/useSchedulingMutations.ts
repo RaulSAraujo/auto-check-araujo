@@ -41,12 +41,22 @@ export function useSchedulingMutations() {
     const inicio = combineLocalDateTime(draft.date, draft.startTime)
     const fim = combineLocalDateTime(draft.date, draft.endTime)
 
+    if (!draft.veiculo_id) {
+      return {}
+    }
+
+    const overlapFilter = [
+      `veiculo_id.eq.${draft.veiculo_id}`,
+      ...(draft.patio_vaga != null ? [`patio_vaga.eq.${draft.patio_vaga}`] : [])
+    ].join(',')
+
     let query = supabase
       .from('agendamentos')
       .select('id, inicio, fim, patio_vaga, veiculo_id, status')
       .in('status', ACTIVE_SCHEDULING_STATUSES)
       .lt('inicio', fim.toISOString())
       .gt('fim', inicio.toISOString())
+      .or(overlapFilter)
 
     if (excludeId) query = query.neq('id', excludeId)
 

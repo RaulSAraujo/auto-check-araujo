@@ -5,13 +5,16 @@ import { formatPlacaInput } from '../utils/vehicle-form'
 defineOptions({ name: 'VehiclesFormFields' })
 
 const state = defineModel<VehicleFormState>({ required: true })
+const clienteSearchTerm = defineModel<string>('clienteSearchTerm', { default: '' })
 
 const {
   clienteItems,
+  clientesPending = false,
   disabled = false,
   bare = false
 } = defineProps<{
   clienteItems: { label: string, value: string }[]
+  clientesPending?: boolean
   disabled?: boolean
   /** When true, skip the bordered panel (parent supplies chrome). */
   bare?: boolean
@@ -44,12 +47,17 @@ function setPlaca(value: string) {
         name="cliente_id"
         required
       >
-        <USelect
+        <USelectMenu
           v-model="state.cliente_id"
+          v-model:search-term="clienteSearchTerm"
           :items="clienteItems"
-          placeholder="Selecione o proprietário"
+          value-key="value"
+          placeholder="Buscar proprietário…"
           class="w-full"
+          ignore-filter
+          :loading="clientesPending"
           :disabled="disabled"
+          :search-input="{ placeholder: 'Buscar…', loading: clientesPending }"
         />
       </UFormField>
 

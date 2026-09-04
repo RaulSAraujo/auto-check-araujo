@@ -17,7 +17,7 @@ defineOptions({ name: 'CatalogTable' })
 const props = defineProps<{
   items: CatalogItemRow[]
   suppliers: Fornecedor[]
-  catalogItems: CatalogItemRow[]
+  catalogItems: Pick<CatalogItemRow, 'id' | 'nome' | 'tipo' | 'ativo'>[]
   savingId: string | null
   togglingId: string | null
 }>()

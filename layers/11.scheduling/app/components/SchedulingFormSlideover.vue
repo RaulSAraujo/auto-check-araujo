@@ -28,7 +28,12 @@ const emit = defineEmits<{
   submit: [draft: AppointmentDraft]
 }>()
 
-const { veiculoItems } = await useSchedulingVehicleOptions()
+const preferredVeiculoId = computed(
+  () => props.appointment?.veiculo_id || undefined
+)
+
+const { veiculoItems, searchTerm: vehicleSearchTerm, pending: vehiclesPending }
+  = await useSchedulingVehicleOptions(preferredVeiculoId)
 
 const draft = reactive(emptyAppointmentDraft(props.day))
 const snapshot = ref('')
@@ -124,11 +129,14 @@ function onSubmit(_event: FormSubmitEvent<AppointmentDraft>) {
         >
           <USelectMenu
             v-model="draft.veiculo_id"
+            v-model:search-term="vehicleSearchTerm"
             :items="veiculoItems"
             value-key="value"
             placeholder="Placa ou cliente…"
             class="w-full"
-            :search-input="{ placeholder: 'Buscar…' }"
+            ignore-filter
+            :loading="vehiclesPending"
+            :search-input="{ placeholder: 'Buscar…', loading: vehiclesPending }"
           />
         </UFormField>
 

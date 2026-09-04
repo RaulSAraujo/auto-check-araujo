@@ -1,7 +1,12 @@
 import type { FormaPagamento } from '~~/shared/types/oficina'
-import type { FinanceAccountDraft, FinanceAccountRow } from '../utils/accounts-payable'
+import type {
+  AccountsFilter,
+  FinanceAccountDraft,
+  FinanceAccountRow
+} from '../utils/accounts-payable'
 import {
   addDaysToDateValue,
+  applyAccountsStatusFilter,
   isFinanceAccountDraftValid,
   todayDateValue
 } from '../utils/accounts-payable'
@@ -38,25 +43,45 @@ async function refreshFinanceRelated() {
   ])
 }
 
-export function useAccountsPayableList() {
+export function useAccountsPayableList(
+  filter: Ref<AccountsFilter> = ref('a_pagar')
+) {
   const supabase = useTypedSupabaseClient()
+  const { page, pageSize, rangeBounds } = useListPagination(
+    [filter],
+    REPORT_PAGE_SIZE
+  )
 
   const { data, pending, refresh, error } = useAsyncData(
     ACCOUNTS_LIST_KEY,
     async () => {
-      const { data: rows, error: fetchError } = await supabase
+      const { from, to } = rangeBounds()
+
+      let query = supabase
         .from('financeiro_contas')
-        .select(ACCOUNT_SELECT)
+        .select(ACCOUNT_SELECT, { count: 'exact' })
         .order('vencimento', { ascending: true })
         .order('created_at', { ascending: false })
+        .range(from, to)
 
+      query = applyAccountsStatusFilter(query, filter.value)
+
+      const { data: rows, count, error: fetchError } = await query
       if (fetchError) throw fetchError
-      return (rows || []) as FinanceAccountRow[]
-    }
+
+      return {
+        items: (rows || []) as FinanceAccountRow[],
+        total: count ?? 0
+      }
+    },
+    { watch: [filter, page] }
   )
 
   return {
-    accounts: data,
+    accounts: computed(() => data.value?.items ?? []),
+    page,
+    pageSize,
+    total: computed(() => data.value?.total ?? 0),
     pending,
     refresh,
     error
@@ -78,6 +103,7 @@ export function useFinanceDueList(daysAhead = 14) {
         .eq('status', 'a_pagar')
         .lte('vencimento', until)
         .order('vencimento', { ascending: true })
+        .limit(REPORT_SOFT_LIMIT)
 
       if (fetchError) throw fetchError
       return (rows || []) as FinanceAccountRow[]

@@ -1,11 +1,19 @@
-import type { CatalogItemDraft, CatalogItemRow, CatalogKitDraftLine } from '../utils/catalog'
+import type { CatalogItemDraft, CatalogItemRow, CatalogKitDraftLine, CatalogTipoFilter } from '../utils/catalog'
 import { stockForTipo } from '../utils/catalog'
 
 const CATALOG_LIST_KEY = 'catalog-list'
 const CATALOG_ACTIVE_KEY = 'servicos-catalogo'
 
 const CATALOG_SELECT = `
-  *,
+  id,
+  nome,
+  tipo,
+  valor_padrao,
+  custo,
+  estoque,
+  ativo,
+  fornecedor_id,
+  created_at,
   fornecedores ( id, nome ),
   catalogo_kit_itens!catalogo_kit_itens_kit_id_fkey (
     id,
@@ -28,25 +36,47 @@ function toCatalogPayload(draft: CatalogItemDraft) {
   }
 }
 
-export function useCatalogList() {
+export function useCatalogList(
+  tipoFilter: Ref<CatalogTipoFilter> = ref('all')
+) {
   const supabase = useTypedSupabaseClient()
+  const { page, pageSize, rangeBounds } = useListPagination(
+    [tipoFilter],
+    REPORT_PAGE_SIZE
+  )
 
   const { data, pending, refresh, error } = useAsyncData(
     CATALOG_LIST_KEY,
     async () => {
-      const { data: rows, error: fetchError } = await supabase
+      const { from, to } = rangeBounds()
+
+      let query = supabase
         .from('servicos_catalogo')
-        .select(CATALOG_SELECT)
+        .select(CATALOG_SELECT, { count: 'exact' })
         .order('ativo', { ascending: false })
         .order('nome')
+        .range(from, to)
 
+      if (tipoFilter.value !== 'all') {
+        query = query.eq('tipo', tipoFilter.value)
+      }
+
+      const { data: rows, count, error: fetchError } = await query
       if (fetchError) throw fetchError
-      return rows as CatalogItemRow[]
-    }
+
+      return {
+        items: (rows || []) as CatalogItemRow[],
+        total: count ?? 0
+      }
+    },
+    { watch: [tipoFilter, page] }
   )
 
   return {
-    items: data,
+    items: computed(() => data.value?.items ?? []),
+    page,
+    pageSize,
+    total: computed(() => data.value?.total ?? 0),
     pending,
     refresh,
     error

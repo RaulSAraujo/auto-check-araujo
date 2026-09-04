@@ -10,12 +10,16 @@ const state = defineModel<VehicleFormState>({ required: true })
 const {
   clienteItems,
   loading,
+  clientesPending = false,
   dirty = false
 } = defineProps<{
   clienteItems: { label: string, value: string }[]
   loading: boolean
+  clientesPending?: boolean
   dirty?: boolean
 }>()
+
+const clienteSearchTerm = defineModel<string>('clienteSearchTerm', { default: '' })
 
 const emit = defineEmits<{
   submit: []
@@ -77,7 +81,9 @@ function onSubmit() {
         <div class="mt-4">
           <VehiclesFormFields
             v-model="state"
+            v-model:cliente-search-term="clienteSearchTerm"
             :cliente-items="clienteItems"
+            :clientes-pending="clientesPending"
             :disabled="loading"
             bare
           />

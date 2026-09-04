@@ -14,6 +14,8 @@ const EMPTY_SUMMARY: FinanceSummary = {
   saldo: 0
 }
 
+const FINANCE_ORDER_SELECT = 'id, numero, concluida_em, valor_total, pago, pago_em, forma_pagamento, veiculos(placa)'
+
 function normalizeSummary(raw: unknown): FinanceSummary {
   const data = (raw || {}) as Partial<FinanceSummary>
   return {
@@ -33,23 +35,32 @@ function normalizeSummary(raw: unknown): FinanceSummary {
 export function useFinanceReport(initialMonth = currentMonthValue()) {
   const supabase = useTypedSupabaseClient()
   const selectedMonth = ref(initialMonth)
+  const { page, pageSize, rangeBounds } = useListPagination(
+    [selectedMonth],
+    REPORT_PAGE_SIZE
+  )
 
   const { data, pending, refresh } = useAsyncData(
-    () => `finance-report-${selectedMonth.value}`,
+    () => `finance-report-${selectedMonth.value}-${page.value}`,
     async () => {
       const monthDate = monthValueToDate(selectedMonth.value)
       const { start, end } = monthBounds(selectedMonth.value)
+      const { from, to } = rangeBounds()
 
-      const [{ data: summary, error: summaryError }, { data: orders, error: ordersError }] = await Promise.all([
+      const [
+        { data: summary, error: summaryError },
+        { data: orders, count, error: ordersError }
+      ] = await Promise.all([
         supabase.rpc('financeiro_resumo', { p_mes: monthDate }),
         supabase
           .from('ordens_servico')
-          .select('id, numero, concluida_em, valor_total, pago, pago_em, forma_pagamento, veiculos(placa)')
+          .select(FINANCE_ORDER_SELECT, { count: 'exact' })
           .eq('status', 'concluida')
           .not('valor_total', 'is', null)
           .gte('concluida_em', start)
           .lt('concluida_em', end)
           .order('concluida_em', { ascending: false })
+          .range(from, to)
       ])
 
       if (summaryError) throw summaryError
@@ -57,19 +68,24 @@ export function useFinanceReport(initialMonth = currentMonthValue()) {
 
       return {
         summary: normalizeSummary(summary),
-        orders: (orders || []) as FinanceOrderRow[]
+        orders: (orders || []) as FinanceOrderRow[],
+        total: count ?? 0
       }
     },
-    { watch: [selectedMonth] }
+    { watch: [selectedMonth, page] }
   )
 
   const summary = computed(() => data.value?.summary ?? EMPTY_SUMMARY)
   const orders = computed(() => data.value?.orders ?? [])
+  const total = computed(() => data.value?.total ?? 0)
 
   return {
     selectedMonth,
     summary,
     orders,
+    page,
+    pageSize,
+    total,
     pending,
     refresh
   }

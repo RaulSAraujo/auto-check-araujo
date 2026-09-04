@@ -220,19 +220,36 @@ export function useChecklistPhotos(
     const photos = [...getPhotos(itemId)]
     if (photos.length === 0) return { error: null }
 
-    for (const photo of photos) {
-      const { error } = await deletePhoto(photo, { silent: true })
-      if (error) {
-        toast.add({
-          title: 'Erro ao remover fotos',
-          description: error.message,
-          color: 'error'
-        })
-        return { error }
-      }
-    }
+    deletingPhotoId.value = photos[0]?.id ?? itemId
+    try {
+      const paths = photos.map(photo => photo.storage_path)
+      const ids = photos.map(photo => photo.id)
 
-    return { error: null }
+      const { error: storageError } = await supabase.storage
+        .from(CHECKLIST_PHOTOS_BUCKET)
+        .remove(paths)
+
+      if (storageError) throw storageError
+
+      const { error } = await supabase
+        .from('checklist_item_fotos')
+        .delete()
+        .in('id', ids)
+
+      if (error) throw error
+
+      photosByItemId.value[itemId] = []
+      return { error: null }
+    } catch (error) {
+      toast.add({
+        title: 'Erro ao remover fotos',
+        description: error instanceof Error ? error.message : undefined,
+        color: 'error'
+      })
+      return { error: error instanceof Error ? error : new Error('Erro ao remover fotos') }
+    } finally {
+      deletingPhotoId.value = null
+    }
   }
 
   return {

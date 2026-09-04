@@ -19,7 +19,11 @@ const router = useRouter()
 const clienteId = (route.query.cliente_id as string) || ''
 useRequirePermission('vehicles.write')
 const { state } = useVehicleForm(undefined, clienteId)
-const { clienteItems } = await useCustomerOptions()
+const {
+  clienteItems,
+  searchTerm: clienteSearchTerm,
+  pending: clientesPending
+} = await useCustomerOptions('clientes-options', () => clienteId || undefined)
 const { createVehicle } = useVehicleMutations()
 
 const initialState = emptyVehicleForm(clienteId)
@@ -93,7 +97,9 @@ onMounted(() => {
 
         <VehiclesNewForm
           v-model="state"
+          v-model:cliente-search-term="clienteSearchTerm"
           :cliente-items="clienteItems"
+          :clientes-pending="clientesPending"
           :cancel-to="backFallback"
           :loading="loading"
           @submit="onSubmit"

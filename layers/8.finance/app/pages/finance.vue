@@ -3,7 +3,6 @@ import type { FormaPagamento } from '~~/shared/types/oficina'
 import {
   ACCOUNTS_FILTER_ITEMS,
   emptyFinanceAccountDraft,
-  filterAccounts,
   type AccountsFilter,
   type FinanceCategoryDraft
 } from '../utils/accounts-payable'
@@ -31,13 +30,30 @@ const {
   selectedMonth,
   summary,
   orders,
+  page: ordersPage,
+  pageSize: ordersPageSize,
+  total: ordersTotal,
   pending: pendingReport,
   refresh: refreshReport
 } = await useFinanceReport()
 
-const { accounts, pending: pendingAccounts } = await useAccountsPayableList()
+const {
+  accounts,
+  page: accountsPage,
+  pageSize: accountsPageSize,
+  total: accountsTotal,
+  pending: pendingAccounts
+} = await useAccountsPayableList(accountsFilter)
 const { dueAccounts, pending: pendingDue } = await useFinanceDueList()
-const { history, pending: pendingHistory, refresh: refreshHistory } = useFinanceHistory(selectedMonth)
+const {
+  history,
+  page: historyPage,
+  pageSize: historyPageSize,
+  total: historyTotal,
+  truncated: historyTruncated,
+  pending: pendingHistory,
+  refresh: refreshHistory
+} = useFinanceHistory(selectedMonth)
 const { categories, pending: pendingCategories } = await useFinanceCategoriesList()
 const { suppliers } = await useSuppliersList()
 
@@ -69,10 +85,6 @@ const actingAccountId = ref<string | null>(null)
 const addingCategory = ref(false)
 const savingCategoryId = ref<string | null>(null)
 const togglingCategoryId = ref<string | null>(null)
-
-const filteredAccounts = computed(() =>
-  filterAccounts(accounts.value || [], accountsFilter.value)
-)
 
 async function onAddAccount() {
   addingAccount.value = true
@@ -205,7 +217,7 @@ async function onToggleCategory(payload: { id: string, ativo: boolean }) {
               />
 
               <FinanceAccountsTable
-                :accounts="filteredAccounts"
+                :accounts="accounts"
                 :loading="pendingAccounts"
                 :acting-id="actingAccountId"
                 @mark-paid="onMarkPaid"
@@ -213,6 +225,19 @@ async function onToggleCategory(payload: { id: string, ativo: boolean }) {
                 @reopen="onReopenAccount"
                 @remove="onRemoveAccount"
               />
+
+              <div
+                v-if="accountsTotal > accountsPageSize"
+                class="flex justify-center pt-2"
+              >
+                <UPagination
+                  v-model:page="accountsPage"
+                  :total="accountsTotal"
+                  :items-per-page="accountsPageSize"
+                  show-edges
+                  :sibling-count="1"
+                />
+              </div>
             </div>
           </div>
         </template>
@@ -233,6 +258,19 @@ async function onToggleCategory(payload: { id: string, ativo: boolean }) {
               :orders="orders"
               :loading="pendingReport"
             />
+
+            <div
+              v-if="ordersTotal > ordersPageSize"
+              class="flex justify-center pt-2"
+            >
+              <UPagination
+                v-model:page="ordersPage"
+                :total="ordersTotal"
+                :items-per-page="ordersPageSize"
+                show-edges
+                :sibling-count="1"
+              />
+            </div>
           </section>
         </template>
 
@@ -250,10 +288,30 @@ async function onToggleCategory(payload: { id: string, ativo: boolean }) {
         </template>
 
         <template v-else>
+          <UAlert
+            v-if="historyTruncated"
+            color="warning"
+            variant="subtle"
+            title="Histórico limitado"
+            :description="`Exibindo até ${REPORT_SOFT_LIMIT} movimentos por tipo no mês.`"
+            class="mb-3"
+          />
           <FinanceHistoryList
             :items="history"
             :loading="pendingHistory"
           />
+          <div
+            v-if="historyTotal > historyPageSize"
+            class="flex justify-center pt-2"
+          >
+            <UPagination
+              v-model:page="historyPage"
+              :total="historyTotal"
+              :items-per-page="historyPageSize"
+              show-edges
+              :sibling-count="1"
+            />
+          </div>
         </template>
       </div>
     </template>
