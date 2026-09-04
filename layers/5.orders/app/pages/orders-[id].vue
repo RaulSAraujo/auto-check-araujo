@@ -94,17 +94,21 @@ const {
 } = useOrderBudgetPage(id, ordem, budgetItems, refresh, refreshBudgetItems)
 
 const {
-  saving,
+  saving: savingForm,
   canEdit,
-  isDirty,
-  discard,
-  save
+  isDirty: isFormDirty,
+  discard: discardForm,
+  save: saveForm
 } = useOrderDetailEditor(id, ordem, state, refresh)
 
 const {
   selectedStatus,
   savingStatus,
   statusItems,
+  isDirty: isStatusDirty,
+  concludeOpen,
+  discard: discardStatus,
+  resolveConclude,
   saveStatus
 } = useOrderStatusEditor(id, ordem, refresh)
 
@@ -113,8 +117,38 @@ const {
   saving: savingPayment,
   canEditPayment,
   showPaymentSection,
+  isDirty: isPaymentDirty,
+  discard: discardPayment,
   savePayment
 } = useOrderPayment(id, ordem, refresh)
+
+const isDirty = computed(() =>
+  isFormDirty.value || isStatusDirty.value || isPaymentDirty.value
+)
+
+const saving = computed(() =>
+  savingForm.value || savingStatus.value || savingPayment.value
+)
+
+function discard() {
+  discardForm()
+  discardStatus()
+  discardPayment()
+}
+
+async function save() {
+  if (isFormDirty.value) {
+    const ok = await saveForm()
+    if (!ok) return
+  }
+  if (isStatusDirty.value) {
+    const ok = await saveStatus()
+    if (!ok) return
+  }
+  if (isPaymentDirty.value) {
+    await savePayment()
+  }
+}
 
 const { ensureToken } = useOrderPublicToken()
 const publicToken = ref<string | null>(null)
@@ -154,6 +188,12 @@ function openChecklist() {
   checklistOpen.value = true
 }
 
+watch(checklistOpen, (open, wasOpen) => {
+  if (wasOpen && !open) {
+    void refresh()
+  }
+})
+
 const budgetWhatsappUrl = computed(() => {
   if (!ordem.value || !budgetPublicUrl.value) return null
   return buildWhatsAppUrl(
@@ -188,9 +228,21 @@ async function onDownloadBudgetPdf() {
   }
 }
 
-function confirmLeave(): boolean {
-  return window.confirm('Há alterações não salvas. Sair sem salvar a OS?')
+const leaveOpen = ref(false)
+const leaveTo = ref<string | null>(null)
+
+function confirmLeaveWithoutSaving() {
+  const destination = leaveTo.value
+  leaveOpen.value = false
+  leaveTo.value = null
+  if (!destination) return
+  allowLeave.value = true
+  void router.push(destination)
 }
+
+watch(leaveOpen, (open) => {
+  if (!open) leaveTo.value = null
+})
 
 const linkedAppointment = computed(() => {
   const rel = ordem.value?.agendamentos
@@ -203,12 +255,15 @@ const appointmentAgendaHref = computed(() => {
   return schedulingDayPath(new Date(linkedAppointment.value.inicio))
 })
 
-onBeforeRouteLeave((_to, _from, next) => {
+onBeforeRouteLeave((to, _from, next) => {
   if (allowLeave.value || saving.value || !isDirty.value) {
     next()
     return
   }
-  next(confirmLeave())
+
+  leaveTo.value = to.fullPath
+  leaveOpen.value = true
+  next(false)
 })
 
 onMounted(() => {
@@ -247,37 +302,19 @@ onMounted(() => {
         v-else-if="ordem"
         class="mx-auto w-full max-w-6xl space-y-6 p-4 pb-28 sm:p-6 sm:pb-28"
       >
-        <BasePageHeader :title="ordem.numero || 'Ordem de serviço'">
-          <template #breadcrumb>
-            <UBreadcrumb :items="breadcrumbItems" />
-          </template>
-          <template #actions>
-            <UBadge
-              v-if="!canEdit"
-              color="neutral"
-              variant="subtle"
-            >
-              Somente leitura
-            </UBadge>
-            <UButton
-              color="neutral"
-              variant="ghost"
-              label="Voltar"
-              icon="i-lucide-arrow-left"
-              class="min-h-11 touch-manipulation"
-              @click="back"
-            />
-          </template>
-        </BasePageHeader>
+        <div class="space-y-3">
+          <UBreadcrumb :items="breadcrumbItems" />
 
-        <OrdersDetailHero
-          :ordem="ordem"
-          :selected-status="selectedStatus"
-          :status-items="statusItems"
-          :saving-status="savingStatus"
-          @update:selected-status="selectedStatus = $event"
-          @save-status="saveStatus"
-        />
+          <OrdersDetailHero
+            :ordem="ordem"
+            :selected-status="selectedStatus"
+            :status-items="statusItems"
+            :saving-status="savingStatus"
+            :can-edit="canEdit"
+            @update:selected-status="selectedStatus = $event"
+            @back="back"
+          />
+        </div>
 
         <UAlert
           v-if="linkedAppointment"
@@ -359,8 +396,6 @@ onMounted(() => {
             v-model="paymentState"
             :ordem="ordem"
             :can-edit="canEditPayment"
-            :saving="savingPayment"
-            @save="savePayment"
           />
         </section>
 
@@ -419,6 +454,26 @@ onMounted(() => {
             />
           </template>
         </USlideover>
+
+        <OrdersConfirmDialog
+          v-model:open="leaveOpen"
+          title="Sair sem salvar?"
+          description="Há alterações não salvas nesta OS."
+          confirm-label="Sair sem salvar"
+          cancel-label="Continuar editando"
+          confirm-color="error"
+          @confirm="confirmLeaveWithoutSaving"
+        />
+
+        <OrdersConfirmDialog
+          v-model:open="concludeOpen"
+          title="Concluir esta OS?"
+          description="Após concluir, não será possível alterar os dados nem o status."
+          confirm-label="Concluir"
+          confirm-color="primary"
+          :loading="savingStatus"
+          @confirm="resolveConclude(true)"
+        />
       </div>
     </template>
   </UDashboardPanel>

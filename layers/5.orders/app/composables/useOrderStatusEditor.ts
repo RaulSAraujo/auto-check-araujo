@@ -14,6 +14,9 @@ export function useOrderStatusEditor(
 
   const selectedStatus = ref('')
   const savingStatus = ref(false)
+  const concludeOpen = ref(false)
+
+  let concludeResolver: ((confirmed: boolean) => void) | null = null
 
   const statusItems = computed(() => {
     if (!ordem.value) return [...ORDEM_STATUS_SELECT_ITEMS]
@@ -24,18 +27,49 @@ export function useOrderStatusEditor(
     )
   })
 
+  const isDirty = computed(() => {
+    if (!ordem.value) return false
+    return selectedStatus.value !== ordem.value.status
+  })
+
   watch(ordem, (value) => {
     if (value) selectedStatus.value = value.status
   }, { immediate: true })
 
-  async function saveStatus() {
-    if (!ordem.value || selectedStatus.value === ordem.value.status) return
+  watch(concludeOpen, (open) => {
+    if (!open && concludeResolver) {
+      concludeResolver(false)
+      concludeResolver = null
+    }
+  })
+
+  function discard() {
+    if (!ordem.value) return
+    selectedStatus.value = ordem.value.status
+  }
+
+  function requestConcludeConfirm(): Promise<boolean> {
+    concludeOpen.value = true
+    return new Promise((resolve) => {
+      concludeResolver = resolve
+    })
+  }
+
+  function resolveConclude(confirmed: boolean) {
+    const resolver = concludeResolver
+    concludeResolver = null
+    concludeOpen.value = false
+    resolver?.(confirmed)
+  }
+
+  async function saveStatus(): Promise<boolean> {
+    if (!ordem.value || selectedStatus.value === ordem.value.status) return true
 
     const current = ordem.value.status as OrdemStatus
     const next = selectedStatus.value as OrdemStatus
     if (!canChangeOrderStatus(current, next)) {
       selectedStatus.value = ordem.value.status
-      return
+      return false
     }
 
     if (next === 'concluida') {
@@ -46,16 +80,11 @@ export function useOrderStatusEditor(
           color: 'warning'
         })
         selectedStatus.value = ordem.value.status
-        return
+        return false
       }
 
-      const confirmed = window.confirm(
-        'Concluir esta OS?\n\nApós concluir, não será possível alterar os dados nem o status.'
-      )
-      if (!confirmed) {
-        selectedStatus.value = ordem.value.status
-        return
-      }
+      const confirmed = await requestConcludeConfirm()
+      if (!confirmed) return false
     }
 
     savingStatus.value = true
@@ -68,10 +97,11 @@ export function useOrderStatusEditor(
 
       if (error) {
         selectedStatus.value = ordem.value.status
-        return
+        return false
       }
 
       await refresh()
+      return true
     } finally {
       savingStatus.value = false
     }
@@ -81,6 +111,10 @@ export function useOrderStatusEditor(
     selectedStatus,
     savingStatus,
     statusItems,
+    isDirty,
+    concludeOpen,
+    discard,
+    resolveConclude,
     saveStatus
   }
 }

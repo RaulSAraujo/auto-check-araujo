@@ -7,28 +7,15 @@ import {
 } from '~~/shared/types/oficina'
 import { formatMoney } from '../utils/budget'
 import type { PaymentFormState } from '../utils/payment'
-import { paymentFormFromOrder } from '../utils/payment'
 
 defineOptions({ name: 'OrdersPaymentEditor' })
 
 const props = defineProps<{
   ordem: OrderDetail
   canEdit: boolean
-  saving: boolean
 }>()
 
 const state = defineModel<PaymentFormState>({ required: true })
-
-const emit = defineEmits<{
-  save: []
-}>()
-
-const baseline = computed(() => paymentFormFromOrder(props.ordem))
-
-const isDirty = computed(() =>
-  state.value.pago !== baseline.value.pago
-  || state.value.forma_pagamento !== baseline.value.forma_pagamento
-)
 
 const formaLabel = computed(() => {
   const value = props.ordem.forma_pagamento as FormaPagamento | null
@@ -36,22 +23,11 @@ const formaLabel = computed(() => {
   return FORMA_PAGAMENTO_LABEL[value] || value
 })
 
-const canSave = computed(() => {
-  if (!props.canEdit || props.saving || !isDirty.value) return false
-  if (state.value.pago && !state.value.forma_pagamento) return false
-  return true
-})
-
 watch(() => state.value.pago, (pago) => {
   if (!pago) {
     state.value.forma_pagamento = undefined
   }
 })
-
-function onSave() {
-  if (state.value.pago && !state.value.forma_pagamento) return
-  emit('save')
-}
 </script>
 
 <template>
@@ -59,7 +35,6 @@ function onSave() {
     class="space-y-3"
     aria-labelledby="os-payment-heading"
   >
-    <!-- Linha 1: título + status + marcar pago + valor -->
     <div class="flex flex-wrap items-center gap-x-3 gap-y-2">
       <div class="flex min-w-0 flex-wrap items-center gap-2.5">
         <h2
@@ -116,15 +91,14 @@ function onSave() {
       </p>
     </div>
 
-    <!-- Linha 2: select + salvar — só quando marcado como pago -->
     <div
       v-if="ordem.valor_total != null && canEdit && state.pago"
-      class="flex flex-col gap-3 sm:flex-row sm:items-end"
+      class="sm:max-w-sm"
     >
       <UFormField
         label="Forma de pagamento"
         name="forma_pagamento"
-        class="min-w-0 w-full sm:max-w-sm"
+        class="w-full"
       >
         <USelect
           v-model="state.forma_pagamento"
@@ -135,16 +109,6 @@ function onSave() {
           aria-label="Forma de pagamento"
         />
       </UFormField>
-
-      <UButton
-        :label="saving ? 'Salvando…' : 'Salvar pagamento'"
-        icon="i-lucide-banknote"
-        color="primary"
-        class="shrink-0 sm:ms-auto"
-        :loading="saving"
-        :disabled="!canSave"
-        @click="onSave"
-      />
     </div>
   </section>
 </template>

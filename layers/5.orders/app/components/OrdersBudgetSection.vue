@@ -39,10 +39,16 @@ const emit = defineEmits<{
 const draftModel = defineModel<OrderItemDraft>('draft', { required: true })
 
 const showAddModal = ref(false)
+const rejectConfirmOpen = ref(false)
 
 function onAddAndClose() {
   emit('add')
   showAddModal.value = false
+}
+
+function onConfirmReject() {
+  rejectConfirmOpen.value = false
+  emit('reject')
 }
 </script>
 
@@ -187,7 +193,7 @@ function onAddAndClose() {
           variant="soft"
           size="sm"
           :loading="updatingStatus"
-          @click="emit('reject')"
+          @click="rejectConfirmOpen = true"
         />
       </template>
       <UButton
@@ -201,6 +207,16 @@ function onAddAndClose() {
         @click="emit('reopen')"
       />
     </div>
+
+    <OrdersConfirmDialog
+      v-model:open="rejectConfirmOpen"
+      title="Rejeitar orçamento?"
+      description="O orçamento volta para edição. O cliente precisará de uma nova aprovação depois."
+      confirm-label="Rejeitar"
+      confirm-color="error"
+      :loading="updatingStatus"
+      @confirm="onConfirmReject"
+    />
 
     <UModal
       v-model:open="showAddModal"

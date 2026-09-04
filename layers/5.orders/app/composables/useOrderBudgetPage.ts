@@ -91,12 +91,45 @@ export function useOrderBudgetPage(
   }
 
   async function onDeleteItem(itemId: string) {
+    const snapshot = items.value?.find(item => item.id === itemId)
+    if (!snapshot) return
+
     deletingId.value = itemId
     try {
-      const { error } = await deleteOrderItem(itemId)
-      if (!error) {
-        await refreshItems()
-      }
+      const { error } = await deleteOrderItem(itemId, { silent: true })
+      if (error) return
+
+      await refreshItems()
+
+      const toast = useToast()
+      toast.add({
+        title: 'Item removido',
+        description: snapshot.descricao,
+        color: 'neutral',
+        actions: [{
+          label: 'Desfazer',
+          color: 'neutral',
+          variant: 'outline',
+          onClick: async () => {
+            const nextOrdem = items.value?.length || 0
+            const { error: undoError } = await addOrderItem(
+              toValue(orderId),
+              {
+                tipo: snapshot.tipo as OrderItemDraft['tipo'],
+                descricao: snapshot.descricao,
+                quantidade: Number(snapshot.quantidade),
+                valor_unitario: Number(snapshot.valor_unitario)
+              },
+              nextOrdem,
+              { silent: true }
+            )
+            if (!undoError) {
+              await refreshItems()
+              toast.add({ title: 'Item restaurado', color: 'success' })
+            }
+          }
+        }]
+      })
     } finally {
       deletingId.value = null
     }

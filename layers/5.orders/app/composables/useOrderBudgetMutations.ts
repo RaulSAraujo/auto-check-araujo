@@ -10,10 +10,13 @@ export function useOrderBudgetMutations() {
   async function addOrderItem(
     orderId: string,
     draft: OrderItemDraft,
-    nextOrdem: number
+    nextOrdem: number,
+    options?: { silent?: boolean }
   ) {
     if (!isOrderItemDraftValid(draft)) {
-      toast.add({ title: 'Preencha a descrição e os valores', color: 'warning' })
+      if (!options?.silent) {
+        toast.add({ title: 'Preencha a descrição e os valores', color: 'warning' })
+      }
       return { error: null }
     }
 
@@ -33,7 +36,9 @@ export function useOrderBudgetMutations() {
       return { error }
     }
 
-    toast.add({ title: 'Item adicionado', color: 'success' })
+    if (!options?.silent) {
+      toast.add({ title: 'Item adicionado', color: 'success' })
+    }
     return { error: null }
   }
 
@@ -54,7 +59,7 @@ export function useOrderBudgetMutations() {
     return { error: null }
   }
 
-  async function deleteOrderItem(itemId: string) {
+  async function deleteOrderItem(itemId: string, options?: { silent?: boolean }) {
     const { error } = await supabase
       .from('ordem_itens')
       .delete()
@@ -65,7 +70,9 @@ export function useOrderBudgetMutations() {
       return { error }
     }
 
-    toast.add({ title: 'Item removido', color: 'success' })
+    if (!options?.silent) {
+      toast.add({ title: 'Item removido', color: 'success' })
+    }
     return { error: null }
   }
 

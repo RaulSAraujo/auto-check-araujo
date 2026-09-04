@@ -64,7 +64,7 @@ export function groupChecklistItensByCategoria(
   return [...map.entries()]
 }
 
-export function countFilledChecklistItens(itens: ChecklistItem[]): number {
+export function countFilledChecklistItens(itens: { resultado: string | null }[]): number {
   return itens.filter(i => i.resultado).length
 }
 

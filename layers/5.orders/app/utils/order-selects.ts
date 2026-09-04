@@ -21,7 +21,7 @@ export const ORDER_DETAIL_SELECT = [
   'updated_at',
   'veiculos(id, placa, marca, modelo, clientes(id, nome, telefones))',
   'profiles!ordens_servico_aberto_por_fkey(nome)',
-  'checklists(id, status)',
+  'checklists(id, status, checklist_itens(id, resultado))',
   'agendamentos(id, inicio, fim, patio_vaga, status)'
 ].join(', ')
 

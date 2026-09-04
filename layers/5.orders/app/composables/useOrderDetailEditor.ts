@@ -38,11 +38,18 @@ export function useOrderDetailEditor(
     if (ordem.value) syncFromOrder(ordem.value)
   }
 
-  async function save() {
-    if (!canEdit.value) return
+  async function save(): Promise<boolean> {
+    if (!canEdit.value) return true
+    if (!isDirty.value) return true
 
     const errors = validateOrderEditForm(state)
-    if (errors.length) return
+    if (errors.length) {
+      useToast().add({
+        title: errors[0]?.message || 'Revise os campos da OS',
+        color: 'warning'
+      })
+      return false
+    }
 
     saving.value = true
     try {
@@ -50,7 +57,9 @@ export function useOrderDetailEditor(
       if (!error) {
         await refresh()
         if (ordem.value) syncFromOrder(ordem.value)
+        return true
       }
+      return false
     } finally {
       saving.value = false
     }

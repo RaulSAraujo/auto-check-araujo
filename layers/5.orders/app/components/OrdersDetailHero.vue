@@ -10,15 +10,14 @@ const props = defineProps<{
   selectedStatus: string
   statusItems: readonly { label: string, value: string }[]
   savingStatus: boolean
+  canEdit: boolean
 }>()
 
 const emit = defineEmits<{
   'update:selectedStatus': [value: string]
-  saveStatus: []
+  back: []
 }>()
 
-const route = useRoute()
-const id = computed(() => route.params.id as string)
 const status = computed(() => props.ordem.status as OrdemStatus)
 const vehicle = computed(() => props.ordem.veiculos)
 const vehicleLabel = computed(() => {
@@ -30,30 +29,27 @@ const statusChanged = computed(() => props.selectedStatus !== props.ordem.status
 
 <template>
   <header class="orders-hero rounded-xl border border-default bg-default">
-    <div class="relative overflow-hidden rounded-t-xl border-b border-default bg-linear-to-br from-primary/8 via-transparent to-transparent px-5 py-5 sm:px-6 sm:py-6">
-      <div
-        class="pointer-events-none absolute -right-12 -top-12 size-48 rounded-full bg-primary/6 blur-3xl"
-        aria-hidden="true"
-      />
-
-      <div class="relative flex flex-wrap items-start justify-between gap-4">
+    <div class="border-b border-default px-5 py-5 sm:px-6 sm:py-6">
+      <div class="flex flex-wrap items-start justify-between gap-4">
         <div class="min-w-0 space-y-1.5">
-          <NuxtLink
-            v-if="vehicle"
-            :to="`/veiculos/${vehicle.id}`"
-            class="font-mono text-3xl font-black tabular-nums tracking-tight text-highlighted transition-colors hover:text-primary"
-            translate="no"
-          >
-            {{ formatPlaca(vehicle.placa) }}
-          </NuxtLink>
-
-          <div class="flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-muted">
-            <span
-              class="font-mono text-xs tabular-nums"
+          <div class="flex flex-wrap items-baseline gap-x-3 gap-y-1">
+            <NuxtLink
+              v-if="vehicle"
+              :to="`/veiculos/${vehicle.id}`"
+              class="font-mono text-3xl font-black tabular-nums tracking-tight text-highlighted transition-colors hover:text-primary"
+              translate="no"
+            >
+              {{ formatPlaca(vehicle.placa) }}
+            </NuxtLink>
+            <h1
+              class="font-mono text-lg font-semibold tabular-nums tracking-tight text-muted sm:text-xl"
               translate="no"
             >
               {{ ordem.numero || 'OS' }}
-            </span>
+            </h1>
+          </div>
+
+          <div class="flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-muted">
             <span
               v-if="vehicleLabel"
               class="hidden sm:inline"
@@ -70,51 +66,59 @@ const statusChanged = computed(() => props.selectedStatus !== props.ordem.status
           </div>
         </div>
 
-        <div
-          v-if="statusItems.length > 1"
-          class="flex items-center gap-2"
-        >
-          <USelect
-            :model-value="selectedStatus"
-            :items="[...statusItems]"
-            class="w-40"
-            :disabled="savingStatus"
-            name="status"
-            aria-label="Alterar status da OS"
-            autocomplete="off"
-            @update:model-value="emit('update:selectedStatus', String($event))"
-          />
-          <Transition
-            enter-active-class="transition duration-150 ease-out"
-            enter-from-class="scale-90 opacity-0"
-            enter-to-class="scale-100 opacity-100"
-            leave-active-class="transition duration-100 ease-in"
-            leave-from-class="scale-100 opacity-100"
-            leave-to-class="scale-90 opacity-0"
+        <div class="flex flex-wrap items-center gap-2">
+          <UBadge
+            v-if="!canEdit"
+            color="neutral"
+            variant="subtle"
           >
-            <UButton
-              v-if="statusChanged"
-              label="Aplicar"
-              size="sm"
-              :loading="savingStatus"
-              @click="emit('saveStatus')"
+            Somente leitura
+          </UBadge>
+
+          <template v-if="statusItems.length > 1">
+            <USelect
+              :model-value="selectedStatus"
+              :items="[...statusItems]"
+              class="w-40"
+              :disabled="savingStatus"
+              name="status"
+              aria-label="Alterar status da OS"
+              autocomplete="off"
+              @update:model-value="emit('update:selectedStatus', String($event))"
             />
-          </Transition>
+            <UBadge
+              v-if="statusChanged"
+              color="warning"
+              variant="subtle"
+              size="sm"
+            >
+              Pendente
+            </UBadge>
+          </template>
+          <UBadge
+            v-else
+            :color="ORDEM_STATUS_COLOR[status]"
+            variant="subtle"
+            size="lg"
+          >
+            {{ ORDEM_STATUS_LABEL[status] }}
+          </UBadge>
+
+          <UButton
+            color="neutral"
+            variant="ghost"
+            label="Voltar"
+            icon="i-lucide-arrow-left"
+            class="min-h-11 touch-manipulation"
+            @click="emit('back')"
+          />
         </div>
-        <UBadge
-          v-else
-          :color="ORDEM_STATUS_COLOR[status]"
-          variant="subtle"
-          size="lg"
-        >
-          {{ ORDEM_STATUS_LABEL[status] }}
-        </UBadge>
       </div>
     </div>
 
-    <div class="grid grid-cols-4 divide-x divide-default px-1">
-      <div class="px-4 py-3 text-center">
-        <p class="text-[11px] font-medium uppercase tracking-widest text-muted">
+    <div class="grid grid-cols-1 divide-y divide-default sm:grid-cols-3 sm:divide-x sm:divide-y-0">
+      <div class="px-4 py-3 text-center sm:px-4">
+        <p class="text-xs font-medium text-muted">
           Aberta em
         </p>
         <p class="mt-0.5 font-mono text-xs tabular-nums text-highlighted">
@@ -122,7 +126,7 @@ const statusChanged = computed(() => props.selectedStatus !== props.ordem.status
         </p>
       </div>
       <div class="px-4 py-3 text-center">
-        <p class="text-[11px] font-medium uppercase tracking-widest text-muted">
+        <p class="text-xs font-medium text-muted">
           Aberta por
         </p>
         <p class="mt-0.5 text-xs text-highlighted">
@@ -130,15 +134,7 @@ const statusChanged = computed(() => props.selectedStatus !== props.ordem.status
         </p>
       </div>
       <div class="px-4 py-3 text-center">
-        <p class="text-[11px] font-medium uppercase tracking-widest text-muted">
-          Km entrada
-        </p>
-        <p class="mt-0.5 font-mono text-xs tabular-nums text-highlighted">
-          {{ ordem.km_entrada != null ? new Intl.NumberFormat('pt-BR').format(ordem.km_entrada) : '—' }}
-        </p>
-      </div>
-      <div class="px-4 py-3 text-center">
-        <p class="text-[11px] font-medium uppercase tracking-widest text-muted">
+        <p class="text-xs font-medium text-muted">
           Concluída em
         </p>
         <p class="mt-0.5 font-mono text-xs tabular-nums text-highlighted">

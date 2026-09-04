@@ -25,17 +25,37 @@ export function useOrderPayment(
     return ordem.value.status === 'concluida' || ordem.value.valor_total != null
   })
 
+  const baseline = reactive<PaymentFormState>(emptyPaymentForm())
+
+  const isDirty = computed(() => {
+    if (!canEditPayment.value) return false
+    return state.pago !== baseline.pago
+      || state.forma_pagamento !== baseline.forma_pagamento
+  })
+
+  function syncFromOrder(value: OrderDetail) {
+    const next = paymentFormFromOrder(value)
+    Object.assign(baseline, next)
+    Object.assign(state, next)
+  }
+
+  function discard() {
+    if (!ordem.value) return
+    syncFromOrder(ordem.value)
+  }
+
   watch(ordem, (value) => {
     if (!value) return
-    Object.assign(state, paymentFormFromOrder(value))
+    syncFromOrder(value)
   }, { immediate: true })
 
-  async function savePayment() {
-    if (!ordem.value || !canEditPayment.value) return
+  async function savePayment(): Promise<boolean> {
+    if (!ordem.value || !canEditPayment.value) return true
+    if (!isDirty.value) return true
 
     if (state.pago && !state.forma_pagamento) {
       toast.add({ title: 'Selecione a forma de pagamento', color: 'warning' })
-      return
+      return false
     }
 
     saving.value = true
@@ -51,7 +71,7 @@ export function useOrderPayment(
 
       if (error) {
         toast.add({ title: 'Erro ao salvar pagamento', description: error.message, color: 'error' })
-        return
+        return false
       }
 
       toast.add({
@@ -59,6 +79,7 @@ export function useOrderPayment(
         color: 'success'
       })
       await refresh()
+      return true
     } finally {
       saving.value = false
     }
@@ -69,6 +90,8 @@ export function useOrderPayment(
     saving,
     canEditPayment,
     showPaymentSection,
+    isDirty,
+    discard,
     savePayment
   }
 }

@@ -21,7 +21,9 @@ export type OrderDetail = OrdemServico & {
     clientes: { id: string, nome: string, telefones: string[] } | null
   } | null
   profiles: { nome: string } | null
-  checklists: Pick<Checklist, 'id' | 'status'> | null
+  checklists: (Pick<Checklist, 'id' | 'status'> & {
+    checklist_itens?: Pick<ChecklistItem, 'id' | 'resultado'>[] | null
+  }) | null
   agendamentos?: OrderLinkedAppointment[] | OrderLinkedAppointment | null
 }
 
