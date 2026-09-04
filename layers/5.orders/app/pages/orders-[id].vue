@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import type { BreadcrumbItem } from '@nuxt/ui'
 import { ORDER_ROUTES } from '../utils/order-routes'
 import {
   absolutePrintUrl,
@@ -24,6 +23,9 @@ const allowLeave = ref(false)
 
 const { back } = useSmartBack(ORDER_ROUTES.list)
 
+/** Capture entry once so the trail stays stable while editing. */
+const breadcrumbOrigin = resolveOrderBreadcrumbOrigin()
+
 const checklistOpen = computed({
   get: () => route.query.checklist === '1',
   set: (value: boolean) => {
@@ -46,32 +48,10 @@ const [
 ])
 const { state } = useOrderEditForm(ordem)
 
-const breadcrumbItems = computed<BreadcrumbItem[]>(() => {
-  const numero = ordem.value?.numero?.trim() || 'OS'
-  const vehicle = ordem.value?.veiculos
-  const owner = vehicle?.clientes
-
-  if (owner && vehicle) {
-    return [
-      { label: 'Clientes', to: APP_ROUTES.customers },
-      { label: owner.nome, to: `${APP_ROUTES.customers}/${owner.id}` },
-      { label: formatPlaca(vehicle.placa), to: `${APP_ROUTES.vehicles}/${vehicle.id}` },
-      { label: numero }
-    ]
-  }
-
-  if (vehicle) {
-    return [
-      { label: 'Veículos', to: APP_ROUTES.vehicles },
-      { label: formatPlaca(vehicle.placa), to: `${APP_ROUTES.vehicles}/${vehicle.id}` },
-      { label: numero }
-    ]
-  }
-
-  return [
-    { label: 'Ordens', to: ORDER_ROUTES.list },
-    { label: numero }
-  ]
+const { breadcrumbItems } = useOrderBreadcrumb({
+  origin: breadcrumbOrigin,
+  numero: () => ordem.value?.numero?.trim() || 'OS',
+  vehicle: () => ordem.value?.veiculos
 })
 
 const {
