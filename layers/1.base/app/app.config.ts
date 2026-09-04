@@ -31,7 +31,16 @@ export default defineAppConfig({
     button: {
       defaultVariants: {
         color: 'primary'
-      }
+      },
+      // Nuxt UI solid buttons use text-inverted; in .dark that token is near-black,
+      // so primary CTAs lose contrast. Force white label/icon on solid primary.
+      compoundVariants: [
+        {
+          color: 'primary',
+          variant: 'solid',
+          class: 'text-white'
+        }
+      ]
     },
     table: {
       slots: {
