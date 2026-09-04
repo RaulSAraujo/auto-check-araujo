@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { BreadcrumbItem } from '@nuxt/ui'
+import type { BreadcrumbItem, DropdownMenuItem } from '@nuxt/ui'
 import { CUSTOMER_ROUTES } from '../utils/customer-routes'
 
 defineOptions({ name: 'CustomersDetailPage' })
@@ -47,6 +47,7 @@ const {
 } = useCustomerDetailPage(id, cliente, veiculos, state, refresh)
 
 const { can } = usePermissions()
+const { back } = useSmartBack(CUSTOMER_ROUTES.list)
 
 const breadcrumbItems = computed<BreadcrumbItem[]>(() => [
   {
@@ -57,6 +58,41 @@ const breadcrumbItems = computed<BreadcrumbItem[]>(() => [
     label: cliente.value?.nome?.trim() || 'Cliente'
   }
 ])
+
+const moreMenuItems = computed<DropdownMenuItem[][]>(() => {
+  const items: DropdownMenuItem[] = []
+
+  if (can('customers.write')) {
+    items.push({
+      label: 'Editar',
+      icon: 'i-lucide-pencil',
+      onSelect: () => { startEdit() }
+    })
+  }
+
+  if (can('customers.write') && cliente.value) {
+    items.push({
+      label: cliente.value.ativo ? 'Desativar' : 'Reativar',
+      icon: cliente.value.ativo ? 'i-lucide-eye-off' : 'i-lucide-eye',
+      color: cliente.value.ativo ? 'warning' : 'success',
+      disabled: togglingAtivo.value,
+      onSelect: () => { void toggleAtivo() }
+    })
+  }
+
+  if (can('customers.delete')) {
+    items.push({
+      label: 'Excluir',
+      icon: 'i-lucide-trash',
+      color: 'error',
+      onSelect: () => { deleteOpen.value = true }
+    })
+  }
+
+  return items.length ? [items] : []
+})
+
+const showMoreMenu = computed(() => !editing.value && moreMenuItems.value.length > 0)
 
 onMounted(() => {
   refreshVeiculos()
@@ -74,7 +110,7 @@ onMounted(() => {
         <div class="space-y-2">
           <USkeleton class="h-4 w-40" />
           <div class="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
-            <div class="space-y-2">
+            <div class="flex flex-wrap items-center gap-2">
               <USkeleton class="h-8 w-56 sm:w-72" />
               <USkeleton class="h-5 w-16 rounded-full" />
             </div>
@@ -98,7 +134,7 @@ onMounted(() => {
           <template #breadcrumb>
             <UBreadcrumb :items="breadcrumbItems" />
           </template>
-          <template #below>
+          <template #title-trailing>
             <UBadge
               :color="cliente.ativo ? 'success' : 'neutral'"
               variant="subtle"
@@ -106,40 +142,27 @@ onMounted(() => {
               {{ cliente.ativo ? 'Ativo' : 'Inativo' }}
             </UBadge>
           </template>
-          <template
-            v-if="!editing"
-            #actions
-          >
+          <template #actions>
+            <UDropdownMenu
+              v-if="showMoreMenu"
+              :items="moreMenuItems"
+              :content="{ align: 'end' }"
+            >
+              <UButton
+                label="Ações"
+                trailing-icon="i-lucide-chevron-down"
+                color="neutral"
+                variant="soft"
+                class="min-h-11 touch-manipulation"
+              />
+            </UDropdownMenu>
             <UButton
-              v-if="can('customers.write')"
-              label="Editar"
-              icon="i-lucide-pencil"
-              color="primary"
-              variant="soft"
-              class="min-h-11 touch-manipulation transition-transform motion-safe:active:scale-[0.98]"
-              style="transition-duration: var(--duration-press)"
-              @click="startEdit"
-            />
-            <UButton
-              v-if="can('customers.write')"
-              :label="cliente.ativo ? 'Desativar' : 'Reativar'"
-              :icon="cliente.ativo ? 'i-lucide-eye-off' : 'i-lucide-eye'"
-              :color="cliente.ativo ? 'warning' : 'success'"
+              color="neutral"
               variant="ghost"
-              :loading="togglingAtivo"
-              class="min-h-11 touch-manipulation transition-transform motion-safe:active:scale-[0.98]"
-              style="transition-duration: var(--duration-press)"
-              @click="toggleAtivo"
-            />
-            <UButton
-              v-if="can('customers.delete')"
-              label="Excluir"
-              icon="i-lucide-trash"
-              color="error"
-              variant="ghost"
-              class="min-h-11 touch-manipulation transition-transform motion-safe:active:scale-[0.98]"
-              style="transition-duration: var(--duration-press)"
-              @click="deleteOpen = true"
+              label="Voltar"
+              icon="i-lucide-arrow-left"
+              class="min-h-11 touch-manipulation"
+              @click="back"
             />
           </template>
         </BasePageHeader>

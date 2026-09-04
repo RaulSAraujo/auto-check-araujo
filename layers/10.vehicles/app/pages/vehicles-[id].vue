@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { BreadcrumbItem } from '@nuxt/ui'
+import type { BreadcrumbItem, DropdownMenuItem } from '@nuxt/ui'
 import { VEHICLE_ROUTES } from '../utils/vehicle-routes'
 
 defineOptions({ name: 'VehiclesDetailPage' })
@@ -74,6 +74,31 @@ const breadcrumbItems = computed<BreadcrumbItem[]>(() => {
     { label: plate }
   ]
 })
+
+const moreMenuItems = computed<DropdownMenuItem[][]>(() => {
+  const items: DropdownMenuItem[] = []
+
+  if (can('vehicles.write')) {
+    items.push({
+      label: 'Editar',
+      icon: 'i-lucide-pencil',
+      onSelect: () => { startEdit() }
+    })
+  }
+
+  if (can('vehicles.delete')) {
+    items.push({
+      label: 'Excluir',
+      icon: 'i-lucide-trash',
+      color: 'error',
+      onSelect: () => { deleteOpen.value = true }
+    })
+  }
+
+  return items.length ? [items] : []
+})
+
+const showMoreMenu = computed(() => !editing.value && moreMenuItems.value.length > 0)
 </script>
 
 <template>
@@ -85,9 +110,11 @@ const breadcrumbItems = computed<BreadcrumbItem[]>(() => {
       >
         <div class="space-y-2">
           <USkeleton class="h-4 w-40" />
-          <USkeleton class="h-8 w-40 sm:w-56" />
+          <div class="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+            <USkeleton class="h-8 w-40 sm:w-56" />
+            <USkeleton class="h-11 w-28 shrink-0 rounded-lg" />
+          </div>
         </div>
-        <USkeleton class="h-11 w-28 rounded-lg" />
         <USkeleton class="h-52 w-full rounded-lg" />
         <USkeleton class="h-36 w-full rounded-lg" />
       </div>
@@ -106,6 +133,19 @@ const breadcrumbItems = computed<BreadcrumbItem[]>(() => {
             <UBreadcrumb :items="breadcrumbItems" />
           </template>
           <template #actions>
+            <UDropdownMenu
+              v-if="showMoreMenu"
+              :items="moreMenuItems"
+              :content="{ align: 'end' }"
+            >
+              <UButton
+                label="Ações"
+                trailing-icon="i-lucide-chevron-down"
+                color="neutral"
+                variant="soft"
+                class="min-h-11 touch-manipulation"
+              />
+            </UDropdownMenu>
             <UButton
               color="neutral"
               variant="ghost"
@@ -116,32 +156,6 @@ const breadcrumbItems = computed<BreadcrumbItem[]>(() => {
             />
           </template>
         </BasePageHeader>
-
-        <div
-          v-if="!editing"
-          class="flex flex-wrap items-center gap-2"
-        >
-          <UButton
-            v-if="can('vehicles.write')"
-            label="Editar"
-            icon="i-lucide-pencil"
-            color="primary"
-            variant="soft"
-            class="min-h-11 touch-manipulation transition-transform motion-safe:active:scale-[0.98]"
-            style="transition-duration: var(--duration-press)"
-            @click="startEdit"
-          />
-          <UButton
-            v-if="can('vehicles.delete')"
-            label="Excluir"
-            icon="i-lucide-trash"
-            color="error"
-            variant="ghost"
-            class="min-h-11 touch-manipulation transition-transform motion-safe:active:scale-[0.98]"
-            style="transition-duration: var(--duration-press)"
-            @click="deleteOpen = true"
-          />
-        </div>
 
         <VehiclesEditForm
           v-if="editing"

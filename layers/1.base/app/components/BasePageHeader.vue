@@ -17,9 +17,12 @@ withDefaults(defineProps<{
 
     <div class="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
       <div class="min-w-0">
-        <h1 class="text-xl font-semibold tracking-tight text-highlighted text-balance sm:text-2xl">
-          {{ title }}
-        </h1>
+        <div class="flex flex-wrap items-center gap-2">
+          <h1 class="text-xl font-semibold tracking-tight text-highlighted text-balance sm:text-2xl">
+            {{ title }}
+          </h1>
+          <slot name="title-trailing" />
+        </div>
         <p
           v-if="description"
           class="mt-1 text-sm text-muted text-pretty"
