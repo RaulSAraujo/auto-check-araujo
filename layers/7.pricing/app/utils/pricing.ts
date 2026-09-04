@@ -11,7 +11,6 @@ export type PricingParamsDraft = {
   precificacao_automatica: boolean
   taxa_cartao_debito: number
   taxa_cartao_credito: number
-  comissao_percentual: number
 }
 
 export const PRICING_EXAMPLE_PART_COST = 100
@@ -30,8 +29,7 @@ export function emptyPricingDraft(): PricingParamsDraft {
     markup_pecas: 40,
     precificacao_automatica: true,
     taxa_cartao_debito: 1.5,
-    taxa_cartao_credito: 3.5,
-    comissao_percentual: 10
+    taxa_cartao_credito: 3.5
   }
 }
 
@@ -44,8 +42,7 @@ export function pricingDraftFromRow(row: PricingParamsRow): PricingParamsDraft {
     markup_pecas: Number(row.markup_pecas),
     precificacao_automatica: Boolean(row.precificacao_automatica),
     taxa_cartao_debito: Number(row.taxa_cartao_debito),
-    taxa_cartao_credito: Number(row.taxa_cartao_credito),
-    comissao_percentual: Number(row.comissao_percentual)
+    taxa_cartao_credito: Number(row.taxa_cartao_credito)
   }
 }
 
@@ -61,8 +58,6 @@ export function isPricingDraftValid(draft: PricingParamsDraft): boolean {
     && draft.taxa_cartao_debito < 100
     && draft.taxa_cartao_credito >= 0
     && draft.taxa_cartao_credito < 100
-    && draft.comissao_percentual >= 0
-    && draft.comissao_percentual <= 100
   )
 }
 

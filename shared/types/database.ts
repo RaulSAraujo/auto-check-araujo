@@ -585,7 +585,6 @@ export type Database = {
       }
       oficina_parametros: {
         Row: {
-          comissao_percentual: number
           custo_fixo_mensal: number
           horas_produtivas_mes: number
           id: number
@@ -598,7 +597,6 @@ export type Database = {
           valor_hora: number
         }
         Insert: {
-          comissao_percentual?: number
           custo_fixo_mensal?: number
           horas_produtivas_mes?: number
           id?: number
@@ -611,7 +609,6 @@ export type Database = {
           valor_hora?: number
         }
         Update: {
-          comissao_percentual?: number
           custo_fixo_mensal?: number
           horas_produtivas_mes?: number
           id?: number

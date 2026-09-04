@@ -1,16 +1,16 @@
 # Graph Report - auto-check-araujo  (2026-09-04)
 
 ## Corpus Check
-- 418 files · ~252,495 words
+- 419 files · ~252,492 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 2188 nodes · 2910 edges · 234 communities (183 shown, 51 thin omitted)
+- 2188 nodes · 2910 edges · 233 communities (182 shown, 51 thin omitted)
 - Extraction: 94% EXTRACTED · 6% INFERRED · 0% AMBIGUOUS · INFERRED: 163 edges (avg confidence: 0.85)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `b54597c3`
+- Built from commit: `23648601`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -101,7 +101,6 @@
 - Oficina Domain Language
 - SchedulingAppointmentBlock.vue
 - SchedulingDailyTimeline.vue
-- Component Selection Guidelines
 - CatalogSuppliersTable.vue
 - gpt-taste — Awwwards-Level Design Engineering
 - Fetch, bundle e waterfalls
@@ -268,7 +267,7 @@
 - **Favicon Brand Visual Composition** — public_favicon_chrome_sphere, public_favicon_dark_gradient_background, public_favicon_blue_specular_highlights, public_favicon_app_brand_mark [INFERRED 0.85]
 - **Logo Brand Mark Visual Elements** — public_logo_tire_graphic, public_logo_araujo_wordmark, public_logo_auto_center_wordmark [EXTRACTED 1.00]
 
-## Communities (234 total, 51 thin omitted)
+## Communities (233 total, 51 thin omitted)
 
 ### Community 0 - "orders-new.vue"
 Cohesion: 0.05
@@ -573,12 +572,12 @@ Cohesion: 0.17
 Nodes (12): Client/Server Components, componentIslands, Built-in Components, ClientOnly, NuxtIsland, NuxtLayout, NuxtPage, Client-Side Rendering (CSR) (+4 more)
 
 ### Community 64 - "Forms Guidelines"
-Cohesion: 0.25
-Nodes (9): UAuthForm, UForm, UFormField, UFormField name Must Match Schema, Form in Modal Pattern, Forms Guidelines, Standard Schema Validation, Auth Forms Recipe (+1 more)
+Cohesion: 0.17
+Nodes (12): UAuthForm, UFormField, Component Selection Guidelines, Feedback Selection Matrix, Input Selection Matrix, useToast, UFormField name Must Match Schema, Forms Guidelines (+4 more)
 
 ### Community 65 - "UModal"
-Cohesion: 0.40
-Nodes (6): UModal, useOverlay Programmatic Overlays, useOverlay, Confirmation Dialog Pattern, Overlays Recipe, Programmatic Confirmation via useOverlay
+Cohesion: 0.20
+Nodes (12): UDrawer, UForm, UModal, USlideover, Overlay Selection Matrix, useOverlay Programmatic Overlays, useOverlay, Form in Modal Pattern (+4 more)
 
 ### Community 66 - "Nuxt UI v4"
 Cohesion: 0.18
@@ -675,10 +674,6 @@ Nodes (9): canMarkNoShow, clientName, detail, emit, onEdit(), openOrderHref, ord
 ### Community 85 - "SchedulingDailyTimeline.vue"
 Cohesion: 0.22
 Nodes (8): emit, props, sortedAppointments, emit, relativeLabel(), SchedulingAppointment, AppointmentCreatePrefill, formatTimeShort()
-
-### Community 86 - "Component Selection Guidelines"
-Cohesion: 0.22
-Nodes (9): UDrawer, USlideover, Component Selection Guidelines, Feedback Selection Matrix, Input Selection Matrix, Overlay Selection Matrix, useToast, Form in Slideover (+1 more)
 
 ### Community 87 - "CatalogSuppliersTable.vue"
 Cohesion: 0.22

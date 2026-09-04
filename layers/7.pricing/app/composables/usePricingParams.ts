@@ -49,8 +49,7 @@ export function usePricingMutations() {
         markup_pecas: draft.markup_pecas,
         precificacao_automatica: draft.precificacao_automatica,
         taxa_cartao_debito: draft.taxa_cartao_debito,
-        taxa_cartao_credito: draft.taxa_cartao_credito,
-        comissao_percentual: draft.comissao_percentual
+        taxa_cartao_credito: draft.taxa_cartao_credito
       })
       .eq('id', 1)
 
