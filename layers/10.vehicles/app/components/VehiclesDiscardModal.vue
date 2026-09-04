@@ -1,10 +1,14 @@
 <script setup lang="ts">
-defineOptions({ name: 'VehiclesDeleteModal' })
+defineOptions({ name: 'VehiclesDiscardModal' })
 
 const open = defineModel<boolean>('open', { required: true })
 
-defineProps<{
-  loading?: boolean
+const {
+  title = 'Descartar alterações?',
+  description = 'O que você digitou não será salvo.'
+} = defineProps<{
+  title?: string
+  description?: string
 }>()
 
 defineEmits<{
@@ -15,22 +19,21 @@ defineEmits<{
 <template>
   <UModal
     v-model:open="open"
-    title="Excluir veículo?"
-    description="Esta ação não pode ser desfeita. Não é possível excluir se houver OS vinculadas."
+    :title="title"
+    :description="description"
   >
     <template #footer>
       <div class="flex justify-end gap-2">
         <UButton
-          label="Cancelar"
+          label="Continuar editando"
           color="neutral"
           variant="ghost"
           class="min-h-11 touch-manipulation"
           @click="open = false"
         />
         <UButton
-          label="Excluir"
+          label="Descartar"
           color="error"
-          :loading="loading"
           class="min-h-11 touch-manipulation"
           @click="$emit('confirm')"
         />

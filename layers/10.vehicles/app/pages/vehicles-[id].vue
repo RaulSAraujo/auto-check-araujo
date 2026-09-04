@@ -1,4 +1,7 @@
 <script setup lang="ts">
+import type { BreadcrumbItem } from '@nuxt/ui'
+import { VEHICLE_ROUTES } from '../utils/vehicle-routes'
+
 defineOptions({ name: 'VehiclesDetailPage' })
 
 definePageMeta({
@@ -6,7 +9,6 @@ definePageMeta({
 })
 
 const route = useRoute()
-
 const id = computed(() => route.params.id as string)
 
 const { data: veiculo, pending, refresh } = await useVehicleQuery(id)
@@ -14,17 +16,38 @@ const { clienteItems } = await useCustomerOptions('clientes-options-edit')
 const { data: ordens, pending: pendingOrdens } = await useVehicleOrders(id)
 const { state } = useVehicleForm(veiculo)
 
+useSeoMeta({
+  title: computed(() => veiculo.value ? formatPlaca(veiculo.value.placa) : 'Veículo'),
+  description: 'Dados e histórico de ordens do veículo.'
+})
+
 const {
   editing,
   saving,
   deleting,
   deleteOpen,
+  discardOpen,
+  discardTitle,
+  discardDescription,
+  isDirty,
+  startEdit,
   cancelEdit,
+  confirmDiscard,
   save,
   removeVehicle
-} = useVehicleDetailPage(id, state, refresh)
+} = useVehicleDetailPage(id, veiculo, state, refresh)
 
 const { can } = usePermissions()
+
+const breadcrumbItems = computed<BreadcrumbItem[]>(() => [
+  {
+    label: 'Veículos',
+    to: VEHICLE_ROUTES.list
+  },
+  {
+    label: veiculo.value ? formatPlaca(veiculo.value.placa) : 'Veículo'
+  }
+])
 </script>
 
 <template>
@@ -32,98 +55,105 @@ const { can } = usePermissions()
     <template #body>
       <div
         v-if="pending && !veiculo"
-        class="p-6"
+        class="mx-auto w-full max-w-2xl space-y-6 p-4 sm:p-6"
       >
-        <BasePageHeader title="Veículo" />
-        <USkeleton class="mt-4 h-40 w-full max-w-xl" />
+        <div class="space-y-2">
+          <USkeleton class="h-4 w-40" />
+          <USkeleton class="h-8 w-40 sm:w-56" />
+        </div>
+        <USkeleton class="h-11 w-28 rounded-lg" />
+        <USkeleton class="h-52 w-full rounded-lg" />
+        <USkeleton class="h-36 w-full rounded-lg" />
       </div>
 
       <div
         v-else-if="veiculo"
-        class="p-4 sm:p-6 space-y-8 max-w-3xl"
+        class="mx-auto w-full max-w-2xl space-y-6 p-4 sm:p-6"
       >
-        <BasePageHeader :title="formatPlaca(veiculo.placa)">
-          <template #actions>
-            <UButton
-              :to="VEHICLE_ROUTES.list"
-              color="neutral"
-              variant="ghost"
-              label="Voltar"
-              icon="i-lucide-arrow-left"
-            />
+        <BasePageHeader
+          :title="formatPlaca(veiculo.placa)"
+          :description="editing
+            ? 'Altere os dados e salve.'
+            : undefined"
+        >
+          <template #breadcrumb>
+            <UBreadcrumb :items="breadcrumbItems" />
           </template>
         </BasePageHeader>
 
-        <div class="space-y-4 max-w-xl">
-          <div class="flex items-center justify-between gap-3">
-            <div>
-              <p
-                v-if="veiculo.clientes"
-                class="text-sm text-muted"
-              >
-                Proprietário:
-                <NuxtLink
-                  :to="VEHICLE_ROUTES.customerDetail(veiculo.clientes.id)"
-                  class="text-primary hover:underline"
-                >
-                  {{ veiculo.clientes.nome }}
-                </NuxtLink>
-              </p>
-            </div>
-            <div class="flex gap-2">
-              <UButton
-                v-if="can('vehicles.write') && !editing"
-                label="Editar"
-                icon="i-lucide-pencil"
-                color="neutral"
-                variant="soft"
-                size="sm"
-                @click="editing = true"
-              />
-              <UButton
-                v-if="can('vehicles.delete')"
-                label="Excluir"
-                icon="i-lucide-trash"
-                color="error"
-                variant="ghost"
-                size="sm"
-                @click="deleteOpen = true"
-              />
-            </div>
-          </div>
-
-          <VehiclesForm
-            v-model="state"
-            :cliente-items="clienteItems"
-            :disabled="!editing"
-            @submit="save"
-          >
-            <div
-              v-if="editing"
-              class="flex gap-2"
-            >
-              <UButton
-                type="submit"
-                label="Salvar"
-                :loading="saving"
-              />
-              <UButton
-                label="Cancelar"
-                color="neutral"
-                variant="ghost"
-                @click="cancelEdit"
-              />
-            </div>
-          </VehiclesForm>
+        <div
+          v-if="!editing"
+          class="flex flex-wrap items-center gap-2"
+        >
+          <UButton
+            v-if="can('vehicles.write')"
+            label="Editar"
+            icon="i-lucide-pencil"
+            color="primary"
+            variant="soft"
+            class="min-h-11 touch-manipulation transition-transform motion-safe:active:scale-[0.98]"
+            style="transition-duration: var(--duration-press)"
+            @click="startEdit"
+          />
+          <UButton
+            v-if="can('vehicles.delete')"
+            label="Excluir"
+            icon="i-lucide-trash"
+            color="error"
+            variant="ghost"
+            class="min-h-11 touch-manipulation transition-transform motion-safe:active:scale-[0.98]"
+            style="transition-duration: var(--duration-press)"
+            @click="deleteOpen = true"
+          />
         </div>
 
+        <VehiclesEditForm
+          v-if="editing"
+          v-model="state"
+          :cliente-items="clienteItems"
+          :loading="saving"
+          :dirty="isDirty"
+          @submit="save"
+          @cancel="cancelEdit"
+        />
+        <VehiclesDetailSummary
+          v-else
+          :veiculo="veiculo"
+        />
+
         <VehiclesOrdersSection
-          class="border-t border-default pt-8"
+          v-if="!editing"
+          class="border-t border-default pt-6"
           :veiculo-id="id"
           :ordens="ordens || []"
           :loading="pendingOrdens"
         />
       </div>
+
+      <div
+        v-else
+        class="mx-auto w-full max-w-2xl space-y-4 p-4 sm:p-6"
+      >
+        <BasePageHeader title="Veículo não encontrado" />
+        <p class="text-sm text-muted">
+          Esse veículo não existe ou foi removido.
+        </p>
+        <UButton
+          :to="VEHICLE_ROUTES.list"
+          label="Voltar para veículos"
+          icon="i-lucide-arrow-left"
+          color="neutral"
+          variant="soft"
+          class="min-h-11 touch-manipulation"
+        />
+      </div>
+
+      <VehiclesDiscardModal
+        v-model:open="discardOpen"
+        :title="discardTitle"
+        :description="discardDescription"
+        @confirm="confirmDiscard"
+      />
 
       <VehiclesDeleteModal
         v-model:open="deleteOpen"

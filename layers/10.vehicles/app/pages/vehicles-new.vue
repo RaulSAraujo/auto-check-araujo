@@ -1,8 +1,16 @@
 <script setup lang="ts">
+import { emptyVehicleForm, isVehicleFormDirty } from '../utils/vehicle-form'
+import { VEHICLE_ROUTES } from '../utils/vehicle-routes'
+
 defineOptions({ name: 'VehiclesNewPage' })
 
 definePageMeta({
   path: '/veiculos/novo'
+})
+
+useSeoMeta({
+  title: 'Novo veículo',
+  description: 'Cadastrar veículo da oficina.'
 })
 
 const route = useRoute()
@@ -14,26 +22,59 @@ const { state } = useVehicleForm(undefined, clienteId)
 const { clienteItems } = await useCustomerOptions()
 const { createVehicle } = useVehicleMutations()
 
+const initialState = emptyVehicleForm(clienteId)
 const loading = ref(false)
+const allowLeave = ref(false)
+
+const isDirty = computed(() => isVehicleFormDirty(state, initialState))
 
 async function onSubmit() {
   loading.value = true
   try {
     const { data } = await createVehicle(state)
     if (data) {
+      allowLeave.value = true
       await router.push(VEHICLE_ROUTES.detail(data.id))
     }
   } finally {
     loading.value = false
   }
 }
+
+onBeforeRouteLeave((_to, _from, next) => {
+  if (allowLeave.value || loading.value || !isDirty.value) {
+    next()
+    return
+  }
+
+  const confirmed = window.confirm(
+    'Há alterações não salvas. Sair sem cadastrar o veículo?'
+  )
+  next(confirmed)
+})
+
+onMounted(() => {
+  const onBeforeUnload = (event: BeforeUnloadEvent) => {
+    if (!isDirty.value || allowLeave.value || loading.value) return
+    event.preventDefault()
+    event.returnValue = ''
+  }
+
+  window.addEventListener('beforeunload', onBeforeUnload)
+  onBeforeUnmount(() => {
+    window.removeEventListener('beforeunload', onBeforeUnload)
+  })
+})
 </script>
 
 <template>
   <UDashboardPanel>
     <template #body>
-      <div class="p-4 sm:p-6 max-w-xl space-y-4">
-        <BasePageHeader title="Novo veículo">
+      <div class="mx-auto w-full max-w-2xl space-y-6 p-4 sm:p-6">
+        <BasePageHeader
+          title="Novo veículo"
+          description="Placa e proprietário para ligar ao cliente."
+        >
           <template #actions>
             <UButton
               :to="VEHICLE_ROUTES.list"
@@ -45,26 +86,12 @@ async function onSubmit() {
           </template>
         </BasePageHeader>
 
-        <VehiclesForm
+        <VehiclesNewForm
           v-model="state"
           :cliente-items="clienteItems"
-          compact
+          :loading="loading"
           @submit="onSubmit"
-        >
-          <div class="flex gap-2">
-            <UButton
-              type="submit"
-              label="Salvar"
-              :loading="loading"
-            />
-            <UButton
-              :to="VEHICLE_ROUTES.list"
-              label="Cancelar"
-              color="neutral"
-              variant="ghost"
-            />
-          </div>
-        </VehiclesForm>
+        />
       </div>
     </template>
   </UDashboardPanel>

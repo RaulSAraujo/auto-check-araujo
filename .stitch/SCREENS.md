@@ -100,11 +100,49 @@ Mapa de telas para geração no Stitch. Todas seguem `.stitch/DESIGN.md`.
 
 Mesmo padrão de listagem: busca, tabela (nome, telefone, veículos), CTA “Novo cliente”. Empty composto.
 
+### 4b. Novo cliente (`/clientes/novo`)
+
+**Navbar:** Cadastros → Clientes. Título no body.
+
+**Header:** H1 “Novo cliente” + “Nome e um telefone para ligar.” + Voltar.
+
+**Body (max-w-2xl):** um painel `bg-default shadow-sm`. Campos: Nome* → Telefone (recomendado, máscara) → E-mail → Documento (CPF/CNPJ) → “Adicionar observação”. Sem Status.
+
+**Footer sticky:** Cancelar | CTA “Salvar cliente” / “Salvando…”.
+
+**Estados:** erro inline + foco no primeiro; aviso ao sair com rascunho; toast “Cliente cadastrado” → detalhe.
+
+**Trunk test:** título Novo cliente, nav Cadastros, CTA Salvar cliente.
+
+**Proibido:** InputTags com “Enter para adicionar”; campo Ativo; dois primários.
+
+### 4c. Detalhe / editar cliente (`/clientes/:id`)
+
+**Header:** nome do cliente + badge Ativo/Inativo + Voltar.
+
+**View:** ações Editar (soft primary) | Desativar/Reativar | Excluir. Painel `dl` escaneável — não formulário disabled.
+
+**Edit:** descrição “Altere os dados e salve.” Mesmos campos do create. Sticky Cancelar + “Salvar alterações” / “Salvando…”. Confirma saída com rascunho.
+
+**Abaixo:** Veículos e Ordens (sempre visíveis).
+
+**Trunk test:** título = nome, badge de status, CTA Editar ou Salvar alterações.
+
+**Proibido:** campos disabled como leitura; Status no form de edição.
+
 ---
 
 ## 5. Veículos (`/veiculos`)
 
 Tabela: placa (mono), modelo, cliente, ações. Consistência visual total com Clientes.
+
+### Novo (`/veiculos/novo`)
+
+Paridade com Novo cliente: painel + sticky “Salvar veículo”, máscara de placa, dirty leave.
+
+### Detalhe (`/veiculos/:id`)
+
+Paridade com Detalhe cliente: breadcrumb, summary `dl` ↔ edit form, discard modal, OS ocultas na edição.
 
 ---
 

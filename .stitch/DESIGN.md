@@ -167,6 +167,65 @@ Hierarquia (espelha light: canvas atrás, painel na frente):
 - Motion: stagger seções 60ms; hover scale nos números de OS
 - Dark: tokens semânticos (ver §3)
 
+### Novo cliente `/clientes/novo`
+
+Um job: cadastrar quem traz o carro. H1 + uma linha. Um painel de form. Um CTA.
+
+1. Nome (obrigatório, foco no desktop)
+2. Telefone (recomendado, máscara DDD)
+3. E-mail
+4. Documento (CPF/CNPJ com máscara)
+5. Observação sob demanda
+
+Footer sticky: Cancelar + “Salvar cliente”. Sem status Ativo/Inativo (sempre ativo). Aviso ao sair com rascunho.
+
+**Motion:** rise 280ms no painel; sticky com vidro leve (paridade com editar); press `scale(0.98)` nos CTAs; `prefers-reduced-motion` / `prefers-reduced-transparency` desligam.
+
+**Proibido:** tags “Enter para adicionar”; dois CTAs; Status no create.
+
+### Detalhe / editar cliente `/clientes/:id`
+
+Leitura ≠ formulário desabilitado. Um CTA “Editar”; Status só via Desativar/Reativar.
+
+**Orientação:** breadcrumb `Clientes › Nome` (slot `#breadcrumb` do `BasePageHeader`). Sem “Voltar” redundante — o breadcrumb cobre o Trunk Test.
+
+**View:** painel com `dl` (Nome, Telefone/`tel:`, E-mail/`mailto:`, Documento mono, Observações se houver). Vazios: “Não informado”. Badge Ativo/Inativo no header. Rise 280ms ao voltar da edição. Histórico de OS paginado (10/página, `UPagination` quando `total > pageSize`).
+
+**Edit:** mesmo form do create (`CustomersFormFields` bare). Heading “Editar dados”. Footer sticky com vidro leve (inset highlight + blur; `prefers-reduced-transparency` solidifica). Cancelar + “Salvar alterações” com press `scale(0.98)`. Badge “Alterações não salvas” quando dirty. Modal `CustomersDiscardModal` ao descartar/sair. Foco no nome (desktop). Veículos/Ordens ocultos no modo edição.
+
+**Motion:** rise 280ms ao entrar em edição / ao voltar à leitura; `prefers-reduced-motion` desliga.
+
+**Proibido:** inputs disabled como “visualização”; Select Ativo/Inativo no form; InputTags; toast de validação client (só inline + toast de API).
+
+### Novo veículo `/veiculos/novo`
+
+Um job: cadastrar o carro. H1 + uma linha. Um painel de form. Um CTA.
+
+1. Proprietário (obrigatório; pré-preenche com `?cliente_id=`)
+2. Placa (obrigatória, máscara ABC-1D23, foco no desktop)
+3. Marca / modelo / ano / cor / KM
+4. Observação sob demanda
+
+Footer sticky: Cancelar + “Salvar veículo”. Aviso ao sair com rascunho.
+
+**Motion:** rise 280ms no painel; sticky com vidro leve; press `scale(0.98)`; `prefers-reduced-motion` / `prefers-reduced-transparency` desligam.
+
+**Proibido:** toast de validação client (só inline + toast de API); inputs disabled como “preview”.
+
+### Detalhe / editar veículo `/veiculos/:id`
+
+Leitura ≠ formulário desabilitado. Um CTA “Editar”.
+
+**Orientação:** breadcrumb `Veículos › Placa` (slot `#breadcrumb`). Sem “Voltar” redundante.
+
+**View:** painel com `dl` (Placa mono, Proprietário/link, Marca/modelo, Ano, Cor, KM, Observações se houver). Vazios: “Não informado”. Rise 280ms. Histórico de OS abaixo.
+
+**Edit:** mesmo form do create (`VehiclesFormFields` bare). Heading “Editar dados”. Footer sticky + badge dirty. Modal `VehiclesDiscardModal` ao descartar/sair. Foco na placa (desktop). Ordens ocultas no modo edição.
+
+**Motion:** rise 280ms ao entrar em edição / ao voltar à leitura; `prefers-reduced-motion` desliga.
+
+**Proibido:** inputs disabled como “visualização”; toast de validação client.
+
 ### Agendamentos `/agendamentos`
 
 Spec: `layers/11.scheduling/DESIGN.md`. Masthead com dia mono; blocos com barra de status; pátio 4×2; um CTA.

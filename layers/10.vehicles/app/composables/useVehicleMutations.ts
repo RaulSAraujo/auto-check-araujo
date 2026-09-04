@@ -7,43 +7,19 @@ import {
 
 function vehicleSaveErrorMessage(message: string): string {
   return message.includes('veiculos_placa_unique')
-    ? 'Já existe um Veículo com esta placa.'
-    : message
+    ? 'Já existe um veículo com esta placa.'
+    : 'Verifique os dados e tente de novo.'
 }
 
 export function useVehicleMutations() {
   const supabase = useTypedSupabaseClient()
   const toast = useToast()
 
-  function validateForm(state: VehicleFormState): boolean {
-    if (!state.cliente_id) {
-      toast.add({ title: 'Selecione o proprietário', color: 'warning' })
-      return false
-    }
-
-    if (!isVehicleFormValid(state)) {
-      toast.add({
-        title: 'Placa inválida',
-        description: 'Informe 7 caracteres (ex.: ABC1D23).',
-        color: 'warning'
-      })
-      return false
-    }
-
-    if (state.km_atual != null && state.km_atual < 0) {
-      toast.add({
-        title: 'KM inválido',
-        description: 'O KM atual não pode ser negativo.',
-        color: 'warning'
-      })
-      return false
-    }
-
-    return true
-  }
-
   async function createVehicle(state: VehicleFormState) {
-    if (!validateForm(state)) return { data: null, error: null }
+    // Client validation + inline errors live in UForm; silent guard only.
+    if (!isVehicleFormValid(state)) {
+      return { data: null, error: { message: 'validation' } as const }
+    }
 
     const { data, error } = await supabase
       .from('veiculos')
@@ -53,7 +29,7 @@ export function useVehicleMutations() {
 
     if (error) {
       toast.add({
-        title: 'Erro ao salvar',
+        title: 'Não foi possível salvar',
         description: vehicleSaveErrorMessage(error.message),
         color: 'error'
       })
@@ -65,7 +41,9 @@ export function useVehicleMutations() {
   }
 
   async function updateVehicle(id: string, state: VehicleFormState) {
-    if (!validateForm(state)) return { error: null }
+    if (!isVehicleFormValid(state)) {
+      return { error: { message: 'validation' } as const }
+    }
 
     const { error } = await supabase
       .from('veiculos')
@@ -74,7 +52,7 @@ export function useVehicleMutations() {
 
     if (error) {
       toast.add({
-        title: 'Erro ao salvar',
+        title: 'Não foi possível salvar',
         description: vehicleSaveErrorMessage(error.message),
         color: 'error'
       })
@@ -92,7 +70,13 @@ export function useVehicleMutations() {
       .eq('id', id)
 
     if (error) {
-      toast.add({ title: 'Erro ao excluir', description: error.message, color: 'error' })
+      toast.add({
+        title: 'Não foi possível excluir',
+        description: error.message.includes('ordens') || error.message.includes('foreign')
+          ? 'Há ordens vinculadas a este veículo.'
+          : error.message,
+        color: 'error'
+      })
       return { error }
     }
 

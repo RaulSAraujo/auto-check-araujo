@@ -12,6 +12,12 @@ withDefaults(defineProps<{
 <template>
   <header class="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
     <div class="min-w-0">
+      <div
+        v-if="$slots.breadcrumb"
+        class="mb-2"
+      >
+        <slot name="breadcrumb" />
+      </div>
       <h1 class="text-xl font-semibold tracking-tight text-highlighted text-balance sm:text-2xl">
         {{ title }}
       </h1>
