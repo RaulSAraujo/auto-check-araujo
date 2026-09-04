@@ -216,7 +216,7 @@ Footer sticky: Cancelar + “Salvar veículo”. Aviso ao sair com rascunho.
 
 Leitura ≠ formulário desabilitado. Um CTA “Editar”.
 
-**Orientação:** breadcrumb `Veículos › Placa` (slot `#breadcrumb`). Sem “Voltar” redundante.
+**Orientação:** breadcrumb `Clientes › Nome › Placa` quando há proprietário (senão `Veículos › Placa`). Botão Voltar com smart-back (histórico → fallback cliente/lista).
 
 **View:** painel com `dl` (Placa mono, Proprietário/link, Marca/modelo, Ano, Cor, KM, Observações se houver). Vazios: “Não informado”. Rise 280ms. Histórico de OS abaixo.
 
@@ -225,6 +225,10 @@ Leitura ≠ formulário desabilitado. Um CTA “Editar”.
 **Motion:** rise 280ms ao entrar em edição / ao voltar à leitura; `prefers-reduced-motion` desliga.
 
 **Proibido:** inputs disabled como “visualização”; toast de validação client.
+
+### Detalhe OS `/ordens/:id`
+
+**Orientação:** breadcrumb `Clientes › Nome › Placa › Número` (com veículo/cliente); senão `Veículos › Placa › Número` ou `Ordens › Número`. Voltar com smart-back.
 
 ### Agendamentos `/agendamentos`
 

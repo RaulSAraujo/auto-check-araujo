@@ -39,15 +39,41 @@ const {
 
 const { can } = usePermissions()
 
-const breadcrumbItems = computed<BreadcrumbItem[]>(() => [
-  {
-    label: 'Veículos',
-    to: VEHICLE_ROUTES.list
-  },
-  {
-    label: veiculo.value ? formatPlaca(veiculo.value.placa) : 'Veículo'
+const backFallback = computed(() => {
+  const owner = veiculo.value?.clientes
+  return owner
+    ? VEHICLE_ROUTES.customerDetail(owner.id)
+    : VEHICLE_ROUTES.list
+})
+
+const { back } = useSmartBack(backFallback)
+
+const breadcrumbItems = computed<BreadcrumbItem[]>(() => {
+  const plate = veiculo.value ? formatPlaca(veiculo.value.placa) : 'Veículo'
+  const owner = veiculo.value?.clientes
+
+  if (owner) {
+    return [
+      {
+        label: 'Clientes',
+        to: VEHICLE_ROUTES.customers
+      },
+      {
+        label: owner.nome,
+        to: VEHICLE_ROUTES.customerDetail(owner.id)
+      },
+      { label: plate }
+    ]
   }
-])
+
+  return [
+    {
+      label: 'Veículos',
+      to: VEHICLE_ROUTES.list
+    },
+    { label: plate }
+  ]
+})
 </script>
 
 <template>
@@ -78,6 +104,16 @@ const breadcrumbItems = computed<BreadcrumbItem[]>(() => [
         >
           <template #breadcrumb>
             <UBreadcrumb :items="breadcrumbItems" />
+          </template>
+          <template #actions>
+            <UButton
+              color="neutral"
+              variant="ghost"
+              label="Voltar"
+              icon="i-lucide-arrow-left"
+              class="min-h-11 touch-manipulation"
+              @click="back"
+            />
           </template>
         </BasePageHeader>
 

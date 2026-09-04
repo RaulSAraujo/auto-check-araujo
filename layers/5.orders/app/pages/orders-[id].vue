@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import type { BreadcrumbItem } from '@nuxt/ui'
 import { ORDER_ROUTES } from '../utils/order-routes'
 import {
   absolutePrintUrl,
@@ -21,6 +22,8 @@ const router = useRouter()
 const id = computed(() => route.params.id as string)
 const allowLeave = ref(false)
 
+const { back } = useSmartBack(ORDER_ROUTES.list)
+
 const checklistOpen = computed({
   get: () => route.query.checklist === '1',
   set: (value: boolean) => {
@@ -42,6 +45,34 @@ const [
   useOrderItemsQuery(id)
 ])
 const { state } = useOrderEditForm(ordem)
+
+const breadcrumbItems = computed<BreadcrumbItem[]>(() => {
+  const numero = ordem.value?.numero?.trim() || 'OS'
+  const vehicle = ordem.value?.veiculos
+  const owner = vehicle?.clientes
+
+  if (owner && vehicle) {
+    return [
+      { label: 'Clientes', to: APP_ROUTES.customers },
+      { label: owner.nome, to: `${APP_ROUTES.customers}/${owner.id}` },
+      { label: formatPlaca(vehicle.placa), to: `${APP_ROUTES.vehicles}/${vehicle.id}` },
+      { label: numero }
+    ]
+  }
+
+  if (vehicle) {
+    return [
+      { label: 'Veículos', to: APP_ROUTES.vehicles },
+      { label: formatPlaca(vehicle.placa), to: `${APP_ROUTES.vehicles}/${vehicle.id}` },
+      { label: numero }
+    ]
+  }
+
+  return [
+    { label: 'Ordens', to: ORDER_ROUTES.list },
+    { label: numero }
+  ]
+})
 
 const {
   draft,
@@ -201,7 +232,10 @@ onMounted(() => {
         v-if="pending && !ordem"
         class="mx-auto w-full max-w-6xl space-y-4 p-4 sm:p-6"
       >
-        <USkeleton class="h-8 w-48" />
+        <div class="space-y-2">
+          <USkeleton class="h-4 w-64" />
+          <USkeleton class="h-8 w-48" />
+        </div>
         <USkeleton class="h-40 w-full rounded-xl" />
         <div class="grid gap-6 lg:grid-cols-2">
           <USkeleton class="h-64 w-full rounded-xl" />
@@ -213,23 +247,28 @@ onMounted(() => {
         v-else-if="ordem"
         class="mx-auto w-full max-w-6xl space-y-6 p-4 pb-28 sm:p-6 sm:pb-28"
       >
-        <div class="flex items-center justify-between gap-3">
-          <UButton
-            :to="ORDER_ROUTES.list"
-            color="neutral"
-            variant="ghost"
-            label="Ordens"
-            icon="i-lucide-arrow-left"
-            size="sm"
-          />
-          <UBadge
-            v-if="!canEdit"
-            color="neutral"
-            variant="subtle"
-          >
-            Somente leitura
-          </UBadge>
-        </div>
+        <BasePageHeader :title="ordem.numero || 'Ordem de serviço'">
+          <template #breadcrumb>
+            <UBreadcrumb :items="breadcrumbItems" />
+          </template>
+          <template #actions>
+            <UBadge
+              v-if="!canEdit"
+              color="neutral"
+              variant="subtle"
+            >
+              Somente leitura
+            </UBadge>
+            <UButton
+              color="neutral"
+              variant="ghost"
+              label="Voltar"
+              icon="i-lucide-arrow-left"
+              class="min-h-11 touch-manipulation"
+              @click="back"
+            />
+          </template>
+        </BasePageHeader>
 
         <OrdersDetailHero
           :ordem="ordem"

@@ -142,7 +142,7 @@ Paridade com Novo cliente: painel + sticky “Salvar veículo”, máscara de pl
 
 ### Detalhe (`/veiculos/:id`)
 
-Paridade com Detalhe cliente: breadcrumb, summary `dl` ↔ edit form, discard modal, OS ocultas na edição.
+Breadcrumb `Clientes › Nome › Placa` (com proprietário). Botão Voltar (smart-back). Summary `dl` ↔ edit form, discard modal, OS ocultas na edição.
 
 ---
 

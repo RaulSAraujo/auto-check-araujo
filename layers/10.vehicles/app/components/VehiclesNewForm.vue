@@ -8,14 +8,22 @@ defineOptions({ name: 'VehiclesNewForm' })
 
 const state = defineModel<VehicleFormState>({ required: true })
 
-const { clienteItems, loading } = defineProps<{
+const {
+  clienteItems,
+  loading,
+  cancelTo = VEHICLE_ROUTES.list
+} = defineProps<{
   clienteItems: { label: string, value: string }[]
   loading: boolean
+  /** Fallback when there is no in-app history (e.g. cold open). */
+  cancelTo?: string
 }>()
 
 const emit = defineEmits<{
   submit: []
 }>()
+
+const { back: cancel } = useSmartBack(() => cancelTo)
 
 onMounted(() => {
   const desktop = window.matchMedia('(min-width: 768px)').matches
@@ -67,13 +75,13 @@ function onSubmit() {
     <div class="vehicles-new-sticky sticky bottom-0 z-10 -mx-4 border-t border-default px-4 py-3 sm:mx-0 sm:rounded-lg sm:border">
       <div class="flex flex-col-reverse gap-2 sm:flex-row sm:items-center sm:justify-between">
         <UButton
-          :to="VEHICLE_ROUTES.list"
           color="neutral"
           variant="ghost"
           label="Cancelar"
           :disabled="loading"
           class="min-h-11 justify-center touch-manipulation transition-transform motion-safe:active:scale-[0.98] sm:justify-start"
           style="transition-duration: var(--duration-press)"
+          @click="cancel"
         />
         <UButton
           type="submit"

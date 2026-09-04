@@ -28,6 +28,11 @@ const allowLeave = ref(false)
 
 const isDirty = computed(() => isVehicleFormDirty(state, initialState))
 
+const backFallback = computed(() =>
+  clienteId ? `/clientes/${clienteId}` : VEHICLE_ROUTES.list
+)
+const { back } = useSmartBack(backFallback)
+
 async function onSubmit() {
   loading.value = true
   try {
@@ -77,11 +82,11 @@ onMounted(() => {
         >
           <template #actions>
             <UButton
-              :to="VEHICLE_ROUTES.list"
               color="neutral"
               variant="ghost"
               label="Voltar"
               icon="i-lucide-arrow-left"
+              @click="back"
             />
           </template>
         </BasePageHeader>
@@ -89,6 +94,7 @@ onMounted(() => {
         <VehiclesNewForm
           v-model="state"
           :cliente-items="clienteItems"
+          :cancel-to="backFallback"
           :loading="loading"
           @submit="onSubmit"
         />
