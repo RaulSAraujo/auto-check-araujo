@@ -56,10 +56,11 @@ const links = computed<NavigationMenuItem[]>(() => {
   const management: NavigationMenuItem[] = []
 
   if (can('finance.view')) {
-    management.push(
-      { label: 'Vendas', to: APP_ROUTES.sales, icon: 'i-lucide-trending-up' },
-      { label: 'Financeiro', to: APP_ROUTES.finance, icon: 'i-lucide-wallet' }
-    )
+    management.push({
+      label: 'Financeiro',
+      to: APP_ROUTES.finance,
+      icon: 'i-lucide-wallet'
+    })
   }
 
   if (can('catalog.manage')) {

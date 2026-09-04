@@ -15,9 +15,9 @@
     "semantic_hash": ""
   },
   "layers/1.base/app/components/BaseAppHeader.vue": {
-    "mtime": 1788382014.0067897,
-    "ast_hash": "4357ee3df1cdb24fb298c7a5db03690f",
-    "semantic_hash": "4357ee3df1cdb24fb298c7a5db03690f"
+    "mtime": 1788553180.870147,
+    "ast_hash": "e293d48f4718ab2c769ac24b26f14234",
+    "semantic_hash": ""
   },
   "layers/1.base/app/components/BaseBrandIcon.vue": {
     "mtime": 1788294167.0588076,
@@ -65,9 +65,9 @@
     "semantic_hash": "6d5ea10d5b3ea6e1a402eb63ce6f3096"
   },
   "layers/1.base/app/utils/app-routes.ts": {
-    "mtime": 1788368702.9475067,
-    "ast_hash": "292c8851edf4e03b7f78e53968d8c471",
-    "semantic_hash": "292c8851edf4e03b7f78e53968d8c471"
+    "mtime": 1788553180.1824188,
+    "ast_hash": "a03267b108806a897f803c106a595b42",
+    "semantic_hash": ""
   },
   "layers/1.base/app/utils/brand.ts": {
     "mtime": 1788373436.5904915,
@@ -75,8 +75,8 @@
     "semantic_hash": "42554447bb20ef8861a3e8eef7b3b9a6"
   },
   "layers/1.base/app/utils/supabase-search.ts": {
-    "mtime": 1788547155.0475507,
-    "ast_hash": "768e37f723358fa05797f02ecdea5262",
+    "mtime": 1788553183.2140412,
+    "ast_hash": "d986801ab6d6f81e22285000f3244dcb",
     "semantic_hash": ""
   },
   "layers/1.base/nuxt.config.ts": {
@@ -900,9 +900,9 @@
     "semantic_hash": "fe545b103fd6ef5e1644bcbaccbf4f6f"
   },
   "layers/7.pricing/app/components/PricingForm.vue": {
-    "mtime": 1788375009.3875065,
-    "ast_hash": "108cded9ba4bae3cf41a70633cb97368",
-    "semantic_hash": "108cded9ba4bae3cf41a70633cb97368"
+    "mtime": 1788553229.0125494,
+    "ast_hash": "6b41b98d2145b7749614a01d84aef396",
+    "semantic_hash": ""
   },
   "layers/7.pricing/app/composables/usePricingParams.ts": {
     "mtime": 1788368587.8898754,
@@ -915,9 +915,9 @@
     "semantic_hash": "aa4950c8ee6e7e68391189a3a8af9f1d"
   },
   "layers/7.pricing/app/utils/pricing.ts": {
-    "mtime": 1788368595.2427945,
-    "ast_hash": "9f5eecd0d893c9ceb24521479363fa32",
-    "semantic_hash": "9f5eecd0d893c9ceb24521479363fa32"
+    "mtime": 1788553220.6604567,
+    "ast_hash": "087acea0b34a18f63240e386f5754af7",
+    "semantic_hash": ""
   },
   "layers/7.pricing/nuxt.config.ts": {
     "mtime": 1788369888.1063282,
@@ -999,50 +999,10 @@
     "ast_hash": "26425d2872c96fb8664ec911cdfe191d",
     "semantic_hash": "26425d2872c96fb8664ec911cdfe191d"
   },
-  "layers/9.sales/app/components/SalesCollaboratorsRanking.vue": {
-    "mtime": 1788375009.328341,
-    "ast_hash": "077166f0df54b0414faa4ba0035e3818",
-    "semantic_hash": "077166f0df54b0414faa4ba0035e3818"
-  },
-  "layers/9.sales/app/components/SalesKpiStrip.vue": {
-    "mtime": 1788375009.3326204,
-    "ast_hash": "4df57a314eb1669930fae60b6ce7fb20",
-    "semantic_hash": "4df57a314eb1669930fae60b6ce7fb20"
-  },
-  "layers/9.sales/app/components/SalesStatusStrip.vue": {
-    "mtime": 1788375009.321401,
-    "ast_hash": "9f70d4ec065cc34765d1eaadad43b37c",
-    "semantic_hash": "9f70d4ec065cc34765d1eaadad43b37c"
-  },
-  "layers/9.sales/app/components/SalesTable.vue": {
-    "mtime": 1788370142.9768896,
-    "ast_hash": "ae1421f74ba9fe1018596b60755d2ae7",
-    "semantic_hash": "ae1421f74ba9fe1018596b60755d2ae7"
-  },
-  "layers/9.sales/app/composables/useSalesReport.ts": {
-    "mtime": 1788546536.1247747,
-    "ast_hash": "6decee4924cb63da0fdbad9d888582d0",
-    "semantic_hash": ""
-  },
-  "layers/9.sales/app/pages/sales.vue": {
-    "mtime": 1788546673.4293256,
-    "ast_hash": "97605544789c7b65a94add73659d6e86",
-    "semantic_hash": ""
-  },
-  "layers/9.sales/app/utils/sales.ts": {
-    "mtime": 1788370910.0152578,
-    "ast_hash": "689de4287a810783365152ece2386699",
-    "semantic_hash": "689de4287a810783365152ece2386699"
-  },
-  "layers/9.sales/nuxt.config.ts": {
-    "mtime": 1788369889.2063408,
-    "ast_hash": "091fd37944ec7b4cbf4f8347f3787a69",
-    "semantic_hash": "091fd37944ec7b4cbf4f8347f3787a69"
-  },
   "nuxt.config.ts": {
-    "mtime": 1788290724.8385358,
-    "ast_hash": "1b23c1bb14679cbfb5ccceff1ea57ba9",
-    "semantic_hash": "1b23c1bb14679cbfb5ccceff1ea57ba9"
+    "mtime": 1788553181.742025,
+    "ast_hash": "866d033b834b7a94cca26cbdc6891fc6",
+    "semantic_hash": ""
   },
   "package.json": {
     "mtime": 1788367477.3042345,
@@ -2030,8 +1990,8 @@
     "semantic_hash": ""
   },
   ".stitch/SCREENS.md": {
-    "mtime": 1788536633.505504,
-    "ast_hash": "061ffbacf7ec10b4533b903bbb0c4ffb",
+    "mtime": 1788553237.6066449,
+    "ast_hash": "30ddc73b18ac23e76907f489b18e3c75",
     "semantic_hash": ""
   },
   "CONTEXT.md": {

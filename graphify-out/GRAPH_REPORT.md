@@ -1,16 +1,16 @@
 # Graph Report - auto-check-araujo  (2026-09-04)
 
 ## Corpus Check
-- 426 files · ~254,858 words
+- 418 files · ~252,495 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 2213 nodes · 2954 edges · 235 communities (184 shown, 51 thin omitted)
-- Extraction: 94% EXTRACTED · 6% INFERRED · 0% AMBIGUOUS · INFERRED: 164 edges (avg confidence: 0.85)
+- 2188 nodes · 2910 edges · 234 communities (183 shown, 51 thin omitted)
+- Extraction: 94% EXTRACTED · 6% INFERRED · 0% AMBIGUOUS · INFERRED: 163 edges (avg confidence: 0.85)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `dc82a447`
+- Built from commit: `b54597c3`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -22,7 +22,7 @@
 - Nuxt SEO Skill
 - Animation Standards Reference
 - database.ts
-- pricing.ts
+- PricingForm.vue
 - VehiclesDetailSummary.vue
 - Phaser Best Practices
 - team.vue
@@ -33,9 +33,9 @@
 - Animation Audit Playbook
 - CI Workflows Guide
 - finance.vue
-- Vite Build and SSR
+- Vite Configuration
 - scheduling.ts
-- sales.ts
+- OrdersChecklistItem.vue
 - Write Swift
 - Auto Check Araujo Design System
 - Package Exports Guide
@@ -71,7 +71,7 @@
 - OrdersPublicBudgetDocument.vue
 - Type Patterns Guide
 - Dashboard Layout
-- Server Routes
+- Deployment
 - pnpm CLI Commands Guide
 - API Design Patterns (patterns/)
 - Rolldown Migration (Vite 8)
@@ -86,7 +86,7 @@
 - Project Setup Guide
 - Provide / Inject
 - login.vue
-- useChecklistPrintQuery.ts
+- orders.ts
 - orders-[id]-print.vue
 - catalog.ts
 - nuxt.config.ts
@@ -101,12 +101,12 @@
 - Oficina Domain Language
 - SchedulingAppointmentBlock.vue
 - SchedulingDailyTimeline.vue
-- orders.ts
+- Component Selection Guidelines
 - CatalogSuppliersTable.vue
 - gpt-taste — Awwwards-Level Design Engineering
 - Fetch, bundle e waterfalls
 - CustomersDetailSummary.vue
-- OrdersChecklistItem.vue
+- OrdersBudgetSection.vue
 - 5.orders/app/utils/pdf.ts
 - useSuppliers.ts
 - useFetch
@@ -119,9 +119,9 @@
 - Navigation Recipe
 - vehicles-new.vue
 - 11.scheduling/app/utils/pdf.ts
-- Nuxt UI Components Index
+- order-select-items.ts
 - CustomersNewForm.vue
-- useVehicleMutations.ts
+- vehicle-form.ts
 - Favicon SVG (1024x1024)
 - Araújo Auto Center Logo
 - username.ts
@@ -135,7 +135,7 @@
 - OrdersPrintToolbar.vue
 - create.post.ts
 - Nuxt Layers
-- Deployment Platform Choice
+- Vite Build and SSR
 - CustomersEditForm.vue
 - brand.ts
 - CustomersDiscardModal.vue
@@ -143,7 +143,7 @@
 - Sonner API Reference
 - Image-First Design Workflow
 - pnpm Workspaces
-- OrdersBudgetSection.vue
+- OrdersChecklistCatalogTable.vue
 - BaseBrandLogo.vue
 - useOficina.ts
 - supabase-search.ts
@@ -200,15 +200,15 @@
 - Props Are Read-Only
 - Dashboard Dark Mode Hierarchy
 - Public Sans and JetBrains Mono Typography
+- Nuxt UI Components Index
 - pnpm Workspace allowBuilds
 - useState
 - VehiclesNewForm.vue
 - Routing
 - VehiclesDiscardModal.vue
-- vehicle-form.ts
-- OrdersChecklistCatalogTable.vue
+- OrdersDetailHero.vue
+- Server Routes
 - useCustomerDetailPage.ts
-- useChecklistCatalog.ts
 - TS Library CI Workflows
 - @antfu/eslint-config Guide
 - OrdersConfirmDialog.vue
@@ -230,12 +230,12 @@
   layers/11.scheduling/DESIGN.md → .stitch/DESIGN.md
 - `useState` --semantically_similar_to--> `Global Registry`  [INFERRED] [semantically similar]
   .cursor/skills/nuxt/references/features-state.md → .cursor/skills/phaser-best-practices/references/scenes-state-architecture.md
+- `Library package.json Exports Setup` --semantically_similar_to--> `package.json exports Field`  [INFERRED] [semantically similar]
+  .cursor/skills/vite/references/build-and-ssr.md → .cursor/skills/ts-library/references/package-exports.md
 - `Motion and Interaction Rules` --conceptually_related_to--> `Agenda da Oficina Design System`  [INFERRED]
   .stitch/DESIGN.md → layers/11.scheduling/DESIGN.md
 - `Design Anti-Patterns Banned` --conceptually_related_to--> `Agenda da Oficina Design System`  [INFERRED]
   .stitch/DESIGN.md → layers/11.scheduling/DESIGN.md
-- `routeRules` --conceptually_related_to--> `nuxt.config.ts`  [INFERRED]
-  .cursor/skills/nuxt/references/rendering-modes.md → .cursor/skills/nuxt/references/core-config.md
 
 ## Import Cycles
 - None detected.
@@ -268,15 +268,15 @@
 - **Favicon Brand Visual Composition** — public_favicon_chrome_sphere, public_favicon_dark_gradient_background, public_favicon_blue_specular_highlights, public_favicon_app_brand_mark [INFERRED 0.85]
 - **Logo Brand Mark Visual Elements** — public_logo_tire_graphic, public_logo_araujo_wordmark, public_logo_auto_center_wordmark [EXTRACTED 1.00]
 
-## Communities (235 total, 51 thin omitted)
+## Communities (234 total, 51 thin omitted)
 
 ### Community 0 - "orders-new.vue"
 Cohesion: 0.05
 Nodes (50): emit, state, validate(), { back: cancel }, emit, isDesktop, onSubmit(), showNotes (+42 more)
 
 ### Community 1 - "checklist.ts"
-Cohesion: 0.18
-Nodes (15): categorias, draftModel, emit, props, categorias, draftModel, emit, props (+7 more)
+Cohesion: 0.14
+Nodes (18): categorias, draftModel, emit, props, categorias, draftModel, emit, props (+10 more)
 
 ### Community 2 - "useDashboardStats.ts"
 Cohesion: 0.07
@@ -298,8 +298,8 @@ Nodes (40): Picker Behavior Contract, Prototype Picker Spec, Picker Highlight Sl
 Cohesion: 0.05
 Nodes (39): Agendamento, AgendamentoInsert, AgendamentoUpdate, CatalogoKitItem, Checklist, ChecklistItem, ChecklistItemFoto, ChecklistTemplateItem (+31 more)
 
-### Community 7 - "pricing.ts"
-Cohesion: 0.11
+### Community 7 - "PricingForm.vue"
+Cohesion: 0.12
 Nodes (28): creditCharge, creditNet, debitCharge, debitNet, draft, emit, suggestedHourly, suggestedPartPrice (+20 more)
 
 ### Community 8 - "VehiclesDetailSummary.vue"
@@ -343,8 +343,8 @@ Cohesion: 0.10
 Nodes (25): Animation Accessibility, Animation Audit Playbook, Cohesion & Tokens, --ease-out cubic-bezier Token, Easing & Duration, Emil Kowalski Animation Philosophy, Interruptibility, Missed Opportunities (+17 more)
 
 ### Community 16 - "CI Workflows Guide"
-Cohesion: 0.10
-Nodes (25): bumpp Version Bumping, changelogen Changelog, Conventional Commits, Release Workflow Guide, Monorepo Publishing, npm OIDC Publishing, npm Provenance, npm Token-based Publishing (+17 more)
+Cohesion: 0.11
+Nodes (24): bumpp Version Bumping, changelogen Changelog, Conventional Commits, Release Workflow Guide, Monorepo Publishing, npm OIDC Publishing, npm Provenance, npm Token-based Publishing (+16 more)
 
 ### Community 17 - "finance.vue"
 Cohesion: 0.09
@@ -368,17 +368,17 @@ Nodes (14): accountDraft, accountsFilter, actingAccountId, addingAccount, adding
   refresh: refreshHistory
 } (+6 more)
 
-### Community 18 - "Vite Build and SSR"
-Cohesion: 0.10
-Nodes (23): Path Aliases, build() JavaScript API, createServer JavaScript API, Vite Build and SSR, loadEnv, Multi-Page App Build, preview() JavaScript API, SSR Externals (noExternal) (+15 more)
+### Community 18 - "Vite Configuration"
+Cohesion: 0.12
+Nodes (19): Peer Dependencies, loadEnv, Async Config, build.target, Conditional Config (command/mode), define Global Constants, Vite Configuration, loadEnv in Config (+11 more)
 
 ### Community 19 - "scheduling.ts"
 Cohesion: 0.14
 Nodes (17): resetDraft(), ConflictRow, useSchedulingMutations(), ACTIVE_SCHEDULING_STATUSES, AppointmentDraft, AppointmentFormError, appointmentToDraft(), combineLocalDateTime() (+9 more)
 
-### Community 20 - "sales.ts"
-Cohesion: 0.17
-Nodes (15): columns, useSalesReport(), periodItems, calcCommission(), DEFAULT_COMMISSION_RATE, escapeCsvCell(), rankSalesCollaborators(), SALES_PERIOD_ITEMS (+7 more)
+### Community 20 - "OrdersChecklistItem.vue"
+Cohesion: 0.15
+Nodes (17): closeDetails(), detailsOpen, detailsSummary, emit, flushObservacao(), hasDetailsContent, needsDetails, observacaoDraft (+9 more)
 
 ### Community 21 - "Write Swift"
 Cohesion: 0.09
@@ -389,8 +389,8 @@ Cohesion: 0.13
 Nodes (22): Chart Wall vs Workshop-Clean P1, Operate Hierarchy Opportunity, Auto Check Araujo Design System, Design Anti-Patterns Banned, Customer Create and Detail Patterns, Floating Header Pill Shell, Home Screen Pattern §6, Login Split-Screen Pattern (+14 more)
 
 ### Community 23 - "Package Exports Guide"
-Cohesion: 0.12
-Nodes (21): Are The Types Wrong (attw), Export Condition Order, Package Exports Guide, Environment-Aware Exports, package.json exports Field, Multiple Entry Points, Peer Dependencies, Plugin Entry Pattern (unplugin-*) (+13 more)
+Cohesion: 0.20
+Nodes (14): Are The Types Wrong (attw), Export Condition Order, Package Exports Guide, Environment-Aware Exports, package.json exports Field, Multiple Entry Points, Plugin Entry Pattern (unplugin-*), publint Package Validation (+6 more)
 
 ### Community 24 - "Vue Components Patterns"
 Cohesion: 0.12
@@ -413,8 +413,8 @@ Cohesion: 0.29
 Nodes (8): ssrLoadModule, SSR Middleware Mode, configureServer Hook, SSR Backward Compatibility, Custom Environment Instances, Environment API (Vite 6+), Multiple Runtime Environments, data-allow-mismatch SSR Hydration
 
 ### Community 29 - "orders-[id].vue"
-Cohesion: 0.08
-Nodes (23): allowLeave, appointmentAgendaHref, { back }, { breadcrumbItems }, breadcrumbOrigin, canShareBudget, checklistOpen, downloadingPdf (+15 more)
+Cohesion: 0.07
+Nodes (24): allowLeave, appointmentAgendaHref, { back }, { breadcrumbItems }, breadcrumbOrigin, canShareBudget, checklistOpen, downloadingPdf (+16 more)
 
 ### Community 30 - "useSchedulingBoard.ts"
 Cohesion: 0.16
@@ -476,13 +476,13 @@ Cohesion: 0.20
 Nodes (11): canAdd, emit, inputRef, onFileChange(), props, ChecklistPhotoWithUrl, CHECKLIST_PHOTOS_ACCEPT, CHECKLIST_PHOTOS_ALLOWED_TYPES (+3 more)
 
 ### Community 41 - "VehiclesFormFields.vue"
-Cohesion: 0.25
-Nodes (8): plate, {
+Cohesion: 0.17
+Nodes (13): plate, {
   clienteItems,
   clientesPending = false,
   disabled = false,
   bare = false
-}, clienteSearchTerm, setPlaca(), showNotes, state, formatPlacaInput(), VehicleFormState
+}, clienteSearchTerm, setPlaca(), showNotes, state, useVehicleDetailPage(), useVehicleForm() (+5 more)
 
 ### Community 42 - "useAccountsPayable.ts"
 Cohesion: 0.16
@@ -540,9 +540,9 @@ Nodes (12): Type-Level Testing, Brand Types (Nominal Typing), Compile-Time TypeE
 Cohesion: 0.15
 Nodes (13): useLazyFetch, UDashboardGroup, UTable, Chat Component Tree, Use #body Slot for Scrollable Content, Dashboard Layout, Multi-panel List-Detail, UDashboardPanel (+5 more)
 
-### Community 56 - "Server Routes"
-Cohesion: 0.17
-Nodes (12): Deployment, Nitro, Node.js Server Deployment, Static Generation, server/ Directory, addServerHandler, defineEventHandler, Nitro Server Engine (+4 more)
+### Community 56 - "Deployment"
+Cohesion: 0.15
+Nodes (13): Cloudflare Pages, Deployment, Netlify, Nitro, Nitro Preset, Node.js Server Deployment, Deployment Platform Choice, Static Generation (+5 more)
 
 ### Community 57 - "pnpm CLI Commands Guide"
 Cohesion: 0.18
@@ -573,12 +573,12 @@ Cohesion: 0.17
 Nodes (12): Client/Server Components, componentIslands, Built-in Components, ClientOnly, NuxtIsland, NuxtLayout, NuxtPage, Client-Side Rendering (CSR) (+4 more)
 
 ### Community 64 - "Forms Guidelines"
-Cohesion: 0.17
-Nodes (12): UAuthForm, UFormField, Component Selection Guidelines, Feedback Selection Matrix, Input Selection Matrix, useToast, UFormField name Must Match Schema, Forms Guidelines (+4 more)
+Cohesion: 0.25
+Nodes (9): UAuthForm, UForm, UFormField, UFormField name Must Match Schema, Form in Modal Pattern, Forms Guidelines, Standard Schema Validation, Auth Forms Recipe (+1 more)
 
 ### Community 65 - "UModal"
-Cohesion: 0.20
-Nodes (12): UDrawer, UForm, UModal, USlideover, Overlay Selection Matrix, useOverlay Programmatic Overlays, useOverlay, Form in Modal Pattern (+4 more)
+Cohesion: 0.40
+Nodes (6): UModal, useOverlay Programmatic Overlays, useOverlay, Confirmation Dialog Pattern, Overlays Recipe, Programmatic Confirmation via useOverlay
 
 ### Community 66 - "Nuxt UI v4"
 Cohesion: 0.18
@@ -600,9 +600,9 @@ Nodes (12): Provide/Inject Reactivity Gotcha, App-Level Provide, InjectionKey, P
 Cohesion: 0.21
 Nodes (6): user, loading, session, { signInWithPassword }, state, AUTH_ROUTES
 
-### Community 71 - "useChecklistPrintQuery.ts"
-Cohesion: 0.19
-Nodes (10): ChecklistPrintPhoto, useChecklistPrintQuery(), useChecklistQuery(), countFilledChecklistItens(), groupChecklistItensByCategoria(), CHECKLIST_DETAIL_SELECT, CHECKLIST_ITEM_SELECT, CHECKLIST_PHOTO_SELECT (+2 more)
+### Community 71 - "orders.ts"
+Cohesion: 0.15
+Nodes (13): ChecklistPrintPhoto, useChecklistPrintQuery(), useChecklistQuery(), ChecklistWithItems, OrderDetail, OrderLinkedAppointment, groupChecklistItensByCategoria(), CHECKLIST_DETAIL_SELECT (+5 more)
 
 ### Community 72 - "orders-[id]-print.vue"
 Cohesion: 0.11
@@ -641,8 +641,8 @@ Cohesion: 0.18
 Nodes (11): UContentNavigation, Auto-registered Modules, Content After UI Module Order, Nuxt UI Conventions, defineShortcuts, extractShortcuts, Docs Layout, Nested UPage Sidebars (+3 more)
 
 ### Community 77 - "Vite Plugin API"
-Cohesion: 0.18
-Nodes (11): Testing Plugins (Dogfood), HMR API (import.meta.hot), Client-Server WebSocket Communication, Conditional Plugin apply, config / configResolved Hooks, Vite Plugin API, handleHotUpdate Hook, Plugin Ordering (enforce) (+3 more)
+Cohesion: 0.22
+Nodes (9): Testing Plugins (Dogfood), Client-Server WebSocket Communication, Conditional Plugin apply, config / configResolved Hooks, Vite Plugin API, Plugin Ordering (enforce), transformIndexHtml Hook, Virtual Modules (+1 more)
 
 ### Community 78 - "AuthCollaboratorsCreateForm.vue"
 Cohesion: 0.20
@@ -657,12 +657,12 @@ Cohesion: 0.18
 Nodes (8): draftModel, emit, kitComponentOptions, props, showKitBuilder, showStock, supplierItems, supplierModel
 
 ### Community 81 - "Testing Guide"
-Cohesion: 0.22
-Nodes (10): Vitest Coverage (v8), Testing Guide, Fixture-Based Testing, Idempotency Testing, Vitest Mocking (vi.mock), Vitest Workspace Projects, Testing Workflow, Type-Level Testing (+2 more)
+Cohesion: 0.18
+Nodes (12): Vitest Coverage (v8), Testing Guide, Fixture-Based Testing, Idempotency Testing, Vitest Mocking (vi.mock), Multi-TS Version Testing, Vitest Workspace Projects, Matrix Testing (OS/Node) (+4 more)
 
 ### Community 82 - "TypeScript Configuration Guide"
-Cohesion: 0.27
-Nodes (10): moduleResolution Bundler, TypeScript Configuration Guide, isolatedDeclarations, Library Base tsconfig, Monorepo tsconfig References, moduleResolution Node16/NodeNext, verbatimModuleSyntax, moduleResolution Bundler (+2 more)
+Cohesion: 0.21
+Nodes (12): moduleResolution Bundler, TypeScript Configuration Guide, isolatedDeclarations, Library Base tsconfig, Monorepo tsconfig References, moduleResolution Node16/NodeNext, Path Aliases, verbatimModuleSyntax (+4 more)
 
 ### Community 83 - "Oficina Domain Language"
 Cohesion: 0.20
@@ -676,9 +676,9 @@ Nodes (9): canMarkNoShow, clientName, detail, emit, onEdit(), openOrderHref, ord
 Cohesion: 0.22
 Nodes (8): emit, props, sortedAppointments, emit, relativeLabel(), SchedulingAppointment, AppointmentCreatePrefill, formatTimeShort()
 
-### Community 86 - "orders.ts"
-Cohesion: 0.11
-Nodes (17): emit, props, status, statusChanged, vehicle, vehicleLabel, ChecklistWithItems, OrderDetail (+9 more)
+### Community 86 - "Component Selection Guidelines"
+Cohesion: 0.22
+Nodes (9): UDrawer, USlideover, Component Selection Guidelines, Feedback Selection Matrix, Input Selection Matrix, Overlay Selection Matrix, useToast, Form in Slideover (+1 more)
 
 ### Community 87 - "CatalogSuppliersTable.vue"
 Cohesion: 0.22
@@ -696,13 +696,13 @@ Nodes (17): Anti-padrões, API Nuxt (resumo), Bundle condicional, Equivalência 
 Cohesion: 0.32
 Nodes (7): { cliente }, documento, emails, hasNotes, phones, formatDocumento(), formatPhoneBr()
 
-### Community 91 - "OrdersChecklistItem.vue"
-Cohesion: 0.15
-Nodes (17): closeDetails(), detailsOpen, detailsSummary, emit, flushObservacao(), hasDetailsContent, needsDetails, observacaoDraft (+9 more)
+### Community 91 - "OrdersBudgetSection.vue"
+Cohesion: 0.17
+Nodes (14): draftModel, emit, onAddAndClose(), onConfirmReject(), props, rejectConfirmOpen, showAddModal, showShareMenu (+6 more)
 
 ### Community 92 - "5.orders/app/utils/pdf.ts"
-Cohesion: 0.38
-Nodes (9): onDownloadBudgetPdf(), addDocumentHeader(), addMetaBlock(), BudgetPdfInput, ChecklistPdfInput, downloadBudgetPdf(), downloadChecklistPdf(), formatPlacaPdf() (+1 more)
+Cohesion: 0.29
+Nodes (12): props, total, calcItemsTotal(), calcItemSubtotal(), addDocumentHeader(), addMetaBlock(), BudgetPdfInput, ChecklistPdfInput (+4 more)
 
 ### Community 93 - "useSuppliers.ts"
 Cohesion: 0.31
@@ -741,24 +741,24 @@ Cohesion: 0.33
 Nodes (7): UHeader #body Mobile Menu, Landing Page Layout, UPricingPlans, UPageHero, Navigation Recipe, UNavigationMenu, UTabs
 
 ### Community 102 - "vehicles-new.vue"
-Cohesion: 0.18
-Nodes (9): allowLeave, { back }, backFallback, { createVehicle }, initialState, loading, route, router (+1 more)
+Cohesion: 0.15
+Nodes (12): allowLeave, { back }, backFallback, { createVehicle }, initialState, isDirty, loading, route (+4 more)
 
 ### Community 103 - "11.scheduling/app/utils/pdf.ts"
 Cohesion: 0.48
 Nodes (6): downloadSchedulingDayPdf(), safeFilename(), SchedulingPdfRow, toDateStamp(), formatDayHeading(), formatTimeRange()
 
-### Community 104 - "Nuxt UI Components Index"
-Cohesion: 0.40
-Nodes (6): Nuxt UI Components Index, Prose Components, UChatMessages, Prefer Prose Over Generic UI in Markdown, Chat Layout, Comark Streaming Markdown
+### Community 104 - "order-select-items.ts"
+Cohesion: 0.23
+Nodes (7): OrderListItem, CHECKLIST_RESULTADO_SELECT_ITEMS, ORDEM_STATUS_FILTER_ALL, ORDEM_STATUS_FILTER_ITEMS, ORDEM_STATUS_SELECT_ITEMS, OrdemStatusFilter, ORDER_LIST_COLUMNS
 
 ### Community 105 - "CustomersNewForm.vue"
 Cohesion: 0.33
 Nodes (5): emit, { loading }, onSubmit(), state, validate()
 
-### Community 106 - "useVehicleMutations.ts"
-Cohesion: 0.67
-Nodes (5): useVehicleMutations(), vehicleSaveErrorMessage(), isVehicleFormValid(), vehicleFormToInsert(), vehicleFormToUpdate()
+### Community 106 - "vehicle-form.ts"
+Cohesion: 0.29
+Nodes (12): validate(), useVehicleMutations(), vehicleSaveErrorMessage(), isFilledNumber(), isVehicleFormValid(), maxVehicleYear(), trimOrNull(), validateVehicleForm() (+4 more)
 
 ### Community 107 - "Favicon SVG (1024x1024)"
 Cohesion: 0.43
@@ -778,7 +778,7 @@ Nodes (6): app.config.ts, Nuxt Configuration, runtimeConfig, runtimeConfig vs ap
 
 ### Community 111 - "OrdersChecklistActions.vue"
 Cohesion: 0.25
-Nodes (7): checklistItens, filledCount, pendingCount, progress, props, showProgress, totalCount
+Nodes (8): checklistItens, filledCount, pendingCount, progress, props, showProgress, totalCount, countFilledChecklistItens()
 
 ### Community 112 - "Type Patterns Guide"
 Cohesion: 0.33
@@ -826,9 +826,9 @@ Nodes (3): CreateBody, getSupabaseAdminConfig(), supabaseAdminFetch()
 Cohesion: 0.40
 Nodes (5): Auto-scanned layers/ Directory, Layer Aliases (#layers/name), Layer Priority Order, Nuxt Layers, CLI --extends Layer Flag
 
-### Community 120 - "Deployment Platform Choice"
-Cohesion: 0.33
-Nodes (6): Cloudflare Pages, Netlify, Nitro Preset, Deployment Platform Choice, Vercel, Edge-Side Rendering
+### Community 120 - "Vite Build and SSR"
+Cohesion: 0.20
+Nodes (10): build() JavaScript API, createServer JavaScript API, Vite Build and SSR, Vite Library Mode, Library package.json Exports Setup, Multi-Page App Build, preview() JavaScript API, SSR Externals (noExternal) (+2 more)
 
 ### Community 121 - "CustomersEditForm.vue"
 Cohesion: 0.33
@@ -854,9 +854,9 @@ Nodes (4): Image-First Design Workflow, image-to-code Skill, One Image Per Secti
 Cohesion: 0.67
 Nodes (4): pnpm Catalogs, pnpm, workspace: Protocol, pnpm Workspaces
 
-### Community 128 - "OrdersBudgetSection.vue"
-Cohesion: 0.15
-Nodes (18): props, total, draftModel, emit, onAddAndClose(), onConfirmReject(), props, rejectConfirmOpen (+10 more)
+### Community 128 - "OrdersChecklistCatalogTable.vue"
+Cohesion: 0.29
+Nodes (5): editDraft, editingId, emit, props, saveEdit()
 
 ### Community 129 - "BaseBrandLogo.vue"
 Cohesion: 0.50
@@ -875,13 +875,13 @@ Cohesion: 0.50
 Nodes (3): github>nuxt/renovate-config-nuxt, extends, $schema
 
 ### Community 134 - "VehiclesEditForm.vue"
-Cohesion: 0.20
-Nodes (10): {
+Cohesion: 0.29
+Nodes (6): {
   clienteItems,
   loading,
   clientesPending = false,
   dirty = false
-}, clienteSearchTerm, emit, onSubmit(), state, validate(), validate(), isFilledNumber() (+2 more)
+}, clienteSearchTerm, emit, onSubmit(), state, validate()
 
 ### Community 135 - "Web Project Documentation Rules"
 Cohesion: 0.67
@@ -894,6 +894,10 @@ Nodes (3): CI Workflow, CI Lint Step, CI Typecheck Step
 ### Community 137 - "Home Page UX Critique"
 Cohesion: 0.67
 Nodes (3): Home Page UX Critique, Design Health Score 22/40, Missing Home Error State P1
+
+### Community 220 - "Nuxt UI Components Index"
+Cohesion: 0.40
+Nodes (6): Nuxt UI Components Index, Prose Components, UChatMessages, Prefer Prose Over Generic UI in Markdown, Chat Layout, Comark Streaming Markdown
 
 ### Community 223 - "useState"
 Cohesion: 0.20
@@ -912,21 +916,17 @@ Nodes (6): { back: cancel }, {
 Cohesion: 0.60
 Nodes (5): definePageMeta, navigateTo, NuxtLink, Route Middleware, Routing
 
-### Community 229 - "vehicle-form.ts"
-Cohesion: 0.27
-Nodes (10): useVehicleDetailPage(), useVehicleForm(), isDirty, emptyVehicleForm(), isVehicleFormDirty(), normalizedPlaca(), trimOrNull(), VehicleFormFieldError (+2 more)
-
-### Community 231 - "OrdersChecklistCatalogTable.vue"
+### Community 229 - "OrdersDetailHero.vue"
 Cohesion: 0.29
-Nodes (5): editDraft, editingId, emit, props, saveEdit()
+Nodes (6): emit, props, status, statusChanged, vehicle, vehicleLabel
+
+### Community 230 - "Server Routes"
+Cohesion: 0.40
+Nodes (5): server/ Directory, addServerHandler, defineEventHandler, Server Middleware, Server Routes
 
 ### Community 232 - "useCustomerDetailPage.ts"
-Cohesion: 0.39
-Nodes (6): useCustomerDetailPage(), useCustomerForm(), customerFormFromRow(), CustomerFormState, emptyCustomerForm(), save()
-
-### Community 234 - "useChecklistCatalog.ts"
-Cohesion: 0.60
-Nodes (3): getOrCreateActiveTemplateId(), useChecklistCatalogList(), useChecklistCatalogMutations()
+Cohesion: 0.48
+Nodes (5): useCustomerDetailPage(), useCustomerForm(), customerFormFromRow(), CustomerFormState, emptyCustomerForm()
 
 ### Community 235 - "TS Library CI Workflows"
 Cohesion: 0.50
@@ -941,24 +941,24 @@ Cohesion: 0.50
 Nodes (3): emit, open, props
 
 ## Knowledge Gaps
-- **880 isolated node(s):** `route`, `{ signOut }`, `{ nome: profileNome }`, `{ papel, can }`, `signingOut` (+875 more)
+- **878 isolated node(s):** `route`, `{ signOut }`, `{ nome: profileNome }`, `{ papel, can }`, `signingOut` (+873 more)
   These have ≤1 connection - possible missing edges or undocumented components.
 - **51 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `save()` connect `useCustomerDetailPage.ts` to `orders-new.vue`, `orders-[id].vue`, `vehicle-form.ts`?**
+- **Why does `save()` connect `VehiclesFormFields.vue` to `useCustomerDetailPage.ts`, `orders-new.vue`, `orders-[id].vue`?**
   _High betweenness centrality (0.029) - this node is a cross-community bridge._
-- **Why does `useCustomerDetailPage()` connect `useCustomerDetailPage.ts` to `customers-new.vue`?**
+- **Why does `useCustomerDetailPage()` connect `useCustomerDetailPage.ts` to `VehiclesFormFields.vue`, `customers-new.vue`?**
   _High betweenness centrality (0.016) - this node is a cross-community bridge._
-- **Why does `useVehicleDetailPage()` connect `vehicle-form.ts` to `useCustomerDetailPage.ts`?**
-  _High betweenness centrality (0.015) - this node is a cross-community bridge._
+- **Why does `useVehicleDetailPage()` connect `VehiclesFormFields.vue` to `vehicles-new.vue`?**
+  _High betweenness centrality (0.016) - this node is a cross-community bridge._
 - **What connects `route`, `{ signOut }`, `{ nome: profileNome }` to the rest of the system?**
-  _880 weakly-connected nodes found - possible documentation gaps or missing edges._
+  _878 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `orders-new.vue` be split into smaller, more focused modules?**
   _Cohesion score 0.05182443151771549 - nodes in this community are weakly interconnected._
+- **Should `checklist.ts` be split into smaller, more focused modules?**
+  _Cohesion score 0.14 - nodes in this community are weakly interconnected._
 - **Should `useDashboardStats.ts` be split into smaller, more focused modules?**
   _Cohesion score 0.06666666666666667 - nodes in this community are weakly interconnected._
-- **Should `dependencies` be split into smaller, more focused modules?**
-  _Cohesion score 0.045454545454545456 - nodes in this community are weakly interconnected._

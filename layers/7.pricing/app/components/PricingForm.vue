@@ -200,21 +200,6 @@ const creditCharge = computed(() =>
             class="w-full font-mono tabular-nums"
           />
         </UFormField>
-
-        <UFormField
-          label="Comissão sobre vendas (%)"
-          name="comissao_percentual"
-          hint="Usada em Controle de Vendas"
-        >
-          <UInput
-            v-model.number="draft.comissao_percentual"
-            type="number"
-            min="0"
-            max="100"
-            step="0.1"
-            class="w-full font-mono tabular-nums"
-          />
-        </UFormField>
       </div>
 
       <div class="mt-4 space-y-2 rounded-lg border border-default bg-elevated/50 px-4 py-3 text-sm">

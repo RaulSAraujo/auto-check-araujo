@@ -23,9 +23,8 @@ Mapa de telas para geração no Stitch. Todas seguem `.stitch/DESIGN.md`.
 | 7 | Kanban | `/kanban` | Board visual da oficina; colunas por etapa; alertas |
 | 8 | Catálogo | `/catalogo` | Serviços, kits, peças, custos, fornecedores, estoque |
 | 9 | Agendamentos | `/agendamentos` | Agenda diária, calendário, no-show, pátio, PDF, busca |
-| 10 | Controle de Vendas | `/vendas` | Ticket médio, faturamento, comissão; filtros período/colaborador |
-| 11 | Precificação | `/precificacao` | Parâmetros de mão de obra e peças; sugestão de preço |
-| 12 | Gestão da Equipe | `/equipe` | Desempenho e produtividade; abas Colaboradores → Ocorrências |
+| 10 | Precificação | `/precificacao` | Parâmetros de mão de obra e peças; sugestão de preço |
+| 11 | Gestão da Equipe | `/equipe` | Desempenho e produtividade; abas Colaboradores → Ocorrências |
 
 ---
 
@@ -236,40 +235,9 @@ Cada card (painel com borda Whisper, não decorativo):
 
 ---
 
-## 10. Controle de Vendas (`/vendas`)
+## 10. Controle de Vendas (`/vendas`) — removido
 
-**Navbar:** “Controle de Vendas” (gerente / `finance.view`).
-
-**Subtítulo:** “Gerencie todas as vendas da oficina.” — uma linha, sem marketing.
-
-**Filtros (toolbar densa):**
-- **Período** — range de datas (padrão: mês corrente); alternativa rápida Mês / Trimestre / Ano
-- **Colaboradores** — select “Todos” ou um colaborador (`aberto_por` da OS)
-- Sem CTA primary decorativo; ação útil opcional: “Exportar” (secundário)
-
-**Faixa KPI (grid com `gap-px` + borda Whisper — não 3 cards soltos):**
-
-| KPI | Conteúdo |
-|-----|----------|
-| Ticket médio | `faturamento ÷ qtd OS` — mono, tabular-nums |
-| Faturamento | soma `valor_total` das OS concluídas no período |
-| Comissão | soma estimada (ex.: % configurável × faturamento atribuído); meta mono |
-
-**Seções do body (ordem):**
-
-1. **Status** — strip ou lista divide-y: Pago | Pendente (valores + qtd), cores success/warning
-2. **Financeiro** — tabela densa de OS: número (mono), placa (mono), colaborador, concluída em, valor, badge pago/pendente, forma de pagamento
-3. **Colaboradores** — tabela/resumo: nome, qtd OS, faturamento, ticket médio, comissão — ordenável por faturamento
-
-**Empty:** “Nenhuma venda no período.” + link para Ordens.
-
-**Proibido:** hero de vendas, gráficos pizza decorativos, 3 feature cards, purple, copy “impulsione suas vendas”.
-
-**Motion (código):** page enter; stagger das linhas KPI/tabela (40–60ms).
-
-**Trunk test:** título Controle de Vendas, nav ativa, filtros de período visíveis.
-
-**Dados (app):** base em OS `status = concluida` + `valor_total`; atribuição ao colaborador via `aberto_por`. Comissão lê `oficina_parametros.comissao_percentual`.
+Tela descontinuada: conteúdo coberto por `/financeiro`. Redirect: `/vendas` → `/financeiro`.
 
 ---
 
@@ -290,9 +258,9 @@ Cada card (painel com borda Whisper, não decorativo):
 |--------|--------|----------------|
 | Mão de obra | Valor/hora, Custo fixo mensal, Margem alvo (%), Horas produtivas/mês | “Hora cobrada sugerida” (mono grande) |
 | Peças | Markup padrão (%), toggle Precificação automática | Exemplo: custo → preço sugerido (mono) |
-| Taxas e comissão | Débito (%), Crédito (%), Comissão vendas (%) | Líquido e valor a cobrar (exemplos) |
+| Taxas | Débito (%), Crédito (%) | Líquido e valor a cobrar (exemplos) |
 
-**Helper:** “Usado ao precificar serviços no orçamento.” / markup sobre custo do catálogo / comissão em Vendas.
+**Helper:** “Usado ao precificar serviços no orçamento.” / markup sobre custo do catálogo.
 
 **Proibido:** H1 “Calculadoras Inteligentes”, tagline “Nunca mais erre…”, hero marketing, 3 feature cards.
 

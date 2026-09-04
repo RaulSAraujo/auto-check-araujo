@@ -18,7 +18,8 @@ export default defineNuxtConfig({
   },
 
   routeRules: {
-    '/': { prerender: false }
+    '/': { prerender: false },
+    '/vendas': { redirect: '/financeiro' }
   },
 
   compatibilityDate: '2026-06-30'

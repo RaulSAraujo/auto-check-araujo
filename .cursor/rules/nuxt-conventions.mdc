@@ -108,7 +108,6 @@ Cada layer **deve** declarar `components` com `prefix` no seu `nuxt.config.ts` p
 | `6.catalog` | `Catalog` | `<CatalogForm />` |
 | `7.pricing` | `Pricing` | `<PricingForm />` |
 | `8.finance` | `Finance` | `<FinanceTable />` |
-| `9.sales` | `Sales` | `<SalesKpiStrip />` |
 | `10.vehicles` | `Vehicles` | `<VehiclesForm />` |
 | `11.scheduling` | `Scheduling` | `<SchedulingCalendar />` |
 | `12.kanban` | `Kanban` | `<KanbanBoard />` |

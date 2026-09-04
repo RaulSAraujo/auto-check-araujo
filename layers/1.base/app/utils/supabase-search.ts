@@ -1,7 +1,7 @@
 /** Tamanho padrão de página nas listagens. */
 export const LIST_PAGE_SIZE = 20
 
-/** Página padrão em relatórios (vendas, financeiro, catálogo). */
+/** Página padrão em relatórios (financeiro, catálogo). */
 export const REPORT_PAGE_SIZE = 50
 
 /** Teto de segurança para fetches de relatório/catálogo sem paginação de UI. */

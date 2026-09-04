@@ -22,7 +22,6 @@ auto-check-araujo/
 │   ├── 6.catalog/                # Catálogo + fornecedores ($meta.name: catalog)
 │   ├── 7.pricing/                # Precificação ($meta.name: pricing)
 │   ├── 8.finance/                # Financeiro ($meta.name: finance)
-│   ├── 9.sales/                  # Vendas ($meta.name: sales)
 │   ├── 10.vehicles/              # CRUD veículos ($meta.name: vehicles)
 │   ├── 11.scheduling/            # Agendamentos ($meta.name: scheduling)
 │   └── 12.kanban/                # Board visual de OS ($meta.name: kanban)
@@ -50,7 +49,6 @@ auto-check-araujo/
 | Páginas `/catalogo` | `layers/6.catalog/app/pages/` |
 | Páginas `/precificacao` | `layers/7.pricing/app/pages/` |
 | Páginas `/financeiro` | `layers/8.finance/app/pages/` |
-| Páginas `/vendas` | `layers/9.sales/app/pages/` |
 | Páginas `/veiculos/*` | `layers/10.vehicles/app/pages/` |
 | Páginas `/agendamentos` | `layers/11.scheduling/app/pages/` |
 | Páginas `/kanban` | `layers/12.kanban/app/pages/` |
@@ -73,7 +71,6 @@ auto-check-araujo/
 | `#layers/catalog` | layer `6.catalog` |
 | `#layers/pricing` | layer `7.pricing` |
 | `#layers/finance` | layer `8.finance` |
-| `#layers/sales` | layer `9.sales` |
 | `#layers/vehicles` | layer `10.vehicles` |
 | `#layers/scheduling` | layer `11.scheduling` |
 | `#layers/kanban` | layer `12.kanban` |
@@ -92,7 +89,6 @@ Importar tipos cross-layer via `~~/shared/types/...`. Paths de arquivo na layer 
 | `layers/6.catalog` | catálogo, fornecedores |
 | `layers/7.pricing` | parâmetros de precificação |
 | `layers/8.finance` | financeiro, contas a pagar |
-| `layers/9.sales` | relatório de vendas |
 | `layers/10.vehicles` | veículos |
 | `layers/11.scheduling` | agendamentos |
 | `layers/12.kanban` | board kanban de OS |

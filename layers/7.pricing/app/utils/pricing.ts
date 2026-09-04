@@ -90,10 +90,6 @@ export function calcChargeToNet(desiredNet: number, feePercent: number): number 
   return roundMoney(Number(desiredNet) / (1 - rate))
 }
 
-export function commissionRateFromPercent(percent: number): number {
-  return Number(percent) / 100
-}
-
 export function resolveCatalogUnitPrice(input: {
   tipo: string
   valorPadrao: number
