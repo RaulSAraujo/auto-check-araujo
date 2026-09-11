@@ -14,7 +14,7 @@ Mapa de telas para geração no Stitch. Todas seguem `.stitch/DESIGN.md`.
 | # | Tela | Path | Objetivo UX |
 |---|------|------|-------------|
 | 0 | Shell (header pill) | — | Pill: atalhos + avatar (Ajustes, tema, Sair) |
-| 0b | Ajustes (HUD) | `/ajustes` | Hub de cadastros, gestão e configuração |
+| 0b | Configuração (HUD) | `/configuracao` | Hub: Equipe, Catálogo, Fornecedores, Precificação |
 | 1 | Login | `/login` | Brand-first; um CTA “Entrar”; zero fluff |
 | 2 | Início | `/` | KPIs escaneáveis; um destino óbvio por linha |
 | 3 | Ordens | `/ordens` | Lista densa + filtros + “Nova OS” |
@@ -37,7 +37,10 @@ Mapa de telas para geração no Stitch. Todas seguem `.stitch/DESIGN.md`.
 
 **Shell (obrigatório):**
 - Header fixo centralizado no topo — **sem** sidebar e **sem** TopAppBar sticky full-width
-- Pill: atalhos (Início, Agenda, Clientes, Financeiro, Ordens, Veículos) + avatar (Ajustes, tema, Sair)
+- Pill: atalhos (Início, Agenda, Ordens, Clientes, Veículos, Financeiro) + avatar (Configuração, tema, Sair)
+- Ativo: texto primary + fundo primary/15 + underline highlight
+- Mobile: ícones com label em sr-only (sem scroll horizontal oculto)
+- Avatar com chevron (affordance de menu)
 - Sem dropdowns Operação/Cadastros/Gestão/Configuração; sem ícones soltos de tema/engrenagem
 - Financeiro só aparece com permissão `finance.view`
 - Título da página **inline no body** (H1 + descrição muted)
@@ -48,17 +51,17 @@ Mapa de telas para geração no Stitch. Todas seguem `.stitch/DESIGN.md`.
 
 ---
 
-## 0b. Ajustes — HUD (`/ajustes`)
+## 0b. Configuração — HUD (`/configuracao`)
 
-**App:** `layers/1.base/app/pages/settings.vue` — destino de Ajustes no menu do avatar.
+**App:** `layers/6.configuration/app/pages/configuration.vue` — destino de Configuração no menu do avatar.
 
-**Body:** seção Configuração com links em grade (ícone + título + descrição curta). Itens filtrados por permissão.
+**Body:** lista densa (painel único, divisores) — ícone + título + dica curta + chevron. Sem grade de cards. Itens filtrados por permissão. Contagem “N áreas” sob o título.
 
-| Seção | Destinos |
-|-------|----------|
-| Configuração | Equipe, Catálogo, Fornecedores, Precificação |
+| Destinos |
+|----------|
+| Equipe, Catálogo, Fornecedores, Precificação |
 
-**Trunk test:** título Ajustes, avatar em soft quando ativo, cards navegáveis.
+**Trunk test:** título Configuração, avatar em soft quando ativo, uma lista escaneável.
 
 ---
 
@@ -267,7 +270,7 @@ Tela descontinuada: conteúdo coberto por `/gestao/financeiro`. Redirect: `/vend
 
 **App:** `layers/8.management/app/pages/team.vue` — `/colaboradores` e `/equipe` redirecionam para `/gestao/equipe`.
 
-**Navbar:** avatar → Ajustes → Equipe (gerente / `collaborators.manage`).
+**Navbar:** avatar → Configuração → Equipe (gerente / `collaborators.manage`).
 
 **Subtítulo:** “Quem entra no sistema e com qual papel.” — uma linha.
 
@@ -284,7 +287,7 @@ Tela descontinuada: conteúdo coberto por `/gestao/financeiro`. Redirect: `/vend
 
 **Dados (app):** `profiles` / RPCs `list_collaborators`, `update_collaborator_role` (e create via auth layer).
 
-> Relação com `/colaboradores`: redireciona para `/gestao/equipe`. Entrada via `/ajustes`, não pelo nav principal.
+> Relação com `/colaboradores`: redireciona para `/gestao/equipe`. Entrada via `/configuracao`, não pelo nav principal.
 
 ---
 

@@ -89,7 +89,7 @@ export function useCatalogList(
         total: count ?? 0
       }
     },
-    { watch: [tipoFilter, debouncedQ, page] }
+    { watch: [tipoFilter, debouncedQ, page], lazy: true }
   )
 
   watch(tipoFilter, (value) => {

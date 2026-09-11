@@ -17,7 +17,8 @@ export function useCollaboratorsList() {
       const { data: rows, error: rpcError } = await supabase.rpc('list_collaborators')
       if (rpcError) throw rpcError
       return (rows || []) as CollaboratorRow[]
-    }
+    },
+    { lazy: true }
   )
 
   return {

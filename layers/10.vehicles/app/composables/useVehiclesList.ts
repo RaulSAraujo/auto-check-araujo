@@ -42,7 +42,7 @@ export async function useVehiclesList() {
         total: count ?? 0
       }
     },
-    { watch: [debouncedQ, page] }
+    { watch: [debouncedQ, page], lazy: true }
   )
 
   const veiculos = computed(() => data.value?.items ?? [])

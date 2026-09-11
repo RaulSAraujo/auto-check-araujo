@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ACCOUNTS_FILTER_ITEMS } from '../utils/accounts-payable'
+import { ACCOUNTS_FILTER_ITEMS, emptyFinanceAccountDraft } from '../utils/accounts-payable'
 
 defineOptions({ name: 'FinanceIndexPage' })
 
@@ -67,6 +67,17 @@ const {
   onSaveSupplier,
   onToggleSupplier
 } = useFinanceWorkspace()
+
+const accountCreateOpen = ref(false)
+
+watch(accountCreateOpen, (open) => {
+  if (!open) Object.assign(accountDraft, emptyFinanceAccountDraft())
+})
+
+async function handleAddAccount() {
+  const ok = await onAddAccount()
+  if (ok) accountCreateOpen.value = false
+}
 </script>
 
 <template>
@@ -120,7 +131,7 @@ const {
                 :summary="summary"
                 :loading="pendingReport"
               />
-              <FinanceCashFlowChart
+              <LazyFinanceCashFlowChart
                 :data="cashFlowData || []"
                 :loading="pendingCashFlow"
               />
@@ -150,82 +161,77 @@ const {
             </template>
 
             <template v-else-if="tab === 'contas'">
-              <div class="grid min-w-0 gap-5 lg:grid-cols-[minmax(0,20rem)_minmax(0,1fr)]">
-                <FinanceAccountForm
-                  v-model:draft="accountDraft"
-                  :adding="addingAccount"
-                  :categories="categories || []"
-                  :suppliers="suppliers || []"
-                  :categories-pending="pendingCategories"
-                  :suppliers-pending="pendingSuppliers"
-                  @add="onAddAccount"
-                  @open-categories="categoriesOpen = true"
-                  @open-suppliers="suppliersOpen = true"
-                />
-
-                <section
-                  class="min-w-0 space-y-3"
-                  aria-labelledby="finance-accounts-heading"
-                >
-                  <div class="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
-                    <div class="flex min-h-9 flex-wrap items-end gap-1">
-                      <h2
-                        id="finance-accounts-heading"
-                        class="mr-2 text-sm font-semibold uppercase tracking-widest text-muted"
-                      >
-                        Contas
-                      </h2>
-                      <UButton
-                        label="Categorias"
-                        icon="i-lucide-tags"
-                        size="xs"
-                        color="neutral"
-                        variant="ghost"
-                        class="mb-0.5"
-                        @click="categoriesOpen = true"
-                      />
-                      <UButton
-                        label="Fornecedores"
-                        icon="i-lucide-truck"
-                        size="xs"
-                        color="neutral"
-                        variant="ghost"
-                        class="mb-0.5"
-                        @click="suppliersOpen = true"
-                      />
-                    </div>
+              <section
+                class="min-w-0 space-y-3"
+                aria-labelledby="finance-accounts-heading"
+              >
+                <div class="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+                  <div class="flex min-h-9 flex-wrap items-end gap-1">
+                    <h2
+                      id="finance-accounts-heading"
+                      class="mr-2 text-sm font-semibold uppercase tracking-widest text-muted"
+                    >
+                      Contas
+                    </h2>
+                    <UButton
+                      label="Categorias"
+                      icon="i-lucide-tags"
+                      size="xs"
+                      color="neutral"
+                      variant="ghost"
+                      class="mb-0.5"
+                      @click="categoriesOpen = true"
+                    />
+                    <UButton
+                      label="Fornecedores"
+                      icon="i-lucide-truck"
+                      size="xs"
+                      color="neutral"
+                      variant="ghost"
+                      class="mb-0.5"
+                      @click="suppliersOpen = true"
+                    />
+                  </div>
+                  <div class="flex flex-col gap-2 sm:flex-row sm:items-center">
                     <UTabs
                       v-model="accountsFilter"
                       :items="[...ACCOUNTS_FILTER_ITEMS]"
                       size="sm"
                       class="w-full sm:w-auto"
                     />
-                  </div>
-
-                  <FinanceAccountsTable
-                    :accounts="accounts"
-                    :loading="pendingAccounts"
-                    :acting-id="actingAccountId"
-                    @mark-paid="onMarkPaid"
-                    @cancel="onCancelAccount"
-                    @reopen="onReopenAccount"
-                    @remove="onRemoveAccount"
-                  />
-
-                  <div
-                    v-if="accountsTotal > accountsPageSize"
-                    class="flex justify-center pt-1"
-                  >
-                    <UPagination
-                      v-model:page="accountsPage"
-                      :total="accountsTotal"
-                      :items-per-page="accountsPageSize"
-                      show-edges
-                      :sibling-count="1"
+                    <UButton
+                      label="Nova conta"
+                      icon="i-lucide-plus"
+                      class="shrink-0"
+                      @click="accountCreateOpen = true"
                     />
                   </div>
-                </section>
-              </div>
+                </div>
+
+                <FinanceAccountsTable
+                  :accounts="accounts"
+                  :loading="pendingAccounts"
+                  :acting-id="actingAccountId"
+                  @mark-paid="onMarkPaid"
+                  @cancel="onCancelAccount"
+                  @reopen="onReopenAccount"
+                  @remove="onRemoveAccount"
+                  @create="accountCreateOpen = true"
+                />
+
+                <div
+                  v-if="accountsTotal > accountsPageSize"
+                  class="flex justify-center pt-1"
+                >
+                  <UPagination
+                    v-model:page="accountsPage"
+                    :total="accountsTotal"
+                    :items-per-page="accountsPageSize"
+                    show-edges
+                    :sibling-count="1"
+                  />
+                </div>
+              </section>
             </template>
 
             <template v-else>
@@ -269,6 +275,27 @@ const {
             </template>
           </div>
 
+          <USlideover
+            v-model:open="accountCreateOpen"
+            title="Nova conta"
+            description="Lança uma conta a pagar."
+            :ui="{ content: 'overscroll-contain' }"
+          >
+            <template #body>
+              <FinanceAccountForm
+                v-model:draft="accountDraft"
+                :adding="addingAccount"
+                :categories="categories || []"
+                :suppliers="suppliers || []"
+                :categories-pending="pendingCategories"
+                :suppliers-pending="pendingSuppliers"
+                @add="handleAddAccount"
+                @open-categories="categoriesOpen = true"
+                @open-suppliers="suppliersOpen = true"
+              />
+            </template>
+          </USlideover>
+
           <!-- Outside .finance-pane: transform animation breaks fixed overlay hit-testing -->
           <USlideover
             v-model:open="categoriesOpen"
@@ -277,7 +304,8 @@ const {
             :ui="{ content: 'overscroll-contain' }"
           >
             <template #body>
-              <FinanceCategoriesPanel
+              <LazyFinanceCategoriesPanel
+                v-if="categoriesOpen"
                 :categories="categories || []"
                 :loading="pendingCategories"
                 :adding="addingCategory"
@@ -297,7 +325,8 @@ const {
             :ui="{ content: 'overscroll-contain' }"
           >
             <template #body>
-              <FinanceSuppliersPanel
+              <LazyFinanceSuppliersPanel
+                v-if="suppliersOpen"
                 :suppliers="suppliers || []"
                 :loading="pendingSuppliers"
                 :adding="addingSupplier"

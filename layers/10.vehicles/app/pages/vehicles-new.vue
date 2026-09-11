@@ -23,7 +23,7 @@ const {
   clienteItems,
   searchTerm: clienteSearchTerm,
   pending: clientesPending
-} = await useCustomerOptions('clientes-options', () => clienteId || undefined)
+} = useCustomerOptions('clientes-options', () => clienteId || undefined)
 const { createVehicle } = useVehicleMutations()
 
 const initialState = emptyVehicleForm(clienteId)

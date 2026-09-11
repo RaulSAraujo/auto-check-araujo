@@ -20,7 +20,7 @@ const breadcrumbItems = settingsHubBreadcrumb('Equipe')
 const user = useSupabaseUser()
 const currentUserId = computed(() => user.value?.id)
 
-const { collaborators, pending, refresh } = await useCollaboratorsList()
+const { collaborators, pending, refresh } = useCollaboratorsList()
 const { updatePapel, resetCollaboratorPassword } = useCollaboratorMutations()
 
 const createOpen = ref(false)

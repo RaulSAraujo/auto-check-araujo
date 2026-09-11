@@ -57,7 +57,7 @@ export async function useCustomersList(
         total: count ?? 0
       }
     },
-    { watch: [debouncedQ, page, statusFilter] }
+    { watch: [debouncedQ, page, statusFilter], lazy: true }
   )
 
   watch(statusFilter, (value) => {

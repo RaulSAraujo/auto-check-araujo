@@ -11,5 +11,5 @@ export function useServiceCatalog() {
 
     if (error) throw error
     return data
-  })
+  }, { lazy: true })
 }

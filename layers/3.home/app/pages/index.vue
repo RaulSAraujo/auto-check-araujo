@@ -65,7 +65,7 @@ const {
 
           <template v-else>
             <div class="grid gap-4 lg:grid-cols-2 lg:items-stretch">
-              <HomeOrdersStatusChart
+              <LazyHomeOrdersStatusChart
                 :pending="pending"
                 :status-counts="statusCounts"
                 :total="activeOrdersTotal"
@@ -89,14 +89,14 @@ const {
               />
             </div>
 
-            <HomeWeeklyChart
+            <LazyHomeWeeklyChart
               :pending="pending"
               :weekly-trend="weeklyTrend"
               :total-count="weeklyCompletedTotal"
               :total-revenue="weeklyRevenueTotal"
             />
 
-            <HomeFinanceChart
+            <LazyHomeFinanceChart
               v-if="showFinance"
               :pending="pending"
               :total-faturado="financeSummary.total_faturado"

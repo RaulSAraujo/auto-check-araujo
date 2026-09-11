@@ -182,7 +182,7 @@ export async function useDashboardStats() {
 
     if (rpcError) throw rpcError
     return normalizePayload(payload)
-  })
+  }, { lazy: true })
 
   const stats = computed(() => data.value?.stats ?? null)
   const statusCounts = computed(() => data.value?.statusCounts ?? EMPTY_STATUS)

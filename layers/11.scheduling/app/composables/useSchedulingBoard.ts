@@ -181,7 +181,8 @@ export async function useSchedulingBoard() {
       return (rows ?? []) as QueryRow[]
     },
     {
-      watch: [queryStart, queryEnd, statusFilter]
+      watch: [queryStart, queryEnd, statusFilter],
+      lazy: true
     }
   )
 

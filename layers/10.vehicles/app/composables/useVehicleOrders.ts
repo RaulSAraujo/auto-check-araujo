@@ -17,6 +17,7 @@ export function useVehicleOrders(veiculoId: MaybeRefOrGetter<string>) {
 
       if (error) throw error
       return data as OrdemServico[]
-    }
+    },
+    { lazy: true }
   )
 }

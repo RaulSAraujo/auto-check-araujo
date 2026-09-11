@@ -21,7 +21,7 @@ const {
   suppliers,
   pending: suppliersPending,
   refresh: refreshSuppliers
-} = await useSuppliersList()
+} = useSuppliersList()
 const {
   createSupplier,
   updateSupplier,

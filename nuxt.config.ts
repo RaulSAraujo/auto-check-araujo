@@ -23,7 +23,8 @@ export default defineNuxtConfig({
     '/financeiro': { redirect: '/gestao/financeiro' },
     '/equipe': { redirect: '/gestao/equipe' },
     '/catalogo': { redirect: '/configuracao/catalogo' },
-    '/precificacao': { redirect: '/configuracao/precificacao' }
+    '/precificacao': { redirect: '/configuracao/precificacao' },
+    '/ajustes': { redirect: '/configuracao' }
   },
 
   compatibilityDate: '2026-06-30'

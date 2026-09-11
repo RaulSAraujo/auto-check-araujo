@@ -53,7 +53,7 @@ export async function useOrdersList(initialStatus: OrdemStatusFilter = ORDEM_STA
         total: count ?? 0
       }
     },
-    { watch: [statusFilter, debouncedQ, page] }
+    { watch: [statusFilter, debouncedQ, page], lazy: true }
   )
 
   watch(statusFilter, (value) => {

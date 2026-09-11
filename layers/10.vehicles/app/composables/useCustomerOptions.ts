@@ -52,7 +52,7 @@ export function useCustomerOptions(
 
       return rows
     },
-    { watch: [debouncedSearch, preferredIdRef] }
+    { watch: [debouncedSearch, preferredIdRef], lazy: true }
   )
 
   const clienteItems = computed(() =>

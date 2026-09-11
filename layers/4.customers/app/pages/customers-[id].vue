@@ -11,16 +11,22 @@ definePageMeta({
 const route = useRoute()
 const id = computed(() => route.params.id as string)
 
-const { data: cliente, pending, refresh } = await useCustomerQuery(id)
-const { data: veiculos, pending: pendingVeiculos, refresh: refreshVeiculos } = await useCustomerVehicles(id)
-const {
-  ordens,
-  total: ordensTotal,
-  page: ordensPage,
-  pageSize: ordensPageSize,
-  pending: pendingOrdens,
-  refresh: refreshOrdens
-} = await useCustomerOrders(id)
+const [
+  { data: cliente, pending, refresh },
+  { data: veiculos, pending: pendingVeiculos, refresh: refreshVeiculos },
+  {
+    ordens,
+    total: ordensTotal,
+    page: ordensPage,
+    pageSize: ordensPageSize,
+    pending: pendingOrdens,
+    refresh: refreshOrdens
+  }
+] = await Promise.all([
+  useCustomerQuery(id),
+  useCustomerVehicles(id),
+  useCustomerOrders(id)
+])
 const { state } = useCustomerForm(cliente)
 
 useSeoMeta({

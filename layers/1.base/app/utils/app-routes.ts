@@ -5,7 +5,7 @@ export const APP_ROUTES = {
   scheduling: '/agendamentos',
   customers: '/clientes',
   vehicles: '/veiculos',
-  settings: '/ajustes',
+  settings: '/configuracao',
   finance: '/gestao/financeiro',
   team: '/gestao/equipe',
   collaborators: '/colaboradores',

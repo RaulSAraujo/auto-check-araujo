@@ -17,7 +17,8 @@ export function usePricingParams() {
 
       if (fetchError) throw fetchError
       return (row as PricingParamsRow | null) ?? null
-    }
+    },
+    { lazy: true }
   )
 
   const params = computed(() => data.value)

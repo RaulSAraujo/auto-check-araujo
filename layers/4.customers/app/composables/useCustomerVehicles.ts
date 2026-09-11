@@ -17,6 +17,7 @@ export function useCustomerVehicles(clienteId: MaybeRefOrGetter<string>) {
 
       if (error) throw error
       return data as Veiculo[]
-    }
+    },
+    { lazy: true }
   )
 }

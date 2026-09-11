@@ -27,6 +27,7 @@ Páginas ficam **diretamente** em `pages/` da layer, **sem subpastas por domíni
 | `/veiculos/:id` | `pages/vehicles-[id].vue` |
 | `/gestao/financeiro` | `pages/finance.vue` |
 | `/gestao/equipe` | `pages/team.vue` |
+| `/configuracao` | `pages/configuration.vue` |
 | `/configuracao/catalogo` | `pages/catalog.vue` |
 | `/configuracao/fornecedores` | `pages/catalog-suppliers.vue` |
 | `/configuracao/precificacao` | `pages/pricing.vue` |

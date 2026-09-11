@@ -20,7 +20,7 @@ useSeoMeta({
 useRequirePermission('catalog.manage')
 
 const breadcrumbItems = settingsHubBreadcrumb('Precificação')
-const { draftDefaults, pending, error, refresh } = await usePricingParams()
+const { draftDefaults, pending, error, refresh } = usePricingParams()
 const { savePricingParams } = usePricingMutations()
 
 const draft = ref<PricingParamsDraft>(emptyPricingDraft())

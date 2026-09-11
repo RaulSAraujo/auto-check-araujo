@@ -19,7 +19,7 @@ export function useProfile() {
       if (error) throw error
       return data
     },
-    { watch: [userId] }
+    { watch: [userId], lazy: true }
   )
 
   const papel = computed(() => (profile.value?.papel || 'recepcao') as ColaboradorPapel)

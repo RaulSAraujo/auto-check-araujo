@@ -15,6 +15,7 @@ export function useOrderItemsQuery(orderId: MaybeRefOrGetter<string>) {
 
       if (error) throw error
       return data as OrdemItem[]
-    }
+    },
+    { lazy: true }
   )
 }

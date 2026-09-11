@@ -28,7 +28,7 @@ export async function useCustomerOrders(clienteId: MaybeRefOrGetter<string>) {
         total: count ?? 0
       }
     },
-    { watch: [page, clienteIdRef] }
+    { watch: [page, clienteIdRef], lazy: true }
   )
 
   const ordens = computed(() => data.value?.items ?? [])

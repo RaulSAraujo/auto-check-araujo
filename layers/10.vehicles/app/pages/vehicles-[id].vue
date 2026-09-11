@@ -11,14 +11,19 @@ definePageMeta({
 const route = useRoute()
 const id = computed(() => route.params.id as string)
 
-const { data: veiculo, pending, refresh } = await useVehicleQuery(id)
+const [
+  { data: veiculo, pending, refresh },
+  { data: ordens, pending: pendingOrdens }
+] = await Promise.all([
+  useVehicleQuery(id),
+  useVehicleOrders(id)
+])
 const preferredClienteId = computed(() => veiculo.value?.cliente_id || undefined)
 const {
   clienteItems,
   searchTerm: clienteSearchTerm,
   pending: clientesPending
-} = await useCustomerOptions('clientes-options-edit', preferredClienteId)
-const { data: ordens, pending: pendingOrdens } = await useVehicleOrders(id)
+} = useCustomerOptions('clientes-options-edit', preferredClienteId)
 const { state } = useVehicleForm(veiculo)
 
 useSeoMeta({

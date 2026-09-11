@@ -14,6 +14,7 @@ export function useVehicleQuery(id: MaybeRefOrGetter<string>) {
 
       if (error) throw error
       return data as VeiculoComCliente
-    }
+    },
+    { lazy: true }
   )
 }

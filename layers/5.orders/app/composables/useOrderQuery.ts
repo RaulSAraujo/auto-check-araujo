@@ -22,6 +22,7 @@ export function useOrderQuery(id: MaybeRefOrGetter<string>) {
           ? [raw.agendamentos]
           : []
       return { ...raw, agendamentos: appointmentsRel } as OrderDetail
-    }
+    },
+    { lazy: true }
   )
 }

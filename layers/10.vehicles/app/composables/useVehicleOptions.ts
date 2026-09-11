@@ -65,7 +65,7 @@ export async function useVehicleOptions(options?: {
 
       return (data ?? []).map(mapRpcRow)
     },
-    { watch: [debouncedSearch, preferredIdRef] }
+    { watch: [debouncedSearch, preferredIdRef], lazy: true }
   )
 
   return {

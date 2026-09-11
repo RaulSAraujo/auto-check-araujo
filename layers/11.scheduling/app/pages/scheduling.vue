@@ -330,7 +330,7 @@ function onShiftNext() {
         />
       </div>
 
-      <SchedulingFormSlideover
+      <LazySchedulingFormSlideover
         v-if="canWrite"
         v-model:open="formOpen"
         :day="selectedDate"

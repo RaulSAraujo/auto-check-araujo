@@ -35,9 +35,9 @@ const {
   pending: budgetPending,
   tipoFilter,
   refresh: refreshBudget
-} = await useCatalogList(initialTipo)
+} = useCatalogList(initialTipo)
 const { data: activeCatalogItems } = useServiceCatalog()
-const { suppliers } = await useSuppliersList()
+const { suppliers } = useSuppliersList()
 const {
   createCatalogItem,
   updateCatalogItem,

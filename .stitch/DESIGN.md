@@ -138,8 +138,9 @@ Hierarquia (espelha light: canvas atrás, painel na frente):
 
 ### Navigation
 - Shell: layout `default` + `BaseAppHeader` com `UNavigationMenu` (`variant="pill"`, pill `bg-muted/80 backdrop-blur rounded-full`)
-- Atalhos (flat): **Início** | **Agenda** | **Clientes** | **Financeiro** | **Ordens** | **Veículos**
-- Avatar menu: Ajustes (`/ajustes`), alternar tema, Sair
+- Atalhos (flat): **Início** | **Agenda** | **Ordens** | **Clientes** | **Veículos** | **Financeiro**
+- Ativo visível (primary + pill + highlight); mobile ícones; avatar com chevron
+- Avatar menu: Configuração (`/configuracao`), alternar tema, Sair
 - Sem sidebar; sem ícones soltos de engrenagem/tema; sem dropdowns Operação/Cadastros/Gestão/Configuração; sem `UDashboardGroup` / `UDashboardSidebar`
 - Conteúdo do layout `default` com `pt-20 sm:pt-24` sob o header fixo
 

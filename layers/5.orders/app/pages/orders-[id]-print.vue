@@ -18,8 +18,13 @@ definePageMeta({
 const route = useRoute()
 const id = computed(() => route.params.id as string)
 
-const { data: ordem, pending } = await useOrderQuery(id)
-const { data: items } = await useOrderItemsQuery(id)
+const [
+  { data: ordem, pending },
+  { data: items }
+] = await Promise.all([
+  useOrderQuery(id),
+  useOrderItemsQuery(id)
+])
 
 const budgetStatus = computed(
   () => (ordem.value?.orcamento_status || 'rascunho') as OrcamentoStatus

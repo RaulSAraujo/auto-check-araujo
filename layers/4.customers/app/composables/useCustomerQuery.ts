@@ -14,6 +14,7 @@ export function useCustomerQuery(id: MaybeRefOrGetter<string>) {
 
       if (error) throw error
       return data as Cliente
-    }
+    },
+    { lazy: true }
   )
 }
