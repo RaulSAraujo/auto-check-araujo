@@ -5,7 +5,6 @@ defineOptions({ name: 'OrdersPrintActions' })
 
 const props = defineProps<{
   printTo?: string
-  publicUrl?: string | null
   whatsappUrl?: string | null
   printLabel?: string
   pdfLabel?: string
@@ -16,22 +15,6 @@ const props = defineProps<{
 const emit = defineEmits<{
   downloadPdf: []
 }>()
-
-const toast = useToast()
-const copying = ref(false)
-
-async function copyPublicLink() {
-  if (!props.publicUrl || !import.meta.client) return
-  copying.value = true
-  try {
-    await navigator.clipboard.writeText(props.publicUrl)
-    toast.add({ title: 'Link copiado', color: 'success' })
-  } catch {
-    toast.add({ title: 'Não foi possível copiar o link', color: 'error' })
-  } finally {
-    copying.value = false
-  }
-}
 
 const moreItems = computed<DropdownMenuItem[][]>(() => {
   const items: DropdownMenuItem[] = []
@@ -51,15 +34,6 @@ const moreItems = computed<DropdownMenuItem[][]>(() => {
       icon: 'i-lucide-file-down',
       disabled: props.pdfLoading,
       onSelect: () => { emit('downloadPdf') }
-    })
-  }
-
-  if (props.publicUrl) {
-    items.push({
-      label: copying.value ? 'Copiando…' : 'Copiar link',
-      icon: 'i-lucide-link',
-      disabled: copying.value,
-      onSelect: () => { void copyPublicLink() }
     })
   }
 

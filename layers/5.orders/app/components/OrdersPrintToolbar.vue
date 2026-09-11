@@ -1,10 +1,9 @@
 <script setup lang="ts">
 defineOptions({ name: 'OrdersPrintToolbar' })
 
-const props = defineProps<{
+defineProps<{
   backTo: string
   backLabel?: string
-  publicUrl?: string | null
   whatsappUrl?: string | null
   showPdf?: boolean
   pdfLoading?: boolean
@@ -13,22 +12,6 @@ const props = defineProps<{
 const emit = defineEmits<{
   downloadPdf: []
 }>()
-
-const toast = useToast()
-const copying = ref(false)
-
-async function copyPublicLink() {
-  if (!props.publicUrl || !import.meta.client) return
-  copying.value = true
-  try {
-    await navigator.clipboard.writeText(props.publicUrl)
-    toast.add({ title: 'Link copiado', color: 'success' })
-  } catch {
-    toast.add({ title: 'Não foi possível copiar o link', color: 'error' })
-  } finally {
-    copying.value = false
-  }
-}
 </script>
 
 <template>
@@ -42,15 +25,6 @@ async function copyPublicLink() {
     />
 
     <div class="flex flex-wrap gap-2">
-      <UButton
-        v-if="publicUrl"
-        label="Copiar link"
-        icon="i-lucide-link"
-        color="neutral"
-        variant="soft"
-        :loading="copying"
-        @click="copyPublicLink"
-      />
       <UButton
         v-if="whatsappUrl"
         :href="whatsappUrl"
