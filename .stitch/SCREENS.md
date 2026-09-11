@@ -13,7 +13,8 @@ Mapa de telas para geração no Stitch. Todas seguem `.stitch/DESIGN.md`.
 
 | # | Tela | Path | Objetivo UX |
 |---|------|------|-------------|
-| 0 | Shell (header pill) | — | Pill flutuante central; sem sidebar |
+| 0 | Shell (header pill) | — | Pill: atalhos + avatar (Ajustes, tema, Sair) |
+| 0b | Ajustes (HUD) | `/ajustes` | Hub de cadastros, gestão e configuração |
 | 1 | Login | `/login` | Brand-first; um CTA “Entrar”; zero fluff |
 | 2 | Início | `/` | KPIs escaneáveis; um destino óbvio por linha |
 | 3 | Ordens | `/ordens` | Lista densa + filtros + “Nova OS” |
@@ -36,13 +37,28 @@ Mapa de telas para geração no Stitch. Todas seguem `.stitch/DESIGN.md`.
 
 **Shell (obrigatório):**
 - Header fixo centralizado no topo — **sem** sidebar e **sem** TopAppBar sticky full-width
-- Pill: links principais + “Mais” + lua/sol + avatar (Nova OS / Sair)
-- Mobile: Menu → slideover
+- Pill: atalhos (Início, Agenda, Clientes, Financeiro, Ordens, Veículos) + avatar (Ajustes, tema, Sair)
+- Sem dropdowns Operação/Cadastros/Gestão/Configuração; sem ícones soltos de tema/engrenagem
+- Financeiro só aparece com permissão `finance.view`
 - Título da página **inline no body** (H1 + descrição muted)
 
 **Main:** canvas muted; painéis `rounded-lg`; offset no layout `default`: `pt-20 sm:pt-24` sob o header fixo.
 
 **Implementação Nuxt:** único layout `default.vue` em `layers/1.base` com `BaseAppHeader`; título de página em `BasePageHeader`. Sem `UDashboardGroup` / sidebar.
+
+---
+
+## 0b. Ajustes — HUD (`/ajustes`)
+
+**App:** `layers/1.base/app/pages/settings.vue` — destino de Ajustes no menu do avatar.
+
+**Body:** seção Configuração com links em grade (ícone + título + descrição curta). Itens filtrados por permissão.
+
+| Seção | Destinos |
+|-------|----------|
+| Configuração | Equipe, Catálogo, Fornecedores, Precificação |
+
+**Trunk test:** título Ajustes, avatar em soft quando ativo, cards navegáveis.
 
 ---
 
@@ -249,9 +265,9 @@ Tela descontinuada: conteúdo coberto por `/gestao/financeiro`. Redirect: `/vend
 **Stitch:** `screens/391ac751b4d045fe88c64b4d0bf4c8fa` — *Gestão da Equipe - Araujo Auto Center*  
 **Screenshot local:** `.stitch/screenshots/equipe.png`
 
-**App:** `layers/8.management/app/pages/team.vue` — menu Gestão → Equipe; `/colaboradores` e `/equipe` redirecionam para `/gestao/equipe`.
+**App:** `layers/8.management/app/pages/team.vue` — `/colaboradores` e `/equipe` redirecionam para `/gestao/equipe`.
 
-**Navbar:** Gestão → Equipe (gerente / `collaborators.manage`).
+**Navbar:** avatar → Ajustes → Equipe (gerente / `collaborators.manage`).
 
 **Subtítulo:** “Quem entra no sistema e com qual papel.” — uma linha.
 
@@ -264,11 +280,11 @@ Tela descontinuada: conteúdo coberto por `/gestao/financeiro`. Redirect: `/vend
 
 **Proibido:** abas de RH; form permanente competindo com a lista; hero de marketing.
 
-**Trunk test:** título Equipe, nav Gestão ativa, contagem, tabela, CTA novo.
+**Trunk test:** título Equipe, avatar em soft no header, contagem, tabela, CTA novo.
 
 **Dados (app):** `profiles` / RPCs `list_collaborators`, `update_collaborator_role` (e create via auth layer).
 
-> Relação com `/colaboradores`: redireciona para `/gestao/equipe`. Preferir **uma** entrada no menu: Gestão → Equipe.
+> Relação com `/colaboradores`: redireciona para `/gestao/equipe`. Entrada via `/ajustes`, não pelo nav principal.
 
 ---
 

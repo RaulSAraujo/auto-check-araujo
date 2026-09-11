@@ -1,6 +1,6 @@
 import { serverSupabaseClient, serverSupabaseUser } from '#supabase/server'
 import { isValidCollaboratorPassword } from '~~/shared/utils/username'
-import { getSupabaseAdminConfig, supabaseAdminFetch } from '../../utils/supabase-admin'
+import { getSupabaseAdminConfig, supabaseAdminFetch } from '../../../utils/supabase-admin'
 
 type PasswordBody = {
   password?: string

@@ -15,8 +15,8 @@
     "semantic_hash": ""
   },
   "layers/1.base/app/components/BaseAppHeader.vue": {
-    "mtime": 1789146878.5060828,
-    "ast_hash": "ab54017f8c295db28b6755c27399d421",
+    "mtime": 1789152483.1645966,
+    "ast_hash": "1c8da5762b09d4fc0c1ed9872cf03a45",
     "semantic_hash": ""
   },
   "layers/1.base/app/components/BaseBrandIcon.vue": {
@@ -65,8 +65,8 @@
     "semantic_hash": "6d5ea10d5b3ea6e1a402eb63ce6f3096"
   },
   "layers/1.base/app/utils/app-routes.ts": {
-    "mtime": 1789146876.3631816,
-    "ast_hash": "a0e4e1b1f7367402b315f1d17bb83a35",
+    "mtime": 1789152452.6381416,
+    "ast_hash": "9862e388725794a65fbd09a83cc39112",
     "semantic_hash": ""
   },
   "layers/1.base/app/utils/brand.ts": {
@@ -235,8 +235,8 @@
     "semantic_hash": "0351536fc15a1842d05d79d431c85938"
   },
   "layers/2.auth/app/composables/useCollaborators.ts": {
-    "mtime": 1788978011.3956368,
-    "ast_hash": "485f537fb302e3b5aa979cf91198011c",
+    "mtime": 1789151457.6318133,
+    "ast_hash": "cf95365cad99e36c3fd8e3894aee6123",
     "semantic_hash": ""
   },
   "layers/2.auth/app/composables/usePermissions.ts": {
@@ -265,9 +265,9 @@
     "semantic_hash": "b18710cd6146baf234702513f7522914"
   },
   "layers/2.auth/app/pages/login.vue": {
-    "mtime": 1788375009.3571966,
-    "ast_hash": "10af4fc94bdeb6b26a7ce27903b6514d",
-    "semantic_hash": "10af4fc94bdeb6b26a7ce27903b6514d"
+    "mtime": 1789151491.8245122,
+    "ast_hash": "761556a2975bcca875220b90d9711f92",
+    "semantic_hash": ""
   },
   "layers/2.auth/app/utils/auth-routes.ts": {
     "mtime": 1788265528.3377912,
@@ -1345,13 +1345,13 @@
     "semantic_hash": "9d299e7182fbb859ed14da57a5031c6f"
   },
   ".stitch/DESIGN.md": {
-    "mtime": 1789144823.4040003,
-    "ast_hash": "13209900d9e425f3a6fc123ee261457f",
+    "mtime": 1789152523.3587232,
+    "ast_hash": "ad1f87ca2e8faa192e7b9be9c093b663",
     "semantic_hash": ""
   },
   ".stitch/SCREENS.md": {
-    "mtime": 1789150422.5709276,
-    "ast_hash": "66628c9f052022d898cd790abf07011c",
+    "mtime": 1789152522.305284,
+    "ast_hash": "17e0fb4fe699f07f755ea04d2aadff6e",
     "semantic_hash": ""
   },
   "CONTEXT.md": {
@@ -1570,8 +1570,8 @@
     "semantic_hash": ""
   },
   "layers/8.management/app/components/team/TeamCollaboratorsTable.vue": {
-    "mtime": 1789150410.8727255,
-    "ast_hash": "e748e69fbb54e6abfc2d62d5b87bcb9c",
+    "mtime": 1789151487.897115,
+    "ast_hash": "426c6590e43cc32a0b27554446aa59e3",
     "semantic_hash": ""
   },
   "layers/8.management/app/composables/useAccountsPayable.ts": {
@@ -1610,8 +1610,8 @@
     "semantic_hash": ""
   },
   "layers/8.management/app/pages/team.vue": {
-    "mtime": 1789150399.7356446,
-    "ast_hash": "df8bb33b35983e6b9d010c633ad689ee",
+    "mtime": 1789151490.5397508,
+    "ast_hash": "3be53ad701bff59b429db43047dcc660",
     "semantic_hash": ""
   },
   "layers/8.management/app/utils/accounts-payable.ts": {
@@ -1857,6 +1857,26 @@
   "layers/5.orders/app/utils/order-photos.ts": {
     "mtime": 1789145165.6879015,
     "ast_hash": "a670dd7dc9b3ababba11c9ef8ebfac2b",
+    "semantic_hash": ""
+  },
+  "layers/8.management/app/components/team/TeamCollaboratorsPasswordModal.vue": {
+    "mtime": 1789151457.694733,
+    "ast_hash": "ab0e77ce80bb82ca510de6f6920c8f02",
+    "semantic_hash": ""
+  },
+  "server/api/collaborators/[id]/password.put.ts": {
+    "mtime": 1789151450.2384307,
+    "ast_hash": "42aec3283d71e593183104a02184ff14",
+    "semantic_hash": ""
+  },
+  "layers/1.base/app/pages/settings.vue": {
+    "mtime": 1789152525.774999,
+    "ast_hash": "88cd08a76368dbc0434c86d33e37038d",
+    "semantic_hash": ""
+  },
+  "layers/1.base/app/utils/settings-hub.ts": {
+    "mtime": 1789152493.804985,
+    "ast_hash": "9f86745099955a98f4d27417b712a32b",
     "semantic_hash": ""
   }
 }

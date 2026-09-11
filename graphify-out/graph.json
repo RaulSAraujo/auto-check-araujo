@@ -331,7 +331,7 @@
       "label": "route",
       "file_type": "code",
       "source_file": "layers/1.base/app/components/BaseAppHeader.vue",
-      "source_location": "L7",
+      "source_location": "L8",
       "_origin": "ast",
       "id": "layers_1_base_app_components_baseappheader_route",
       "community": 60,
@@ -342,7 +342,7 @@
       "label": "{ signOut }",
       "file_type": "code",
       "source_file": "layers/1.base/app/components/BaseAppHeader.vue",
-      "source_location": "L8",
+      "source_location": "L9",
       "_origin": "ast",
       "id": "layers_1_base_app_components_baseappheader_signout",
       "community": 60,
@@ -353,7 +353,7 @@
       "label": "{ nome: profileNome }",
       "file_type": "code",
       "source_file": "layers/1.base/app/components/BaseAppHeader.vue",
-      "source_location": "L9",
+      "source_location": "L10",
       "_origin": "ast",
       "id": "layers_1_base_app_components_baseappheader_nome_profilenome",
       "community": 60,
@@ -364,7 +364,7 @@
       "label": "{ papel, can }",
       "file_type": "code",
       "source_file": "layers/1.base/app/components/BaseAppHeader.vue",
-      "source_location": "L10",
+      "source_location": "L11",
       "_origin": "ast",
       "id": "layers_1_base_app_components_baseappheader_papel_can",
       "community": 60,
@@ -375,7 +375,7 @@
       "label": "signingOut",
       "file_type": "code",
       "source_file": "layers/1.base/app/components/BaseAppHeader.vue",
-      "source_location": "L11",
+      "source_location": "L12",
       "_origin": "ast",
       "id": "layers_1_base_app_components_baseappheader_signingout",
       "community": 60,
@@ -383,21 +383,10 @@
       "norm_label": "signingout"
     },
     {
-      "label": "mobileOpen",
-      "file_type": "code",
-      "source_file": "layers/1.base/app/components/BaseAppHeader.vue",
-      "source_location": "L12",
-      "_origin": "ast",
-      "id": "layers_1_base_app_components_baseappheader_mobileopen",
-      "community": 60,
-      "community_name": "BaseAppHeader.vue",
-      "norm_label": "mobileopen"
-    },
-    {
       "label": "pathMatches()",
       "file_type": "code",
       "source_file": "layers/1.base/app/components/BaseAppHeader.vue",
-      "source_location": "L18",
+      "source_location": "L14",
       "_callable": true,
       "_origin": "ast",
       "id": "layers_1_base_app_components_baseappheader_pathmatches",
@@ -406,22 +395,10 @@
       "norm_label": "pathmatches()"
     },
     {
-      "label": "childrenActive()",
-      "file_type": "code",
-      "source_file": "layers/1.base/app/components/BaseAppHeader.vue",
-      "source_location": "L22",
-      "_callable": true,
-      "_origin": "ast",
-      "id": "layers_1_base_app_components_baseappheader_childrenactive",
-      "community": 60,
-      "community_name": "BaseAppHeader.vue",
-      "norm_label": "childrenactive()"
-    },
-    {
       "label": "links",
       "file_type": "code",
       "source_file": "layers/1.base/app/components/BaseAppHeader.vue",
-      "source_location": "L26",
+      "source_location": "L18",
       "_origin": "ast",
       "id": "layers_1_base_app_components_baseappheader_links",
       "community": 60,
@@ -429,10 +406,21 @@
       "norm_label": "links"
     },
     {
+      "label": "settingsActive",
+      "file_type": "code",
+      "source_file": "layers/1.base/app/components/BaseAppHeader.vue",
+      "source_location": "L61",
+      "_origin": "ast",
+      "id": "layers_1_base_app_components_baseappheader_settingsactive",
+      "community": 60,
+      "community_name": "BaseAppHeader.vue",
+      "norm_label": "settingsactive"
+    },
+    {
       "label": "userMenuItems",
       "file_type": "code",
       "source_file": "layers/1.base/app/components/BaseAppHeader.vue",
-      "source_location": "L101",
+      "source_location": "L63",
       "_origin": "ast",
       "id": "layers_1_base_app_components_baseappheader_usermenuitems",
       "community": 60,
@@ -443,7 +431,7 @@
       "label": "navUi",
       "file_type": "code",
       "source_file": "layers/1.base/app/components/BaseAppHeader.vue",
-      "source_location": "L111",
+      "source_location": "L73",
       "_origin": "ast",
       "id": "layers_1_base_app_components_baseappheader_navui",
       "community": 60,
@@ -454,7 +442,7 @@
       "label": "onSignOut()",
       "file_type": "code",
       "source_file": "layers/1.base/app/components/BaseAppHeader.vue",
-      "source_location": "L120",
+      "source_location": "L80",
       "_callable": true,
       "_origin": "ast",
       "id": "layers_1_base_app_components_baseappheader_onsignout",
@@ -791,6 +779,50 @@
       "norm_label": "default.vue"
     },
     {
+      "label": "settings.vue",
+      "file_type": "code",
+      "source_file": "layers/1.base/app/pages/settings.vue",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "layers_1_base_app_pages_settings",
+      "community": 60,
+      "community_name": "BaseAppHeader.vue",
+      "norm_label": "settings.vue"
+    },
+    {
+      "label": "{ can }",
+      "file_type": "code",
+      "source_file": "layers/1.base/app/pages/settings.vue",
+      "source_location": "L19",
+      "_origin": "ast",
+      "id": "layers_1_base_app_pages_settings_can",
+      "community": 60,
+      "community_name": "BaseAppHeader.vue",
+      "norm_label": "{ can }"
+    },
+    {
+      "label": "visibleItems",
+      "file_type": "code",
+      "source_file": "layers/1.base/app/pages/settings.vue",
+      "source_location": "L21",
+      "_origin": "ast",
+      "id": "layers_1_base_app_pages_settings_visibleitems",
+      "community": 60,
+      "community_name": "BaseAppHeader.vue",
+      "norm_label": "visibleitems"
+    },
+    {
+      "label": "sections",
+      "file_type": "code",
+      "source_file": "layers/1.base/app/pages/settings.vue",
+      "source_location": "L25",
+      "_origin": "ast",
+      "id": "layers_1_base_app_pages_settings_sections",
+      "community": 60,
+      "community_name": "BaseAppHeader.vue",
+      "norm_label": "sections"
+    },
+    {
       "label": "app-routes.ts",
       "file_type": "code",
       "source_file": "layers/1.base/app/utils/app-routes.ts",
@@ -866,6 +898,101 @@
       "community": 122,
       "community_name": "brand.ts",
       "norm_label": "brand_display_name"
+    },
+    {
+      "label": "settings-hub.ts",
+      "file_type": "code",
+      "source_file": "layers/1.base/app/utils/settings-hub.ts",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "layers_1_base_app_utils_settings_hub",
+      "community": 60,
+      "community_name": "BaseAppHeader.vue",
+      "norm_label": "settings-hub.ts"
+    },
+    {
+      "label": "SettingsHubSection",
+      "file_type": "code",
+      "source_file": "layers/1.base/app/utils/settings-hub.ts",
+      "source_location": "L1",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "id": "layers_1_base_app_utils_settings_hub_settingshubsection",
+      "community": 60,
+      "community_name": "BaseAppHeader.vue",
+      "norm_label": "settingshubsection"
+    },
+    {
+      "label": "SettingsHubPermission",
+      "file_type": "code",
+      "source_file": "layers/1.base/app/utils/settings-hub.ts",
+      "source_location": "L3",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "id": "layers_1_base_app_utils_settings_hub_settingshubpermission",
+      "community": 60,
+      "community_name": "BaseAppHeader.vue",
+      "norm_label": "settingshubpermission"
+    },
+    {
+      "label": "SettingsHubItem",
+      "file_type": "code",
+      "source_file": "layers/1.base/app/utils/settings-hub.ts",
+      "source_location": "L7",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "id": "layers_1_base_app_utils_settings_hub_settingshubitem",
+      "community": 60,
+      "community_name": "BaseAppHeader.vue",
+      "norm_label": "settingshubitem"
+    },
+    {
+      "label": "SETTINGS_HUB_SECTION_LABEL",
+      "file_type": "code",
+      "source_file": "layers/1.base/app/utils/settings-hub.ts",
+      "source_location": "L17",
+      "_origin": "ast",
+      "id": "layers_1_base_app_utils_settings_hub_settings_hub_section_label",
+      "community": 60,
+      "community_name": "BaseAppHeader.vue",
+      "norm_label": "settings_hub_section_label"
+    },
+    {
+      "label": "SETTINGS_HUB_ITEMS",
+      "file_type": "code",
+      "source_file": "layers/1.base/app/utils/settings-hub.ts",
+      "source_location": "L22",
+      "_origin": "ast",
+      "id": "layers_1_base_app_utils_settings_hub_settings_hub_items",
+      "community": 60,
+      "community_name": "BaseAppHeader.vue",
+      "norm_label": "settings_hub_items"
+    },
+    {
+      "label": "SETTINGS_HUB_SECTIONS",
+      "file_type": "code",
+      "source_file": "layers/1.base/app/utils/settings-hub.ts",
+      "source_location": "L61",
+      "_origin": "ast",
+      "id": "layers_1_base_app_utils_settings_hub_settings_hub_sections",
+      "community": 60,
+      "community_name": "BaseAppHeader.vue",
+      "norm_label": "settings_hub_sections"
+    },
+    {
+      "label": "isSettingsHubPath()",
+      "file_type": "code",
+      "source_file": "layers/1.base/app/utils/settings-hub.ts",
+      "source_location": "L67",
+      "_callable": true,
+      "_origin": "ast",
+      "id": "layers_1_base_app_utils_settings_hub_issettingshubpath",
+      "community": 60,
+      "community_name": "BaseAppHeader.vue",
+      "norm_label": "issettingshubpath()"
     },
     {
       "label": "supabase-search.ts",
@@ -6138,8 +6265,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "layers_5_orders_app_components_ordersdetailresumopanel",
-      "community": 103,
-      "community_name": "OrdersDetailResumoPanel.vue",
+      "community": 20,
+      "community_name": "orders-new.vue",
       "norm_label": "ordersdetailresumopanel.vue"
     },
     {
@@ -6149,8 +6276,8 @@
       "source_location": "L10",
       "_origin": "ast",
       "id": "layers_5_orders_app_components_ordersdetailresumopanel_state",
-      "community": 103,
-      "community_name": "OrdersDetailResumoPanel.vue",
+      "community": 20,
+      "community_name": "orders-new.vue",
       "norm_label": "state"
     },
     {
@@ -6160,8 +6287,8 @@
       "source_location": "L17",
       "_origin": "ast",
       "id": "layers_5_orders_app_components_ordersdetailresumopanel_emit",
-      "community": 103,
-      "community_name": "OrdersDetailResumoPanel.vue",
+      "community": 20,
+      "community_name": "orders-new.vue",
       "norm_label": "emit"
     },
     {
@@ -6172,8 +6299,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "layers_5_orders_app_components_ordersdetailresumopanel_validate",
-      "community": 103,
-      "community_name": "OrdersDetailResumoPanel.vue",
+      "community": 20,
+      "community_name": "orders-new.vue",
       "norm_label": "validate()"
     },
     {
@@ -6184,8 +6311,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "layers_5_orders_app_components_ordersdetailresumopanel_onerror",
-      "community": 103,
-      "community_name": "OrdersDetailResumoPanel.vue",
+      "community": 20,
+      "community_name": "orders-new.vue",
       "norm_label": "onerror()"
     },
     {
@@ -6196,7 +6323,7 @@
       "_origin": "ast",
       "id": "layers_5_orders_app_components_ordersnewform",
       "community": 20,
-      "community_name": "OrdersNewForm.vue",
+      "community_name": "orders-new.vue",
       "norm_label": "ordersnewform.vue"
     },
     {
@@ -6207,7 +6334,7 @@
       "_origin": "ast",
       "id": "layers_5_orders_app_components_ordersnewform_state",
       "community": 20,
-      "community_name": "OrdersNewForm.vue",
+      "community_name": "orders-new.vue",
       "norm_label": "state"
     },
     {
@@ -6218,7 +6345,7 @@
       "_origin": "ast",
       "id": "layers_5_orders_app_components_ordersnewform_veiculoitems_selectedvehicle_loading_vehiclespending_false_vehicleserror_false_cancelto_order_routes_list",
       "community": 20,
-      "community_name": "OrdersNewForm.vue",
+      "community_name": "orders-new.vue",
       "norm_label": "{\n  veiculoitems,\n  selectedvehicle,\n  loading,\n  vehiclespending = false,\n  vehicleserror = false,\n  cancelto = order_routes.list\n}"
     },
     {
@@ -6229,7 +6356,7 @@
       "_origin": "ast",
       "id": "layers_5_orders_app_components_ordersnewform_vehiclesearchterm",
       "community": 20,
-      "community_name": "OrdersNewForm.vue",
+      "community_name": "orders-new.vue",
       "norm_label": "vehiclesearchterm"
     },
     {
@@ -6240,7 +6367,7 @@
       "_origin": "ast",
       "id": "layers_5_orders_app_components_ordersnewform_emit",
       "community": 20,
-      "community_name": "OrdersNewForm.vue",
+      "community_name": "orders-new.vue",
       "norm_label": "emit"
     },
     {
@@ -6251,7 +6378,7 @@
       "_origin": "ast",
       "id": "layers_5_orders_app_components_ordersnewform_back_cancel",
       "community": 20,
-      "community_name": "OrdersNewForm.vue",
+      "community_name": "orders-new.vue",
       "norm_label": "{ back: cancel }"
     },
     {
@@ -6262,7 +6389,7 @@
       "_origin": "ast",
       "id": "layers_5_orders_app_components_ordersnewform_shownotes",
       "community": 20,
-      "community_name": "OrdersNewForm.vue",
+      "community_name": "orders-new.vue",
       "norm_label": "shownotes"
     },
     {
@@ -6273,7 +6400,7 @@
       "_origin": "ast",
       "id": "layers_5_orders_app_components_ordersnewform_isdesktop",
       "community": 20,
-      "community_name": "OrdersNewForm.vue",
+      "community_name": "orders-new.vue",
       "norm_label": "isdesktop"
     },
     {
@@ -6285,7 +6412,7 @@
       "_origin": "ast",
       "id": "layers_5_orders_app_components_ordersnewform_validate",
       "community": 20,
-      "community_name": "OrdersNewForm.vue",
+      "community_name": "orders-new.vue",
       "norm_label": "validate()"
     },
     {
@@ -6297,7 +6424,7 @@
       "_origin": "ast",
       "id": "layers_5_orders_app_components_ordersnewform_onerror",
       "community": 20,
-      "community_name": "OrdersNewForm.vue",
+      "community_name": "orders-new.vue",
       "norm_label": "onerror()"
     },
     {
@@ -6309,7 +6436,7 @@
       "_origin": "ast",
       "id": "layers_5_orders_app_components_ordersnewform_onsubmit",
       "community": 20,
-      "community_name": "OrdersNewForm.vue",
+      "community_name": "orders-new.vue",
       "norm_label": "onsubmit()"
     },
     {
@@ -6320,7 +6447,7 @@
       "_origin": "ast",
       "id": "layers_5_orders_app_components_ordersnewform_vehiclelabel",
       "community": 20,
-      "community_name": "OrdersNewForm.vue",
+      "community_name": "orders-new.vue",
       "norm_label": "vehiclelabel"
     },
     {
@@ -6331,7 +6458,7 @@
       "_origin": "ast",
       "id": "layers_5_orders_app_components_orderspaymenteditor",
       "community": 48,
-      "community_name": "OrderDetail",
+      "community_name": "OrdersPaymentEditor.vue",
       "norm_label": "orderspaymenteditor.vue"
     },
     {
@@ -6342,7 +6469,7 @@
       "_origin": "ast",
       "id": "layers_5_orders_app_components_orderspaymenteditor_props",
       "community": 48,
-      "community_name": "OrderDetail",
+      "community_name": "OrdersPaymentEditor.vue",
       "norm_label": "props"
     },
     {
@@ -6353,7 +6480,7 @@
       "_origin": "ast",
       "id": "layers_5_orders_app_components_orderspaymenteditor_state",
       "community": 48,
-      "community_name": "OrderDetail",
+      "community_name": "OrdersPaymentEditor.vue",
       "norm_label": "state"
     },
     {
@@ -6364,7 +6491,7 @@
       "_origin": "ast",
       "id": "layers_5_orders_app_components_orderspaymenteditor_formalabel",
       "community": 48,
-      "community_name": "OrderDetail",
+      "community_name": "OrdersPaymentEditor.vue",
       "norm_label": "formalabel"
     },
     {
@@ -6553,7 +6680,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "layers_5_orders_app_composables_useorderbreadcrumb",
-      "community": 96,
+      "community": 1,
       "community_name": "order-routes.ts",
       "norm_label": "useorderbreadcrumb.ts"
     },
@@ -6566,7 +6693,7 @@
       "_callable_class": true,
       "_origin": "ast",
       "id": "layers_5_orders_app_composables_useorderbreadcrumb_orderbreadcrumborigin",
-      "community": 96,
+      "community": 1,
       "community_name": "order-routes.ts",
       "norm_label": "orderbreadcrumborigin"
     },
@@ -6578,7 +6705,7 @@
       "_callable": true,
       "_origin": "ast",
       "id": "layers_5_orders_app_composables_useorderbreadcrumb_gethistorybackpath",
-      "community": 96,
+      "community": 1,
       "community_name": "order-routes.ts",
       "norm_label": "gethistorybackpath()"
     },
@@ -6590,7 +6717,7 @@
       "_callable": true,
       "_origin": "ast",
       "id": "layers_5_orders_app_composables_useorderbreadcrumb_resolveorderbreadcrumborigin",
-      "community": 96,
+      "community": 1,
       "community_name": "order-routes.ts",
       "norm_label": "resolveorderbreadcrumborigin()"
     },
@@ -6602,7 +6729,7 @@
       "_callable": true,
       "_origin": "ast",
       "id": "layers_5_orders_app_composables_useorderbreadcrumb_useorderbreadcrumb",
-      "community": 96,
+      "community": 1,
       "community_name": "order-routes.ts",
       "norm_label": "useorderbreadcrumb()"
     },
@@ -6659,8 +6786,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "layers_5_orders_app_composables_useorderdetaileditor",
-      "community": 0,
-      "community_name": "order-form.ts",
+      "community": 20,
+      "community_name": "orders-new.vue",
       "norm_label": "useorderdetaileditor.ts"
     },
     {
@@ -6671,8 +6798,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "layers_5_orders_app_composables_useorderdetaileditor_useorderdetaileditor",
-      "community": 0,
-      "community_name": "order-form.ts",
+      "community": 20,
+      "community_name": "orders-new.vue",
       "norm_label": "useorderdetaileditor()"
     },
     {
@@ -6682,8 +6809,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "layers_5_orders_app_composables_useordereditform",
-      "community": 0,
-      "community_name": "order-form.ts",
+      "community": 20,
+      "community_name": "orders-new.vue",
       "norm_label": "useordereditform.ts"
     },
     {
@@ -6694,8 +6821,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "layers_5_orders_app_composables_useordereditform_useordereditform",
-      "community": 0,
-      "community_name": "order-form.ts",
+      "community": 20,
+      "community_name": "orders-new.vue",
       "norm_label": "useordereditform()"
     },
     {
@@ -6728,8 +6855,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "layers_5_orders_app_composables_useordermutations",
-      "community": 0,
-      "community_name": "order-form.ts",
+      "community": 20,
+      "community_name": "orders-new.vue",
       "norm_label": "useordermutations.ts"
     },
     {
@@ -6740,8 +6867,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "layers_5_orders_app_composables_useordermutations_useordermutations",
-      "community": 0,
-      "community_name": "order-form.ts",
+      "community": 20,
+      "community_name": "orders-new.vue",
       "norm_label": "useordermutations()"
     },
     {
@@ -6752,7 +6879,7 @@
       "_origin": "ast",
       "id": "layers_5_orders_app_composables_useorderpayment",
       "community": 48,
-      "community_name": "OrderDetail",
+      "community_name": "OrdersPaymentEditor.vue",
       "norm_label": "useorderpayment.ts"
     },
     {
@@ -6764,7 +6891,7 @@
       "_origin": "ast",
       "id": "layers_5_orders_app_composables_useorderpayment_useorderpayment",
       "community": 48,
-      "community_name": "OrderDetail",
+      "community_name": "OrdersPaymentEditor.vue",
       "norm_label": "useorderpayment()"
     },
     {
@@ -6846,7 +6973,7 @@
       "_origin": "ast",
       "id": "layers_5_orders_app_composables_useorderstatuseditor_useorderstatuseditor",
       "community": 48,
-      "community_name": "OrderDetail",
+      "community_name": "OrdersPaymentEditor.vue",
       "norm_label": "useorderstatuseditor()"
     },
     {
@@ -6857,7 +6984,7 @@
       "_origin": "ast",
       "id": "layers_5_orders_app_composables_useordervehicleoptions",
       "community": 20,
-      "community_name": "OrdersNewForm.vue",
+      "community_name": "orders-new.vue",
       "norm_label": "useordervehicleoptions.ts"
     },
     {
@@ -6870,7 +6997,7 @@
       "_origin": "ast",
       "id": "layers_5_orders_app_composables_useordervehicleoptions_ordervehicleselectitem",
       "community": 20,
-      "community_name": "OrdersNewForm.vue",
+      "community_name": "orders-new.vue",
       "norm_label": "ordervehicleselectitem"
     },
     {
@@ -6882,7 +7009,7 @@
       "_origin": "ast",
       "id": "layers_5_orders_app_composables_useordervehicleoptions_toordervehicleoption",
       "community": 20,
-      "community_name": "OrdersNewForm.vue",
+      "community_name": "orders-new.vue",
       "norm_label": "toordervehicleoption()"
     },
     {
@@ -6894,7 +7021,7 @@
       "_origin": "ast",
       "id": "layers_5_orders_app_composables_useordervehicleoptions_vehicledescription",
       "community": 20,
-      "community_name": "OrdersNewForm.vue",
+      "community_name": "orders-new.vue",
       "norm_label": "vehicledescription()"
     },
     {
@@ -6906,7 +7033,7 @@
       "_origin": "ast",
       "id": "layers_5_orders_app_composables_useordervehicleoptions_toselectitem",
       "community": 20,
-      "community_name": "OrdersNewForm.vue",
+      "community_name": "orders-new.vue",
       "norm_label": "toselectitem()"
     },
     {
@@ -6918,7 +7045,7 @@
       "_origin": "ast",
       "id": "layers_5_orders_app_composables_useordervehicleoptions_useordervehicleoptions",
       "community": 20,
-      "community_name": "OrdersNewForm.vue",
+      "community_name": "orders-new.vue",
       "norm_label": "useordervehicleoptions()"
     },
     {
@@ -7196,7 +7323,7 @@
       "_origin": "ast",
       "id": "layers_5_orders_app_pages_orders_id_discard",
       "community": 48,
-      "community_name": "OrderDetail",
+      "community_name": "OrdersPaymentEditor.vue",
       "norm_label": "discard()"
     },
     {
@@ -7241,8 +7368,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "layers_5_orders_app_pages_orders_id_ondownloadbudgetpdf",
-      "community": 92,
-      "community_name": "pdf.ts",
+      "community": 72,
+      "community_name": "orders-[id]-print.vue",
       "norm_label": "ondownloadbudgetpdf()"
     },
     {
@@ -7308,7 +7435,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "layers_5_orders_app_pages_orders_new",
-      "community": 1,
+      "community": 20,
       "community_name": "orders-new.vue",
       "norm_label": "orders-new.vue"
     },
@@ -7319,7 +7446,7 @@
       "source_location": "L14",
       "_origin": "ast",
       "id": "layers_5_orders_app_pages_orders_new_route",
-      "community": 1,
+      "community": 20,
       "community_name": "orders-new.vue",
       "norm_label": "route"
     },
@@ -7330,7 +7457,7 @@
       "source_location": "L15",
       "_origin": "ast",
       "id": "layers_5_orders_app_pages_orders_new_router",
-      "community": 1,
+      "community": 20,
       "community_name": "orders-new.vue",
       "norm_label": "router"
     },
@@ -7341,7 +7468,7 @@
       "source_location": "L18",
       "_origin": "ast",
       "id": "layers_5_orders_app_pages_orders_new_supabase",
-      "community": 1,
+      "community": 20,
       "community_name": "orders-new.vue",
       "norm_label": "supabase"
     },
@@ -7352,7 +7479,7 @@
       "source_location": "L19",
       "_origin": "ast",
       "id": "layers_5_orders_app_pages_orders_new_createorder",
-      "community": 1,
+      "community": 20,
       "community_name": "orders-new.vue",
       "norm_label": "{ createorder }"
     },
@@ -7363,7 +7490,7 @@
       "source_location": "L21",
       "_origin": "ast",
       "id": "layers_5_orders_app_pages_orders_new_agendamentoid",
-      "community": 1,
+      "community": 20,
       "community_name": "orders-new.vue",
       "norm_label": "agendamentoid"
     },
@@ -7374,7 +7501,7 @@
       "source_location": "L40",
       "_origin": "ast",
       "id": "layers_5_orders_app_pages_orders_new_preferredveiculoid",
-      "community": 1,
+      "community": 20,
       "community_name": "orders-new.vue",
       "norm_label": "preferredveiculoid"
     },
@@ -7385,7 +7512,7 @@
       "source_location": "L57",
       "_origin": "ast",
       "id": "layers_5_orders_app_pages_orders_new_initialstate",
-      "community": 1,
+      "community": 20,
       "community_name": "orders-new.vue",
       "norm_label": "initialstate"
     },
@@ -7396,7 +7523,7 @@
       "source_location": "L66",
       "_origin": "ast",
       "id": "layers_5_orders_app_pages_orders_new_state",
-      "community": 1,
+      "community": 20,
       "community_name": "orders-new.vue",
       "norm_label": "state"
     },
@@ -7407,7 +7534,7 @@
       "source_location": "L67",
       "_origin": "ast",
       "id": "layers_5_orders_app_pages_orders_new_loading",
-      "community": 1,
+      "community": 20,
       "community_name": "orders-new.vue",
       "norm_label": "loading"
     },
@@ -7418,7 +7545,7 @@
       "source_location": "L68",
       "_origin": "ast",
       "id": "layers_5_orders_app_pages_orders_new_allowleave",
-      "community": 1,
+      "community": 20,
       "community_name": "orders-new.vue",
       "norm_label": "allowleave"
     },
@@ -7429,7 +7556,7 @@
       "source_location": "L70",
       "_origin": "ast",
       "id": "layers_5_orders_app_pages_orders_new_selectedvehicle",
-      "community": 1,
+      "community": 20,
       "community_name": "orders-new.vue",
       "norm_label": "selectedvehicle"
     },
@@ -7440,7 +7567,7 @@
       "source_location": "L71",
       "_origin": "ast",
       "id": "layers_5_orders_app_pages_orders_new_isdirty",
-      "community": 1,
+      "community": 20,
       "community_name": "orders-new.vue",
       "norm_label": "isdirty"
     },
@@ -7451,7 +7578,7 @@
       "source_location": "L73",
       "_origin": "ast",
       "id": "layers_5_orders_app_pages_orders_new_backfallback",
-      "community": 1,
+      "community": 20,
       "community_name": "orders-new.vue",
       "norm_label": "backfallback"
     },
@@ -7462,7 +7589,7 @@
       "source_location": "L81",
       "_origin": "ast",
       "id": "layers_5_orders_app_pages_orders_new_back",
-      "community": 1,
+      "community": 20,
       "community_name": "orders-new.vue",
       "norm_label": "{ back }"
     },
@@ -7474,7 +7601,7 @@
       "_callable": true,
       "_origin": "ast",
       "id": "layers_5_orders_app_pages_orders_new_onsubmit",
-      "community": 1,
+      "community": 20,
       "community_name": "orders-new.vue",
       "norm_label": "onsubmit()"
     },
@@ -7486,7 +7613,7 @@
       "_callable": true,
       "_origin": "ast",
       "id": "layers_5_orders_app_pages_orders_new_retryvehicles",
-      "community": 1,
+      "community": 20,
       "community_name": "orders-new.vue",
       "norm_label": "retryvehicles()"
     },
@@ -7497,7 +7624,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "layers_5_orders_app_pages_orders",
-      "community": 96,
+      "community": 1,
       "community_name": "order-routes.ts",
       "norm_label": "orders.vue"
     },
@@ -7508,7 +7635,7 @@
       "source_location": "L12",
       "_origin": "ast",
       "id": "layers_5_orders_app_pages_orders_route",
-      "community": 96,
+      "community": 1,
       "community_name": "order-routes.ts",
       "norm_label": "route"
     },
@@ -7519,7 +7646,7 @@
       "source_location": "L25",
       "_origin": "ast",
       "id": "layers_5_orders_app_pages_orders_can",
-      "community": 96,
+      "community": 1,
       "community_name": "order-routes.ts",
       "norm_label": "{ can }"
     },
@@ -7569,8 +7696,8 @@
       "_callable_class": true,
       "_origin": "ast",
       "id": "layers_5_orders_app_types_orders_orderdetail",
-      "community": 48,
-      "community_name": "OrderDetail",
+      "community": 104,
+      "community_name": "orders.ts",
       "norm_label": "orderdetail"
     },
     {
@@ -7583,7 +7710,7 @@
       "_origin": "ast",
       "id": "layers_5_orders_app_types_orders_ordervehicleoption",
       "community": 20,
-      "community_name": "OrdersNewForm.vue",
+      "community_name": "orders-new.vue",
       "norm_label": "ordervehicleoption"
     },
     {
@@ -7687,8 +7814,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "layers_5_orders_app_utils_order_form",
-      "community": 0,
-      "community_name": "order-form.ts",
+      "community": 20,
+      "community_name": "orders-new.vue",
       "norm_label": "order-form.ts"
     },
     {
@@ -7700,8 +7827,8 @@
       "_callable_class": true,
       "_origin": "ast",
       "id": "layers_5_orders_app_utils_order_form_ordereditstate",
-      "community": 0,
-      "community_name": "order-form.ts",
+      "community": 20,
+      "community_name": "orders-new.vue",
       "norm_label": "ordereditstate"
     },
     {
@@ -7713,8 +7840,8 @@
       "_callable_class": true,
       "_origin": "ast",
       "id": "layers_5_orders_app_utils_order_form_orderformstate",
-      "community": 0,
-      "community_name": "order-form.ts",
+      "community": 20,
+      "community_name": "orders-new.vue",
       "norm_label": "orderformstate"
     },
     {
@@ -7725,7 +7852,7 @@
       "_callable": true,
       "_origin": "ast",
       "id": "layers_5_orders_app_utils_order_form_emptyorderform",
-      "community": 1,
+      "community": 20,
       "community_name": "orders-new.vue",
       "norm_label": "emptyorderform()"
     },
@@ -7737,8 +7864,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "layers_5_orders_app_utils_order_form_emptyordereditform",
-      "community": 0,
-      "community_name": "order-form.ts",
+      "community": 20,
+      "community_name": "orders-new.vue",
       "norm_label": "emptyordereditform()"
     },
     {
@@ -7749,8 +7876,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "layers_5_orders_app_utils_order_form_trimornull",
-      "community": 0,
-      "community_name": "order-form.ts",
+      "community": 20,
+      "community_name": "orders-new.vue",
       "norm_label": "trimornull()"
     },
     {
@@ -7761,8 +7888,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "layers_5_orders_app_utils_order_form_orderformtoinsert",
-      "community": 0,
-      "community_name": "order-form.ts",
+      "community": 20,
+      "community_name": "orders-new.vue",
       "norm_label": "orderformtoinsert()"
     },
     {
@@ -7773,8 +7900,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "layers_5_orders_app_utils_order_form_isorderformvalid",
-      "community": 0,
-      "community_name": "order-form.ts",
+      "community": 20,
+      "community_name": "orders-new.vue",
       "norm_label": "isorderformvalid()"
     },
     {
@@ -7786,8 +7913,8 @@
       "_callable_class": true,
       "_origin": "ast",
       "id": "layers_5_orders_app_utils_order_form_orderformfielderror",
-      "community": 0,
-      "community_name": "order-form.ts",
+      "community": 20,
+      "community_name": "orders-new.vue",
       "norm_label": "orderformfielderror"
     },
     {
@@ -7799,7 +7926,7 @@
       "_origin": "ast",
       "id": "layers_5_orders_app_utils_order_form_validateorderform",
       "community": 20,
-      "community_name": "OrdersNewForm.vue",
+      "community_name": "orders-new.vue",
       "norm_label": "validateorderform()"
     },
     {
@@ -7810,7 +7937,7 @@
       "_callable": true,
       "_origin": "ast",
       "id": "layers_5_orders_app_utils_order_form_isorderformdirty",
-      "community": 1,
+      "community": 20,
       "community_name": "orders-new.vue",
       "norm_label": "isorderformdirty()"
     },
@@ -7822,8 +7949,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "layers_5_orders_app_utils_order_form_ordereditfromrow",
-      "community": 0,
-      "community_name": "order-form.ts",
+      "community": 20,
+      "community_name": "orders-new.vue",
       "norm_label": "ordereditfromrow()"
     },
     {
@@ -7835,8 +7962,8 @@
       "_callable_class": true,
       "_origin": "ast",
       "id": "layers_5_orders_app_utils_order_form_ordereditfielderror",
-      "community": 0,
-      "community_name": "order-form.ts",
+      "community": 20,
+      "community_name": "orders-new.vue",
       "norm_label": "ordereditfielderror"
     },
     {
@@ -7847,8 +7974,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "layers_5_orders_app_utils_order_form_validateordereditform",
-      "community": 103,
-      "community_name": "OrdersDetailResumoPanel.vue",
+      "community": 20,
+      "community_name": "orders-new.vue",
       "norm_label": "validateordereditform()"
     },
     {
@@ -7859,8 +7986,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "layers_5_orders_app_utils_order_form_isordereditdirty",
-      "community": 0,
-      "community_name": "order-form.ts",
+      "community": 20,
+      "community_name": "orders-new.vue",
       "norm_label": "isordereditdirty()"
     },
     {
@@ -7871,8 +7998,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "layers_5_orders_app_utils_order_form_orderedittoupdate",
-      "community": 0,
-      "community_name": "order-form.ts",
+      "community": 20,
+      "community_name": "orders-new.vue",
       "norm_label": "orderedittoupdate()"
     },
     {
@@ -7972,7 +8099,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "layers_5_orders_app_utils_order_routes",
-      "community": 96,
+      "community": 1,
       "community_name": "order-routes.ts",
       "norm_label": "order-routes.ts"
     },
@@ -7983,7 +8110,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "layers_5_orders_app_utils_order_routes_order_routes",
-      "community": 96,
+      "community": 1,
       "community_name": "order-routes.ts",
       "norm_label": "order_routes"
     },
@@ -8107,7 +8234,7 @@
       "_origin": "ast",
       "id": "layers_5_orders_app_utils_payment",
       "community": 48,
-      "community_name": "OrderDetail",
+      "community_name": "OrdersPaymentEditor.vue",
       "norm_label": "payment.ts"
     },
     {
@@ -8120,7 +8247,7 @@
       "_origin": "ast",
       "id": "layers_5_orders_app_utils_payment_paymentformstate",
       "community": 48,
-      "community_name": "OrderDetail",
+      "community_name": "OrdersPaymentEditor.vue",
       "norm_label": "paymentformstate"
     },
     {
@@ -8132,7 +8259,7 @@
       "_origin": "ast",
       "id": "layers_5_orders_app_utils_payment_emptypaymentform",
       "community": 48,
-      "community_name": "OrderDetail",
+      "community_name": "OrdersPaymentEditor.vue",
       "norm_label": "emptypaymentform()"
     },
     {
@@ -8144,7 +8271,7 @@
       "_origin": "ast",
       "id": "layers_5_orders_app_utils_payment_paymentformfromorder",
       "community": 48,
-      "community_name": "OrderDetail",
+      "community_name": "OrdersPaymentEditor.vue",
       "norm_label": "paymentformfromorder()"
     },
     {
@@ -8154,8 +8281,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "layers_5_orders_app_utils_pdf",
-      "community": 92,
-      "community_name": "pdf.ts",
+      "community": 72,
+      "community_name": "orders-[id]-print.vue",
       "norm_label": "pdf.ts"
     },
     {
@@ -8167,8 +8294,8 @@
       "_callable_class": true,
       "_origin": "ast",
       "id": "layers_5_orders_app_utils_pdf_budgetpdfinput",
-      "community": 92,
-      "community_name": "pdf.ts",
+      "community": 72,
+      "community_name": "orders-[id]-print.vue",
       "norm_label": "budgetpdfinput"
     },
     {
@@ -8179,8 +8306,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "layers_5_orders_app_utils_pdf_safefilename",
-      "community": 92,
-      "community_name": "pdf.ts",
+      "community": 72,
+      "community_name": "orders-[id]-print.vue",
       "norm_label": "safefilename()"
     },
     {
@@ -8191,8 +8318,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "layers_5_orders_app_utils_pdf_formatplacapdf",
-      "community": 92,
-      "community_name": "pdf.ts",
+      "community": 72,
+      "community_name": "orders-[id]-print.vue",
       "norm_label": "formatplacapdf()"
     },
     {
@@ -8203,8 +8330,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "layers_5_orders_app_utils_pdf_adddocumentheader",
-      "community": 92,
-      "community_name": "pdf.ts",
+      "community": 72,
+      "community_name": "orders-[id]-print.vue",
       "norm_label": "adddocumentheader()"
     },
     {
@@ -8215,8 +8342,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "layers_5_orders_app_utils_pdf_addmetablock",
-      "community": 92,
-      "community_name": "pdf.ts",
+      "community": 72,
+      "community_name": "orders-[id]-print.vue",
       "norm_label": "addmetablock()"
     },
     {
@@ -8227,8 +8354,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "layers_5_orders_app_utils_pdf_downloadbudgetpdf",
-      "community": 92,
-      "community_name": "pdf.ts",
+      "community": 72,
+      "community_name": "orders-[id]-print.vue",
       "norm_label": "downloadbudgetpdf()"
     },
     {
@@ -11427,8 +11554,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "layers_8_management_app_utils_accounts_payable_todaydatevalue",
-      "community": 7,
-      "community_name": "useFinanceWorkspace.ts",
+      "community": 217,
+      "community_name": "useAccountsPayable.ts",
       "norm_label": "todaydatevalue()"
     },
     {
@@ -12156,8 +12283,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "server_api_collaborators_id_password_put",
-      "community": 235,
-      "community_name": "password.put.ts",
+      "community": 118,
+      "community_name": "create.post.ts",
       "norm_label": "password.put.ts"
     },
     {
@@ -12169,8 +12296,8 @@
       "_callable_class": true,
       "_origin": "ast",
       "id": "server_api_collaborators_id_password_put_passwordbody",
-      "community": 235,
-      "community_name": "password.put.ts",
+      "community": 118,
+      "community_name": "create.post.ts",
       "norm_label": "passwordbody"
     },
     {
@@ -15731,8 +15858,8 @@
       "source_location": "L43",
       "_origin": "ast",
       "id": "cursor_skills_design_taste_frontend_skill_1_the_three_dials_core_configuration",
-      "community": 239,
-      "community_name": "tasteskill: Anti-Slop Frontend Skill",
+      "community": 42,
+      "community_name": "1. THE THREE DIALS (Core Configuration)",
       "norm_label": "1. the three dials (core configuration)"
     },
     {
@@ -15742,8 +15869,8 @@
       "source_location": "L53",
       "_origin": "ast",
       "id": "cursor_skills_design_taste_frontend_skill_1_a_dial_inference_design_read_dial_values",
-      "community": 239,
-      "community_name": "tasteskill: Anti-Slop Frontend Skill",
+      "community": 42,
+      "community_name": "1. THE THREE DIALS (Core Configuration)",
       "norm_label": "1.a dial inference (design read \u2192 dial values)"
     },
     {
@@ -15753,8 +15880,8 @@
       "source_location": "L64",
       "_origin": "ast",
       "id": "cursor_skills_design_taste_frontend_skill_1_b_use_case_presets",
-      "community": 239,
-      "community_name": "tasteskill: Anti-Slop Frontend Skill",
+      "community": 42,
+      "community_name": "1. THE THREE DIALS (Core Configuration)",
       "norm_label": "1.b use-case presets"
     },
     {
@@ -15764,8 +15891,8 @@
       "source_location": "L77",
       "_origin": "ast",
       "id": "cursor_skills_design_taste_frontend_skill_1_c_how_the_dials_drive_output",
-      "community": 239,
-      "community_name": "tasteskill: Anti-Slop Frontend Skill",
+      "community": 42,
+      "community_name": "1. THE THREE DIALS (Core Configuration)",
       "norm_label": "1.c how the dials drive output"
     },
     {
@@ -16149,8 +16276,8 @@
       "source_location": "L552",
       "_origin": "ast",
       "id": "cursor_skills_design_taste_frontend_skill_7_dial_definitions_technical_reference",
-      "community": 93,
-      "community_name": "7. DIAL DEFINITIONS (Technical Reference)",
+      "community": 239,
+      "community_name": "tasteskill: Anti-Slop Frontend Skill",
       "norm_label": "7. dial definitions (technical reference)"
     },
     {
@@ -16160,8 +16287,8 @@
       "source_location": "L554",
       "_origin": "ast",
       "id": "cursor_skills_design_taste_frontend_skill_design_variance_level_1_10",
-      "community": 93,
-      "community_name": "7. DIAL DEFINITIONS (Technical Reference)",
+      "community": 239,
+      "community_name": "tasteskill: Anti-Slop Frontend Skill",
       "norm_label": "design_variance (level 1-10)"
     },
     {
@@ -16171,8 +16298,8 @@
       "source_location": "L560",
       "_origin": "ast",
       "id": "cursor_skills_design_taste_frontend_skill_motion_intensity_level_1_10",
-      "community": 93,
-      "community_name": "7. DIAL DEFINITIONS (Technical Reference)",
+      "community": 239,
+      "community_name": "tasteskill: Anti-Slop Frontend Skill",
       "norm_label": "motion_intensity (level 1-10)"
     },
     {
@@ -16182,8 +16309,8 @@
       "source_location": "L565",
       "_origin": "ast",
       "id": "cursor_skills_design_taste_frontend_skill_visual_density_level_1_10",
-      "community": 93,
-      "community_name": "7. DIAL DEFINITIONS (Technical Reference)",
+      "community": 239,
+      "community_name": "tasteskill: Anti-Slop Frontend Skill",
       "norm_label": "visual_density (level 1-10)"
     },
     {
@@ -23056,8 +23183,8 @@
       "author": null,
       "contributor": null,
       "rationale": "Required for toasts, tooltips, and programmatic overlays",
-      "community": 49,
-      "community_name": "Component Selection Guidelines",
+      "community": 64,
+      "community_name": "Forms Guidelines",
       "norm_label": "uapp root wrapper",
       "_origin": "semantic",
       "id": "_cursor_skills_nuxt_ui_skill_uapp"
@@ -23133,7 +23260,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 65,
+      "community": 49,
       "community_name": "Nuxt UI Components Index",
       "norm_label": "nuxt ui components index",
       "_origin": "semantic",
@@ -23148,8 +23275,8 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 64,
-      "community_name": "Forms Guidelines",
+      "community": 257,
+      "community_name": "UModal",
       "norm_label": "uform",
       "_origin": "semantic",
       "id": "_cursor_skills_nuxt_ui_references_components_uform"
@@ -23193,8 +23320,8 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 49,
-      "community_name": "Component Selection Guidelines",
+      "community": 257,
+      "community_name": "UModal",
       "norm_label": "uslideover",
       "_origin": "semantic",
       "id": "_cursor_skills_nuxt_ui_references_components_uslideover"
@@ -23208,8 +23335,8 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 49,
-      "community_name": "Component Selection Guidelines",
+      "community": 257,
+      "community_name": "UModal",
       "norm_label": "udrawer",
       "_origin": "semantic",
       "id": "_cursor_skills_nuxt_ui_references_components_udrawer"
@@ -23283,7 +23410,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 65,
+      "community": 49,
       "community_name": "Nuxt UI Components Index",
       "norm_label": "uchatmessages",
       "_origin": "semantic",
@@ -23298,7 +23425,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 65,
+      "community": 49,
       "community_name": "Nuxt UI Components Index",
       "norm_label": "prose components",
       "_origin": "semantic",
@@ -23328,8 +23455,8 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 49,
-      "community_name": "Component Selection Guidelines",
+      "community": 64,
+      "community_name": "Forms Guidelines",
       "norm_label": "component selection guidelines",
       "_origin": "semantic",
       "id": "_cursor_skills_nuxt_ui_references_guidelines_component_selection_component_selection"
@@ -23344,8 +23471,8 @@
       "author": null,
       "contributor": null,
       "rationale": "Modal for focused/destructive; Slideover for details; Drawer for mobile; Popover contextual; Tooltip non-interactive",
-      "community": 49,
-      "community_name": "Component Selection Guidelines",
+      "community": 257,
+      "community_name": "UModal",
       "norm_label": "overlay selection matrix",
       "_origin": "semantic",
       "id": "_cursor_skills_nuxt_ui_references_guidelines_component_selection_overlay_selection"
@@ -23359,8 +23486,8 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 49,
-      "community_name": "Component Selection Guidelines",
+      "community": 64,
+      "community_name": "Forms Guidelines",
       "norm_label": "input selection matrix",
       "_origin": "semantic",
       "id": "_cursor_skills_nuxt_ui_references_guidelines_component_selection_input_selection"
@@ -23375,8 +23502,8 @@
       "author": null,
       "contributor": null,
       "rationale": "Toast for ephemeral action feedback; Alert for persistent inline; never toast for actionable info",
-      "community": 49,
-      "community_name": "Component Selection Guidelines",
+      "community": 64,
+      "community_name": "Forms Guidelines",
       "norm_label": "feedback selection matrix",
       "_origin": "semantic",
       "id": "_cursor_skills_nuxt_ui_references_guidelines_component_selection_feedback_selection"
@@ -23391,7 +23518,7 @@
       "author": null,
       "contributor": null,
       "rationale": "Prose components styled for Markdown contexts; Comark auto-resolves when @nuxt/ui installed",
-      "community": 65,
+      "community": 49,
       "community_name": "Nuxt UI Components Index",
       "norm_label": "prefer prose over generic ui in markdown",
       "_origin": "semantic",
@@ -23468,8 +23595,8 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 49,
-      "community_name": "Component Selection Guidelines",
+      "community": 64,
+      "community_name": "Forms Guidelines",
       "norm_label": "usetoast",
       "_origin": "semantic",
       "id": "_cursor_skills_nuxt_ui_references_guidelines_conventions_usetost"
@@ -23725,8 +23852,8 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 64,
-      "community_name": "Forms Guidelines",
+      "community": 257,
+      "community_name": "UModal",
       "norm_label": "form in modal pattern",
       "_origin": "semantic",
       "id": "_cursor_skills_nuxt_ui_references_guidelines_forms_form_in_modal"
@@ -23740,7 +23867,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 65,
+      "community": 49,
       "community_name": "Nuxt UI Components Index",
       "norm_label": "chat layout",
       "_origin": "semantic",
@@ -23771,7 +23898,7 @@
       "author": null,
       "contributor": null,
       "rationale": "Incrementally renders tokens and enables Nuxt UI prose components",
-      "community": 65,
+      "community": 49,
       "community_name": "Nuxt UI Components Index",
       "norm_label": "comark streaming markdown",
       "_origin": "semantic",
@@ -24270,8 +24397,8 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 49,
-      "community_name": "Component Selection Guidelines",
+      "community": 257,
+      "community_name": "UModal",
       "norm_label": "form in slideover",
       "_origin": "semantic",
       "id": "_cursor_skills_nuxt_ui_references_recipes_overlays_form_in_slideover"
@@ -25209,7 +25336,7 @@
       "author": null,
       "contributor": null,
       "community": 56,
-      "community_name": "Deployment",
+      "community_name": "Server Routes",
       "norm_label": "deployment",
       "_origin": "semantic",
       "id": "_cursor_skills_nuxt_references_core_deployment_deployment"
@@ -25224,7 +25351,7 @@
       "author": null,
       "contributor": null,
       "community": 56,
-      "community_name": "Deployment",
+      "community_name": "Server Routes",
       "norm_label": "nitro",
       "_origin": "semantic",
       "id": "_cursor_skills_nuxt_references_core_deployment_nitro"
@@ -25239,7 +25366,7 @@
       "author": null,
       "contributor": null,
       "community": 56,
-      "community_name": "Deployment",
+      "community_name": "Server Routes",
       "norm_label": "node.js server deployment",
       "_origin": "semantic",
       "id": "_cursor_skills_nuxt_references_core_deployment_nodejs_server"
@@ -25254,7 +25381,7 @@
       "author": null,
       "contributor": null,
       "community": 56,
-      "community_name": "Deployment",
+      "community_name": "Server Routes",
       "norm_label": "static generation",
       "_origin": "semantic",
       "id": "_cursor_skills_nuxt_references_core_deployment_static_generation"
@@ -25268,8 +25395,8 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 56,
-      "community_name": "Deployment",
+      "community": 0,
+      "community_name": "Deployment Platform Choice",
       "norm_label": "nitro preset",
       "_origin": "semantic",
       "id": "_cursor_skills_nuxt_references_core_deployment_nitro_preset"
@@ -25283,8 +25410,8 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 56,
-      "community_name": "Deployment",
+      "community": 0,
+      "community_name": "Deployment Platform Choice",
       "norm_label": "vercel",
       "_origin": "semantic",
       "id": "_cursor_skills_nuxt_references_core_deployment_vercel"
@@ -25298,8 +25425,8 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 56,
-      "community_name": "Deployment",
+      "community": 0,
+      "community_name": "Deployment Platform Choice",
       "norm_label": "netlify",
       "_origin": "semantic",
       "id": "_cursor_skills_nuxt_references_core_deployment_netlify"
@@ -25313,8 +25440,8 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 56,
-      "community_name": "Deployment",
+      "community": 0,
+      "community_name": "Deployment Platform Choice",
       "norm_label": "cloudflare pages",
       "_origin": "semantic",
       "id": "_cursor_skills_nuxt_references_core_deployment_cloudflare_pages"
@@ -25329,8 +25456,8 @@
       "author": null,
       "contributor": null,
       "rationale": "Vercel for fastest DX; Netlify for static/forms; Cloudflare for cost/edge; GitHub Actions+VPS for full control.",
-      "community": 56,
-      "community_name": "Deployment",
+      "community": 0,
+      "community_name": "Deployment Platform Choice",
       "norm_label": "deployment platform choice",
       "_origin": "semantic",
       "id": "_cursor_skills_nuxt_references_core_deployment_platform_choice"
@@ -25374,7 +25501,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 111,
+      "community": 56,
       "community_name": "Server Routes",
       "norm_label": "server/ directory",
       "_origin": "semantic",
@@ -25510,7 +25637,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 111,
+      "community": 56,
       "community_name": "Server Routes",
       "norm_label": "addserverhandler",
       "_origin": "semantic",
@@ -25901,7 +26028,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 111,
+      "community": 56,
       "community_name": "Server Routes",
       "norm_label": "server routes",
       "_origin": "semantic",
@@ -25916,7 +26043,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 111,
+      "community": 56,
       "community_name": "Server Routes",
       "norm_label": "defineeventhandler",
       "_origin": "semantic",
@@ -25931,7 +26058,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 111,
+      "community": 56,
       "community_name": "Server Routes",
       "norm_label": "server middleware",
       "_origin": "semantic",
@@ -25962,7 +26089,7 @@
       "author": null,
       "contributor": null,
       "community": 56,
-      "community_name": "Deployment",
+      "community_name": "Server Routes",
       "norm_label": "usestorage",
       "_origin": "semantic",
       "id": "_cursor_skills_nuxt_references_features_server_use_storage"
@@ -25977,7 +26104,7 @@
       "author": null,
       "contributor": null,
       "community": 56,
-      "community_name": "Deployment",
+      "community_name": "Server Routes",
       "norm_label": "nitro server engine",
       "_origin": "semantic",
       "id": "_cursor_skills_nuxt_references_features_server_nitro_engine"
@@ -26157,8 +26284,8 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 56,
-      "community_name": "Deployment",
+      "community": 0,
+      "community_name": "Deployment Platform Choice",
       "norm_label": "edge-side rendering",
       "_origin": "semantic",
       "id": "_cursor_skills_nuxt_references_rendering_modes_edge_side_rendering"
@@ -26173,7 +26300,7 @@
       "author": null,
       "contributor": null,
       "community": 56,
-      "community_name": "Deployment",
+      "community_name": "Server Routes",
       "norm_label": "prerendering",
       "_origin": "semantic",
       "id": "_cursor_skills_nuxt_references_rendering_modes_prerendering"
@@ -26354,8 +26481,8 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 57,
-      "community_name": "pnpm CLI Commands Guide",
+      "community": 67,
+      "community_name": "pnpm CI/CD & Migration Guide",
       "norm_label": "build changed packages filter",
       "_origin": "semantic",
       "id": "_cursor_skills_pnpm_references_ci_monorepo_filter_changed"
@@ -26429,8 +26556,8 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 57,
-      "community_name": "pnpm CLI Commands Guide",
+      "community": 67,
+      "community_name": "pnpm CI/CD & Migration Guide",
       "norm_label": "pnpm store commands",
       "_origin": "semantic",
       "id": "_cursor_skills_pnpm_references_cli_store_management"
@@ -26581,8 +26708,8 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 51,
-      "community_name": "Supabase Skill Changelog",
+      "community": 67,
+      "community_name": "pnpm CI/CD & Migration Guide",
       "norm_label": "pnpm supply chain protection",
       "_origin": "semantic",
       "id": "_cursor_skills_pnpm_references_features_supply_chain_protection"
@@ -26826,8 +26953,8 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 51,
-      "community_name": "Supabase Skill Changelog",
+      "community": 34,
+      "community_name": "Supabase Skill",
       "norm_label": "supabase skill changelog",
       "_origin": "semantic",
       "id": "_cursor_skills_supabase_changelog_document"
@@ -26841,8 +26968,8 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 51,
-      "community_name": "Supabase Skill Changelog",
+      "community": 34,
+      "community_name": "Supabase Skill",
       "norm_label": "supabase skill v0.1.7",
       "_origin": "semantic",
       "id": "_cursor_skills_supabase_changelog_v0_1_7"
@@ -26856,8 +26983,8 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 51,
-      "community_name": "Supabase Skill Changelog",
+      "community": 34,
+      "community_name": "Supabase Skill",
       "norm_label": "debugging workflows feature",
       "_origin": "semantic",
       "id": "_cursor_skills_supabase_changelog_debugging_workflows"
@@ -26871,8 +26998,8 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 51,
-      "community_name": "Supabase Skill Changelog",
+      "community": 34,
+      "community_name": "Supabase Skill",
       "norm_label": "declarative schema section",
       "_origin": "semantic",
       "id": "_cursor_skills_supabase_changelog_declarative_schema"
@@ -26886,8 +27013,8 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 51,
-      "community_name": "Supabase Skill Changelog",
+      "community": 67,
+      "community_name": "pnpm CI/CD & Migration Guide",
       "norm_label": "npm supply-chain security guidance",
       "_origin": "semantic",
       "id": "_cursor_skills_supabase_changelog_npm_supply_chain"
@@ -26917,8 +27044,8 @@
       "author": "supabase",
       "contributor": null,
       "rationale": "Supabase changes frequently \u2014 do not rely on training data; check changelog and docs first",
-      "community": 51,
-      "community_name": "Supabase Skill Changelog",
+      "community": 34,
+      "community_name": "Supabase Skill",
       "norm_label": "verify against changelog principle",
       "_origin": "semantic",
       "id": "_cursor_skills_supabase_skill_verify_changelog"
@@ -27010,8 +27137,8 @@
       "captured_at": null,
       "author": "supabase",
       "contributor": null,
-      "community": 51,
-      "community_name": "Supabase Skill Changelog",
+      "community": 34,
+      "community_name": "Supabase Skill",
       "norm_label": "declarative schema workflow",
       "_origin": "semantic",
       "id": "_cursor_skills_supabase_skill_declarative_schemas"
@@ -27616,8 +27743,8 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 42,
-      "community_name": "Vite Configuration",
+      "community": 36,
+      "community_name": "Vite Build and SSR",
       "norm_label": "peer dependencies",
       "_origin": "semantic",
       "id": "_cursor_skills_ts_library_references_package_exports_peer_dependencies"
@@ -28858,8 +28985,8 @@
       "captured_at": null,
       "author": "Anthony Fu",
       "contributor": null,
-      "community": 42,
-      "community_name": "Vite Configuration",
+      "community": 36,
+      "community_name": "Vite Build and SSR",
       "norm_label": "vite skill",
       "_origin": "semantic",
       "id": "_cursor_skills_vite_skill_document"
@@ -28889,8 +29016,8 @@
       "captured_at": null,
       "author": "Anthony Fu",
       "contributor": null,
-      "community": 42,
-      "community_name": "Vite Configuration",
+      "community": 36,
+      "community_name": "Vite Build and SSR",
       "norm_label": "defineconfig",
       "_origin": "semantic",
       "id": "_cursor_skills_vite_skill_define_config"
@@ -28904,8 +29031,8 @@
       "captured_at": null,
       "author": "Anthony Fu",
       "contributor": null,
-      "community": 42,
-      "community_name": "Vite Configuration",
+      "community": 36,
+      "community_name": "Vite Build and SSR",
       "norm_label": "official vite plugins",
       "_origin": "semantic",
       "id": "_cursor_skills_vite_skill_official_plugins"
@@ -29115,8 +29242,8 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 42,
-      "community_name": "Vite Configuration",
+      "community": 36,
+      "community_name": "Vite Build and SSR",
       "norm_label": "vite configuration",
       "_origin": "semantic",
       "id": "_cursor_skills_vite_references_core_config_document"
@@ -29130,8 +29257,8 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 42,
-      "community_name": "Vite Configuration",
+      "community": 36,
+      "community_name": "Vite Build and SSR",
       "norm_label": "conditional config (command/mode)",
       "_origin": "semantic",
       "id": "_cursor_skills_vite_references_core_config_conditional_config"
@@ -29145,8 +29272,8 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 42,
-      "community_name": "Vite Configuration",
+      "community": 36,
+      "community_name": "Vite Build and SSR",
       "norm_label": "async config",
       "_origin": "semantic",
       "id": "_cursor_skills_vite_references_core_config_async_config"
@@ -29191,8 +29318,8 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 42,
-      "community_name": "Vite Configuration",
+      "community": 36,
+      "community_name": "Vite Build and SSR",
       "norm_label": "define global constants",
       "_origin": "semantic",
       "id": "_cursor_skills_vite_references_core_config_define_globals"
@@ -29206,8 +29333,8 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 42,
-      "community_name": "Vite Configuration",
+      "community": 36,
+      "community_name": "Vite Build and SSR",
       "norm_label": "server.proxy",
       "_origin": "semantic",
       "id": "_cursor_skills_vite_references_core_config_server_proxy"
@@ -29221,8 +29348,8 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 42,
-      "community_name": "Vite Configuration",
+      "community": 36,
+      "community_name": "Vite Build and SSR",
       "norm_label": "build.target",
       "_origin": "semantic",
       "id": "_cursor_skills_vite_references_core_config_build_target"
@@ -29371,8 +29498,8 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 77,
-      "community_name": "Vite Plugin API",
+      "community": 18,
+      "community_name": "SSR Middleware Mode",
       "norm_label": "configureserver hook",
       "_origin": "semantic",
       "id": "_cursor_skills_vite_references_core_plugin_api_configure_server"
@@ -29643,8 +29770,8 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 42,
-      "community_name": "Vite Configuration",
+      "community": 36,
+      "community_name": "Vite Build and SSR",
       "norm_label": "vue 3 composition api",
       "_origin": "semantic",
       "id": "_cursor_skills_vue_skill_composition_api"
@@ -31482,18 +31609,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "layers/1.base/app/components/BaseAppHeader.vue",
-      "source_location": "L22",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "layers_1_base_app_components_baseappheader",
-      "target": "layers_1_base_app_components_baseappheader_childrenactive",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "layers/1.base/app/components/BaseAppHeader.vue",
-      "source_location": "L26",
+      "source_location": "L18",
       "weight": 1.0,
       "_origin": "ast",
       "source": "layers_1_base_app_components_baseappheader",
@@ -31504,18 +31620,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "layers/1.base/app/components/BaseAppHeader.vue",
-      "source_location": "L12",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "layers_1_base_app_components_baseappheader",
-      "target": "layers_1_base_app_components_baseappheader_mobileopen",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "layers/1.base/app/components/BaseAppHeader.vue",
-      "source_location": "L111",
+      "source_location": "L73",
       "weight": 1.0,
       "_origin": "ast",
       "source": "layers_1_base_app_components_baseappheader",
@@ -31526,7 +31631,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "layers/1.base/app/components/BaseAppHeader.vue",
-      "source_location": "L9",
+      "source_location": "L10",
       "weight": 1.0,
       "_origin": "ast",
       "source": "layers_1_base_app_components_baseappheader",
@@ -31537,7 +31642,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "layers/1.base/app/components/BaseAppHeader.vue",
-      "source_location": "L120",
+      "source_location": "L80",
       "weight": 1.0,
       "_origin": "ast",
       "source": "layers_1_base_app_components_baseappheader",
@@ -31548,7 +31653,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "layers/1.base/app/components/BaseAppHeader.vue",
-      "source_location": "L10",
+      "source_location": "L11",
       "weight": 1.0,
       "_origin": "ast",
       "source": "layers_1_base_app_components_baseappheader",
@@ -31559,33 +31664,11 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "layers/1.base/app/components/BaseAppHeader.vue",
-      "source_location": "L18",
+      "source_location": "L14",
       "weight": 1.0,
       "_origin": "ast",
       "source": "layers_1_base_app_components_baseappheader",
       "target": "layers_1_base_app_components_baseappheader_pathmatches",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "layers/1.base/app/components/BaseAppHeader.vue",
-      "source_location": "L7",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "layers_1_base_app_components_baseappheader",
-      "target": "layers_1_base_app_components_baseappheader_route",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "layers/1.base/app/components/BaseAppHeader.vue",
-      "source_location": "L11",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "layers_1_base_app_components_baseappheader",
-      "target": "layers_1_base_app_components_baseappheader_signingout",
       "confidence_score": 1.0
     },
     {
@@ -31596,6 +31679,39 @@
       "weight": 1.0,
       "_origin": "ast",
       "source": "layers_1_base_app_components_baseappheader",
+      "target": "layers_1_base_app_components_baseappheader_route",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "layers/1.base/app/components/BaseAppHeader.vue",
+      "source_location": "L61",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "layers_1_base_app_components_baseappheader",
+      "target": "layers_1_base_app_components_baseappheader_settingsactive",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "layers/1.base/app/components/BaseAppHeader.vue",
+      "source_location": "L12",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "layers_1_base_app_components_baseappheader",
+      "target": "layers_1_base_app_components_baseappheader_signingout",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "layers/1.base/app/components/BaseAppHeader.vue",
+      "source_location": "L9",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "layers_1_base_app_components_baseappheader",
       "target": "layers_1_base_app_components_baseappheader_signout",
       "confidence_score": 1.0
     },
@@ -31603,7 +31719,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "layers/1.base/app/components/BaseAppHeader.vue",
-      "source_location": "L101",
+      "source_location": "L63",
       "weight": 1.0,
       "_origin": "ast",
       "source": "layers_1_base_app_components_baseappheader",
@@ -31611,14 +31727,38 @@
       "confidence_score": 1.0
     },
     {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "layers/1.base/app/components/BaseAppHeader.vue",
+      "source_location": "L4",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "layers_1_base_app_components_baseappheader",
+      "target": "layers_1_base_app_utils_settings_hub",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "layers/1.base/app/components/BaseAppHeader.vue",
+      "source_location": "L4",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "layers_1_base_app_components_baseappheader",
+      "target": "layers_1_base_app_utils_settings_hub_issettingshubpath",
+      "confidence_score": 1.0
+    },
+    {
       "relation": "calls",
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "layers/1.base/app/components/BaseAppHeader.vue",
-      "source_location": "L23",
+      "source_location": "L28",
       "weight": 1.0,
       "_origin": "ast",
-      "source": "layers_1_base_app_components_baseappheader_childrenactive",
+      "source": "layers_1_base_app_components_baseappheader_links",
       "target": "layers_1_base_app_components_baseappheader_pathmatches",
       "confidence_score": 1.0
     },
@@ -31626,20 +31766,20 @@
       "relation": "calls",
       "context": "call",
       "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
       "source_file": "layers/1.base/app/components/BaseAppHeader.vue",
-      "source_location": "L45",
+      "source_location": "L61",
       "weight": 1.0,
       "_origin": "ast",
-      "source": "layers_1_base_app_components_baseappheader_links",
-      "target": "layers_1_base_app_components_baseappheader_childrenactive",
-      "confidence_score": 1.0
+      "source": "layers_1_base_app_components_baseappheader_settingsactive",
+      "target": "layers_1_base_app_utils_settings_hub_issettingshubpath"
     },
     {
       "relation": "calls",
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "layers/1.base/app/components/BaseAppHeader.vue",
-      "source_location": "L106",
+      "source_location": "L68",
       "weight": 1.0,
       "_origin": "ast",
       "source": "layers_1_base_app_components_baseappheader_usermenuitems",
@@ -31859,6 +31999,87 @@
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
+      "source_file": "layers/1.base/app/pages/settings.vue",
+      "source_location": "L19",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "layers_1_base_app_pages_settings",
+      "target": "layers_1_base_app_pages_settings_can",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "layers/1.base/app/pages/settings.vue",
+      "source_location": "L25",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "layers_1_base_app_pages_settings",
+      "target": "layers_1_base_app_pages_settings_sections",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "layers/1.base/app/pages/settings.vue",
+      "source_location": "L21",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "layers_1_base_app_pages_settings",
+      "target": "layers_1_base_app_pages_settings_visibleitems",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "layers/1.base/app/pages/settings.vue",
+      "source_location": "L2",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "layers_1_base_app_pages_settings",
+      "target": "layers_1_base_app_utils_settings_hub",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "layers/1.base/app/pages/settings.vue",
+      "source_location": "L2",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "layers_1_base_app_pages_settings",
+      "target": "layers_1_base_app_utils_settings_hub_settings_hub_items",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "layers/1.base/app/pages/settings.vue",
+      "source_location": "L2",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "layers_1_base_app_pages_settings",
+      "target": "layers_1_base_app_utils_settings_hub_settings_hub_section_label",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "layers/1.base/app/pages/settings.vue",
+      "source_location": "L2",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "layers_1_base_app_pages_settings",
+      "target": "layers_1_base_app_utils_settings_hub_settings_hub_sections",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
       "source_file": "layers/1.base/app/utils/app-routes.ts",
       "source_location": "L1",
       "weight": 1.0,
@@ -31909,6 +32130,83 @@
       "_origin": "ast",
       "source": "layers_1_base_app_utils_brand",
       "target": "layers_1_base_app_utils_brand_stitch_colors",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "layers/1.base/app/utils/settings-hub.ts",
+      "source_location": "L67",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "layers_1_base_app_utils_settings_hub",
+      "target": "layers_1_base_app_utils_settings_hub_issettingshubpath",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "layers/1.base/app/utils/settings-hub.ts",
+      "source_location": "L22",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "layers_1_base_app_utils_settings_hub",
+      "target": "layers_1_base_app_utils_settings_hub_settings_hub_items",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "layers/1.base/app/utils/settings-hub.ts",
+      "source_location": "L17",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "layers_1_base_app_utils_settings_hub",
+      "target": "layers_1_base_app_utils_settings_hub_settings_hub_section_label",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "layers/1.base/app/utils/settings-hub.ts",
+      "source_location": "L61",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "layers_1_base_app_utils_settings_hub",
+      "target": "layers_1_base_app_utils_settings_hub_settings_hub_sections",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "layers/1.base/app/utils/settings-hub.ts",
+      "source_location": "L7",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "layers_1_base_app_utils_settings_hub",
+      "target": "layers_1_base_app_utils_settings_hub_settingshubitem",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "layers/1.base/app/utils/settings-hub.ts",
+      "source_location": "L3",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "layers_1_base_app_utils_settings_hub",
+      "target": "layers_1_base_app_utils_settings_hub_settingshubpermission",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "layers/1.base/app/utils/settings-hub.ts",
+      "source_location": "L1",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "layers_1_base_app_utils_settings_hub",
+      "target": "layers_1_base_app_utils_settings_hub_settingshubsection",
       "confidence_score": 1.0
     },
     {
@@ -48889,6 +49187,42 @@
       "_origin": "ast",
       "source": "server_api_collaborators_id_password_put",
       "target": "server_api_collaborators_id_password_put_passwordbody",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "server/api/collaborators/[id]/password.put.ts",
+      "source_location": "L3",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "server_api_collaborators_id_password_put",
+      "target": "server_utils_supabase_admin",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "server/api/collaborators/[id]/password.put.ts",
+      "source_location": "L3",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "server_api_collaborators_id_password_put",
+      "target": "server_utils_supabase_admin_getsupabaseadminconfig",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "server/api/collaborators/[id]/password.put.ts",
+      "source_location": "L3",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "server_api_collaborators_id_password_put",
+      "target": "server_utils_supabase_admin_supabaseadminfetch",
       "confidence_score": 1.0
     },
     {
@@ -66221,5 +66555,5 @@
       "source_file": "public/logo.png"
     }
   ],
-  "built_at_commit": "c9b1d3c92ad42d3ec4e149567dc5fd66c1173260"
+  "built_at_commit": "2b3ef4507df6cfcb8b8fd2a57b246ea8d9072d84"
 }

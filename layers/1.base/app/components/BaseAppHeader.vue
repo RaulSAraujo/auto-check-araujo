@@ -1,39 +1,22 @@
 <script setup lang="ts">
 import type { DropdownMenuItem, NavigationMenuItem } from '@nuxt/ui'
 import { COLABORADOR_PAPEL_LABEL } from '~~/shared/types/oficina'
+import { isSettingsHubPath } from '../utils/settings-hub'
 
 defineOptions({ name: 'BaseAppHeader' })
 
 const route = useRoute()
+const colorMode = useColorMode()
 const { signOut } = useAuth()
 const { nome: profileNome } = useColaboradorNome()
 const { papel, can } = usePermissions()
 const signingOut = ref(false)
-const mobileOpen = ref(false)
-
-watch(() => route.fullPath, () => {
-  mobileOpen.value = false
-})
 
 function pathMatches(to: string) {
   return route.path === to || route.path.startsWith(`${to}/`)
 }
 
-function childrenActive(children?: NavigationMenuItem[]) {
-  return children?.some(child => typeof child.to === 'string' && pathMatches(child.to)) ?? false
-}
-
 const links = computed<NavigationMenuItem[]>(() => {
-  const operacaoChildren: NavigationMenuItem[] = [
-    { label: 'Ordens', to: APP_ROUTES.orders, icon: 'i-lucide-clipboard-list' },
-    { label: 'Agenda', to: APP_ROUTES.scheduling, icon: 'i-lucide-calendar-days' }
-  ]
-
-  const cadastrosChildren: NavigationMenuItem[] = [
-    { label: 'Clientes', to: APP_ROUTES.customers, icon: 'i-lucide-users' },
-    { label: 'Veículos', to: APP_ROUTES.vehicles, icon: 'i-lucide-car' }
-  ]
-
   const items: NavigationMenuItem[] = [
     {
       label: 'Início',
@@ -41,80 +24,76 @@ const links = computed<NavigationMenuItem[]>(() => {
       active: route.path === APP_ROUTES.home
     },
     {
-      label: 'Operação',
-      active: childrenActive(operacaoChildren),
-      children: operacaoChildren
+      label: 'Agenda',
+      to: APP_ROUTES.scheduling,
+      active: pathMatches(APP_ROUTES.scheduling)
     },
     {
-      label: 'Cadastros',
-      active: childrenActive(cadastrosChildren),
-      children: cadastrosChildren
+      label: 'Clientes',
+      to: APP_ROUTES.customers,
+      active: pathMatches(APP_ROUTES.customers)
     }
   ]
 
-  const management: NavigationMenuItem[] = []
-  const configuration: NavigationMenuItem[] = []
-
   if (can('finance.view')) {
-    management.push({
+    items.push({
       label: 'Financeiro',
       to: APP_ROUTES.finance,
-      icon: 'i-lucide-wallet'
+      active: pathMatches(APP_ROUTES.finance)
     })
   }
 
-  if (can('collaborators.manage')) {
-    management.push({
-      label: 'Equipe',
-      to: APP_ROUTES.team,
-      icon: 'i-lucide-user-cog'
-    })
-  }
-
-  if (can('catalog.manage')) {
-    configuration.push(
-      { label: 'Catálogo', to: APP_ROUTES.catalog, icon: 'i-lucide-package' },
-      { label: 'Fornecedores', to: APP_ROUTES.catalogSuppliers, icon: 'i-lucide-truck' },
-      { label: 'Precificação', to: APP_ROUTES.pricing, icon: 'i-lucide-calculator' }
-    )
-  }
-
-  if (management.length) {
-    items.push({
-      label: 'Gestão',
-      active: childrenActive(management),
-      children: management
-    })
-  }
-
-  if (configuration.length) {
-    items.push({
-      label: 'Configuração',
-      active: childrenActive(configuration),
-      children: configuration
-    })
-  }
+  items.push(
+    {
+      label: 'Ordens',
+      to: APP_ROUTES.orders,
+      active: pathMatches(APP_ROUTES.orders)
+    },
+    {
+      label: 'Veículos',
+      to: APP_ROUTES.vehicles,
+      active: pathMatches(APP_ROUTES.vehicles)
+    }
+  )
 
   return items
 })
 
-const userMenuItems = computed<DropdownMenuItem[]>(() => [
-  {
-    label: 'Sair',
-    icon: 'i-lucide-log-out',
-    onSelect: () => {
-      void onSignOut()
+const settingsActive = computed(() => isSettingsHubPath(route.path))
+
+const isDark = computed(() => colorMode.value === 'dark')
+
+const userMenuItems = computed<DropdownMenuItem[][]>(() => [
+  [
+    {
+      label: 'Ajustes',
+      icon: 'i-lucide-settings',
+      to: APP_ROUTES.settings
+    },
+    {
+      label: isDark.value ? 'Tema claro' : 'Tema escuro',
+      icon: isDark.value ? 'i-lucide-sun' : 'i-lucide-moon',
+      onSelect: () => {
+        colorMode.preference = isDark.value ? 'light' : 'dark'
+      }
     }
-  }
+  ],
+  [
+    {
+      label: 'Sair',
+      icon: 'i-lucide-log-out',
+      onSelect: () => {
+        void onSignOut()
+      }
+    }
+  ]
 ])
 
 const navUi = {
   item: 'py-0',
   link: 'px-2.5 py-1.5 rounded-full',
   linkLeadingIcon: 'hidden',
-  linkTrailingIcon: 'size-3.5 text-dimmed',
-  viewportWrapper: 'pt-3',
-  viewport: 'bg-muted/80 backdrop-blur-md border border-default/60 dark:border-accented/40 shadow-lg shadow-neutral-950/10 dark:shadow-none ring-0 rounded-xl'
+  linkTrailingIcon: 'size-3.5 text-dimmed'
 } as const
 
 async function onSignOut() {
@@ -130,15 +109,14 @@ async function onSignOut() {
 
 <template>
   <header class="sticky top-0 z-50 flex justify-center px-3 py-2 sm:py-4">
-    <!-- Desktop floating pill -->
     <div
-      class="hidden items-center gap-1 rounded-full border border-default/60 bg-muted/80 px-1.5 py-1 shadow-lg shadow-neutral-950/10 backdrop-blur-md dark:border-accented/40 dark:shadow-none lg:flex"
+      class="flex w-full max-w-4xl items-center justify-between gap-1 rounded-full border border-default/60 bg-muted/80 px-1.5 py-1 shadow-lg shadow-neutral-950/10 backdrop-blur-md dark:border-accented/40 dark:shadow-none sm:w-auto"
     >
       <UNavigationMenu
         :items="links"
         variant="pill"
         color="primary"
-        content-orientation="vertical"
+        class="min-w-0 flex-1 overflow-x-auto sm:flex-none [&::-webkit-scrollbar]:hidden"
         :ui="navUi"
       />
 
@@ -147,20 +125,13 @@ async function onSignOut() {
         class="mx-0.5 h-5"
       />
 
-      <UColorModeButton
-        color="neutral"
-        variant="ghost"
-        size="sm"
-        class="rounded-full"
-      />
-
       <UDropdownMenu
         :items="userMenuItems"
         :content="{ align: 'end', sideOffset: 10 }"
       >
         <UButton
           color="neutral"
-          variant="ghost"
+          :variant="settingsActive ? 'soft' : 'ghost'"
           class="rounded-full pe-2.5 ps-1.5"
           :aria-label="`Conta de ${profileNome || 'usuário'}`"
         >
@@ -173,73 +144,21 @@ async function onSignOut() {
               size: '2xs'
             }"
             size="sm"
+            class="hidden sm:flex"
             :ui="{
               root: 'gap-2',
               name: 'text-xs font-semibold truncate max-w-28 leading-tight',
               description: 'text-[0.625rem] text-muted truncate max-w-28 leading-tight'
             }"
           />
+          <UAvatar
+            class="sm:hidden"
+            :alt="profileNome || 'Usuário'"
+            size="xs"
+            :text="profileNome?.charAt(0)?.toUpperCase() || 'A'"
+          />
         </UButton>
       </UDropdownMenu>
-    </div>
-
-    <!-- Mobile bar -->
-    <div
-      class="flex w-full max-w-lg items-center justify-between gap-2 rounded-full border border-default/60 bg-muted/80 px-2 py-1.5 shadow-lg shadow-neutral-950/10 backdrop-blur-md dark:border-accented/40 dark:shadow-none lg:hidden"
-    >
-      <USlideover
-        v-model:open="mobileOpen"
-        title="Menu"
-        side="left"
-        :ui="{ content: 'max-w-xs' }"
-      >
-        <UButton
-          color="neutral"
-          variant="ghost"
-          icon="i-lucide-menu"
-          size="sm"
-          square
-          class="rounded-full"
-          aria-label="Abrir menu"
-        />
-
-        <template #body>
-          <UNavigationMenu
-            :items="links"
-            orientation="vertical"
-            variant="pill"
-            color="primary"
-            class="w-full"
-          />
-        </template>
-      </USlideover>
-
-      <div class="flex items-center gap-0.5">
-        <UColorModeButton
-          color="neutral"
-          variant="ghost"
-          size="sm"
-          class="rounded-full"
-        />
-
-        <UDropdownMenu
-          :items="userMenuItems"
-          :content="{ align: 'end', sideOffset: 8 }"
-        >
-          <UButton
-            color="neutral"
-            variant="ghost"
-            class="rounded-full p-1"
-            :aria-label="`Conta de ${profileNome || 'usuário'}`"
-          >
-            <UAvatar
-              :alt="profileNome || 'Usuário'"
-              size="xs"
-              :text="profileNome?.charAt(0)?.toUpperCase() || 'A'"
-            />
-          </UButton>
-        </UDropdownMenu>
-      </div>
     </div>
   </header>
 </template>

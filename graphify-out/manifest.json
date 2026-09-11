@@ -15,8 +15,8 @@
     "semantic_hash": ""
   },
   "layers/1.base/app/components/BaseAppHeader.vue": {
-    "mtime": 1789146878.5060828,
-    "ast_hash": "ab54017f8c295db28b6755c27399d421",
+    "mtime": 1789153028.1861815,
+    "ast_hash": "46790e1cf17fda026e5796415d04723f",
     "semantic_hash": ""
   },
   "layers/1.base/app/components/BaseBrandIcon.vue": {
@@ -65,8 +65,8 @@
     "semantic_hash": "6d5ea10d5b3ea6e1a402eb63ce6f3096"
   },
   "layers/1.base/app/utils/app-routes.ts": {
-    "mtime": 1789146876.3631816,
-    "ast_hash": "a0e4e1b1f7367402b315f1d17bb83a35",
+    "mtime": 1789152452.6381416,
+    "ast_hash": "9862e388725794a65fbd09a83cc39112",
     "semantic_hash": ""
   },
   "layers/1.base/app/utils/brand.ts": {
@@ -1345,13 +1345,13 @@
     "semantic_hash": "9d299e7182fbb859ed14da57a5031c6f"
   },
   ".stitch/DESIGN.md": {
-    "mtime": 1789144823.4040003,
-    "ast_hash": "13209900d9e425f3a6fc123ee261457f",
+    "mtime": 1789153036.2990568,
+    "ast_hash": "30da5751f94ebbefd47129e292b6c0f8",
     "semantic_hash": ""
   },
   ".stitch/SCREENS.md": {
-    "mtime": 1789151492.3131762,
-    "ast_hash": "9692029c76cc2a8028b7d1b76bb7e165",
+    "mtime": 1789153036.2977214,
+    "ast_hash": "23e2be77da3cb1c127bc6aa3c600f0bb",
     "semantic_hash": ""
   },
   "CONTEXT.md": {
@@ -1865,8 +1865,18 @@
     "semantic_hash": ""
   },
   "server/api/collaborators/[id]/password.put.ts": {
-    "mtime": 1789151450.2384307,
-    "ast_hash": "42aec3283d71e593183104a02184ff14",
+    "mtime": 1789152668.502365,
+    "ast_hash": "2337b7119a2c9cadcbc12e08223070d1",
+    "semantic_hash": ""
+  },
+  "layers/1.base/app/pages/settings.vue": {
+    "mtime": 1789153030.6030836,
+    "ast_hash": "9003cdaf52953fdfd8be521b34884524",
+    "semantic_hash": ""
+  },
+  "layers/1.base/app/utils/settings-hub.ts": {
+    "mtime": 1789153028.18797,
+    "ast_hash": "2bef24479452f83b99a90e8ffe7a7d48",
     "semantic_hash": ""
   }
 }
