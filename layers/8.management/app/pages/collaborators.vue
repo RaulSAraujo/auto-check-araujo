@@ -8,13 +8,7 @@ definePageMeta({
 
 useRequirePermission('collaborators.manage')
 
-await navigateTo(
-  {
-    path: APP_ROUTES.team,
-    query: { tab: 'colaboradores' }
-  },
-  { redirectCode: 301, replace: true }
-)
+await navigateTo(APP_ROUTES.team, { redirectCode: 301, replace: true })
 </script>
 
 <template>

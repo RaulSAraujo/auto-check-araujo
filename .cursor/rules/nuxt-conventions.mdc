@@ -111,7 +111,7 @@ Cada layer **deve** declarar `components` com `prefix` no seu `nuxt.config.ts` p
 | `4.customers` | `Customers` | `<CustomersForm />` |
 | `5.orders` | `Orders` | `<OrdersBudgetSection />` |
 | `6.configuration` | pastas `catalog/` + `pricing/` (nome no arquivo) | `<CatalogForm />`, `<PricingForm />` |
-| `8.management` | pastas `finance/` + `team/` (nome no arquivo) | `<FinanceTable />`, `<TeamPresenceSection />` |
+| `8.management` | pastas `finance/` + `team/` (nome no arquivo) | `<FinanceTable />`, `<TeamCollaboratorsTable />` |
 | `10.vehicles` | `Vehicles` | `<VehiclesForm />` |
 | `11.scheduling` | `Scheduling` | `<SchedulingCalendar />` |
 

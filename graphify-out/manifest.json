@@ -235,8 +235,8 @@
     "semantic_hash": "0351536fc15a1842d05d79d431c85938"
   },
   "layers/2.auth/app/composables/useCollaborators.ts": {
-    "mtime": 1788978011.3956368,
-    "ast_hash": "485f537fb302e3b5aa979cf91198011c",
+    "mtime": 1789151457.6318133,
+    "ast_hash": "cf95365cad99e36c3fd8e3894aee6123",
     "semantic_hash": ""
   },
   "layers/2.auth/app/composables/usePermissions.ts": {
@@ -265,9 +265,9 @@
     "semantic_hash": "b18710cd6146baf234702513f7522914"
   },
   "layers/2.auth/app/pages/login.vue": {
-    "mtime": 1788375009.3571966,
-    "ast_hash": "10af4fc94bdeb6b26a7ce27903b6514d",
-    "semantic_hash": "10af4fc94bdeb6b26a7ce27903b6514d"
+    "mtime": 1789151491.8245122,
+    "ast_hash": "761556a2975bcca875220b90d9711f92",
+    "semantic_hash": ""
   },
   "layers/2.auth/app/utils/auth-routes.ts": {
     "mtime": 1788265528.3377912,
@@ -660,13 +660,13 @@
     "semantic_hash": "c386e178f9f56924c23010a3733664f4"
   },
   "shared/types/database.ts": {
-    "mtime": 1789148670.2202382,
-    "ast_hash": "faeae6ede915b64e5b5e82e23520e380",
+    "mtime": 1789149894.7372468,
+    "ast_hash": "c39cf16ee4d6143e129afe398d1296b4",
     "semantic_hash": ""
   },
   "shared/types/oficina.ts": {
-    "mtime": 1789144779.2556598,
-    "ast_hash": "a2f8fde9d2069017221be37e20361111",
+    "mtime": 1789149890.3411593,
+    "ast_hash": "221ac46155132378b0d9843eb7ce4dc6",
     "semantic_hash": ""
   },
   "shared/utils/contact.ts": {
@@ -1350,8 +1350,8 @@
     "semantic_hash": ""
   },
   ".stitch/SCREENS.md": {
-    "mtime": 1789148029.4708436,
-    "ast_hash": "f63100d6d4d34911d19e865c9d2c7c4c",
+    "mtime": 1789151492.3131762,
+    "ast_hash": "9692029c76cc2a8028b7d1b76bb7e165",
     "semantic_hash": ""
   },
   "CONTEXT.md": {
@@ -1564,34 +1564,14 @@
     "ast_hash": "aff721b6f14e2c6327df615efa37fea5",
     "semantic_hash": ""
   },
-  "layers/8.management/app/components/team/TeamAbsencesSection.vue": {
-    "mtime": 1789140533.6466753,
-    "ast_hash": "5ccf0b68261da274958de7930e296e91",
-    "semantic_hash": ""
-  },
   "layers/8.management/app/components/team/TeamCollaboratorsCreateForm.vue": {
-    "mtime": 1789140381.7371185,
-    "ast_hash": "567d4e517eccfffa7f96eed897ed56c1",
+    "mtime": 1789150410.8797257,
+    "ast_hash": "4776186ee9137f1aaf47efe48207068e",
     "semantic_hash": ""
   },
   "layers/8.management/app/components/team/TeamCollaboratorsTable.vue": {
-    "mtime": 1789140381.7349312,
-    "ast_hash": "208e17761f507f7f7d6150c699fb7684",
-    "semantic_hash": ""
-  },
-  "layers/8.management/app/components/team/TeamIncidentsSection.vue": {
-    "mtime": 1789140533.6467738,
-    "ast_hash": "984d464d9c408d1dd126b8ebcd209cfe",
-    "semantic_hash": ""
-  },
-  "layers/8.management/app/components/team/TeamIndicatorsSection.vue": {
-    "mtime": 1789140381.7312129,
-    "ast_hash": "0499d1b9448312536b63ded1a5ee5be2",
-    "semantic_hash": ""
-  },
-  "layers/8.management/app/components/team/TeamPresenceSection.vue": {
-    "mtime": 1789140533.6465013,
-    "ast_hash": "245caeab787e488e99d62ffea29a8667",
+    "mtime": 1789151487.897115,
+    "ast_hash": "426c6590e43cc32a0b27554446aa59e3",
     "semantic_hash": ""
   },
   "layers/8.management/app/composables/useAccountsPayable.ts": {
@@ -1619,14 +1599,9 @@
     "ast_hash": "2f881b1b36222339af95ccb4c0a32936",
     "semantic_hash": ""
   },
-  "layers/8.management/app/composables/useTeamHr.ts": {
-    "mtime": 1788978009.5261438,
-    "ast_hash": "caef27031a26b19d4aaf9c4ae74ea2d3",
-    "semantic_hash": ""
-  },
   "layers/8.management/app/pages/collaborators.vue": {
-    "mtime": 1789140381.7390974,
-    "ast_hash": "baed27ef3f912e7bd0e1b7ee30b71a75",
+    "mtime": 1789149863.825629,
+    "ast_hash": "1161cd47d571425314ad6952417f2347",
     "semantic_hash": ""
   },
   "layers/8.management/app/pages/finance.vue": {
@@ -1635,8 +1610,8 @@
     "semantic_hash": ""
   },
   "layers/8.management/app/pages/team.vue": {
-    "mtime": 1789140359.556215,
-    "ast_hash": "724cbbb756b531aa1c18d72d91422abe",
+    "mtime": 1789151490.5397508,
+    "ast_hash": "3be53ad701bff59b429db43047dcc660",
     "semantic_hash": ""
   },
   "layers/8.management/app/utils/accounts-payable.ts": {
@@ -1652,11 +1627,6 @@
   "layers/8.management/app/utils/finance.ts": {
     "mtime": 1789069889.3476639,
     "ast_hash": "44d804454c4c7067df495eeeacc75b62",
-    "semantic_hash": ""
-  },
-  "layers/8.management/app/utils/team.ts": {
-    "mtime": 1789140529.4140563,
-    "ast_hash": "9ec755ae775650f000d970fffb092cbb",
     "semantic_hash": ""
   },
   "layers/8.management/nuxt.config.ts": {
@@ -1887,6 +1857,16 @@
   "layers/5.orders/app/utils/order-photos.ts": {
     "mtime": 1789145165.6879015,
     "ast_hash": "a670dd7dc9b3ababba11c9ef8ebfac2b",
+    "semantic_hash": ""
+  },
+  "layers/8.management/app/components/team/TeamCollaboratorsPasswordModal.vue": {
+    "mtime": 1789151457.694733,
+    "ast_hash": "ab0e77ce80bb82ca510de6f6920c8f02",
+    "semantic_hash": ""
+  },
+  "server/api/collaborators/[id]/password.put.ts": {
+    "mtime": 1789151450.2384307,
+    "ast_hash": "42aec3283d71e593183104a02184ff14",
     "semantic_hash": ""
   }
 }

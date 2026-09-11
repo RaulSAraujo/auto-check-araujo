@@ -16,6 +16,8 @@ const password = ref('')
 const nome = ref('')
 const papel = ref<ColaboradorPapel>('recepcao')
 const creating = ref(false)
+const showPassword = ref(false)
+const passwordInputId = useId()
 
 const papelItems = computed(() =>
   (Object.keys(COLABORADOR_PAPEL_LABEL) as ColaboradorPapel[]).map(value => ({
@@ -29,6 +31,10 @@ const canSubmit = computed(() =>
   && isValidCollaboratorPassword(password.value)
   && nome.value.trim().length > 0
 )
+
+function onUsernameBlur() {
+  username.value = normalizeUsername(username.value)
+}
 
 async function onSubmit() {
   creating.value = true
@@ -44,6 +50,7 @@ async function onSubmit() {
       password.value = ''
       nome.value = ''
       papel.value = 'recepcao'
+      showPassword.value = false
       emit('created')
     }
   } finally {
@@ -53,66 +60,97 @@ async function onSubmit() {
 </script>
 
 <template>
-  <BasePanel title="Novo colaborador">
-    <form
-      class="space-y-4"
-      @submit.prevent="onSubmit"
+  <form
+    class="space-y-4"
+    autocomplete="off"
+    @submit.prevent="onSubmit"
+  >
+    <UFormField
+      label="Nome"
+      name="nome"
+      required
     >
-      <UFormField
-        label="Nome"
+      <UInput
+        v-model="nome"
+        name="nome"
+        autocomplete="name"
+        placeholder="Nome completo"
         required
-      >
-        <UInput
-          v-model="nome"
-          placeholder="Nome completo"
-          required
-        />
-      </UFormField>
-
-      <UFormField
-        label="Usuário"
-        required
-        hint="Letras minúsculas, números, _ ou -"
-      >
-        <UInput
-          v-model="username"
-          placeholder="joao.silva"
-          required
-        />
-      </UFormField>
-
-      <UFormField
-        label="Senha inicial"
-        required
-        hint="Mínimo de 6 caracteres"
-      >
-        <UInput
-          v-model="password"
-          type="password"
-          placeholder="••••••••"
-          required
-        />
-      </UFormField>
-
-      <UFormField
-        label="Papel"
-        required
-      >
-        <USelect
-          v-model="papel"
-          :items="papelItems"
-          value-key="value"
-          class="w-full"
-        />
-      </UFormField>
-
-      <UButton
-        type="submit"
-        label="Criar colaborador"
-        icon="i-lucide-user-plus"
-        :loading="creating"
-        :disabled="!canSubmit"
+        class="w-full"
       />
-    </form>
-  </BasePanel>
+    </UFormField>
+
+    <UFormField
+      label="Usuário"
+      name="username"
+      required
+      description="Letras minúsculas, números, _ ou -"
+    >
+      <UInput
+        v-model="username"
+        name="username"
+        autocomplete="off"
+        :spellcheck="false"
+        placeholder="joao.silva"
+        required
+        class="w-full"
+        @blur="onUsernameBlur"
+      />
+    </UFormField>
+
+    <UFormField
+      label="Senha inicial"
+      name="password"
+      required
+      description="Mínimo de 6 caracteres"
+    >
+      <UInput
+        :id="passwordInputId"
+        v-model="password"
+        name="password"
+        :type="showPassword ? 'text' : 'password'"
+        autocomplete="new-password"
+        placeholder="••••••••"
+        required
+        class="w-full"
+        :ui="{ trailing: 'pe-1' }"
+      >
+        <template #trailing>
+          <UButton
+            type="button"
+            color="neutral"
+            variant="link"
+            size="sm"
+            :icon="showPassword ? 'i-lucide-eye-off' : 'i-lucide-eye'"
+            :aria-label="showPassword ? 'Ocultar senha' : 'Mostrar senha'"
+            :aria-pressed="showPassword"
+            :aria-controls="passwordInputId"
+            @click="showPassword = !showPassword"
+          />
+        </template>
+      </UInput>
+    </UFormField>
+
+    <UFormField
+      label="Papel"
+      name="papel"
+      required
+    >
+      <USelect
+        v-model="papel"
+        :items="papelItems"
+        value-key="value"
+        class="w-full"
+      />
+    </UFormField>
+
+    <UButton
+      type="submit"
+      label="Criar colaborador"
+      icon="i-lucide-user-plus"
+      block
+      :loading="creating"
+      :disabled="!canSubmit"
+    />
+  </form>
 </template>

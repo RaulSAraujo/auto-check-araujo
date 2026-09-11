@@ -26,7 +26,7 @@ Mapa de telas para geração no Stitch. Todas seguem `.stitch/DESIGN.md`.
 | 8c | ~~Checklist~~ | — | Removido — diagnóstico em texto na OS |
 | 9 | Agendamentos | `/agendamentos` | Dia + semana; horário marcado; sem pátio/vaga |
 | 10 | Precificação | `/configuracao/precificacao` | Parâmetros de mão de obra e peças; sugestão de preço |
-| 11 | Equipe | `/gestao/equipe` | Desempenho e produtividade; abas Colaboradores → Ocorrências |
+| 11 | Equipe | `/gestao/equipe` | CRUD de colaboradores e papéis de acesso |
 
 ---
 
@@ -247,51 +247,28 @@ Tela descontinuada: conteúdo coberto por `/gestao/financeiro`. Redirect: `/vend
 ## 12. Equipe (`/gestao/equipe`)
 
 **Stitch:** `screens/391ac751b4d045fe88c64b4d0bf4c8fa` — *Gestão da Equipe - Araujo Auto Center*  
-**Screenshot local:** `.stitch/screenshots/equipe.png`  
-**Stitch (Indicadores):** `screens/7daad238a9184b9c8f230cac4a7a54e3` — *Gestão da Equipe - Indicadores*  
-**Screenshot Indicadores:** `.stitch/screenshots/equipe-indicadores.png`
+**Screenshot local:** `.stitch/screenshots/equipe.png`
 
 **App:** `layers/8.management/app/pages/team.vue` — menu Gestão → Equipe; `/colaboradores` e `/equipe` redirecionam para `/gestao/equipe`.
 
 **Navbar:** Gestão → Equipe (gerente / `collaborators.manage`).
 
-**Subtítulo:** “Controle de desempenho e produtividade.” — uma linha, sem marketing.
+**Subtítulo:** “Quem entra no sistema e com qual papel.” — uma linha.
 
-**Abas (toolbar densa, padrão Catálogo):**
+**Body:**
+- Lista (UTable) em painel: avatar/iniciais, usuário mono, papel editável
+- Ação por linha: redefinir senha (modal)
+- CTA “Novo colaborador” no header abre slideover com o form
+- Empty: “Nenhum colaborador ainda.” + CTA criar
+- Não permite alterar o próprio papel (badge “Você”)
 
-| Aba | Conteúdo |
-|-----|----------|
-| Colaboradores | Lista da equipe (nome, papel, status); criar/editar papel — reutiliza fluxo de `/colaboradores` |
-| Presença | Grade diária/semanal: presente / atrasado / ausente; filtro período + colaborador |
-| Faltas | Tabela: colaborador, data, tipo (justificada / injustificada), observação; CTA “Registrar falta” |
-| Avaliações | Lista de avaliações por período; nota/resumo mono; CTA “Nova avaliação” |
-| Indicadores | Faixa KPI densa (`gap-px` + borda Whisper): OS concluídas, taxa de presença, faltas no mês — números mono |
-| Tempo médio | Por colaborador / etapa: tempo médio em OS (mono); filtro período; ordenável |
-| Ocorrências | Log: data, colaborador, tipo, descrição curta; CTA “Registrar ocorrência” |
+**Proibido:** abas de RH; form permanente competindo com a lista; hero de marketing.
 
-**Filtros comuns (quando a aba exigir):** período (mês corrente padrão) + colaborador “Todos”.
+**Trunk test:** título Equipe, nav Gestão ativa, contagem, tabela, CTA novo.
 
-**Body — aba Colaboradores (padrão v1 implementável):**
-- Form criar à esquerda (desktop) + tabela Equipe à direita — espelha a página atual `/colaboradores`
-- Empty: “Nenhum colaborador.” + CTA criar
+**Dados (app):** `profiles` / RPCs `list_collaborators`, `update_collaborator_role` (e create via auth layer).
 
-**Body — abas de RH/desempenho (v1 design; schema futuro):**
-- Tabelas densas + empty composto por aba (“Nenhuma falta no período.” / “Nenhuma ocorrência.”)
-- Sem gráficos pizza; se houver tendência, strip mono simples
-
-**Proibido:** hero “impulsione sua equipe”, 3 feature cards, purple, chips decorativos, ranking gamificado com medalhas.
-
-**Motion (código):** page enter; troca de aba sem teatro; stagger das linhas (40–60ms).
-
-**Trunk test:** título Equipe, nav Gestão ativa, abas visíveis, CTA da aba ativa.
-
-**Dados (app):**
-- **Colaboradores** — já existe (`profiles` / RPCs de papel)
-- **Presença / Faltas / Ocorrências** — migration `20260902190000_equipe_presenca_faltas_ocorrencias.sql` + UI em `/gestao/equipe`
-- **Indicadores** — RPC `equipe_indicadores` (OS concluídas via `aberto_por`, taxa de presença, faltas)
-- **Avaliações / Tempo médio** — schema futuro
-
-> Relação com `/colaboradores`: redireciona para `/gestao/equipe?tab=colaboradores`. Preferir **uma** entrada no menu: Gestão → Equipe.
+> Relação com `/colaboradores`: redireciona para `/gestao/equipe`. Preferir **uma** entrada no menu: Gestão → Equipe.
 
 ---
 

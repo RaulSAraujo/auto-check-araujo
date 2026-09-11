@@ -75,8 +75,8 @@
     "semantic_hash": "42554447bb20ef8861a3e8eef7b3b9a6"
   },
   "layers/1.base/app/utils/supabase-search.ts": {
-    "mtime": 1788553183.2140412,
-    "ast_hash": "d986801ab6d6f81e22285000f3244dcb",
+    "mtime": 1789148388.7368913,
+    "ast_hash": "34161de84b49730987b88fb9ca5dd218",
     "semantic_hash": ""
   },
   "layers/1.base/nuxt.config.ts": {
@@ -100,8 +100,8 @@
     "semantic_hash": "686b0b46df562418c5aa396f98a01540"
   },
   "layers/10.vehicles/app/composables/useCustomerOptions.ts": {
-    "mtime": 1788547187.7122104,
-    "ast_hash": "751065aea9c78cd6314ee1ff77ac9087",
+    "mtime": 1789148397.315927,
+    "ast_hash": "6264ed72b16e385bdf7a091e3977bf36",
     "semantic_hash": ""
   },
   "layers/10.vehicles/app/composables/useVehicleDetailPage.ts": {
@@ -190,8 +190,8 @@
     "semantic_hash": ""
   },
   "layers/11.scheduling/app/components/SchedulingFormSlideover.vue": {
-    "mtime": 1789147847.5518022,
-    "ast_hash": "54a21fb1fad0c555b558f2a742f64733",
+    "mtime": 1789148466.1132286,
+    "ast_hash": "48f5a48e4dbfd38b9724c50f2214a845",
     "semantic_hash": ""
   },
   "layers/11.scheduling/app/composables/useSchedulingBoard.ts": {
@@ -660,13 +660,13 @@
     "semantic_hash": "c386e178f9f56924c23010a3733664f4"
   },
   "shared/types/database.ts": {
-    "mtime": 1789145213.3635902,
-    "ast_hash": "b416fe5885a19f925262123e4b3efdd2",
+    "mtime": 1789149894.7372468,
+    "ast_hash": "c39cf16ee4d6143e129afe398d1296b4",
     "semantic_hash": ""
   },
   "shared/types/oficina.ts": {
-    "mtime": 1789144779.2556598,
-    "ast_hash": "a2f8fde9d2069017221be37e20361111",
+    "mtime": 1789149890.3411593,
+    "ast_hash": "221ac46155132378b0d9843eb7ce4dc6",
     "semantic_hash": ""
   },
   "shared/utils/contact.ts": {
@@ -1350,8 +1350,8 @@
     "semantic_hash": ""
   },
   ".stitch/SCREENS.md": {
-    "mtime": 1789148029.4708436,
-    "ast_hash": "f63100d6d4d34911d19e865c9d2c7c4c",
+    "mtime": 1789150422.5709276,
+    "ast_hash": "66628c9f052022d898cd790abf07011c",
     "semantic_hash": ""
   },
   "CONTEXT.md": {
@@ -1564,34 +1564,14 @@
     "ast_hash": "aff721b6f14e2c6327df615efa37fea5",
     "semantic_hash": ""
   },
-  "layers/8.management/app/components/team/TeamAbsencesSection.vue": {
-    "mtime": 1789140533.6466753,
-    "ast_hash": "5ccf0b68261da274958de7930e296e91",
-    "semantic_hash": ""
-  },
   "layers/8.management/app/components/team/TeamCollaboratorsCreateForm.vue": {
-    "mtime": 1789140381.7371185,
-    "ast_hash": "567d4e517eccfffa7f96eed897ed56c1",
+    "mtime": 1789150410.8797257,
+    "ast_hash": "4776186ee9137f1aaf47efe48207068e",
     "semantic_hash": ""
   },
   "layers/8.management/app/components/team/TeamCollaboratorsTable.vue": {
-    "mtime": 1789140381.7349312,
-    "ast_hash": "208e17761f507f7f7d6150c699fb7684",
-    "semantic_hash": ""
-  },
-  "layers/8.management/app/components/team/TeamIncidentsSection.vue": {
-    "mtime": 1789140533.6467738,
-    "ast_hash": "984d464d9c408d1dd126b8ebcd209cfe",
-    "semantic_hash": ""
-  },
-  "layers/8.management/app/components/team/TeamIndicatorsSection.vue": {
-    "mtime": 1789140381.7312129,
-    "ast_hash": "0499d1b9448312536b63ded1a5ee5be2",
-    "semantic_hash": ""
-  },
-  "layers/8.management/app/components/team/TeamPresenceSection.vue": {
-    "mtime": 1789140533.6465013,
-    "ast_hash": "245caeab787e488e99d62ffea29a8667",
+    "mtime": 1789150410.8727255,
+    "ast_hash": "e748e69fbb54e6abfc2d62d5b87bcb9c",
     "semantic_hash": ""
   },
   "layers/8.management/app/composables/useAccountsPayable.ts": {
@@ -1619,14 +1599,9 @@
     "ast_hash": "2f881b1b36222339af95ccb4c0a32936",
     "semantic_hash": ""
   },
-  "layers/8.management/app/composables/useTeamHr.ts": {
-    "mtime": 1788978009.5261438,
-    "ast_hash": "caef27031a26b19d4aaf9c4ae74ea2d3",
-    "semantic_hash": ""
-  },
   "layers/8.management/app/pages/collaborators.vue": {
-    "mtime": 1789140381.7390974,
-    "ast_hash": "baed27ef3f912e7bd0e1b7ee30b71a75",
+    "mtime": 1789149863.825629,
+    "ast_hash": "1161cd47d571425314ad6952417f2347",
     "semantic_hash": ""
   },
   "layers/8.management/app/pages/finance.vue": {
@@ -1635,8 +1610,8 @@
     "semantic_hash": ""
   },
   "layers/8.management/app/pages/team.vue": {
-    "mtime": 1789140359.556215,
-    "ast_hash": "724cbbb756b531aa1c18d72d91422abe",
+    "mtime": 1789150399.7356446,
+    "ast_hash": "df8bb33b35983e6b9d010c633ad689ee",
     "semantic_hash": ""
   },
   "layers/8.management/app/utils/accounts-payable.ts": {
@@ -1654,19 +1629,14 @@
     "ast_hash": "44d804454c4c7067df495eeeacc75b62",
     "semantic_hash": ""
   },
-  "layers/8.management/app/utils/team.ts": {
-    "mtime": 1789140529.4140563,
-    "ast_hash": "9ec755ae775650f000d970fffb092cbb",
-    "semantic_hash": ""
-  },
   "layers/8.management/nuxt.config.ts": {
     "mtime": 1789140291.7662168,
     "ast_hash": "f3bc4f471e9edb13ab44a4a0af9cc1a1",
     "semantic_hash": ""
   },
   "layers/10.vehicles/app/composables/useVehicleOptions.ts": {
-    "mtime": 1789148232.8329039,
-    "ast_hash": "298d9a387b6b986bac1eef0cb415cda5",
+    "mtime": 1789148779.446334,
+    "ast_hash": "11a8896732f3c5513516cc6b189e7684",
     "semantic_hash": ""
   },
   "layers/8.management/app/composables/useFinanceWorkspace.ts": {

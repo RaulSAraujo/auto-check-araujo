@@ -133,147 +133,6 @@ export type Database = {
         }
         Relationships: []
       }
-      colaborador_faltas: {
-        Row: {
-          colaborador_id: string
-          created_at: string
-          data: string
-          id: string
-          observacao: string | null
-          registrado_por: string | null
-          tipo: string
-          updated_at: string
-        }
-        Insert: {
-          colaborador_id: string
-          created_at?: string
-          data: string
-          id?: string
-          observacao?: string | null
-          registrado_por?: string | null
-          tipo: string
-          updated_at?: string
-        }
-        Update: {
-          colaborador_id?: string
-          created_at?: string
-          data?: string
-          id?: string
-          observacao?: string | null
-          registrado_por?: string | null
-          tipo?: string
-          updated_at?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: 'colaborador_faltas_colaborador_id_fkey'
-            columns: ['colaborador_id']
-            isOneToOne: false
-            referencedRelation: 'profiles'
-            referencedColumns: ['id']
-          },
-          {
-            foreignKeyName: 'colaborador_faltas_registrado_por_fkey'
-            columns: ['registrado_por']
-            isOneToOne: false
-            referencedRelation: 'profiles'
-            referencedColumns: ['id']
-          }
-        ]
-      }
-      colaborador_ocorrencias: {
-        Row: {
-          colaborador_id: string
-          created_at: string
-          descricao: string
-          id: string
-          ocorrido_em: string
-          registrado_por: string | null
-          tipo: string
-        }
-        Insert: {
-          colaborador_id: string
-          created_at?: string
-          descricao: string
-          id?: string
-          ocorrido_em?: string
-          registrado_por?: string | null
-          tipo: string
-        }
-        Update: {
-          colaborador_id?: string
-          created_at?: string
-          descricao?: string
-          id?: string
-          ocorrido_em?: string
-          registrado_por?: string | null
-          tipo?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: 'colaborador_ocorrencias_colaborador_id_fkey'
-            columns: ['colaborador_id']
-            isOneToOne: false
-            referencedRelation: 'profiles'
-            referencedColumns: ['id']
-          },
-          {
-            foreignKeyName: 'colaborador_ocorrencias_registrado_por_fkey'
-            columns: ['registrado_por']
-            isOneToOne: false
-            referencedRelation: 'profiles'
-            referencedColumns: ['id']
-          }
-        ]
-      }
-      colaborador_presencas: {
-        Row: {
-          colaborador_id: string
-          created_at: string
-          data: string
-          id: string
-          observacao: string | null
-          registrado_por: string | null
-          status: string
-          updated_at: string
-        }
-        Insert: {
-          colaborador_id: string
-          created_at?: string
-          data: string
-          id?: string
-          observacao?: string | null
-          registrado_por?: string | null
-          status: string
-          updated_at?: string
-        }
-        Update: {
-          colaborador_id?: string
-          created_at?: string
-          data?: string
-          id?: string
-          observacao?: string | null
-          registrado_por?: string | null
-          status?: string
-          updated_at?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: 'colaborador_presencas_colaborador_id_fkey'
-            columns: ['colaborador_id']
-            isOneToOne: false
-            referencedRelation: 'profiles'
-            referencedColumns: ['id']
-          },
-          {
-            foreignKeyName: 'colaborador_presencas_registrado_por_fkey'
-            columns: ['registrado_por']
-            isOneToOne: false
-            referencedRelation: 'profiles'
-            referencedColumns: ['id']
-          }
-        ]
-      }
       catalogo_kit_itens: {
         Row: {
           created_at: string
@@ -753,10 +612,6 @@ export type Database = {
         Args: { p_now?: string }
         Returns: Json
       }
-      team_indicators: {
-        Args: { p_inicio: string, p_fim: string }
-        Returns: Json
-      }
       finance_summary: {
         Args: { p_mes: string }
         Returns: Json
@@ -852,9 +707,3 @@ export type FinanceiroContaInsert = Database['public']['Tables']['financeiro_con
 export type FinanceiroContaUpdate = Database['public']['Tables']['financeiro_contas']['Update']
 export type OficinaParametros = Database['public']['Tables']['oficina_parametros']['Row']
 export type OficinaParametrosUpdate = Database['public']['Tables']['oficina_parametros']['Update']
-export type ColaboradorPresenca = Database['public']['Tables']['colaborador_presencas']['Row']
-export type ColaboradorPresencaInsert = Database['public']['Tables']['colaborador_presencas']['Insert']
-export type ColaboradorFalta = Database['public']['Tables']['colaborador_faltas']['Row']
-export type ColaboradorFaltaInsert = Database['public']['Tables']['colaborador_faltas']['Insert']
-export type ColaboradorOcorrencia = Database['public']['Tables']['colaborador_ocorrencias']['Row']
-export type ColaboradorOcorrenciaInsert = Database['public']['Tables']['colaborador_ocorrencias']['Insert']

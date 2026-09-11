@@ -125,12 +125,7 @@ async function onSubmit() {
         <div class="mt-8 border-t border-default pt-6 text-center">
           <p class="text-xs font-medium text-dimmed">
             Esqueceu a senha?
-            <a
-              :href="BRAND.facebookUrl"
-              class="font-semibold text-primary underline-offset-2 decoration-primary/30 transition-colors hover:underline"
-              target="_blank"
-              rel="noopener noreferrer"
-            >Contate o administrador.</a>
+            Peça ao gerente para redefinir em Equipe.
           </p>
         </div>
       </div>

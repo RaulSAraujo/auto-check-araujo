@@ -81,7 +81,7 @@ Importar tipos cross-layer via `~~/shared/types/...`. Paths de arquivo na layer 
 | `layers/4.customers` | clientes |
 | `layers/5.orders` | OS, orçamento |
 | `layers/6.configuration` | catálogo, fornecedores, precificação |
-| `layers/8.management` | financeiro, contas a pagar, equipe/HR |
+| `layers/8.management` | financeiro, contas a pagar, equipe (colaboradores) |
 | `layers/10.vehicles` | veículos |
 | `layers/11.scheduling` | agendamentos |
 

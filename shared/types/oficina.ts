@@ -12,15 +12,6 @@ export type AgendamentoStatus
     | 'nao_compareceu'
     | 'tratado'
     | 'cancelado'
-export type PresencaStatus = 'presente' | 'atrasado' | 'ausente' | 'folga'
-export type FaltaTipo = 'justificada' | 'injustificada'
-export type OcorrenciaTipo
-  = | 'advertencia'
-    | 'elogio'
-    | 'acidente'
-    | 'atraso_recorrente'
-    | 'outro'
-
 export const COLABORADOR_PAPEL_LABEL: Record<ColaboradorPapel, string> = {
   recepcao: 'Recepção',
   mecanico: 'Mecânico',
@@ -111,36 +102,6 @@ export const AGENDAMENTO_STATUS_COLOR: Record<
   nao_compareceu: 'error',
   tratado: 'neutral',
   cancelado: 'neutral'
-}
-
-export const PRESENCA_STATUS_LABEL: Record<PresencaStatus, string> = {
-  presente: 'Presente',
-  atrasado: 'Atrasado',
-  ausente: 'Ausente',
-  folga: 'Folga'
-}
-
-export const PRESENCA_STATUS_COLOR: Record<
-  PresencaStatus,
-  'success' | 'warning' | 'error' | 'neutral'
-> = {
-  presente: 'success',
-  atrasado: 'warning',
-  ausente: 'error',
-  folga: 'neutral'
-}
-
-export const FALTA_TIPO_LABEL: Record<FaltaTipo, string> = {
-  justificada: 'Justificada',
-  injustificada: 'Injustificada'
-}
-
-export const OCORRENCIA_TIPO_LABEL: Record<OcorrenciaTipo, string> = {
-  advertencia: 'Advertência',
-  elogio: 'Elogio',
-  acidente: 'Acidente',
-  atraso_recorrente: 'Atraso recorrente',
-  outro: 'Outro'
 }
 
 export function isOrderEditable(status: OrdemStatus): boolean {

@@ -1,19 +1,36 @@
 <script setup lang="ts">
+import type { TableColumn } from '@nuxt/ui'
 import type { ColaboradorPapel } from '~~/shared/types/oficina'
 import { COLABORADOR_PAPEL_LABEL } from '~~/shared/types/oficina'
 import type { CollaboratorRow } from '#layers/auth/app/composables/useCollaborators'
 
 defineOptions({ name: 'TeamCollaboratorsTable' })
 
-defineProps<{
+const props = defineProps<{
   collaborators: CollaboratorRow[]
+  loading?: boolean
   currentUserId?: string
   updatingId?: string | null
 }>()
 
 const emit = defineEmits<{
   'update:papel': [payload: { id: string, papel: ColaboradorPapel }]
+  'reset-password': [row: CollaboratorRow]
+  create: []
 }>()
+
+const PAPEL_COLOR: Record<ColaboradorPapel, 'primary' | 'warning' | 'neutral'> = {
+  gerente: 'primary',
+  mecanico: 'warning',
+  recepcao: 'neutral'
+}
+
+const columns: TableColumn<CollaboratorRow>[] = [
+  { accessorKey: 'nome', header: 'Nome' },
+  { accessorKey: 'username', header: 'Usuário' },
+  { id: 'papel', header: 'Papel' },
+  { id: 'actions', header: '' }
+]
 
 const papelItems = computed(() =>
   (Object.keys(COLABORADOR_PAPEL_LABEL) as ColaboradorPapel[]).map(value => ({
@@ -22,60 +39,104 @@ const papelItems = computed(() =>
   }))
 )
 
+function initials(nome: string): string {
+  const parts = nome.trim().split(/\s+/).filter(Boolean)
+  if (!parts.length) return '?'
+  if (parts.length === 1) return parts[0]!.slice(0, 2).toUpperCase()
+  return `${parts[0]![0] ?? ''}${parts[parts.length - 1]![0] ?? ''}`.toUpperCase()
+}
+
 function onPapelChange(id: string, papel: ColaboradorPapel) {
+  if (id === props.currentUserId) return
   emit('update:papel', { id, papel })
 }
 </script>
 
 <template>
-  <div class="overflow-x-auto rounded-lg border border-default">
-    <table class="w-full text-sm">
-      <thead class="border-b border-default bg-elevated/50 text-left text-xs uppercase tracking-wide text-muted">
-        <tr>
-          <th class="px-3 py-2 font-medium">
-            Nome
-          </th>
-          <th class="px-3 py-2 font-medium">
-            Usuário
-          </th>
-          <th class="px-3 py-2 font-medium">
-            Papel
-          </th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr
-          v-for="row in collaborators"
-          :key="row.id"
-          class="border-b border-default last:border-0"
-        >
-          <td class="px-3 py-2">
-            {{ row.nome }}
+  <UTable
+    :data="collaborators"
+    :columns="columns"
+    :loading="loading"
+    class="w-full"
+  >
+    <template #nome-cell="{ row }">
+      <div class="flex items-center gap-3 min-w-0">
+        <UAvatar
+          :text="initials(row.original.nome)"
+          size="sm"
+          :alt="row.original.nome"
+        />
+        <div class="min-w-0">
+          <p class="truncate font-medium text-highlighted">
+            {{ row.original.nome }}
             <UBadge
-              v-if="row.id === currentUserId"
+              v-if="row.original.id === currentUserId"
               color="neutral"
               variant="subtle"
               size="xs"
-              class="ml-2"
+              class="ml-1.5 align-middle"
             >
               Você
             </UBadge>
-          </td>
-          <td class="px-3 py-2 text-muted font-mono text-xs">
-            {{ row.username }}
-          </td>
-          <td class="px-3 py-2">
-            <USelect
-              :model-value="row.papel"
-              :items="papelItems"
-              value-key="value"
-              :disabled="updatingId === row.id"
-              class="min-w-36"
-              @update:model-value="onPapelChange(row.id, $event as ColaboradorPapel)"
-            />
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
+          </p>
+        </div>
+      </div>
+    </template>
+
+    <template #username-cell="{ row }">
+      <span class="font-mono text-xs text-muted tabular-nums">
+        {{ row.original.username }}
+      </span>
+    </template>
+
+    <template #papel-cell="{ row }">
+      <div class="flex items-center gap-2">
+        <USelect
+          v-if="row.original.id !== currentUserId"
+          :model-value="row.original.papel"
+          :items="papelItems"
+          value-key="value"
+          :loading="updatingId === row.original.id"
+          :disabled="updatingId === row.original.id"
+          class="min-w-40"
+          :aria-label="`Papel de ${row.original.nome}`"
+          @update:model-value="onPapelChange(row.original.id, $event as ColaboradorPapel)"
+        />
+        <UBadge
+          v-else
+          :color="PAPEL_COLOR[row.original.papel]"
+          variant="subtle"
+        >
+          {{ COLABORADOR_PAPEL_LABEL[row.original.papel] }}
+        </UBadge>
+      </div>
+    </template>
+
+    <template #actions-cell="{ row }">
+      <div class="flex justify-end">
+        <UButton
+          icon="i-lucide-key-round"
+          color="neutral"
+          variant="ghost"
+          size="sm"
+          :aria-label="`Redefinir senha de ${row.original.nome}`"
+          @click.stop="emit('reset-password', row.original)"
+        />
+      </div>
+    </template>
+
+    <template #empty>
+      <BaseEmptyState icon="i-lucide-users">
+        Nenhum colaborador ainda.
+        <template #actions>
+          <UButton
+            label="Novo colaborador"
+            icon="i-lucide-user-plus"
+            size="sm"
+            @click="emit('create')"
+          />
+        </template>
+      </BaseEmptyState>
+    </template>
+  </UTable>
 </template>

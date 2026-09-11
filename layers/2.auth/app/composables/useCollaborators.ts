@@ -81,8 +81,33 @@ export function useCollaboratorMutations() {
     }
   }
 
+  async function resetCollaboratorPassword(id: string, password: string) {
+    try {
+      await $fetch(`/api/collaborators/${id}/password`, {
+        method: 'PUT',
+        body: { password }
+      })
+      toast.add({
+        title: 'Senha redefinida',
+        color: 'success'
+      })
+      return { error: null }
+    } catch (err: unknown) {
+      const message = err instanceof Error
+        ? err.message
+        : (err as { data?: { message?: string } })?.data?.message || 'Erro ao redefinir senha'
+      toast.add({
+        title: 'Erro ao redefinir senha',
+        description: message,
+        color: 'error'
+      })
+      return { error: err }
+    }
+  }
+
   return {
     updatePapel,
-    createCollaborator
+    createCollaborator,
+    resetCollaboratorPassword
   }
 }
