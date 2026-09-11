@@ -19,7 +19,11 @@ export default defineNuxtConfig({
 
   routeRules: {
     '/': { prerender: false },
-    '/vendas': { redirect: '/financeiro' }
+    '/vendas': { redirect: '/gestao/financeiro' },
+    '/financeiro': { redirect: '/gestao/financeiro' },
+    '/equipe': { redirect: '/gestao/equipe' },
+    '/catalogo': { redirect: '/configuracao/catalogo' },
+    '/precificacao': { redirect: '/configuracao/precificacao' }
   },
 
   compatibilityDate: '2026-06-30'

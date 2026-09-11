@@ -15,13 +15,12 @@ auto-check-araujo/
 │   └── app.vue                   # UApp + NuxtLayout + SEO global
 ├── layers/
 │   ├── 1.base/                   # UI, tema, layout default, APP_ROUTES, ESLint, dayjs
-│   ├── 2.auth/                   # Auth + equipe ($meta.name: auth)
+│   ├── 2.auth/                   # Auth, permissões, colaboradores ($meta.name: auth)
 │   ├── 3.home/                   # Dashboard ($meta.name: home)
 │   ├── 4.customers/              # CRUD clientes ($meta.name: customers)
-│   ├── 5.orders/                 # OS, checklist, orçamento ($meta.name: orders)
-│   ├── 6.catalog/                # Catálogo + fornecedores ($meta.name: catalog)
-│   ├── 7.pricing/                # Precificação ($meta.name: pricing)
-│   ├── 8.finance/                # Financeiro ($meta.name: finance)
+│   ├── 5.orders/                 # OS, orçamento ($meta.name: orders)
+│   ├── 6.configuration/          # Catálogo, fornecedores, precificação ($meta.name: configuration)
+│   ├── 8.management/             # Financeiro + equipe ($meta.name: management)
 │   ├── 10.vehicles/              # CRUD veículos ($meta.name: vehicles)
 │   ├── 11.scheduling/            # Agendamentos ($meta.name: scheduling)
 │   └── 12.kanban/                # Board visual de OS ($meta.name: kanban)
@@ -41,14 +40,13 @@ auto-check-araujo/
 
 | Tipo | Local |
 |------|-------|
-| Auth (login, logout, client tipado, equipe) | `layers/2.auth/` |
+| Auth (login, logout, client tipado, permissões, CRUD colaboradores) | `layers/2.auth/` |
 | Dashboard / home | `layers/3.home/` |
 | Layout `default`, tema, `APP_ROUTES` | `layers/1.base/` |
 | Páginas `/clientes/*` | `layers/4.customers/app/pages/` |
 | Páginas `/ordens/*`, `/orcamento/:token` | `layers/5.orders/app/pages/` |
-| Páginas `/catalogo` | `layers/6.catalog/app/pages/` |
-| Páginas `/precificacao` | `layers/7.pricing/app/pages/` |
-| Páginas `/financeiro` | `layers/8.finance/app/pages/` |
+| Páginas `/configuracao/*` | `layers/6.configuration/app/pages/` |
+| Páginas `/gestao/*` | `layers/8.management/app/pages/` |
 | Páginas `/veiculos/*` | `layers/10.vehicles/app/pages/` |
 | Páginas `/agendamentos` | `layers/11.scheduling/app/pages/` |
 | Páginas `/kanban` | `layers/12.kanban/app/pages/` |
@@ -68,9 +66,8 @@ auto-check-araujo/
 | `#layers/home` | layer `3.home` |
 | `#layers/customers` | layer `4.customers` |
 | `#layers/orders` | layer `5.orders` |
-| `#layers/catalog` | layer `6.catalog` |
-| `#layers/pricing` | layer `7.pricing` |
-| `#layers/finance` | layer `8.finance` |
+| `#layers/configuration` | layer `6.configuration` |
+| `#layers/management` | layer `8.management` |
 | `#layers/vehicles` | layer `10.vehicles` |
 | `#layers/scheduling` | layer `11.scheduling` |
 | `#layers/kanban` | layer `12.kanban` |
@@ -81,14 +78,13 @@ Importar tipos cross-layer via `~~/shared/types/...`. Paths de arquivo na layer 
 
 | Local | Composables |
 |-------|-------------|
-| `layers/2.auth` | `useAuth`, `useTypedSupabaseClient`, equipe/HR |
+| `layers/2.auth` | `useAuth`, `useTypedSupabaseClient`, `useCollaborators`, permissões |
 | `layers/1.base` | `useOficina`, `useColaboradorNome` |
 | `layers/3.home` | dashboard |
 | `layers/4.customers` | clientes |
-| `layers/5.orders` | OS, checklist, orçamento |
-| `layers/6.catalog` | catálogo, fornecedores |
-| `layers/7.pricing` | parâmetros de precificação |
-| `layers/8.finance` | financeiro, contas a pagar |
+| `layers/5.orders` | OS, orçamento |
+| `layers/6.configuration` | catálogo, fornecedores, precificação |
+| `layers/8.management` | financeiro, contas a pagar, equipe/HR |
 | `layers/10.vehicles` | veículos |
 | `layers/11.scheduling` | agendamentos |
 | `layers/12.kanban` | board kanban de OS |

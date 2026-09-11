@@ -60,8 +60,7 @@ Abra `http://localhost:3000` — redireciona para `/login` ou `/app`.
 | `/app/veiculos/[id]` | Detalhe, edição e OS do Veículo |
 | `/app/ordens` | Lista / filtro de Ordens de Serviço |
 | `/app/ordens/novo` | Abrir OS |
-| `/app/ordens/[id]` | Detalhe, status e acesso ao Checklist |
-| `/app/ordens/[id]/checklist` | Preencher inspeção |
+| `/app/ordens/[id]` | Detalhe, status, diagnóstico e orçamento |
 
 ## Domínio
 

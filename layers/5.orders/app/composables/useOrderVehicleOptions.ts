@@ -1,4 +1,8 @@
 import type { OrderVehicleOption } from '../types/orders'
+import {
+  useVehicleOptions,
+  type VehicleOptionRow
+} from '#layers/vehicles/app/composables/useVehicleOptions'
 
 export interface OrderVehicleSelectItem {
   label: string
@@ -8,6 +12,17 @@ export interface OrderVehicleSelectItem {
   marca: string | null
   modelo: string | null
   clienteNome: string | null
+}
+
+function toOrderVehicleOption(row: VehicleOptionRow): OrderVehicleOption {
+  const cliente = Array.isArray(row.clientes) ? row.clientes[0] : row.clientes
+  return {
+    id: row.id,
+    placa: row.placa,
+    marca: row.marca,
+    modelo: row.modelo,
+    clientes: cliente ? { nome: cliente.nome } : null
+  }
 }
 
 function vehicleDescription(v: OrderVehicleOption): string {
@@ -29,68 +44,20 @@ function toSelectItem(v: OrderVehicleOption): OrderVehicleSelectItem {
   }
 }
 
-const VEHICLE_OPTION_SELECT = 'id, placa, marca, modelo, clientes!inner(nome)'
-
 export async function useOrderVehicleOptions(
   preferredId?: MaybeRefOrGetter<string | undefined>
 ) {
-  const supabase = useTypedSupabaseClient()
-  const searchTerm = ref('')
-  const debouncedSearch = ref('')
-
-  let debounceTimer: ReturnType<typeof setTimeout> | undefined
-  watch(searchTerm, (value) => {
-    clearTimeout(debounceTimer)
-    debounceTimer = setTimeout(() => {
-      debouncedSearch.value = value
-    }, 200)
+  const { veiculos: raw, searchTerm, pending, error, refresh } = await useVehicleOptions({
+    preferredId,
+    key: 'veiculos-options-os'
   })
 
-  const preferredIdRef = computed(() => toValue(preferredId) || '')
-
-  const { data: veiculos, pending, error, refresh } = await useAsyncData(
-    () => `veiculos-options-os-${debouncedSearch.value}`,
-    async () => {
-      const pattern = ilikePattern(debouncedSearch.value)
-      const placaPattern = ilikePattern(
-        normalizePlaca(debouncedSearch.value) || debouncedSearch.value
-      )
-
-      let query = supabase
-        .from('veiculos')
-        .select(VEHICLE_OPTION_SELECT)
-        .order('placa', { ascending: true })
-        .limit(OPTIONS_FETCH_LIMIT)
-
-      if (pattern) {
-        const placa = placaPattern || pattern
-        query = query.or(
-          `placa.ilike.${placa},marca.ilike.${pattern},modelo.ilike.${pattern},clientes.nome.ilike.${pattern}`
-        )
-      }
-
-      const { data, error: queryError } = await query
-      if (queryError) throw queryError
-
-      const rows = (data || []) as OrderVehicleOption[]
-
-      const preferred = preferredIdRef.value
-      if (preferred && !rows.some(row => row.id === preferred)) {
-        const { data: extra } = await supabase
-          .from('veiculos')
-          .select(VEHICLE_OPTION_SELECT)
-          .eq('id', preferred)
-          .maybeSingle()
-        if (extra) rows.unshift(extra as OrderVehicleOption)
-      }
-
-      return rows
-    },
-    { watch: [debouncedSearch, preferredIdRef] }
+  const veiculos = computed(() =>
+    (raw.value || []).map(toOrderVehicleOption)
   )
 
   const veiculoItems = computed<OrderVehicleSelectItem[]>(() =>
-    (veiculos.value || []).map(toSelectItem)
+    veiculos.value.map(toSelectItem)
   )
 
   const veiculoById = computed(() => {

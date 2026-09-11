@@ -54,6 +54,7 @@ const links = computed<NavigationMenuItem[]>(() => {
   ]
 
   const management: NavigationMenuItem[] = []
+  const configuration: NavigationMenuItem[] = []
 
   if (can('finance.view')) {
     management.push({
@@ -61,13 +62,6 @@ const links = computed<NavigationMenuItem[]>(() => {
       to: APP_ROUTES.finance,
       icon: 'i-lucide-wallet'
     })
-  }
-
-  if (can('catalog.manage')) {
-    management.push(
-      { label: 'Catálogo', to: APP_ROUTES.catalog, icon: 'i-lucide-package' },
-      { label: 'Precificação', to: APP_ROUTES.pricing, icon: 'i-lucide-calculator' }
-    )
   }
 
   if (can('collaborators.manage')) {
@@ -78,11 +72,27 @@ const links = computed<NavigationMenuItem[]>(() => {
     })
   }
 
+  if (can('catalog.manage')) {
+    configuration.push(
+      { label: 'Catálogo', to: APP_ROUTES.catalog, icon: 'i-lucide-package' },
+      { label: 'Fornecedores', to: APP_ROUTES.catalogSuppliers, icon: 'i-lucide-truck' },
+      { label: 'Precificação', to: APP_ROUTES.pricing, icon: 'i-lucide-calculator' }
+    )
+  }
+
   if (management.length) {
     items.push({
       label: 'Gestão',
       active: childrenActive(management),
       children: management
+    })
+  }
+
+  if (configuration.length) {
+    items.push({
+      label: 'Configuração',
+      active: childrenActive(configuration),
+      children: configuration
     })
   }
 

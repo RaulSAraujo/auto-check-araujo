@@ -14,7 +14,7 @@ export function useCollaboratorsList() {
   const { data, pending, refresh, error } = useAsyncData(
     'collaborators-list',
     async () => {
-      const { data: rows, error: rpcError } = await supabase.rpc('list_colaboradores')
+      const { data: rows, error: rpcError } = await supabase.rpc('list_collaborators')
       if (rpcError) throw rpcError
       return (rows || []) as CollaboratorRow[]
     }
@@ -33,7 +33,7 @@ export function useCollaboratorMutations() {
   const toast = useToast()
 
   async function updatePapel(id: string, papel: ColaboradorPapel) {
-    const { error } = await supabase.rpc('update_colaborador_papel', {
+    const { error } = await supabase.rpc('update_collaborator_role', {
       p_user_id: id,
       p_papel: papel
     })

@@ -21,10 +21,15 @@ Páginas ficam **diretamente** em `pages/` da layer, **sem subpastas por domíni
 | `/ordens` | `pages/orders.vue` |
 | `/ordens/novo` | `pages/orders-new.vue` |
 | `/ordens/:id` | `pages/orders-[id].vue` |
-| `/ordens/:id/checklist` | `pages/orders-[id]-checklist.vue` |
+| `/ordens/:id/impressao` | `pages/orders-[id]-print.vue` |
 | `/veiculos` | `pages/vehicles.vue` |
 | `/veiculos/novo` | `pages/vehicles-new.vue` |
 | `/veiculos/:id` | `pages/vehicles-[id].vue` |
+| `/gestao/financeiro` | `pages/finance.vue` |
+| `/gestao/equipe` | `pages/team.vue` |
+| `/configuracao/catalogo` | `pages/catalog.vue` |
+| `/configuracao/fornecedores` | `pages/catalog-suppliers.vue` |
+| `/configuracao/precificacao` | `pages/pricing.vue` |
 | `/login` | `pages/login.vue` |
 
 Padrão de nome de arquivo:
@@ -88,7 +93,7 @@ Padrão de nomenclatura: `{Domain}{Purpose}Page`
 | `customers.vue` | `CustomersIndexPage` |
 | `customers-new.vue` | `CustomersNewPage` |
 | `customers-[id].vue` | `CustomersDetailPage` |
-| `orders-[id]-checklist.vue` | `OrdersChecklistPage` |
+| `orders-[id].vue` | `OrdersDetailPage` |
 
 - Arquivos com hífen no nome (`customers-new.vue`, `vehicles-[id].vue`) já são multi-word e podem dispensar `defineOptions` se o ESLint não alertar.
 - Quando em dúvida, prefira sempre declarar `defineOptions`.
@@ -97,17 +102,16 @@ Padrão de nomenclatura: `{Domain}{Purpose}Page`
 
 Cada layer **deve** declarar `components` com `prefix` no seu `nuxt.config.ts` para evitar colisão no auto-import entre layers.
 
-| Layer | Prefix | Exemplo de uso |
-|-------|--------|----------------|
+| Layer | Prefix / pastas | Exemplo de uso |
+|-------|-----------------|----------------|
 | `app/` (raiz) | `App` | `<AppDashboardStats />` |
 | `1.base` | `Base` | `<BasePageHeader />` |
 | `2.auth` | `Auth` | `<AuthLoginForm />` |
 | `3.home` | `Home` | `<HomeOperationalSummary />` |
 | `4.customers` | `Customers` | `<CustomersForm />` |
-| `5.orders` | `Orders` | `<OrdersChecklistItem />` |
-| `6.catalog` | `Catalog` | `<CatalogForm />` |
-| `7.pricing` | `Pricing` | `<PricingForm />` |
-| `8.finance` | `Finance` | `<FinanceTable />` |
+| `5.orders` | `Orders` | `<OrdersBudgetSection />` |
+| `6.configuration` | pastas `catalog/` + `pricing/` (nome no arquivo) | `<CatalogForm />`, `<PricingForm />` |
+| `8.management` | pastas `finance/` + `team/` (nome no arquivo) | `<FinanceTable />`, `<TeamPresenceSection />` |
 | `10.vehicles` | `Vehicles` | `<VehiclesForm />` |
 | `11.scheduling` | `Scheduling` | `<SchedulingCalendar />` |
 | `12.kanban` | `Kanban` | `<KanbanBoard />` |

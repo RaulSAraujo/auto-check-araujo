@@ -1,11 +1,10 @@
 import { EMPTY_VALUE } from '~~/shared/utils/empty'
 
 export {
-  CHECKLIST_RESULTADO_LABEL,
   ORDEM_STATUS_COLOR,
   ORDEM_STATUS_LABEL
 } from '~~/shared/types/oficina'
-export type { ChecklistResultado, OrdemStatus } from '~~/shared/types/oficina'
+export type { OrdemStatus } from '~~/shared/types/oficina'
 export { EMPTY_VALUE } from '~~/shared/utils/empty'
 
 /** Normaliza placa para 7 caracteres alfanuméricos em maiúsculas. */

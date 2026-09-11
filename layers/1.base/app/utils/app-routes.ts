@@ -6,9 +6,10 @@ export const APP_ROUTES = {
   scheduling: '/agendamentos',
   customers: '/clientes',
   vehicles: '/veiculos',
-  finance: '/financeiro',
-  catalog: '/catalogo',
-  pricing: '/precificacao',
+  finance: '/gestao/financeiro',
+  team: '/gestao/equipe',
   collaborators: '/colaboradores',
-  team: '/equipe'
+  catalog: '/configuracao/catalogo',
+  catalogSuppliers: '/configuracao/fornecedores',
+  pricing: '/configuracao/precificacao'
 } as const

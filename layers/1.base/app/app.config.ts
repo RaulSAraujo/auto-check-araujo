@@ -42,6 +42,18 @@ export default defineAppConfig({
         }
       ]
     },
+    tabs: {
+      // Same inverted-token issue as buttons: active pill uses text-inverted (near-black in dark).
+      compoundVariants: [
+        {
+          color: 'primary',
+          variant: 'pill',
+          class: {
+            trigger: 'data-[state=active]:text-white'
+          }
+        }
+      ]
+    },
     table: {
       slots: {
         th: 'text-xs uppercase tracking-wide text-muted'

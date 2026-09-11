@@ -2,6 +2,7 @@
 import type { FormError, FormSubmitEvent } from '@nuxt/ui'
 import type { SchedulingAppointment } from '../composables/useSchedulingBoard'
 import { ORDER_ROUTES } from '#layers/orders/app/utils/order-routes'
+import { useVehicleOptions } from '#layers/vehicles/app/composables/useVehicleOptions'
 import {
   AGENDAMENTO_STATUS_SELECT_ITEMS,
   appointmentToDraft,
@@ -32,8 +33,24 @@ const preferredVeiculoId = computed(
   () => props.appointment?.veiculo_id || undefined
 )
 
-const { veiculoItems, searchTerm: vehicleSearchTerm, pending: vehiclesPending }
-  = await useSchedulingVehicleOptions(preferredVeiculoId)
+const {
+  veiculos,
+  searchTerm: vehicleSearchTerm,
+  pending: vehiclesPending
+} = await useVehicleOptions({
+  preferredId: preferredVeiculoId,
+  key: 'scheduling-veiculos-options'
+})
+
+const veiculoItems = computed(() =>
+  (veiculos.value || []).map((v) => {
+    const cliente = Array.isArray(v.clientes) ? v.clientes[0] : v.clientes
+    return {
+      label: `${formatPlaca(v.placa)}${v.marca || v.modelo ? ` — ${[v.marca, v.modelo].filter(Boolean).join(' ')}` : ''}${cliente?.nome ? ` (${cliente.nome})` : ''}`,
+      value: v.id
+    }
+  })
+)
 
 const draft = reactive(emptyAppointmentDraft(props.day))
 const snapshot = ref('')
