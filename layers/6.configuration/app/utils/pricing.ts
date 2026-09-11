@@ -101,3 +101,19 @@ export function resolveCatalogUnitPrice(input: {
   }
   return roundMoney(Number(input.valorPadrao) || 0)
 }
+
+/** Seed de serviço: horas × hora cobrada sugerida. */
+export function calcServiceSeedPrice(hours: number, hourlyRate: number): number {
+  return roundMoney(Math.max(Number(hours) || 0, 0) * Math.max(Number(hourlyRate) || 0, 0))
+}
+
+export function suggestChargeAmount(
+  budgetTotal: number,
+  forma: 'dinheiro' | 'pix' | 'cartao_debito' | 'cartao_credito' | undefined,
+  fees: { debito: number, credito: number }
+): number {
+  const total = roundMoney(Number(budgetTotal) || 0)
+  if (!forma || forma === 'dinheiro' || forma === 'pix') return total
+  const fee = forma === 'cartao_debito' ? fees.debito : fees.credito
+  return calcChargeToNet(total, fee)
+}

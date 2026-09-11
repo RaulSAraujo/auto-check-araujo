@@ -2,11 +2,22 @@
 import type { Fornecedor } from '~~/shared/types/database'
 import type { OrdemItemTipo } from '~~/shared/types/oficina'
 import { ORDEM_ITEM_TIPO_SELECT_ITEMS } from '#layers/orders/app/utils/budget-select-items'
+import { formatMoney } from '~~/shared/utils/money'
 import {
+  applyServiceHourSeed,
+  clearServicePriceManual,
   isCatalogItemDraftValid,
+  markServicePriceManual,
   type CatalogItemDraft,
   type CatalogItemRow
 } from '../../utils/catalog'
+import {
+  calcServiceSeedPrice,
+  calcSuggestedHourlyRate,
+  emptyPricingDraft,
+  pricingDraftFromRow,
+  type PricingParamsRow
+} from '../../utils/pricing'
 
 defineOptions({ name: 'CatalogForm' })
 
@@ -21,6 +32,20 @@ const emit = defineEmits<{
 }>()
 
 const draftModel = defineModel<CatalogItemDraft>('draft', { required: true })
+
+const { params: pricingParams } = usePricingParams()
+
+const hourlyRate = computed(() => {
+  const row = pricingParams.value as PricingParamsRow | null
+  const draft = row ? pricingDraftFromRow(row) : emptyPricingDraft()
+  return calcSuggestedHourlyRate(draft)
+})
+
+const seedPreview = computed(() => {
+  const hours = Number(draftModel.value.horas_estimadas)
+  if (!hours || hours <= 0) return null
+  return calcServiceSeedPrice(hours, hourlyRate.value)
+})
 
 const supplierItems = computed(() => [
   { label: 'Sem fornecedor', value: '__none__' },
@@ -47,18 +72,38 @@ const kitComponentOptions = computed(() =>
 
 const showStock = computed(() => draftModel.value.tipo !== 'servico')
 const showKitBuilder = computed(() => draftModel.value.tipo === 'kit')
+const showServiceHours = computed(() => draftModel.value.tipo === 'servico')
 
 watch(() => draftModel.value.tipo, (tipo: OrdemItemTipo) => {
   if (tipo === 'servico') {
     draftModel.value.estoque = null
     draftModel.value.kit_itens = []
-  } else if (draftModel.value.estoque == null) {
-    draftModel.value.estoque = 0
+  } else {
+    draftModel.value.horas_estimadas = null
+    draftModel.value.preco_manual = false
+    if (draftModel.value.estoque == null) {
+      draftModel.value.estoque = 0
+    }
   }
   if (tipo !== 'kit') {
     draftModel.value.kit_itens = []
   }
 })
+
+function onHoursUpdate(value: number | null) {
+  draftModel.value.horas_estimadas = value == null || Number.isNaN(Number(value))
+    ? null
+    : Number(value)
+  applyServiceHourSeed(draftModel.value, hourlyRate.value)
+}
+
+function onValorPadraoUpdate(value: number | undefined) {
+  markServicePriceManual(draftModel.value, value ?? 0, hourlyRate.value)
+}
+
+function onUseSeed() {
+  clearServicePriceManual(draftModel.value, hourlyRate.value)
+}
 
 function addKitLine() {
   const first = kitComponentOptions.value[0]
@@ -111,14 +156,55 @@ function onSubmit() {
       />
     </UFormField>
 
+    <div
+      v-if="showServiceHours"
+      class="space-y-3 rounded-md border border-default bg-elevated/40 p-3"
+    >
+      <UFormField
+        label="Horas estimadas"
+        name="horas_estimadas"
+        hint="Multiplica pela hora cobrada sugerida"
+      >
+        <UInput
+          :model-value="draftModel.horas_estimadas ?? undefined"
+          name="horas_estimadas"
+          type="number"
+          inputmode="decimal"
+          min="0"
+          step="0.25"
+          class="w-full font-mono tabular-nums"
+          placeholder="Ex.: 1,5"
+          @update:model-value="onHoursUpdate(Number($event))"
+        />
+      </UFormField>
+      <p
+        v-if="seedPreview != null"
+        class="font-mono text-xs tabular-nums text-muted"
+      >
+        {{ draftModel.horas_estimadas }} h × {{ formatMoney(hourlyRate) }}
+        → {{ formatMoney(seedPreview) }}
+      </p>
+      <UButton
+        v-if="draftModel.preco_manual && seedPreview != null"
+        type="button"
+        size="xs"
+        color="neutral"
+        variant="soft"
+        label="Voltar à fórmula"
+        @click="onUseSeed"
+      />
+    </div>
+
     <div class="grid grid-cols-2 gap-3">
       <UFormField
         label="Valor padrão"
         name="valor_padrao"
+        :hint="draftModel.preco_manual && showServiceHours ? 'Preço manual' : undefined"
       >
         <BaseCurrencyInput
-          v-model="draftModel.valor_padrao"
+          :model-value="draftModel.valor_padrao"
           empty-as-zero
+          @update:model-value="onValorPadraoUpdate"
         />
       </UFormField>
 

@@ -13,6 +13,8 @@ const CATALOG_SELECT = `
   estoque,
   ativo,
   fornecedor_id,
+  horas_estimadas,
+  preco_manual,
   created_at,
   fornecedores ( id, nome ),
   catalogo_kit_itens!catalogo_kit_itens_kit_id_fkey (
@@ -26,13 +28,20 @@ const CATALOG_SELECT = `
 
 function toCatalogPayload(draft: CatalogItemDraft) {
   const tipo = draft.tipo
+  const isService = tipo === 'servico'
   return {
     nome: draft.nome.trim(),
     tipo,
     valor_padrao: draft.valor_padrao,
     custo: draft.custo,
     estoque: stockForTipo(tipo, draft.estoque),
-    fornecedor_id: draft.fornecedor_id || null
+    fornecedor_id: draft.fornecedor_id || null,
+    horas_estimadas: isService
+      ? (draft.horas_estimadas == null || draft.horas_estimadas <= 0
+          ? null
+          : draft.horas_estimadas)
+      : null,
+    preco_manual: isService ? draft.preco_manual : false
   }
 }
 

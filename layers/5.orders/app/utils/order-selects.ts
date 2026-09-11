@@ -14,6 +14,7 @@ export const ORDER_DETAIL_SELECT = [
   'pago',
   'pago_em',
   'valor_total',
+  'valor_cobrado',
   'aberta_em',
   'concluida_em',
   'aberto_por',

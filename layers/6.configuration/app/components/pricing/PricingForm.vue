@@ -108,7 +108,7 @@ const creditCharge = computed(() =>
               Hora cobrada sugerida
             </p>
             <p class="text-xs text-muted">
-              Usada ao precificar serviços no orçamento.
+              Referência para precificar serviços no catálogo (horas × esta taxa).
             </p>
           </div>
           <p class="font-mono text-2xl font-semibold tabular-nums text-primary">
@@ -164,7 +164,7 @@ const creditCharge = computed(() =>
     <BasePanel>
       <template #header>
         <p class="text-xs font-semibold uppercase tracking-wide text-muted">
-          Taxas e comissão
+          Taxas de cartão
         </p>
       </template>
 

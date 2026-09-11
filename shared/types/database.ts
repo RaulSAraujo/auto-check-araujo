@@ -417,6 +417,7 @@ export type Database = {
           reclamacao: string | null
           status: string
           updated_at: string
+          valor_cobrado: number | null
           valor_total: number | null
           veiculo_id: string
         }
@@ -438,6 +439,7 @@ export type Database = {
           reclamacao?: string | null
           status?: string
           updated_at?: string
+          valor_cobrado?: number | null
           valor_total?: number | null
           veiculo_id: string
         }
@@ -459,6 +461,7 @@ export type Database = {
           reclamacao?: string | null
           status?: string
           updated_at?: string
+          valor_cobrado?: number | null
           valor_total?: number | null
           veiculo_id?: string
         }
@@ -510,8 +513,10 @@ export type Database = {
           custo: number
           estoque: number | null
           fornecedor_id: string | null
+          horas_estimadas: number | null
           id: string
           nome: string
+          preco_manual: boolean
           tipo: string
           valor_padrao: number
         }
@@ -521,8 +526,10 @@ export type Database = {
           custo?: number
           estoque?: number | null
           fornecedor_id?: string | null
+          horas_estimadas?: number | null
           id?: string
           nome: string
+          preco_manual?: boolean
           tipo: string
           valor_padrao?: number
         }
@@ -532,8 +539,10 @@ export type Database = {
           custo?: number
           estoque?: number | null
           fornecedor_id?: string | null
+          horas_estimadas?: number | null
           id?: string
           nome?: string
+          preco_manual?: boolean
           tipo?: string
           valor_padrao?: number
         }

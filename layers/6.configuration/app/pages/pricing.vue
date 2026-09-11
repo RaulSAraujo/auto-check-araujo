@@ -53,7 +53,7 @@ async function onSave() {
       <div class="mx-auto max-w-4xl space-y-6 p-4 sm:p-6">
         <BasePageHeader
           title="Precificação"
-          description="Configure parâmetros de mão de obra e peças para orçamentos."
+          description="Configure mão de obra (seed no catálogo), markup de peças e taxas de cartão no pagamento."
         >
           <template #breadcrumb>
             <UBreadcrumb :items="breadcrumbItems" />

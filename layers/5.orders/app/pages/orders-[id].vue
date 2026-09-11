@@ -83,6 +83,9 @@ const {
   canEditPayment,
   showPaymentSection,
   isDirty: isPaymentDirty,
+  suggestedCharge,
+  applySuggestedCharge,
+  markChargeTouched,
   discard: discardPayment,
   savePayment
 } = useOrderPayment(id, ordem, refresh)
@@ -312,6 +315,9 @@ onMounted(() => {
             v-model="paymentState"
             :ordem="ordem"
             :can-edit="canEditPayment"
+            :suggested-charge="suggestedCharge"
+            @apply-suggested="applySuggestedCharge"
+            @charge-touch="markChargeTouched"
           />
         </section>
 

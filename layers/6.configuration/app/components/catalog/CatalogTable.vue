@@ -7,12 +7,22 @@ import { formatMoney } from '~~/shared/utils/money'
 import { EMPTY_VALUE } from '~~/shared/utils/empty'
 import {
   CATALOG_TIPO_COLOR,
+  applyServiceHourSeed,
   catalogDraftFromRow,
+  clearServicePriceManual,
   emptyCatalogItemDraft,
   isCatalogItemDraftValid,
+  markServicePriceManual,
   type CatalogItemDraft,
   type CatalogItemRow
 } from '../../utils/catalog'
+import {
+  calcServiceSeedPrice,
+  calcSuggestedHourlyRate,
+  emptyPricingDraft,
+  pricingDraftFromRow,
+  type PricingParamsRow
+} from '../../utils/pricing'
 
 defineOptions({ name: 'CatalogTable' })
 
@@ -31,6 +41,21 @@ const emit = defineEmits<{
 
 const editingId = ref<string | null>(null)
 const editDraft = reactive<CatalogItemDraft>(emptyCatalogItemDraft())
+
+const { params: pricingParams } = usePricingParams()
+
+const hourlyRate = computed(() => {
+  const row = pricingParams.value as PricingParamsRow | null
+  const draft = row ? pricingDraftFromRow(row) : emptyPricingDraft()
+  return calcSuggestedHourlyRate(draft)
+})
+
+const seedPreview = computed(() => {
+  if (editDraft.tipo !== 'servico') return null
+  const hours = Number(editDraft.horas_estimadas)
+  if (!hours || hours <= 0) return null
+  return calcServiceSeedPrice(hours, hourlyRate.value)
+})
 
 const supplierItems = computed(() => [
   { label: 'Sem fornecedor', value: '__none__' },
@@ -87,13 +112,32 @@ watch(() => editDraft.tipo, (tipo: OrdemItemTipo) => {
   if (tipo === 'servico') {
     editDraft.estoque = null
     editDraft.kit_itens = []
-  } else if (editDraft.estoque == null) {
-    editDraft.estoque = 0
+  } else {
+    editDraft.horas_estimadas = null
+    editDraft.preco_manual = false
+    if (editDraft.estoque == null) {
+      editDraft.estoque = 0
+    }
   }
   if (tipo !== 'kit') {
     editDraft.kit_itens = []
   }
 })
+
+function onHoursUpdate(value: number | null) {
+  editDraft.horas_estimadas = value == null || Number.isNaN(Number(value))
+    ? null
+    : Number(value)
+  applyServiceHourSeed(editDraft, hourlyRate.value)
+}
+
+function onValorPadraoUpdate(value: number | undefined) {
+  markServicePriceManual(editDraft, value ?? 0, hourlyRate.value)
+}
+
+function onUseSeed() {
+  clearServicePriceManual(editDraft, hourlyRate.value)
+}
 </script>
 
 <template>
@@ -188,14 +232,44 @@ watch(() => editDraft.tipo, (tipo: OrdemItemTipo) => {
               <td class="px-3 py-2.5 text-right font-mono tabular-nums align-top">
                 <div
                   v-if="editingId === item.id"
-                  class="ml-auto w-32"
+                  class="ml-auto space-y-1"
                 >
-                  <BaseCurrencyInput
-                    v-model="editDraft.valor_padrao"
-                    size="sm"
-                    empty-as-zero
-                    aria-label="Valor padrão"
-                  />
+                  <div
+                    v-if="editDraft.tipo === 'servico'"
+                    class="flex items-center justify-end gap-1"
+                  >
+                    <UInput
+                      :model-value="editDraft.horas_estimadas ?? undefined"
+                      type="number"
+                      inputmode="decimal"
+                      size="sm"
+                      min="0"
+                      step="0.25"
+                      aria-label="Horas estimadas"
+                      class="w-20 font-mono tabular-nums"
+                      placeholder="h"
+                      @update:model-value="onHoursUpdate(Number($event))"
+                    />
+                    <UButton
+                      v-if="editDraft.preco_manual && seedPreview != null"
+                      type="button"
+                      size="xs"
+                      color="neutral"
+                      variant="ghost"
+                      icon="i-lucide-rotate-ccw"
+                      aria-label="Voltar à fórmula"
+                      @click="onUseSeed"
+                    />
+                  </div>
+                  <div class="w-32 ml-auto">
+                    <BaseCurrencyInput
+                      :model-value="editDraft.valor_padrao"
+                      size="sm"
+                      empty-as-zero
+                      aria-label="Valor padrão"
+                      @update:model-value="onValorPadraoUpdate"
+                    />
+                  </div>
                 </div>
                 <span v-else>{{ formatMoney(Number(item.valor_padrao)) }}</span>
               </td>

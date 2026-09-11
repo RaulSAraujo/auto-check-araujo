@@ -1,5 +1,6 @@
 import type { OrdemItemTipo } from '~~/shared/types/oficina'
 import type { CatalogoKitItem, Fornecedor, ServicoCatalogo } from '~~/shared/types/database'
+import { calcServiceSeedPrice, roundMoney } from './pricing'
 
 export interface CatalogKitDraftLine {
   item_id: string
@@ -13,6 +14,8 @@ export interface CatalogItemDraft {
   custo: number
   estoque: number | null
   fornecedor_id: string | undefined
+  horas_estimadas: number | null
+  preco_manual: boolean
   kit_itens: CatalogKitDraftLine[]
 }
 
@@ -48,6 +51,8 @@ export function emptyCatalogItemDraft(): CatalogItemDraft {
     custo: 0,
     estoque: null,
     fornecedor_id: undefined,
+    horas_estimadas: null,
+    preco_manual: false,
     kit_itens: []
   }
 }
@@ -60,6 +65,8 @@ export function catalogDraftFromRow(item: CatalogItemRow): CatalogItemDraft {
     custo: Number(item.custo),
     estoque: item.estoque == null ? null : Number(item.estoque),
     fornecedor_id: item.fornecedor_id || undefined,
+    horas_estimadas: item.horas_estimadas == null ? null : Number(item.horas_estimadas),
+    preco_manual: Boolean(item.preco_manual),
     kit_itens: (item.catalogo_kit_itens || []).map(line => ({
       item_id: line.item_id,
       quantidade: Number(line.quantidade)
@@ -70,6 +77,9 @@ export function catalogDraftFromRow(item: CatalogItemRow): CatalogItemDraft {
 export function isCatalogItemDraftValid(draft: CatalogItemDraft): boolean {
   if (!draft.nome.trim() || draft.valor_padrao < 0 || draft.custo < 0) return false
   if (draft.estoque != null && draft.estoque < 0) return false
+  if (draft.tipo === 'servico' && draft.horas_estimadas != null && draft.horas_estimadas < 0) {
+    return false
+  }
   if (draft.tipo === 'kit') {
     return draft.kit_itens.length > 0
       && draft.kit_itens.every(line => line.item_id && line.quantidade > 0)
@@ -81,6 +91,41 @@ export function stockForTipo(tipo: OrdemItemTipo, estoque: number | null | undef
   if (tipo === 'servico') return null
   if (estoque == null || Number.isNaN(Number(estoque))) return 0
   return Number(estoque)
+}
+
+/** Aplica seed de hora quando o serviço não está em preço manual. */
+export function applyServiceHourSeed(
+  draft: CatalogItemDraft,
+  hourlyRate: number
+): void {
+  if (draft.tipo !== 'servico' || draft.preco_manual) return
+  const hours = Number(draft.horas_estimadas)
+  if (!hours || hours <= 0) return
+  draft.valor_padrao = calcServiceSeedPrice(hours, hourlyRate)
+}
+
+export function markServicePriceManual(
+  draft: CatalogItemDraft,
+  nextPrice: number,
+  hourlyRate: number
+): void {
+  draft.valor_padrao = roundMoney(Math.max(Number(nextPrice) || 0, 0))
+  if (draft.tipo !== 'servico') {
+    draft.preco_manual = false
+    return
+  }
+  const hours = Number(draft.horas_estimadas)
+  if (!hours || hours <= 0 || hourlyRate <= 0) {
+    draft.preco_manual = true
+    return
+  }
+  const seeded = calcServiceSeedPrice(hours, hourlyRate)
+  draft.preco_manual = draft.valor_padrao !== seeded
+}
+
+export function clearServicePriceManual(draft: CatalogItemDraft, hourlyRate: number): void {
+  draft.preco_manual = false
+  applyServiceHourSeed(draft, hourlyRate)
 }
 
 export function emptySupplierDraft() {
