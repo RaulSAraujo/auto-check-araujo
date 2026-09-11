@@ -129,7 +129,11 @@ export function useFinanceWorkspace() {
     addingAccount.value = true
     try {
       const { error } = await createAccount({ ...accountDraft })
-      if (!error) Object.assign(accountDraft, emptyFinanceAccountDraft())
+      if (!error) {
+        Object.assign(accountDraft, emptyFinanceAccountDraft())
+        return true
+      }
+      return false
     } finally {
       addingAccount.value = false
     }

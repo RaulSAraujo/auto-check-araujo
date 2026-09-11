@@ -24,6 +24,7 @@ const emit = defineEmits<{
   cancel: [id: string]
   reopen: [id: string]
   remove: [id: string]
+  create: []
 }>()
 
 const columns: TableColumn<FinanceAccountRow>[] = [
@@ -195,6 +196,13 @@ function cancelPay() {
       <template #empty>
         <BaseEmptyState icon="i-lucide-receipt">
           Nenhuma conta neste filtro.
+          <template #actions>
+            <UButton
+              label="Nova conta"
+              icon="i-lucide-plus"
+              @click="emit('create')"
+            />
+          </template>
         </BaseEmptyState>
       </template>
     </UTable>

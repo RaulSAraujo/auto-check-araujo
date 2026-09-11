@@ -49,162 +49,178 @@ const supplierModel = computed({
 watch(() => props.adding, (adding) => {
   if (!adding) showNotes.value = false
 })
+
+watch(
+  () => [
+    draftModel.value.descricao,
+    draftModel.value.categoria_id,
+    draftModel.value.observacoes
+  ].join('\0'),
+  (combined) => {
+    if (!combined.replaceAll('\0', '')) showNotes.value = false
+  }
+)
+
+function onSubmit() {
+  if (!isFinanceAccountDraftValid(draftModel.value) || props.adding) return
+  emit('add')
+}
 </script>
 
 <template>
-  <BasePanel>
-    <template #header>
-      <h2 class="text-sm font-semibold uppercase tracking-widest text-muted">
-        Nova conta
-      </h2>
-    </template>
-    <div class="space-y-3">
-      <UFormField
-        label="Descrição"
+  <form
+    class="space-y-4"
+    autocomplete="off"
+    @submit.prevent="onSubmit"
+  >
+    <UFormField
+      label="Descrição"
+      name="descricao"
+      required
+    >
+      <UInput
+        v-model="draftModel.descricao"
         name="descricao"
+        autocomplete="off"
+        class="w-full"
+        placeholder="Conta de luz — setembro…"
+      />
+    </UFormField>
+
+    <UFormField
+      label="Categoria"
+      name="categoria_id"
+      required
+    >
+      <div class="flex items-center gap-2">
+        <USelectMenu
+          v-model="draftModel.categoria_id"
+          :items="categoryItems"
+          value-key="value"
+          class="min-w-0 flex-1"
+          placeholder="Selecione…"
+          :loading="categoriesPending"
+          :disabled="!categoryItems.length"
+        />
+        <UButton
+          type="button"
+          icon="i-lucide-tags"
+          color="neutral"
+          variant="outline"
+          square
+          class="shrink-0"
+          aria-label="Gerenciar categorias"
+          @click="emit('openCategories')"
+        />
+      </div>
+      <template
+        v-if="!categoriesPending && !categoryItems.length"
+        #help
+      >
+        <button
+          type="button"
+          class="text-primary underline-offset-2 hover:underline"
+          @click="emit('openCategories')"
+        >
+          Cadastrar categoria
+        </button>
+      </template>
+    </UFormField>
+
+    <UFormField
+      label="Fornecedor"
+      name="fornecedor_id"
+    >
+      <div class="flex items-center gap-2">
+        <USelectMenu
+          v-model="supplierModel"
+          :items="supplierItems"
+          value-key="value"
+          class="min-w-0 flex-1"
+          placeholder="Opcional…"
+          :loading="suppliersPending"
+        />
+        <UButton
+          type="button"
+          icon="i-lucide-truck"
+          color="neutral"
+          variant="outline"
+          square
+          class="shrink-0"
+          aria-label="Gerenciar fornecedores"
+          @click="emit('openSuppliers')"
+        />
+      </div>
+      <template
+        v-if="!suppliersPending && !activeSuppliers.length"
+        #help
+      >
+        <button
+          type="button"
+          class="text-primary underline-offset-2 hover:underline"
+          @click="emit('openSuppliers')"
+        >
+          Cadastrar fornecedor
+        </button>
+      </template>
+    </UFormField>
+
+    <div class="grid grid-cols-2 gap-3">
+      <UFormField
+        label="Valor"
+        name="valor"
         required
+        class="min-w-0"
+      >
+        <BaseCurrencyInput
+          v-model="draftModel.valor"
+          name="valor"
+        />
+      </UFormField>
+
+      <UFormField
+        label="Vencimento"
+        name="vencimento"
+        required
+        class="min-w-0"
       >
         <UInput
-          v-model="draftModel.descricao"
-          name="descricao"
-          autocomplete="off"
-          class="w-full"
-          placeholder="Conta de luz — setembro…"
-        />
-      </UFormField>
-
-      <UFormField
-        label="Categoria"
-        name="categoria_id"
-        required
-      >
-        <div class="flex items-center gap-2">
-          <USelectMenu
-            v-model="draftModel.categoria_id"
-            :items="categoryItems"
-            value-key="value"
-            class="min-w-0 flex-1"
-            placeholder="Selecione…"
-            :loading="categoriesPending"
-            :disabled="!categoryItems.length"
-          />
-          <UButton
-            icon="i-lucide-tags"
-            color="neutral"
-            variant="outline"
-            square
-            class="shrink-0"
-            aria-label="Gerenciar categorias"
-            @click="emit('openCategories')"
-          />
-        </div>
-        <template
-          v-if="!categoriesPending && !categoryItems.length"
-          #help
-        >
-          <button
-            type="button"
-            class="text-primary underline-offset-2 hover:underline"
-            @click="emit('openCategories')"
-          >
-            Cadastrar categoria
-          </button>
-        </template>
-      </UFormField>
-
-      <UFormField
-        label="Fornecedor"
-        name="fornecedor_id"
-      >
-        <div class="flex items-center gap-2">
-          <USelectMenu
-            v-model="supplierModel"
-            :items="supplierItems"
-            value-key="value"
-            class="min-w-0 flex-1"
-            placeholder="Opcional…"
-            :loading="suppliersPending"
-          />
-          <UButton
-            icon="i-lucide-truck"
-            color="neutral"
-            variant="outline"
-            square
-            class="shrink-0"
-            aria-label="Gerenciar fornecedores"
-            @click="emit('openSuppliers')"
-          />
-        </div>
-        <template
-          v-if="!suppliersPending && !activeSuppliers.length"
-          #help
-        >
-          <button
-            type="button"
-            class="text-primary underline-offset-2 hover:underline"
-            @click="emit('openSuppliers')"
-          >
-            Cadastrar fornecedor
-          </button>
-        </template>
-      </UFormField>
-
-      <div class="grid grid-cols-2 gap-3">
-        <UFormField
-          label="Valor"
-          name="valor"
-          required
-          class="min-w-0"
-        >
-          <BaseCurrencyInput
-            v-model="draftModel.valor"
-            name="valor"
-          />
-        </UFormField>
-
-        <UFormField
-          label="Vencimento"
+          v-model="draftModel.vencimento"
+          type="date"
           name="vencimento"
-          required
-          class="min-w-0"
-        >
-          <UInput
-            v-model="draftModel.vencimento"
-            type="date"
-            name="vencimento"
-            class="w-full"
-          />
-        </UFormField>
-      </div>
-
-      <div class="space-y-1.5">
-        <UButton
-          :label="showNotes || draftModel.observacoes ? 'Ocultar observações' : 'Adicionar observações'"
-          size="xs"
-          color="neutral"
-          variant="link"
-          class="h-auto px-0"
-          @click="showNotes = !showNotes"
-        />
-        <UTextarea
-          v-if="showNotes || draftModel.observacoes"
-          v-model="draftModel.observacoes"
-          name="observacoes"
           class="w-full"
-          :rows="2"
-          placeholder="Número da fatura, referência…"
         />
-      </div>
+      </UFormField>
+    </div>
 
+    <div class="space-y-1.5">
       <UButton
-        label="Adicionar conta"
-        icon="i-lucide-plus"
-        block
-        class="active:scale-[0.98]"
-        :loading="adding"
-        :disabled="!isFinanceAccountDraftValid(draftModel)"
-        @click="emit('add')"
+        type="button"
+        :label="showNotes || draftModel.observacoes ? 'Ocultar observações' : 'Adicionar observações'"
+        size="xs"
+        color="neutral"
+        variant="link"
+        class="h-auto px-0"
+        @click="showNotes = !showNotes"
+      />
+      <UTextarea
+        v-if="showNotes || draftModel.observacoes"
+        v-model="draftModel.observacoes"
+        name="observacoes"
+        class="w-full"
+        :rows="2"
+        placeholder="Número da fatura, referência…"
       />
     </div>
-  </BasePanel>
+
+    <UButton
+      type="submit"
+      label="Adicionar conta"
+      icon="i-lucide-plus"
+      block
+      class="active:scale-[0.98]"
+      :loading="adding"
+      :disabled="!isFinanceAccountDraftValid(draftModel)"
+    />
+  </form>
 </template>

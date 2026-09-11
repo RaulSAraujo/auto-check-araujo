@@ -275,6 +275,7 @@ async function handleAddAccount() {
             </template>
           </div>
 
+          <!-- Outside .finance-pane: transform animation breaks fixed overlay hit-testing -->
           <USlideover
             v-model:open="accountCreateOpen"
             title="Nova conta"
@@ -296,7 +297,6 @@ async function handleAddAccount() {
             </template>
           </USlideover>
 
-          <!-- Outside .finance-pane: transform animation breaks fixed overlay hit-testing -->
           <USlideover
             v-model:open="categoriesOpen"
             title="Categorias"
