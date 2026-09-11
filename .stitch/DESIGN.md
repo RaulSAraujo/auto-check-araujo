@@ -138,7 +138,9 @@ Hierarquia (espelha light: canvas atrás, painel na frente):
 
 ### Navigation
 - Shell: layout `default` + `BaseAppHeader` com `UNavigationMenu` (`variant="link"`, pill `bg-muted/80 backdrop-blur-sm rounded-full`)
-- Categorias via `children`: **Início** | **Operação** | **Cadastros** | **Gestão**
+- Categorias via `children`: **Início** | **Operação** | **Cadastros** | **Gestão** | **Configuração**
+  - Gestão → `/gestao/financeiro`, `/gestao/equipe`
+  - Configuração → `/configuracao/catalogo`, `/configuracao/fornecedores`, `/configuracao/precificacao`
 - Trailing: `UColorModeButton` + avatar (`Sair`)
 - Sem sidebar; sem `UDashboardGroup` / `UDashboardSidebar` — só header pill flutuante
 - Conteúdo do layout `default` com `pt-20 sm:pt-24` sob o header fixo
@@ -163,7 +165,7 @@ Hierarquia (espelha light: canvas atrás, painel na frente):
 - Body `bg-muted`, conteúdo `max-w-5xl space-y-8`
 1. **Ordens:** label + “Ver todas”; linhas label← →número+chevron (Abertas=`text-primary`, Em andamento=`text-warning`)
 2. **Cadastro:** 2 colunas centralizadas, números `text-4xl` mono
-3. **Financeiro** (permissão): faixa 3 colunas — Faturamento / Recebido=`text-success` / Pendente=`text-warning`; “Detalhes” → `/financeiro`
+3. **Financeiro** (permissão): faixa 3 colunas — Faturamento / Recebido=`text-success` / Pendente=`text-warning`; “Detalhes” → `/gestao/financeiro`
 - Motion: stagger seções 60ms; hover scale nos números de OS
 - Dark: tokens semânticos (ver §3)
 

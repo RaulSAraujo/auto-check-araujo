@@ -19,12 +19,14 @@ Mapa de telas para geração no Stitch. Todas seguem `.stitch/DESIGN.md`.
 | 3 | Ordens | `/ordens` | Lista densa + filtros + “Nova OS” |
 | 4 | Clientes | `/clientes` | Tabela + busca; empty state com CTA |
 | 5 | Veículos | `/veiculos` | Mesmo padrão de listagem (consistência) |
-| 6 | Financeiro | `/financeiro` | Números mono; status pago/pendente claros |
+| 6 | Financeiro | `/gestao/financeiro` | Números mono; status pago/pendente claros |
 | 7 | Kanban | `/kanban` | Board visual da oficina; colunas por etapa; alertas |
-| 8 | Catálogo | `/catalogo` | Serviços, kits, peças, custos, fornecedores, estoque |
+| 8 | Catálogo | `/configuracao/catalogo` | Serviços, kits, peças, custos, estoque |
+| 8b | Fornecedores | `/configuracao/fornecedores` | Cadastro de fornecedores |
+| 8c | ~~Checklist~~ | — | Removido — diagnóstico em texto na OS |
 | 9 | Agendamentos | `/agendamentos` | Agenda diária, calendário, no-show, pátio, PDF, busca |
-| 10 | Precificação | `/precificacao` | Parâmetros de mão de obra e peças; sugestão de preço |
-| 11 | Gestão da Equipe | `/equipe` | Desempenho e produtividade; abas Colaboradores → Ocorrências |
+| 10 | Precificação | `/configuracao/precificacao` | Parâmetros de mão de obra e peças; sugestão de preço |
+| 11 | Equipe | `/gestao/equipe` | Desempenho e produtividade; abas Colaboradores → Ocorrências |
 
 ---
 
@@ -145,7 +147,7 @@ Breadcrumb `Clientes › Nome › Placa` (com proprietário). Botão Voltar (sma
 
 ---
 
-## 6. Financeiro (`/financeiro`)
+## 6. Financeiro (`/gestao/financeiro`)
 
 **Navbar:** “Financeiro” + filtro de mês (Resumo / Recebíveis / Histórico).
 
@@ -199,13 +201,13 @@ Cada card (painel com borda Whisper, não decorativo):
 
 ---
 
-## 8. Catálogo (`/catalogo`)
+## 8. Catálogo (`/configuracao/catalogo`)
 
 **Navbar:** “Cadastro de Serviços e Peças”
 
 **Subtítulo:** “Base completa para acelerar os orçamentos.”
 
-**Abas:** Catálogo | Fornecedores | Checklist
+**Abas:** Catálogo | Fornecedores | Precificação
 
 **Aba Catálogo:** filtros Serviços / Kits / Peças + form (nome, tipo, valor, custo, estoque, fornecedor, composição de kit) + tabela com Status.
 
@@ -237,11 +239,11 @@ Cada card (painel com borda Whisper, não decorativo):
 
 ## 10. Controle de Vendas (`/vendas`) — removido
 
-Tela descontinuada: conteúdo coberto por `/financeiro`. Redirect: `/vendas` → `/financeiro`.
+Tela descontinuada: conteúdo coberto por `/gestao/financeiro`. Redirect: `/vendas` → `/gestao/financeiro`.
 
 ---
 
-## 11. Precificação (`/precificacao`)
+## 11. Precificação (`/configuracao/precificacao`)
 
 **Stitch:** `screens/8847180b8a184bb0825c1d82bf46d610` — *Precificação - Araujo Auto Center*  
 **Screenshot local:** `.stitch/screenshots/precificacao.png`
@@ -272,16 +274,16 @@ Tela descontinuada: conteúdo coberto por `/financeiro`. Redirect: `/vendas` →
 
 ---
 
-## 12. Gestão da Equipe (`/equipe`)
+## 12. Equipe (`/gestao/equipe`)
 
 **Stitch:** `screens/391ac751b4d045fe88c64b4d0bf4c8fa` — *Gestão da Equipe - Araujo Auto Center*  
 **Screenshot local:** `.stitch/screenshots/equipe.png`  
 **Stitch (Indicadores):** `screens/7daad238a9184b9c8f230cac4a7a54e3` — *Gestão da Equipe - Indicadores*  
 **Screenshot Indicadores:** `.stitch/screenshots/equipe-indicadores.png`
 
-**App:** `layers/2.auth/app/pages/team.vue` — menu “Equipe”; `/colaboradores` redireciona para `/equipe?tab=colaboradores`.
+**App:** `layers/8.management/app/pages/team.vue` — menu Gestão → Equipe; `/colaboradores` e `/equipe` redirecionam para `/gestao/equipe`.
 
-**Navbar:** “Gestão da Equipe” (gerente / `collaborators.manage` ou permissão dedicada futura).
+**Navbar:** Gestão → Equipe (gerente / `collaborators.manage`).
 
 **Subtítulo:** “Controle de desempenho e produtividade.” — uma linha, sem marketing.
 
@@ -311,15 +313,15 @@ Tela descontinuada: conteúdo coberto por `/financeiro`. Redirect: `/vendas` →
 
 **Motion (código):** page enter; troca de aba sem teatro; stagger das linhas (40–60ms).
 
-**Trunk test:** título Gestão da Equipe, nav ativa, abas visíveis, CTA da aba ativa.
+**Trunk test:** título Equipe, nav Gestão ativa, abas visíveis, CTA da aba ativa.
 
 **Dados (app):**
 - **Colaboradores** — já existe (`profiles` / RPCs de papel)
-- **Presença / Faltas / Ocorrências** — migration `20260902190000_equipe_presenca_faltas_ocorrencias.sql` + UI em `/equipe`
+- **Presença / Faltas / Ocorrências** — migration `20260902190000_equipe_presenca_faltas_ocorrencias.sql` + UI em `/gestao/equipe`
 - **Indicadores** — RPC `equipe_indicadores` (OS concluídas via `aberto_por`, taxa de presença, faltas)
 - **Avaliações / Tempo médio** — schema futuro
 
-> Relação com `/colaboradores`: a aba Colaboradores pode absorver a página atual, ou `/colaboradores` redireciona para `/equipe?tab=colaboradores`. Preferir **uma** entrada no menu: “Equipe”.
+> Relação com `/colaboradores`: redireciona para `/gestao/equipe?tab=colaboradores`. Preferir **uma** entrada no menu: Gestão → Equipe.
 
 ---
 
