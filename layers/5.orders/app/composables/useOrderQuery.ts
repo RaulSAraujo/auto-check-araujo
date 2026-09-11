@@ -1,4 +1,3 @@
-import type { Checklist } from '~~/shared/types/database'
 import type { OrderDetail } from '../types/orders'
 import { ORDER_DETAIL_SELECT } from '../utils/order-selects'
 
@@ -16,17 +15,13 @@ export function useOrderQuery(id: MaybeRefOrGetter<string>) {
 
       if (error) throw error
 
-      const raw = data as OrderDetail & {
-        checklists: OrderDetail['checklists'] | Checklist[]
-        agendamentos?: OrderDetail['agendamentos']
-      }
-      const checklistRel = Array.isArray(raw.checklists) ? raw.checklists[0] || null : raw.checklists
+      const raw = data as OrderDetail
       const appointmentsRel = Array.isArray(raw.agendamentos)
         ? raw.agendamentos
         : raw.agendamentos
           ? [raw.agendamentos]
           : []
-      return { ...raw, checklists: checklistRel, agendamentos: appointmentsRel } as OrderDetail
+      return { ...raw, agendamentos: appointmentsRel } as OrderDetail
     }
   )
 }

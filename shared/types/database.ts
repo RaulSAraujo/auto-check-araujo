@@ -89,170 +89,11 @@ export type Database = {
           }
         ]
       }
-      checklist_item_fotos: {
-        Row: {
-          checklist_item_id: string
-          created_at: string
-          id: string
-          nome_arquivo: string | null
-          storage_path: string
-        }
-        Insert: {
-          checklist_item_id: string
-          created_at?: string
-          id?: string
-          nome_arquivo?: string | null
-          storage_path: string
-        }
-        Update: {
-          checklist_item_id?: string
-          created_at?: string
-          id?: string
-          nome_arquivo?: string | null
-          storage_path?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: 'checklist_item_fotos_checklist_item_id_fkey'
-            columns: ['checklist_item_id']
-            isOneToOne: false
-            referencedRelation: 'checklist_itens'
-            referencedColumns: ['id']
-          }
-        ]
-      }
-      checklist_itens: {
-        Row: {
-          categoria: string
-          checklist_id: string
-          created_at: string
-          id: string
-          label: string
-          observacao: string | null
-          ordem: number
-          resultado: string | null
-          updated_at: string
-        }
-        Insert: {
-          categoria: string
-          checklist_id: string
-          created_at?: string
-          id?: string
-          label: string
-          observacao?: string | null
-          ordem?: number
-          resultado?: string | null
-          updated_at?: string
-        }
-        Update: {
-          categoria?: string
-          checklist_id?: string
-          created_at?: string
-          id?: string
-          label?: string
-          observacao?: string | null
-          ordem?: number
-          resultado?: string | null
-          updated_at?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: 'checklist_itens_checklist_id_fkey'
-            columns: ['checklist_id']
-            isOneToOne: false
-            referencedRelation: 'checklists'
-            referencedColumns: ['id']
-          }
-        ]
-      }
-      checklist_template_itens: {
-        Row: {
-          ativo: boolean
-          categoria: string
-          id: string
-          label: string
-          ordem: number
-          template_id: string
-        }
-        Insert: {
-          ativo?: boolean
-          categoria: string
-          id?: string
-          label: string
-          ordem?: number
-          template_id: string
-        }
-        Update: {
-          ativo?: boolean
-          categoria?: string
-          id?: string
-          label?: string
-          ordem?: number
-          template_id?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: 'checklist_template_itens_template_id_fkey'
-            columns: ['template_id']
-            isOneToOne: false
-            referencedRelation: 'checklist_templates'
-            referencedColumns: ['id']
-          }
-        ]
-      }
-      checklist_templates: {
-        Row: {
-          ativo: boolean
-          created_at: string
-          id: string
-          nome: string
-        }
-        Insert: {
-          ativo?: boolean
-          created_at?: string
-          id?: string
-          nome: string
-        }
-        Update: {
-          ativo?: boolean
-          created_at?: string
-          id?: string
-          nome?: string
-        }
-        Relationships: []
-      }
-      checklists: {
-        Row: {
-          created_at: string
-          id: string
-          ordem_servico_id: string
-          status: string
-          updated_at: string
-        }
-        Insert: {
-          created_at?: string
-          id?: string
-          ordem_servico_id: string
-          status?: string
-          updated_at?: string
-        }
-        Update: {
-          created_at?: string
-          id?: string
-          ordem_servico_id?: string
-          status?: string
-          updated_at?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: 'checklists_ordem_servico_id_fkey'
-            columns: ['ordem_servico_id']
-            isOneToOne: true
-            referencedRelation: 'ordens_servico'
-            referencedColumns: ['id']
-          }
-        ]
-      }
+
+
+
+
+
       clientes: {
         Row: {
           ativo: boolean
@@ -622,6 +463,41 @@ export type Database = {
         }
         Relationships: []
       }
+      ordem_fotos: {
+        Row: {
+          created_at: string
+          id: string
+          legenda: string | null
+          nome_arquivo: string | null
+          ordem_servico_id: string
+          storage_path: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          legenda?: string | null
+          nome_arquivo?: string | null
+          ordem_servico_id: string
+          storage_path: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          legenda?: string | null
+          nome_arquivo?: string | null
+          ordem_servico_id?: string
+          storage_path?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: 'ordem_fotos_ordem_servico_id_fkey'
+            columns: ['ordem_servico_id']
+            isOneToOne: false
+            referencedRelation: 'ordens_servico'
+            referencedColumns: ['id']
+          }
+        ]
+      }
       ordem_itens: {
         Row: {
           created_at: string
@@ -669,6 +545,7 @@ export type Database = {
           aberto_por: string
           concluida_em: string | null
           created_at: string
+          diagnostico: string | null
           forma_pagamento: string | null
           id: string
           km_entrada: number | null
@@ -689,6 +566,7 @@ export type Database = {
           aberto_por: string
           concluida_em?: string | null
           created_at?: string
+          diagnostico?: string | null
           forma_pagamento?: string | null
           id?: string
           km_entrada?: number | null
@@ -709,6 +587,7 @@ export type Database = {
           aberto_por?: string
           concluida_em?: string | null
           created_at?: string
+          diagnostico?: string | null
           forma_pagamento?: string | null
           id?: string
           km_entrada?: number | null
@@ -864,14 +743,8 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      importar_checklist_do_catalogo: {
-        Args: { p_checklist_id: string }
-        Returns: number
-      }
-      criar_checklist_da_os: {
-        Args: { p_ordem_servico_id: string }
-        Returns: string
-      }
+
+
       dashboard_stats: {
         Args: Record<PropertyKey, never>
         Returns: Json
@@ -880,23 +753,38 @@ export type Database = {
         Args: { p_now?: string }
         Returns: Json
       }
-      equipe_indicadores: {
+      team_indicators: {
         Args: { p_inicio: string, p_fim: string }
         Returns: Json
       }
-      financeiro_resumo: {
+      finance_summary: {
         Args: { p_mes: string }
         Returns: Json
       }
-      gerar_orcamento_public_token: {
-        Args: { p_ordem_id: string }
-        Returns: string
+      finance_statement: {
+        Args: { p_mes: string; p_limit?: number; p_offset?: number }
+        Returns: {
+          id: string
+          tipo: string
+          descricao: string
+          valor: number
+          pago_em: string
+          forma_pagamento: string | null
+          meta: string | null
+          total_count: number
+        }[]
       }
-      get_orcamento_publico: {
-        Args: { p_token: string }
-        Returns: Json
+      finance_cashflow_6_months: {
+        Args: { p_mes_final?: string }
+        Returns: {
+          mes: string
+          mes_label: string
+          entradas: number
+          saidas: number
+          saldo: number
+        }[]
       }
-      list_colaboradores: {
+      list_collaborators: {
         Args: Record<PropertyKey, never>
         Returns: {
           id: string
@@ -906,7 +794,7 @@ export type Database = {
           created_at: string
         }[]
       }
-      update_colaborador_papel: {
+      update_collaborator_role: {
         Args: { p_user_id: string, p_papel: string }
         Returns: undefined
       }
@@ -933,10 +821,8 @@ export type Profile = Database['public']['Tables']['profiles']['Row']
 export type OrdemServico = Database['public']['Tables']['ordens_servico']['Row']
 export type OrdemServicoInsert = Database['public']['Tables']['ordens_servico']['Insert']
 export type OrdemServicoUpdate = Database['public']['Tables']['ordens_servico']['Update']
-export type Checklist = Database['public']['Tables']['checklists']['Row']
-export type ChecklistItem = Database['public']['Tables']['checklist_itens']['Row']
-export type ChecklistTemplateItem = Database['public']['Tables']['checklist_template_itens']['Row']
-export type ChecklistItemFoto = Database['public']['Tables']['checklist_item_fotos']['Row']
+export type OrdemFoto = Database['public']['Tables']['ordem_fotos']['Row']
+export type OrdemFotoInsert = Database['public']['Tables']['ordem_fotos']['Insert']
 export type OrdemItem = Database['public']['Tables']['ordem_itens']['Row']
 export type OrdemItemInsert = Database['public']['Tables']['ordem_itens']['Insert']
 export type ServicoCatalogo = Database['public']['Tables']['servicos_catalogo']['Row']

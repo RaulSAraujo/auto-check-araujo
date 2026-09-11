@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { ORDER_ROUTES } from '../utils/order-routes'
 import {
-  absolutePrintUrl,
   buildBudgetWhatsAppMessage,
   buildWhatsAppUrl
 } from '../utils/print'
@@ -25,19 +24,6 @@ const { back } = useSmartBack(ORDER_ROUTES.list)
 
 /** Capture entry once so the trail stays stable while editing. */
 const breadcrumbOrigin = resolveOrderBreadcrumbOrigin()
-
-const checklistOpen = computed({
-  get: () => route.query.checklist === '1',
-  set: (value: boolean) => {
-    const query = { ...route.query }
-    if (value) {
-      query.checklist = '1'
-    } else {
-      delete query.checklist
-    }
-    void router.replace({ query })
-  }
-})
 
 const [
   { data: ordem, pending, refresh },
@@ -69,8 +55,7 @@ const {
   onDeleteItem,
   onSubmitForApproval,
   onApprove,
-  onReject,
-  onReopen
+  onReject
 } = useOrderBudgetPage(id, ordem, budgetItems, refresh, refreshBudgetItems)
 
 const {
@@ -121,67 +106,21 @@ async function save() {
     const ok = await saveForm()
     if (!ok) return
   }
+  if (isPaymentDirty.value) {
+    const ok = await savePayment()
+    if (!ok) return
+  }
   if (isStatusDirty.value) {
     const ok = await saveStatus()
     if (!ok) return
   }
-  if (isPaymentDirty.value) {
-    await savePayment()
-  }
 }
-
-const { ensureToken } = useOrderPublicToken()
-const publicToken = ref<string | null>(null)
-
-const canShareBudget = computed(() =>
-  budgetStatus.value === 'aguardando_aprovacao' || budgetStatus.value === 'aprovado'
-)
-
-watch(
-  [ordem, canShareBudget],
-  async () => {
-    if (!ordem.value || !canShareBudget.value) {
-      publicToken.value = null
-      return
-    }
-
-    const token = await ensureToken(
-      id.value,
-      ordem.value.orcamento_public_token ?? null
-    )
-
-    publicToken.value = token
-
-    if (token && !ordem.value.orcamento_public_token) {
-      await refresh()
-    }
-  },
-  { immediate: true }
-)
-
-const budgetPublicUrl = computed(() => {
-  if (!publicToken.value) return null
-  return absolutePrintUrl(ORDER_ROUTES.publicBudget(publicToken.value))
-})
-
-function openChecklist() {
-  checklistOpen.value = true
-}
-
-watch(checklistOpen, (open, wasOpen) => {
-  if (wasOpen && !open) {
-    void refresh()
-  }
-})
 
 const budgetWhatsappUrl = computed(() => {
-  if (!ordem.value || !budgetPublicUrl.value) return null
+  if (!ordem.value) return null
   return buildWhatsAppUrl(
     primaryPhone(ordem.value.veiculos?.clientes?.telefones),
-    buildBudgetWhatsAppMessage(
-      ordem.value.numero,
-      budgetPublicUrl.value
-    )
+    buildBudgetWhatsAppMessage(ordem.value.numero)
   )
 })
 
@@ -201,6 +140,7 @@ async function onDownloadBudgetPdf() {
       veiculoLabel: [veiculo?.marca, veiculo?.modelo].filter(Boolean).join(' ') || null,
       kmEntrada: ordem.value.km_entrada,
       reclamacao: ordem.value.reclamacao,
+      diagnostico: ordem.value.diagnostico,
       items: budgetItems.value || []
     })
   } finally {
@@ -327,13 +267,6 @@ onMounted(() => {
                 @submit="save"
               />
             </div>
-
-            <div class="border-t border-default/80 bg-elevated/20 px-5 py-4 sm:px-6 sm:py-5">
-              <OrdersChecklistActions
-                :ordem="ordem"
-                @open="openChecklist"
-              />
-            </div>
           </section>
 
           <section class="flex h-full min-h-0 flex-col rounded-2xl bg-default p-5 pb-6 sm:p-6 sm:pb-7 ring-1 ring-default/60">
@@ -351,7 +284,6 @@ onMounted(() => {
               :deleting-id="deletingId"
               :updating-status="updatingStatus"
               :print-to="ORDER_ROUTES.print(id)"
-              :public-url="budgetPublicUrl"
               :whatsapp-url="budgetWhatsappUrl"
               :pdf-loading="downloadingPdf"
               @update:selected-catalog-id="selectedCatalogId = $event"
@@ -360,11 +292,17 @@ onMounted(() => {
               @submit-for-approval="onSubmitForApproval"
               @approve="onApprove"
               @reject="onReject"
-              @reopen="onReopen"
               @download-pdf="onDownloadBudgetPdf"
             />
           </section>
         </div>
+
+        <section class="rounded-2xl bg-default p-5 pb-6 sm:p-6 sm:pb-7 ring-1 ring-default/60">
+          <OrdersPhotosSection
+            :ordem-id="id"
+            :can-edit="canEdit"
+          />
+        </section>
 
         <section
           v-if="showPaymentSection"
@@ -418,22 +356,6 @@ onMounted(() => {
             />
           </div>
         </Transition>
-
-        <USlideover
-          v-model:open="checklistOpen"
-          title="Checklist"
-          side="right"
-          :ui="{ content: 'max-w-md sm:max-w-lg overscroll-contain' }"
-        >
-          <template #body>
-            <OrdersChecklistPanel
-              v-if="checklistOpen"
-              :ordem-id="id"
-              :ordem="ordem"
-              @updated="refresh"
-            />
-          </template>
-        </USlideover>
 
         <OrdersConfirmDialog
           v-model:open="leaveOpen"
