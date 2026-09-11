@@ -525,8 +525,8 @@
     "semantic_hash": ""
   },
   "layers/5.orders/app/components/OrdersDetailResumoPanel.vue": {
-    "mtime": 1789145222.9819713,
-    "ast_hash": "410534041257985dc1cca55fb2d6ae08",
+    "mtime": 1789144535.3553207,
+    "ast_hash": "26bb22a0589cc4e10ce059a97bcb3ef5",
     "semantic_hash": ""
   },
   "layers/5.orders/app/components/OrdersNewForm.vue": {
@@ -715,8 +715,8 @@
     "semantic_hash": "c386e178f9f56924c23010a3733664f4"
   },
   "shared/types/database.ts": {
-    "mtime": 1789145213.3635902,
-    "ast_hash": "b416fe5885a19f925262123e4b3efdd2",
+    "mtime": 1789144725.1849642,
+    "ast_hash": "adbbf8192313b8ad19f8832280e42d3a",
     "semantic_hash": ""
   },
   "shared/types/oficina.ts": {
@@ -1410,8 +1410,8 @@
     "semantic_hash": ""
   },
   "CONTEXT.md": {
-    "mtime": 1789145223.4878504,
-    "ast_hash": "b1226b6080c7625425a8f5bcabc31098",
+    "mtime": 1789144805.4748447,
+    "ast_hash": "ca1a898b077b433deee47f57b1003360",
     "semantic_hash": ""
   },
   "README.md": {
@@ -1927,21 +1927,6 @@
   ".cursor/skills/using-agent-skills/SKILL.md": {
     "mtime": 1788973159.0294087,
     "ast_hash": "05fe5402ed96bf608ae4ab746772e926",
-    "semantic_hash": ""
-  },
-  "layers/5.orders/app/components/OrdersPhotosSection.vue": {
-    "mtime": 1789145214.0737681,
-    "ast_hash": "711abe2b4abfa80fc295c950c5f38374",
-    "semantic_hash": ""
-  },
-  "layers/5.orders/app/composables/useOrderPhotos.ts": {
-    "mtime": 1789145183.6852286,
-    "ast_hash": "baef8b17f01fb868dbf3e65eb6b438b6",
-    "semantic_hash": ""
-  },
-  "layers/5.orders/app/utils/order-photos.ts": {
-    "mtime": 1789145165.6879015,
-    "ast_hash": "a670dd7dc9b3ababba11c9ef8ebfac2b",
     "semantic_hash": ""
   }
 }
