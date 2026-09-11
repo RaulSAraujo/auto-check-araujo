@@ -4,6 +4,7 @@ import {
   emptyCatalogItemDraft,
   type CatalogTipoFilter
 } from '../utils/catalog'
+import { settingsHubBreadcrumb } from '../utils/settings-hub'
 
 defineOptions({ name: 'CatalogIndexPage' })
 
@@ -18,6 +19,7 @@ useSeoMeta({
 
 useRequirePermission('catalog.manage')
 
+const breadcrumbItems = settingsHubBreadcrumb('Catálogo')
 const route = useRoute()
 
 const initialTipo = (['servico', 'kit', 'peca'].includes(String(route.query.tipo))
@@ -119,6 +121,10 @@ function clearFilters() {
             title="Catálogo"
             description="Serviços, peças e kits usados nos orçamentos."
           >
+            <template #breadcrumb>
+              <UBreadcrumb :items="breadcrumbItems" />
+            </template>
+
             <template
               v-if="countLabel"
               #below

@@ -4,6 +4,7 @@ import {
   isPricingDraftValid,
   type PricingParamsDraft
 } from '../utils/pricing'
+import { settingsHubBreadcrumb } from '../utils/settings-hub'
 
 defineOptions({ name: 'PricingIndexPage' })
 
@@ -18,6 +19,7 @@ useSeoMeta({
 
 useRequirePermission('catalog.manage')
 
+const breadcrumbItems = settingsHubBreadcrumb('Precificação')
 const { draftDefaults, pending, error, refresh } = await usePricingParams()
 const { savePricingParams } = usePricingMutations()
 
@@ -53,14 +55,8 @@ async function onSave() {
           title="Precificação"
           description="Configure parâmetros de mão de obra e peças para orçamentos."
         >
-          <template #title-trailing>
-            <UBadge
-              color="neutral"
-              variant="subtle"
-              size="sm"
-            >
-              Configuração
-            </UBadge>
+          <template #breadcrumb>
+            <UBreadcrumb :items="breadcrumbItems" />
           </template>
           <template #actions>
             <UButton

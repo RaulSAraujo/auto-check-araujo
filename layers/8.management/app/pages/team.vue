@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { ColaboradorPapel } from '~~/shared/types/oficina'
 import type { CollaboratorRow } from '#layers/auth/app/composables/useCollaborators'
+import { settingsHubBreadcrumb } from '#layers/configuration/app/utils/settings-hub'
 
 defineOptions({ name: 'TeamIndexPage' })
 
@@ -15,6 +16,7 @@ useSeoMeta({
 
 useRequirePermission('collaborators.manage')
 
+const breadcrumbItems = settingsHubBreadcrumb('Equipe')
 const user = useSupabaseUser()
 const currentUserId = computed(() => user.value?.id)
 
@@ -75,6 +77,10 @@ async function onCreated() {
             title="Equipe"
             description="Quem entra no sistema e com qual papel."
           >
+            <template #breadcrumb>
+              <UBreadcrumb :items="breadcrumbItems" />
+            </template>
+
             <template
               v-if="countLabel"
               #below

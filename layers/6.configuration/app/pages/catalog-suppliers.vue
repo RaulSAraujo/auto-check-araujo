@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { emptySupplierDraft } from '../utils/catalog'
+import { settingsHubBreadcrumb } from '../utils/settings-hub'
 
 defineOptions({ name: 'CatalogSuppliersPage' })
 
@@ -13,6 +14,8 @@ useSeoMeta({
 })
 
 useRequirePermission('catalog.manage')
+
+const breadcrumbItems = settingsHubBreadcrumb('Fornecedores')
 
 const {
   suppliers,
@@ -106,6 +109,10 @@ async function onSupplierToggleAtivo(payload: { id: string, ativo: boolean }) {
             title="Fornecedores"
             description="Usados no catálogo e no financeiro."
           >
+            <template #breadcrumb>
+              <UBreadcrumb :items="breadcrumbItems" />
+            </template>
+
             <template
               v-if="countLabel"
               #below
