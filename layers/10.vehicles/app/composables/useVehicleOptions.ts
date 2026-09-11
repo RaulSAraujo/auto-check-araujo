@@ -6,7 +6,27 @@ export type VehicleOptionRow = {
   clientes: { id: string, nome: string } | { id: string, nome: string }[] | null
 }
 
-const VEHICLE_OPTION_SELECT = 'id, placa, marca, modelo, clientes!inner(id, nome)'
+type SearchVehicleOptionRpcRow = {
+  id: string
+  placa: string
+  marca: string | null
+  modelo: string | null
+  cliente_id: string
+  cliente_nome: string
+}
+
+function mapRpcRow(row: SearchVehicleOptionRpcRow): VehicleOptionRow {
+  return {
+    id: row.id,
+    placa: row.placa,
+    marca: row.marca,
+    modelo: row.modelo,
+    clientes: {
+      id: row.cliente_id,
+      nome: row.cliente_nome
+    }
+  }
+}
 
 export async function useVehicleOptions(options?: {
   preferredId?: MaybeRefOrGetter<string | undefined>
@@ -22,47 +42,28 @@ export async function useVehicleOptions(options?: {
     clearTimeout(debounceTimer)
     debounceTimer = setTimeout(() => {
       debouncedSearch.value = value
-    }, 200)
+    }, OPTIONS_SEARCH_DEBOUNCE_MS)
   })
+
+  onUnmounted(() => clearTimeout(debounceTimer))
 
   const preferredIdRef = computed(() => toValue(options?.preferredId) || '')
 
   const { data: veiculos, pending, error, refresh } = await useAsyncData(
-    () => `${key}-${debouncedSearch.value}`,
+    key,
     async () => {
-      const pattern = ilikePattern(debouncedSearch.value)
-      const placaPattern = ilikePattern(
-        normalizePlaca(debouncedSearch.value) || debouncedSearch.value
-      )
+      const term = sanitizeIlikeTerm(debouncedSearch.value)
+      const preferred = preferredIdRef.value || null
 
-      let query = supabase
-        .from('veiculos')
-        .select(VEHICLE_OPTION_SELECT)
-        .order('placa', { ascending: true })
-        .limit(OPTIONS_FETCH_LIMIT)
+      const { data, error: queryError } = await supabase.rpc('search_vehicle_options', {
+        p_search: term || null,
+        p_limit: OPTIONS_FETCH_LIMIT,
+        p_preferred_id: preferred
+      })
 
-      if (pattern) {
-        const placa = placaPattern || pattern
-        query = query.or(
-          `placa.ilike.${placa},marca.ilike.${pattern},modelo.ilike.${pattern},clientes.nome.ilike.${pattern}`
-        )
-      }
-
-      const { data, error: queryError } = await query
       if (queryError) throw queryError
 
-      const rows = (data || []) as VehicleOptionRow[]
-      const preferred = preferredIdRef.value
-      if (preferred && !rows.some(row => row.id === preferred)) {
-        const { data: extra } = await supabase
-          .from('veiculos')
-          .select(VEHICLE_OPTION_SELECT)
-          .eq('id', preferred)
-          .maybeSingle()
-        if (extra) rows.unshift(extra as VehicleOptionRow)
-      }
-
-      return rows
+      return (data ?? []).map(mapRpcRow)
     },
     { watch: [debouncedSearch, preferredIdRef] }
   )

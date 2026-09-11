@@ -32,6 +32,10 @@ _Avoid_: Foto de checklist, anexo genérico, mídia no orçamento público
 Proposta de itens e valores vinculada a uma Ordem de Serviço, montada após o Diagnóstico. Ciclo: rascunho → aguardando aprovação (PDF enviado ao Cliente) → aprovado ou rejeitado. Compartilhamento é por PDF; o Cliente não acessa o sistema.
 _Avoid_: quote solto, proposta comercial genérica, link público de orçamento
 
+**Agendamento**:
+Indicação de que o Cliente trará o Veículo em data/horário aproximado. Campos: veículo, horário, problema relatado. Status na prática: agendado ou faltou. Sem duração (fim) e sem vaga de pátio. Ao abrir OS, o problema relatado vira a reclamação da OS.
+_Avoid_: kanban board, slot de pátio, calendário mensal, intervalo início/fim, status “confirmado/concluído” na UI
+
 **Financeiro**:
 Workspace de caixa da oficina: resumo do mês, contas a pagar, recebíveis de Ordens de Serviço e extrato.
 _Avoid_: accounting module, ledger genérico

@@ -15,10 +15,11 @@ const props = defineProps<{
 }>()
 
 const emit = defineEmits<{
-  'mark-no-show': [id: string]
   'create': [prefill?: AppointmentCreatePrefill]
   'clear-filters': []
   'edit': [appointment: SchedulingAppointment]
+  'mark-no-show': [id: string]
+  'undo-no-show': [id: string]
 }>()
 
 const sortedAppointments = computed(() =>
@@ -96,8 +97,9 @@ const sortedAppointments = computed(() =>
           :can-write="canWrite"
           :can-create-order="canCreateOrder"
           :marking="markingId === appointment.id"
-          @mark-no-show="emit('mark-no-show', $event)"
           @edit="emit('edit', $event)"
+          @mark-no-show="emit('mark-no-show', $event)"
+          @undo-no-show="emit('undo-no-show', $event)"
         />
       </li>
     </ul>

@@ -13,8 +13,10 @@ export function useCustomerOptions(
     clearTimeout(debounceTimer)
     debounceTimer = setTimeout(() => {
       debouncedSearch.value = value
-    }, 200)
+    }, OPTIONS_SEARCH_DEBOUNCE_MS)
   })
+
+  onUnmounted(() => clearTimeout(debounceTimer))
 
   const preferredIdRef = computed(() => toValue(preferredId) || '')
 

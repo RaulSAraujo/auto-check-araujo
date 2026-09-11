@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import {
-  buildMonthGrid,
-  formatMonthHeading,
+  buildWeekDays,
+  formatWeekHeading,
   isSameLocalDay,
   startOfLocalDay
 } from '../utils/scheduling'
@@ -19,7 +19,7 @@ const emit = defineEmits<{
 }>()
 
 const weekdays = ['Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb', 'Dom']
-const days = computed(() => buildMonthGrid(props.selectedDate))
+const days = computed(() => buildWeekDays(props.selectedDate))
 const today = startOfLocalDay(new Date())
 const focusedKey = ref(startOfLocalDay(props.selectedDate).toISOString())
 
@@ -29,10 +29,6 @@ watch(() => props.selectedDate, (value) => {
 
 function countFor(day: Date): number {
   return props.counts.get(startOfLocalDay(day).toISOString()) ?? 0
-}
-
-function isOutsideMonth(day: Date): boolean {
-  return day.getMonth() !== props.selectedDate.getMonth()
 }
 
 function dayLabel(day: Date): string {
@@ -52,14 +48,11 @@ function dayKey(day: Date) {
 }
 
 function onDayKeydown(event: KeyboardEvent, index: number) {
-  const cols = 7
   let next = index
   if (event.key === 'ArrowRight') next = index + 1
   else if (event.key === 'ArrowLeft') next = index - 1
-  else if (event.key === 'ArrowDown') next = index + cols
-  else if (event.key === 'ArrowUp') next = index - cols
-  else if (event.key === 'Home') next = Math.floor(index / cols) * cols
-  else if (event.key === 'End') next = Math.floor(index / cols) * cols + (cols - 1)
+  else if (event.key === 'Home') next = 0
+  else if (event.key === 'End') next = 6
   else if (event.key === 'Enter' || event.key === ' ') {
     event.preventDefault()
     const current = days.value[index]
@@ -83,7 +76,7 @@ function onDayKeydown(event: KeyboardEvent, index: number) {
 <template>
   <section class="rounded-lg border border-default bg-default p-4 shadow-sm dark:shadow-none sm:p-6">
     <h2 class="sr-only">
-      {{ formatMonthHeading(selectedDate) }}
+      {{ formatWeekHeading(selectedDate) }}
     </h2>
 
     <div
@@ -91,12 +84,12 @@ function onDayKeydown(event: KeyboardEvent, index: number) {
       class="grid grid-cols-7 gap-1"
       role="status"
       aria-live="polite"
-      aria-label="Carregando calendário…"
+      aria-label="Carregando semana…"
     >
       <USkeleton
-        v-for="n in 28"
+        v-for="n in 7"
         :key="n"
-        class="h-16 w-full"
+        class="h-24 w-full"
       />
     </div>
 
@@ -120,7 +113,7 @@ function onDayKeydown(event: KeyboardEvent, index: number) {
       <div
         class="grid grid-cols-7 gap-1"
         role="grid"
-        aria-label="Calendário de agendamentos"
+        aria-label="Agenda da semana"
       >
         <button
           v-for="(day, index) in days"
@@ -128,11 +121,8 @@ function onDayKeydown(event: KeyboardEvent, index: number) {
           :key="day.toISOString()"
           type="button"
           role="gridcell"
-          class="flex min-h-16 flex-col items-center justify-center gap-1 rounded-lg transition-colors hover:bg-elevated/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary motion-safe:active:scale-[0.98] touch-manipulation"
-          :class="[
-            isSameLocalDay(day, selectedDate) ? 'bg-primary/10' : '',
-            isOutsideMonth(day) ? 'opacity-40' : ''
-          ]"
+          class="flex min-h-24 flex-col items-center justify-center gap-1 rounded-lg transition-colors hover:bg-elevated/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary motion-safe:active:scale-[0.98] touch-manipulation"
+          :class="isSameLocalDay(day, selectedDate) ? 'bg-primary/10' : ''"
           :tabindex="dayKey(day) === focusedKey ? 0 : -1"
           :aria-label="dayLabel(day)"
           :aria-selected="isSameLocalDay(day, selectedDate)"
@@ -151,6 +141,12 @@ function onDayKeydown(event: KeyboardEvent, index: number) {
             class="font-mono text-[0.6875rem] tabular-nums text-primary"
           >
             {{ countFor(day) }}
+          </span>
+          <span
+            v-else
+            class="text-[0.6875rem] text-muted"
+          >
+            —
           </span>
         </button>
       </div>

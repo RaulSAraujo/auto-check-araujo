@@ -3,14 +3,14 @@ import type { AgendamentoStatus } from '~~/shared/types/oficina'
 import {
   ACTIVE_SCHEDULING_STATUSES,
   combineLocalDateTime,
+  endOfLocalDay,
+  startOfLocalDay,
   type AppointmentDraft
 } from '../utils/scheduling'
 
 type ConflictRow = {
   id: string
   inicio: string
-  fim: string
-  patio_vaga: number | null
   veiculo_id: string
   status: string
 }
@@ -34,29 +34,23 @@ export function useSchedulingMutations() {
     return data?.cliente_id ?? null
   }
 
-  async function findConflicts(
+  async function findSameDayConflict(
     draft: AppointmentDraft,
     excludeId?: string
-  ): Promise<{ vehicle?: ConflictRow, patio?: ConflictRow } | { error: Error }> {
-    const inicio = combineLocalDateTime(draft.date, draft.startTime)
-    const fim = combineLocalDateTime(draft.date, draft.endTime)
+  ): Promise<{ vehicle?: ConflictRow } | { error: Error }> {
+    if (!draft.veiculo_id || !draft.date) return {}
 
-    if (!draft.veiculo_id) {
-      return {}
-    }
-
-    const overlapFilter = [
-      `veiculo_id.eq.${draft.veiculo_id}`,
-      ...(draft.patio_vaga != null ? [`patio_vaga.eq.${draft.patio_vaga}`] : [])
-    ].join(',')
+    const day = combineLocalDateTime(draft.date, draft.startTime || '00:00')
+    const dayStart = startOfLocalDay(day)
+    const dayEnd = endOfLocalDay(day)
 
     let query = supabase
       .from('agendamentos')
-      .select('id, inicio, fim, patio_vaga, veiculo_id, status')
+      .select('id, inicio, veiculo_id, status')
+      .eq('veiculo_id', draft.veiculo_id)
       .in('status', ACTIVE_SCHEDULING_STATUSES)
-      .lt('inicio', fim.toISOString())
-      .gt('fim', inicio.toISOString())
-      .or(overlapFilter)
+      .gte('inicio', dayStart.toISOString())
+      .lte('inicio', dayEnd.toISOString())
 
     if (excludeId) query = query.neq('id', excludeId)
 
@@ -64,16 +58,11 @@ export function useSchedulingMutations() {
     if (error) return { error: new Error(error.message) }
 
     const rows = (data ?? []) as ConflictRow[]
-    const vehicle = rows.find(row => row.veiculo_id === draft.veiculo_id)
-    const patio = draft.patio_vaga == null
-      ? undefined
-      : rows.find(row => row.patio_vaga === draft.patio_vaga)
-
-    return { vehicle, patio }
+    return { vehicle: rows[0] }
   }
 
   async function assertNoConflicts(draft: AppointmentDraft, excludeId?: string) {
-    const result = await findConflicts(draft, excludeId)
+    const result = await findSameDayConflict(draft, excludeId)
     if ('error' in result) {
       toast.add({ title: 'Não foi possível validar conflitos', description: result.error.message, color: 'error' })
       return result.error
@@ -81,23 +70,18 @@ export function useSchedulingMutations() {
 
     if (result.vehicle) {
       toast.add({
-        title: 'Veículo já agendado neste horário',
-        description: 'Escolha outro intervalo ou edite o agendamento existente.',
+        title: 'Veículo já agendado neste dia',
+        description: 'Edite o horário existente ou escolha outro dia.',
         color: 'error'
       })
       return new Error('vehicle conflict')
     }
 
-    if (result.patio) {
-      toast.add({
-        title: `Vaga ${draft.patio_vaga} ocupada neste horário`,
-        description: 'Escolha outra vaga do pátio ou outro horário.',
-        color: 'error'
-      })
-      return new Error('patio conflict')
-    }
-
     return null
+  }
+
+  function toPointInTime(draft: AppointmentDraft) {
+    return combineLocalDateTime(draft.date, draft.startTime)
   }
 
   async function createAppointment(draft: AppointmentDraft) {
@@ -112,25 +96,27 @@ export function useSchedulingMutations() {
       return { error: new Error('cliente_id missing') }
     }
 
-    const inicio = combineLocalDateTime(draft.date, draft.startTime)
-    const fim = combineLocalDateTime(draft.date, draft.endTime)
-    if (!(fim > inicio)) {
-      toast.add({ title: 'Horário inválido', description: 'O fim deve ser depois do início.', color: 'error' })
-      return { error: new Error('invalid range') }
+    if (!draft.date || !draft.startTime) {
+      toast.add({ title: 'Informe data e horário', color: 'error' })
+      return { error: new Error('datetime required') }
     }
 
     const conflictError = await assertNoConflicts(draft)
     if (conflictError) return { error: conflictError }
 
+    // ponytail: schema still has fim; treat as point-in-time (no duration)
+    const inicio = toPointInTime(draft)
+    const iso = inicio.toISOString()
+
     const payload: AgendamentoInsert = {
       cliente_id: clienteId,
       veiculo_id: draft.veiculo_id,
-      inicio: inicio.toISOString(),
-      fim: fim.toISOString(),
-      status: draft.status,
-      servico: draft.servico.trim() || null,
-      patio_vaga: draft.patio_vaga,
-      observacoes: draft.observacoes.trim() || null,
+      inicio: iso,
+      fim: iso,
+      status: 'agendado',
+      servico: draft.problema.trim() || null,
+      patio_vaga: null,
+      observacoes: null,
       criado_por: user.value?.id ?? null
     }
 
@@ -156,25 +142,25 @@ export function useSchedulingMutations() {
       return { error: new Error('cliente_id missing') }
     }
 
-    const inicio = combineLocalDateTime(draft.date, draft.startTime)
-    const fim = combineLocalDateTime(draft.date, draft.endTime)
-    if (!(fim > inicio)) {
-      toast.add({ title: 'Horário inválido', description: 'O fim deve ser depois do início.', color: 'error' })
-      return { error: new Error('invalid range') }
+    if (!draft.date || !draft.startTime) {
+      toast.add({ title: 'Informe data e horário', color: 'error' })
+      return { error: new Error('datetime required') }
     }
 
     const conflictError = await assertNoConflicts(draft, id)
     if (conflictError) return { error: conflictError }
 
+    const inicio = toPointInTime(draft)
+    const iso = inicio.toISOString()
+
     const payload: AgendamentoUpdate = {
       cliente_id: clienteId,
       veiculo_id: draft.veiculo_id,
-      inicio: inicio.toISOString(),
-      fim: fim.toISOString(),
-      status: draft.status,
-      servico: draft.servico.trim() || null,
-      patio_vaga: draft.patio_vaga,
-      observacoes: draft.observacoes.trim() || null
+      inicio: iso,
+      fim: iso,
+      servico: draft.problema.trim() || null,
+      patio_vaga: null,
+      observacoes: null
     }
 
     const { error } = await supabase.from('agendamentos').update(payload).eq('id', id)
@@ -208,19 +194,15 @@ export function useSchedulingMutations() {
     return updateAppointmentStatus(
       id,
       'nao_compareceu',
-      { successTitle: options?.silent ? false : 'Marcado como não compareceu' }
+      { successTitle: options?.silent ? false : 'Marcado como faltou' }
     )
-  }
-
-  async function markHandledNoShow(id: string) {
-    return updateAppointmentStatus(id, 'tratado', { successTitle: 'Não comparecimento tratado' })
   }
 
   async function undoNoShow(id: string, options?: { silent?: boolean }) {
     return updateAppointmentStatus(
       id,
       'agendado',
-      { successTitle: options?.silent ? false : 'Não comparecimento desfeito' }
+      { successTitle: options?.silent ? false : 'Falta desfeita' }
     )
   }
 
@@ -229,7 +211,6 @@ export function useSchedulingMutations() {
     updateAppointment,
     updateAppointmentStatus,
     markNoShow,
-    markHandledNoShow,
     undoNoShow
   }
 }

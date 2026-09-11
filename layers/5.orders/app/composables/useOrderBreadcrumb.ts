@@ -5,7 +5,6 @@ export type OrderBreadcrumbOrigin
   = 'orders'
     | 'customers'
     | 'vehicles'
-    | 'kanban'
     | 'scheduling'
 
 function getHistoryBackPath(): string | null {
@@ -26,9 +25,6 @@ export function resolveOrderBreadcrumbOrigin(
   }
   if (path === APP_ROUTES.vehicles || path.startsWith(`${APP_ROUTES.vehicles}/`)) {
     return 'vehicles'
-  }
-  if (path === APP_ROUTES.kanban || path.startsWith(`${APP_ROUTES.kanban}/`)) {
-    return 'kanban'
   }
   if (path === APP_ROUTES.scheduling || path.startsWith(`${APP_ROUTES.scheduling}/`)) {
     return 'scheduling'
@@ -73,13 +69,6 @@ export function useOrderBreadcrumb(options: {
       return [
         { label: 'Veículos', to: APP_ROUTES.vehicles },
         { label: formatPlaca(vehicle.placa), to: `${APP_ROUTES.vehicles}/${vehicle.id}` },
-        { label: numero }
-      ]
-    }
-
-    if (origin === 'kanban') {
-      return [
-        { label: 'Kanban', to: APP_ROUTES.kanban },
         { label: numero }
       ]
     }

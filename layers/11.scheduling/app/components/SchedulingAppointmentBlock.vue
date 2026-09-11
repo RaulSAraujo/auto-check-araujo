@@ -1,7 +1,13 @@
 <script setup lang="ts">
 import type { SchedulingAppointment } from '../composables/useSchedulingBoard'
 import { ORDER_ROUTES } from '#layers/orders/app/utils/order-routes'
-import { AGENDAMENTO_STATUS_LABEL, formatTimeRange, statusBarClass } from '../utils/scheduling'
+import {
+  AGENDAMENTO_STATUS_LABEL,
+  appointmentProblem,
+  canMarkNoShow,
+  formatTimeShort,
+  statusBarClass
+} from '../utils/scheduling'
 
 defineOptions({ name: 'SchedulingAppointmentBlock' })
 
@@ -13,25 +19,23 @@ const props = defineProps<{
 }>()
 
 const emit = defineEmits<{
-  'mark-no-show': [id: string]
   'edit': [appointment: SchedulingAppointment]
+  'mark-no-show': [id: string]
+  'undo-no-show': [id: string]
 }>()
 
 const clientName = computed(() =>
   props.appointment.clientes?.nome?.trim() || EMPTY_VALUE
 )
 
-const detail = computed(() => {
-  const service = props.appointment.servico?.trim()
-  if (service) return service
-  const v = props.appointment.veiculos
-  if (!v) return ''
-  return [v.marca, v.modelo].filter(Boolean).join(' ')
-})
+const detail = computed(() => appointmentProblem(props.appointment))
 
-const canMarkNoShow = computed(() =>
-  props.canWrite
-  && (props.appointment.status === 'agendado' || props.appointment.status === 'confirmado')
+const showMarkNoShow = computed(() =>
+  props.canWrite && canMarkNoShow(props.appointment.status) && !props.appointment.ordem_servico_id
+)
+
+const showUndoNoShow = computed(() =>
+  props.canWrite && props.appointment.status === 'nao_compareceu'
 )
 
 const orderHref = computed(() =>
@@ -42,6 +46,7 @@ const orderHref = computed(() =>
 
 const openOrderHref = computed(() => {
   if (props.appointment.ordem_servico_id || !props.appointment.veiculo_id) return null
+  if (props.appointment.status === 'nao_compareceu') return null
   return ORDER_ROUTES.newFromAppointment(props.appointment.veiculo_id, props.appointment.id)
 })
 
@@ -65,8 +70,8 @@ function onEdit() {
       @keydown.enter.prevent="canWrite && onEdit()"
       @keydown.space.prevent="canWrite && onEdit()"
     >
-      <time class="w-[4.75rem] shrink-0 font-mono text-xs tabular-nums text-muted">
-        {{ formatTimeRange(appointment.inicio, appointment.fim) }}
+      <time class="w-12 shrink-0 font-mono text-xs tabular-nums text-muted">
+        ~{{ formatTimeShort(appointment.inicio) }}
       </time>
       <span
         v-if="appointment.veiculos"
@@ -79,12 +84,10 @@ function onEdit() {
           {{ clientName }}
         </p>
         <p
-          v-if="detail || appointment.patio_vaga"
+          v-if="detail"
           class="truncate text-xs text-muted"
         >
-          <template v-if="detail">{{ detail }}</template>
-          <template v-if="detail && appointment.patio_vaga"> · </template>
-          <template v-if="appointment.patio_vaga">vaga {{ appointment.patio_vaga }}</template>
+          {{ detail }}
         </p>
       </div>
       <span class="hidden shrink-0 text-xs text-muted lg:inline">
@@ -93,7 +96,7 @@ function onEdit() {
     </div>
 
     <div
-      v-if="canMarkNoShow || orderHref || (canCreateOrder && openOrderHref)"
+      v-if="orderHref || (canCreateOrder && openOrderHref) || showMarkNoShow || showUndoNoShow"
       class="flex shrink-0 flex-wrap items-center justify-end gap-0.5"
     >
       <UButton
@@ -113,15 +116,26 @@ function onEdit() {
         :to="openOrderHref"
       />
       <UButton
-        v-if="canMarkNoShow"
+        v-if="showMarkNoShow"
         size="sm"
         color="neutral"
         variant="ghost"
-        label="Falta"
+        label="Faltou"
         :loading="marking"
         :disabled="marking"
-        :aria-label="`Marcar não comparecimento de ${clientName}`"
+        :aria-label="`Marcar falta de ${clientName}`"
         @click="emit('mark-no-show', appointment.id)"
+      />
+      <UButton
+        v-if="showUndoNoShow"
+        size="sm"
+        color="neutral"
+        variant="ghost"
+        label="Desfazer"
+        :loading="marking"
+        :disabled="marking"
+        :aria-label="`Desfazer falta de ${clientName}`"
+        @click="emit('undo-no-show', appointment.id)"
       />
     </div>
   </article>

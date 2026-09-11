@@ -57,8 +57,8 @@ function vehicleLabel(order: DashboardActiveOrder) {
         </p>
       </div>
       <UButton
-        :to="APP_ROUTES.kanban"
-        label="Kanban"
+        :to="APP_ROUTES.orders"
+        label="Ver ordens"
         variant="link"
         size="sm"
         color="primary"

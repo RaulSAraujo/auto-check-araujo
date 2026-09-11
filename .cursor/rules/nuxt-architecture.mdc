@@ -22,8 +22,7 @@ auto-check-araujo/
 │   ├── 6.configuration/          # Catálogo, fornecedores, precificação ($meta.name: configuration)
 │   ├── 8.management/             # Financeiro + equipe ($meta.name: management)
 │   ├── 10.vehicles/              # CRUD veículos ($meta.name: vehicles)
-│   ├── 11.scheduling/            # Agendamentos ($meta.name: scheduling)
-│   └── 12.kanban/                # Board visual de OS ($meta.name: kanban)
+│   └── 11.scheduling/            # Agendamentos ($meta.name: scheduling)
 ├── shared/types/
 │   ├── database.ts               # Schema Supabase
 │   └── oficina.ts                # OrdemStatus, labels, cores
@@ -49,7 +48,6 @@ auto-check-araujo/
 | Páginas `/gestao/*` | `layers/8.management/app/pages/` |
 | Páginas `/veiculos/*` | `layers/10.vehicles/app/pages/` |
 | Páginas `/agendamentos` | `layers/11.scheduling/app/pages/` |
-| Páginas `/kanban` | `layers/12.kanban/app/pages/` |
 | Tipo Supabase (schema) | `shared/types/database.ts` |
 | Tipo/constante de domínio | `shared/types/oficina.ts` |
 | Formatadores compartilhados | `shared/utils/` |
@@ -70,7 +68,6 @@ auto-check-araujo/
 | `#layers/management` | layer `8.management` |
 | `#layers/vehicles` | layer `10.vehicles` |
 | `#layers/scheduling` | layer `11.scheduling` |
-| `#layers/kanban` | layer `12.kanban` |
 
 Importar tipos cross-layer via `~~/shared/types/...`. Paths de arquivo na layer usam `app/` (ex.: `#layers/orders/app/utils/order-routes`).
 
@@ -87,7 +84,6 @@ Importar tipos cross-layer via `~~/shared/types/...`. Paths de arquivo na layer 
 | `layers/8.management` | financeiro, contas a pagar, equipe/HR |
 | `layers/10.vehicles` | veículos |
 | `layers/11.scheduling` | agendamentos |
-| `layers/12.kanban` | board kanban de OS |
 
 ## Módulos por layer
 

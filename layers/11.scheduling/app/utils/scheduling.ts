@@ -9,31 +9,24 @@ export {
   AGENDAMENTO_STATUS_LABEL
 }
 
-export const PATIO_SLOT_COUNT = 8
-
 export const TIMELINE_START_HOUR = 7
 export const TIMELINE_END_HOUR = 18
-export const LUNCH_HOUR = 12
 
-export type SchedulingView = 'daily' | 'calendar'
-export type SchedulingStatusFilter = 'all' | 'agendados' | 'nao_compareceu' | 'patio'
+export type SchedulingView = 'daily' | 'week'
+export type SchedulingStatusFilter = 'all' | 'agendados' | 'nao_compareceu'
 
 export const SCHEDULING_VIEW_ITEMS = [
-  { label: 'Agenda', value: 'daily' as const },
-  { label: 'Mês', value: 'calendar' as const }
+  { label: 'Dia', value: 'daily' as const },
+  { label: 'Semana', value: 'week' as const }
 ]
 
 export const SCHEDULING_STATUS_FILTER_ITEMS = [
   { label: 'Todos', value: 'all' as const },
   { label: 'Agendados', value: 'agendados' as const },
-  { label: 'Faltas', value: 'nao_compareceu' as const },
-  { label: 'Pátio', value: 'patio' as const }
+  { label: 'Faltas', value: 'nao_compareceu' as const }
 ]
 
-export const AGENDAMENTO_STATUS_SELECT_ITEMS = (
-  Object.entries(AGENDAMENTO_STATUS_LABEL) as [AgendamentoStatus, string][]
-).map(([value, label]) => ({ value, label }))
-
+/** Statuses that still count as “coming / in house” for day conflict checks. */
 export const ACTIVE_SCHEDULING_STATUSES: AgendamentoStatus[] = [
   'agendado',
   'confirmado',
@@ -54,37 +47,26 @@ export function addDays(date: Date, days: number): Date {
   return next
 }
 
-export function startOfMonth(date: Date): Date {
-  return new Date(date.getFullYear(), date.getMonth(), 1)
+/** Monday as first day of the week. */
+export function startOfWeek(date: Date): Date {
+  const day = startOfLocalDay(date)
+  const weekday = (day.getDay() + 6) % 7
+  return addDays(day, -weekday)
 }
 
-export function endOfMonth(date: Date): Date {
-  return new Date(date.getFullYear(), date.getMonth() + 1, 0, 23, 59, 59, 999)
+export function endOfWeek(date: Date): Date {
+  return endOfLocalDay(addDays(startOfWeek(date), 6))
+}
+
+export function buildWeekDays(anchor: Date): Date[] {
+  const start = startOfWeek(anchor)
+  return Array.from({ length: 7 }, (_, i) => addDays(start, i))
 }
 
 export function isSameLocalDay(a: Date, b: Date): boolean {
   return a.getFullYear() === b.getFullYear()
     && a.getMonth() === b.getMonth()
     && a.getDate() === b.getDate()
-}
-
-export function formatDayHeading(date: Date): string {
-  const label = new Intl.DateTimeFormat('pt-BR', {
-    weekday: 'long',
-    day: 'numeric',
-    month: 'short',
-    year: 'numeric'
-  }).format(date)
-  return label.charAt(0).toUpperCase() + label.slice(1)
-}
-
-export function formatDayHeadingShort(date: Date): string {
-  const label = new Intl.DateTimeFormat('pt-BR', {
-    weekday: 'short',
-    day: 'numeric',
-    month: 'short'
-  }).format(date)
-  return label.charAt(0).toUpperCase() + label.slice(1)
 }
 
 export function formatBoardDate(date: Date): { day: string, weekday: string, monthYear: string } {
@@ -107,20 +89,19 @@ export function statusBarClass(status: AgendamentoStatus): string {
   return 'border-l-muted'
 }
 
-export function formatMonthHeading(date: Date): string {
-  const label = new Intl.DateTimeFormat('pt-BR', {
-    month: 'long',
+export function formatWeekHeading(date: Date): string {
+  const start = startOfWeek(date)
+  const end = addDays(start, 6)
+  const sameMonth = start.getMonth() === end.getMonth()
+  const startLabel = sameMonth
+    ? new Intl.DateTimeFormat('pt-BR', { day: 'numeric' }).format(start)
+    : new Intl.DateTimeFormat('pt-BR', { day: 'numeric', month: 'short' }).format(start)
+  const endLabel = new Intl.DateTimeFormat('pt-BR', {
+    day: 'numeric',
+    month: 'short',
     year: 'numeric'
-  }).format(date)
-  return label.charAt(0).toUpperCase() + label.slice(1)
-}
-
-export function formatTimeRange(inicio: string, fim: string): string {
-  const fmt = new Intl.DateTimeFormat('pt-BR', {
-    hour: '2-digit',
-    minute: '2-digit'
-  })
-  return `${fmt.format(new Date(inicio))} – ${fmt.format(new Date(fim))}`
+  }).format(end)
+  return `${startLabel} – ${endLabel}`
 }
 
 export function formatTimeShort(value: string): string {
@@ -158,37 +139,23 @@ export function combineLocalDateTime(dateStr: string, timeStr: string): Date {
   return new Date(y, mo - 1, d, h, mi, 0, 0)
 }
 
-export function isActivePatioStatus(status: AgendamentoStatus): boolean {
-  return ACTIVE_SCHEDULING_STATUSES.includes(status)
-}
-
-export function timelineHours(): number[] {
-  const hours: number[] = []
-  for (let h = TIMELINE_START_HOUR; h <= TIMELINE_END_HOUR; h++) hours.push(h)
-  return hours
-}
-
-export function buildMonthGrid(anchor: Date): Date[] {
-  const first = startOfMonth(anchor)
-  const startWeekday = (first.getDay() + 6) % 7 // Monday = 0
-  const gridStart = addDays(first, -startWeekday)
-  return Array.from({ length: 42 }, (_, i) => addDays(gridStart, i))
+/** Reported problem text: prefer servico, fall back to legacy observacoes. */
+export function appointmentProblem(row: {
+  observacoes?: string | null
+  servico?: string | null
+}): string {
+  return row.servico?.trim() || row.observacoes?.trim() || ''
 }
 
 export type AppointmentDraft = {
   veiculo_id: string
   date: string
   startTime: string
-  endTime: string
-  status: AgendamentoStatus
-  servico: string
-  patio_vaga: number | null
-  observacoes: string
+  problema: string
 }
 
 export type AppointmentCreatePrefill = {
   hour?: number
-  patioVaga?: number | null
 }
 
 export function emptyAppointmentDraft(
@@ -197,39 +164,26 @@ export function emptyAppointmentDraft(
 ): AppointmentDraft {
   const start = new Date(day)
   start.setHours(prefill?.hour ?? 9, 0, 0, 0)
-  const end = new Date(start)
-  end.setHours(start.getHours() + 1, 0, 0, 0)
 
   return {
     veiculo_id: '',
     date: toDateInputValue(day),
     startTime: toTimeInputValue(start),
-    endTime: toTimeInputValue(end),
-    status: 'agendado',
-    servico: '',
-    patio_vaga: prefill?.patioVaga ?? null,
-    observacoes: ''
+    problema: ''
   }
 }
 
 export function appointmentToDraft(row: {
   veiculo_id: string
   inicio: string
-  fim: string
-  status: AgendamentoStatus
-  servico: string | null
-  patio_vaga: number | null
-  observacoes: string | null
+  observacoes?: string | null
+  servico?: string | null
 }): AppointmentDraft {
   return {
     veiculo_id: row.veiculo_id,
     date: toDateInputValue(new Date(row.inicio)),
     startTime: toTimeInputValue(new Date(row.inicio)),
-    endTime: toTimeInputValue(new Date(row.fim)),
-    status: row.status,
-    servico: row.servico?.trim() || '',
-    patio_vaga: row.patio_vaga,
-    observacoes: row.observacoes?.trim() || ''
+    problema: appointmentProblem(row)
   }
 }
 
@@ -245,24 +199,12 @@ export function validateAppointmentDraft(draft: AppointmentDraft): AppointmentFo
     errors.push({ name: 'date', message: 'Informe a data' })
   }
   if (!draft.startTime) {
-    errors.push({ name: 'startTime', message: 'Informe o início' })
-  }
-  if (!draft.endTime) {
-    errors.push({ name: 'endTime', message: 'Informe o fim' })
-  }
-
-  if (draft.date && draft.startTime && draft.endTime) {
-    const inicio = combineLocalDateTime(draft.date, draft.startTime)
-    const fim = combineLocalDateTime(draft.date, draft.endTime)
-    if (!(fim > inicio)) {
-      errors.push({ name: 'endTime', message: 'O fim deve ser depois do início' })
-    }
+    errors.push({ name: 'startTime', message: 'Informe o horário' })
   }
 
   return errors
 }
 
-export const PATIO_SLOT_ITEMS = Array.from({ length: PATIO_SLOT_COUNT }, (_, i) => ({
-  label: `Vaga ${i + 1}`,
-  value: i + 1
-}))
+export function canMarkNoShow(status: AgendamentoStatus): boolean {
+  return status === 'agendado' || status === 'confirmado'
+}

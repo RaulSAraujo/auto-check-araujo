@@ -26,7 +26,6 @@ function childrenActive(children?: NavigationMenuItem[]) {
 const links = computed<NavigationMenuItem[]>(() => {
   const operacaoChildren: NavigationMenuItem[] = [
     { label: 'Ordens', to: APP_ROUTES.orders, icon: 'i-lucide-clipboard-list' },
-    { label: 'Kanban', to: APP_ROUTES.kanban, icon: 'i-lucide-columns-3' },
     { label: 'Agenda', to: APP_ROUTES.scheduling, icon: 'i-lucide-calendar-days' }
   ]
 

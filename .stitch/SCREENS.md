@@ -20,11 +20,11 @@ Mapa de telas para geração no Stitch. Todas seguem `.stitch/DESIGN.md`.
 | 4 | Clientes | `/clientes` | Tabela + busca; empty state com CTA |
 | 5 | Veículos | `/veiculos` | Mesmo padrão de listagem (consistência) |
 | 6 | Financeiro | `/gestao/financeiro` | Números mono; status pago/pendente claros |
-| 7 | Kanban | `/kanban` | Board visual da oficina; colunas por etapa; alertas |
+| 7 | ~~Kanban~~ | — | Removido — fluxo coberto por `/ordens` |
 | 8 | Catálogo | `/configuracao/catalogo` | Serviços, kits, peças, custos, estoque |
 | 8b | Fornecedores | `/configuracao/fornecedores` | Cadastro de fornecedores |
 | 8c | ~~Checklist~~ | — | Removido — diagnóstico em texto na OS |
-| 9 | Agendamentos | `/agendamentos` | Agenda diária, calendário, no-show, pátio, PDF, busca |
+| 9 | Agendamentos | `/agendamentos` | Dia + semana; horário marcado; sem pátio/vaga |
 | 10 | Precificação | `/configuracao/precificacao` | Parâmetros de mão de obra e peças; sugestão de preço |
 | 11 | Equipe | `/gestao/equipe` | Desempenho e produtividade; abas Colaboradores → Ocorrências |
 
@@ -163,41 +163,9 @@ Números `tabular-nums`. Sem gráficos decorativos.
 
 ---
 
-## 7. Kanban (`/kanban`)
+## 7. ~~Kanban~~ (`/kanban`) — removido
 
-**Navbar:** “Kanban” + CTA “Nova OS” (se permissão).
-
-**Header da página (denso, sem marketing):**
-- Título: “Kanban”
-- Subtítulo curto: “Gestão visual da oficina”
-- Sem hero, sem tagline longa (“em tempo real” fica implícito no board)
-
-**Body — board horizontal full-bleed do painel:**
-Quatro colunas (scroll horizontal em tablet; empilha só em mobile estreito se necessário):
-
-| Coluna | Conteúdo do card |
-|--------|------------------|
-| Agendados | OS na fila (orçamento aprovado, ainda não iniciada) |
-| Pré-orçamento | OS abertas em estimativa / aguardando aprovação |
-| Em andamento | OS em execução |
-| Finalizados | OS concluídas recentes |
-
-Cada card (painel com borda Whisper, não decorativo):
-- Número da OS (mono) + placa (mono)
-- Cliente (truncate)
-- Tempo na etapa (meta mono) — alerta âmbar/vermelho se atrasado
-- Técnico / responsável (nome curto)
-- Badge de atraso só quando aplicável (sem chips decorativos)
-
-**Faixa superior opcional:** contagem por coluna (mono) + legenda “atraso”.
-
-**Empty por coluna:** uma linha — “Nenhuma OS”.
-
-**Proibido:** copy de landing (“Acompanhe toda operação…”), 3 feature cards, drag handles ornamentais, purple.
-
-**Motion (código):** page enter; stagger dos cards por coluna (40–60ms); pulse suave só em badge de atraso.
-
-**Trunk test:** título Kanban, nav ativa, CTA Nova OS.
+Fluxo coberto por `/ordens` (lista + filtros de status). Não regenerar.
 
 ---
 
@@ -221,17 +189,19 @@ Cada card (painel com borda Whisper, não decorativo):
 
 **Spec visual:** `layers/11.scheduling/DESIGN.md` (workshop ledger).
 
-**Masthead:** eyebrow “Agendamentos”; número do dia mono grande + weekday; busca + um CTA “Novo agendamento”. Chevrons, Hoje, Agenda | Mês, filtro.
+**Masthead:** eyebrow “Agendamentos”; número do dia mono grande + weekday (ou intervalo da semana); busca + CTA “Novo agendamento”. Chevrons, Hoje, Dia | Semana, filtro.
 
-**Body — Agenda:** split `1fr / 17rem`. Superfície `bg-default shadow-sm`. Blocos com barra esquerda de status. Pátio mapa 4×2. Faltas só com itens.
+**Body — Dia:** lista do dia com blocos (barra esquerda de status, ~horário). Clique edita; Ver OS / Abrir OS; **Faltou**.
 
-**Body — Mês:** mesma superfície; clique abre o dia.
+**Body — Semana:** grade de 7 dias com contagem; clique abre o dia.
 
-**Empty:** ícone + “Nenhum horário neste dia.” + Novo agendamento.
+**Form:** veículo, data, horário aproximado, problema relatado. Sem fim, sem status select, sem vaga.
 
-**Proibido:** hero marketing; grade 07–18 vazia; lista sem superfície; purple.
+**Empty:** “Nenhum horário neste dia.” + Novo agendamento.
 
-**Motion:** stagger 40ms; press; pulse no hoje.
+**Fora de escopo:** pátio/vaga, mês, PDF, painel de faltas, máquina de status completa.
+
+**Proibido:** hero marketing; purple.
 
 **Trunk test:** eyebrow, data óbvia, CTA Novo agendamento.
 

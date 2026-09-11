@@ -114,7 +114,6 @@ Cada layer **deve** declarar `components` com `prefix` no seu `nuxt.config.ts` p
 | `8.management` | pastas `finance/` + `team/` (nome no arquivo) | `<FinanceTable />`, `<TeamPresenceSection />` |
 | `10.vehicles` | `Vehicles` | `<VehiclesForm />` |
 | `11.scheduling` | `Scheduling` | `<SchedulingCalendar />` |
-| `12.kanban` | `Kanban` | `<KanbanBoard />` |
 
 ```ts
 // layers/4.customers/nuxt.config.ts

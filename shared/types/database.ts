@@ -794,6 +794,21 @@ export type Database = {
           created_at: string
         }[]
       }
+      search_vehicle_options: {
+        Args: {
+          p_search?: string | null
+          p_limit?: number
+          p_preferred_id?: string | null
+        }
+        Returns: {
+          id: string
+          placa: string
+          marca: string | null
+          modelo: string | null
+          cliente_id: string
+          cliente_nome: string
+        }[]
+      }
       update_collaborator_role: {
         Args: { p_user_id: string, p_papel: string }
         Returns: undefined

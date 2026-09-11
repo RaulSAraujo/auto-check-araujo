@@ -6,7 +6,7 @@ import {
 } from '../utils/print'
 import { downloadBudgetPdf } from '../utils/pdf'
 import { primaryPhone } from '~~/shared/utils/contact'
-import { formatTimeRange, schedulingDayPath } from '#layers/scheduling/app/utils/scheduling'
+import { formatTimeShort, schedulingDayPath } from '#layers/scheduling/app/utils/scheduling'
 
 defineOptions({ name: 'OrdersDetailPage' })
 
@@ -240,8 +240,8 @@ onMounted(() => {
           v-if="linkedAppointment"
           color="info"
           variant="subtle"
-          :title="`Agendado ${formatTimeRange(linkedAppointment.inicio, linkedAppointment.fim)}`"
-          :description="linkedAppointment.patio_vaga ? `Vaga ${linkedAppointment.patio_vaga} do pátio.` : 'Horário vinculado na agenda.'"
+          :title="`Agendado ~${formatTimeShort(linkedAppointment.inicio)}`"
+          description="Horário vinculado na agenda."
         >
           <template
             v-if="appointmentAgendaHref"

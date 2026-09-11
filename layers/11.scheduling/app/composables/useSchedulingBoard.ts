@@ -3,13 +3,10 @@ import type { AgendamentoStatus } from '~~/shared/types/oficina'
 import {
   addDays,
   endOfLocalDay,
-  endOfMonth,
-  isActivePatioStatus,
+  endOfWeek,
   isSameLocalDay,
-  PATIO_SLOT_COUNT,
   startOfLocalDay,
-  startOfMonth,
-  ACTIVE_SCHEDULING_STATUSES,
+  startOfWeek,
   type SchedulingStatusFilter,
   type SchedulingView
 } from '../utils/scheduling'
@@ -25,11 +22,6 @@ export type SchedulingAppointment = Agendamento & {
   } | null
 }
 
-export type PatioSlot = {
-  slot: number
-  appointment: SchedulingAppointment | null
-}
-
 type QueryRow = Agendamento & {
   clientes: SchedulingAppointment['clientes']
   veiculos: SchedulingAppointment['veiculos']
@@ -40,13 +32,13 @@ function matchesSearch(row: SchedulingAppointment, search: string): boolean {
   if (!q) return true
   const placa = row.veiculos?.placa?.toLowerCase() || ''
   const nome = row.clientes?.nome?.toLowerCase() || ''
-  const servico = row.servico?.toLowerCase() || ''
+  const problema = (row.servico || row.observacoes || '').toLowerCase()
   const placaDigits = placa.replace(/[^a-z0-9]/g, '')
   const qDigits = q.replace(/[^a-z0-9]/g, '')
   return nome.includes(q)
     || placa.includes(q)
     || placaDigits.includes(qDigits)
-    || servico.includes(q)
+    || problema.includes(q)
 }
 
 function matchesStatusFilter(row: SchedulingAppointment, filter: SchedulingStatusFilter): boolean {
@@ -55,7 +47,6 @@ function matchesStatusFilter(row: SchedulingAppointment, filter: SchedulingStatu
   if (filter === 'agendados') {
     return row.status === 'agendado' || row.status === 'confirmado' || row.status === 'em_atendimento'
   }
-  if (filter === 'patio') return row.patio_vaga != null && isActivePatioStatus(row.status)
   return true
 }
 
@@ -90,7 +81,9 @@ export async function useSchedulingBoard() {
 
   const view = computed({
     get(): SchedulingView {
-      return route.query.vista === 'calendar' ? 'calendar' : 'daily'
+      const raw = route.query.vista
+      if (raw === 'week' || raw === 'calendar') return 'week'
+      return 'daily'
     },
     set(value: SchedulingView) {
       const next = { ...route.query }
@@ -126,7 +119,7 @@ export async function useSchedulingBoard() {
   const statusFilter = computed({
     get(): SchedulingStatusFilter {
       const raw = route.query.filtro
-      if (raw === 'agendados' || raw === 'nao_compareceu' || raw === 'patio') return raw
+      if (raw === 'agendados' || raw === 'nao_compareceu') return raw
       return 'all'
     },
     set(value: SchedulingStatusFilter) {
@@ -137,18 +130,14 @@ export async function useSchedulingBoard() {
     }
   })
 
-  const rangeStart = computed(() => startOfMonth(addDays(startOfMonth(selectedDate.value), -7)))
-  const rangeEnd = computed(() => endOfMonth(addDays(endOfMonth(selectedDate.value), 7)))
-
-  /** Daily: dia selecionado + 7 dias de lookback (no-shows). Calendar: mês ± padding. */
   const queryStart = computed(() =>
-    view.value === 'calendar'
-      ? rangeStart.value
-      : startOfLocalDay(addDays(selectedDate.value, -7))
+    view.value === 'week'
+      ? startOfWeek(selectedDate.value)
+      : startOfLocalDay(selectedDate.value)
   )
   const queryEnd = computed(() =>
-    view.value === 'calendar'
-      ? rangeEnd.value
+    view.value === 'week'
+      ? endOfWeek(selectedDate.value)
       : endOfLocalDay(selectedDate.value)
   )
 
@@ -185,10 +174,6 @@ export async function useSchedulingBoard() {
         query = query.eq('status', 'nao_compareceu')
       } else if (filter === 'agendados') {
         query = query.in('status', ['agendado', 'confirmado', 'em_atendimento'])
-      } else if (filter === 'patio') {
-        query = query
-          .not('patio_vaga', 'is', null)
-          .in('status', ACTIVE_SCHEDULING_STATUSES)
       }
 
       const { data: rows, error: queryError } = await query
@@ -230,42 +215,12 @@ export async function useSchedulingBoard() {
     search.value.trim().length > 0 || statusFilter.value !== 'all'
   )
 
-  const patioSlots = computed<PatioSlot[]>(() => {
-    const day = selectedDate.value
-    const active = appointments.value.filter(row =>
-      isSameLocalDay(new Date(row.inicio), day)
-      && row.patio_vaga != null
-      && isActivePatioStatus(row.status)
-    )
-
-    return Array.from({ length: PATIO_SLOT_COUNT }, (_, i) => {
-      const slot = i + 1
-      return {
-        slot,
-        appointment: active.find(row => row.patio_vaga === slot) ?? null
-      }
-    })
-  })
-
-  const noShows = computed(() => {
-    const day = selectedDate.value
-    const lookback = startOfLocalDay(addDays(day, -7))
-    const until = endOfLocalDay(day)
-    return appointments.value
-      .filter(row => row.status === 'nao_compareceu')
-      .filter((row) => {
-        const start = new Date(row.inicio)
-        return start >= lookback && start <= until
-      })
-      .filter(row => matchesSearch(row, search.value))
-      .sort((a, b) => new Date(b.inicio).getTime() - new Date(a.inicio).getTime())
-  })
-
-  const monthCounts = computed(() => {
+  const weekCounts = computed(() => {
     const map = new Map<string, number>()
     for (const row of appointments.value) {
       if (row.status === 'cancelado' || row.status === 'tratado') continue
       if (search.value && !matchesSearch(row, search.value)) continue
+      if (!matchesStatusFilter(row, statusFilter.value)) continue
       const key = startOfLocalDay(new Date(row.inicio)).toISOString()
       map.set(key, (map.get(key) ?? 0) + 1)
     }
@@ -280,14 +235,11 @@ export async function useSchedulingBoard() {
     selectedDate.value = addDays(selectedDate.value, delta)
   }
 
-  function shiftMonth(delta: number) {
-    const current = selectedDate.value
-    selectedDate.value = startOfLocalDay(
-      new Date(current.getFullYear(), current.getMonth() + delta, 1)
-    )
+  function shiftWeek(delta: number) {
+    selectedDate.value = addDays(startOfWeek(selectedDate.value), delta * 7)
   }
 
-  /** Select a day and switch to Agenda in one navigation (avoids racing two replace calls). */
+  /** Select a day and switch to Dia in one navigation (avoids racing two replace calls). */
   function selectDay(day: Date) {
     const { vista: _vista, ...rest } = route.query
     router.replace({
@@ -304,15 +256,13 @@ export async function useSchedulingBoard() {
     dayAppointments,
     dayHasAppointments,
     hasActiveFilters,
-    patioSlots,
-    noShows,
-    monthCounts,
+    weekCounts,
     pending,
     error,
     refresh,
     goToday,
     shiftDay,
-    shiftMonth,
+    shiftWeek,
     selectDay
   }
 }

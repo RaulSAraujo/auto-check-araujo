@@ -14,14 +14,18 @@ const timeFormatter = new Intl.DateTimeFormat('pt-BR', {
   minute: '2-digit'
 })
 
-function timeRange(appointment: DashboardAppointment) {
-  return `${timeFormatter.format(new Date(appointment.inicio))}–${timeFormatter.format(new Date(appointment.fim))}`
+function timeApprox(appointment: DashboardAppointment) {
+  return `~${timeFormatter.format(new Date(appointment.inicio))}`
 }
 
 function title(appointment: DashboardAppointment) {
   const plate = appointment.veiculos ? formatPlaca(appointment.veiculos.placa) : 'Sem placa'
   const name = appointment.clientes?.nome
   return name ? `${plate} · ${name}` : plate
+}
+
+function problem(appointment: DashboardAppointment) {
+  return appointment.servico?.trim() || ''
 }
 </script>
 
@@ -94,8 +98,8 @@ function title(appointment: DashboardAppointment) {
             :to="APP_ROUTES.scheduling"
             class="flex min-h-12 items-start gap-3 px-3 py-2.5 transition-colors hover:bg-elevated/60 focus-visible:bg-elevated/60 focus-visible:outline-none sm:px-4"
           >
-            <span class="home-num w-24 shrink-0 text-sm font-semibold tabular-nums text-primary">
-              {{ timeRange(appointment) }}
+            <span class="home-num w-14 shrink-0 text-sm font-semibold tabular-nums text-primary">
+              {{ timeApprox(appointment) }}
             </span>
             <span class="min-w-0 flex-1">
               <span class="block truncate text-sm font-medium text-highlighted">
@@ -103,11 +107,8 @@ function title(appointment: DashboardAppointment) {
               </span>
               <span class="mt-0.5 block truncate text-xs text-muted">
                 {{ AGENDAMENTO_STATUS_LABEL[appointment.status] }}
-                <template v-if="appointment.servico">
-                  · {{ appointment.servico }}
-                </template>
-                <template v-if="appointment.patio_vaga != null">
-                  · Pátio {{ appointment.patio_vaga }}
+                <template v-if="problem(appointment)">
+                  · {{ problem(appointment) }}
                 </template>
               </span>
             </span>

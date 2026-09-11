@@ -3,7 +3,7 @@ import type { DropdownMenuItem } from '@nuxt/ui'
 import type { SchedulingAppointment } from '../composables/useSchedulingBoard'
 import {
   formatBoardDate,
-  formatMonthHeading,
+  formatWeekHeading,
   isSameLocalDay,
   SCHEDULING_STATUS_FILTER_ITEMS,
   SCHEDULING_VIEW_ITEMS,
@@ -12,7 +12,6 @@ import {
   type AppointmentCreatePrefill,
   type AppointmentDraft
 } from '../utils/scheduling'
-import { downloadSchedulingDayPdf } from '../utils/pdf'
 
 defineOptions({ name: 'SchedulingIndexPage' })
 
@@ -32,11 +31,8 @@ const createPrefill = ref<AppointmentCreatePrefill | null>(null)
 
 const confirmOpen = ref(false)
 const confirmLoading = ref(false)
-const pendingConfirm = ref<{
-  kind: 'no-show' | 'handle-no-show'
-  id: string
-  label: string
-} | null>(null)
+const pendingNoShowId = ref<string | null>(null)
+const pendingNoShowLabel = ref('')
 
 const {
   selectedDate,
@@ -46,15 +42,13 @@ const {
   dayAppointments,
   dayHasAppointments,
   hasActiveFilters,
-  patioSlots,
-  noShows,
-  monthCounts,
+  weekCounts,
   pending,
   error,
   refresh,
   goToday,
   shiftDay,
-  shiftMonth,
+  shiftWeek,
   selectDay
 } = await useSchedulingBoard()
 
@@ -62,44 +56,20 @@ const {
   createAppointment,
   updateAppointment,
   markNoShow,
-  markHandledNoShow,
   undoNoShow
 } = useSchedulingMutations()
 
 const toast = useToast()
 
 const isToday = computed(() => isSameLocalDay(selectedDate.value, new Date()))
-const isCalendarView = computed(() => view.value === 'calendar')
+const isWeekView = computed(() => view.value === 'week')
 const boardDate = computed(() => formatBoardDate(selectedDate.value))
-
-const confirmTitle = computed(() =>
-  pendingConfirm.value?.kind === 'handle-no-show'
-    ? 'Marcar como tratado?'
-    : 'Marcar não comparecimento?'
-)
-
-const confirmDescription = computed(() => {
-  const name = pendingConfirm.value?.label || 'este agendamento'
-  if (pendingConfirm.value?.kind === 'handle-no-show') {
-    return `${name} sai da lista.`
-  }
-  return `${name} será marcado como não compareceu.`
-})
-
-const confirmLabel = computed(() =>
-  pendingConfirm.value?.kind === 'handle-no-show' ? 'Marcar tratado' : 'Não compareceu'
-)
 
 const moreMenuItems = computed<DropdownMenuItem[][]>(() => [[
   {
     label: 'Atualizar',
     icon: 'i-lucide-refresh-cw',
     onSelect: () => { refresh() }
-  },
-  {
-    label: 'Exportar PDF',
-    icon: 'i-lucide-file-down',
-    onSelect: () => onExportPdf()
   }
 ]])
 
@@ -145,60 +115,40 @@ async function onSave(draft: AppointmentDraft) {
 
 function requestNoShow(id: string) {
   const row = dayAppointments.value.find(item => item.id === id)
-    || noShows.value.find(item => item.id === id)
-  pendingConfirm.value = {
-    kind: 'no-show',
-    id,
-    label: row?.clientes?.nome?.trim() || 'Este agendamento'
-  }
+  pendingNoShowId.value = id
+  pendingNoShowLabel.value = row?.clientes?.nome?.trim() || 'Este agendamento'
   confirmOpen.value = true
 }
 
-function requestHandleNoShow(id: string) {
-  const row = noShows.value.find(item => item.id === id)
-  pendingConfirm.value = {
-    kind: 'handle-no-show',
-    id,
-    label: row?.clientes?.nome?.trim() || 'Este agendamento'
-  }
-  confirmOpen.value = true
-}
-
-async function onConfirmAction() {
-  if (!pendingConfirm.value) return
-  const { kind, id } = pendingConfirm.value
+async function onConfirmNoShow() {
+  if (!pendingNoShowId.value) return
+  const id = pendingNoShowId.value
   confirmLoading.value = true
   markingId.value = id
   try {
-    const { error: updateError } = kind === 'no-show'
-      ? await markNoShow(id, { silent: true })
-      : await markHandledNoShow(id)
-
+    const { error: updateError } = await markNoShow(id, { silent: true })
     if (!updateError) {
       confirmOpen.value = false
-      pendingConfirm.value = null
+      pendingNoShowId.value = null
       await refresh()
-
-      if (kind === 'no-show') {
-        toast.add({
-          title: 'Não comparecimento registrado',
+      toast.add({
+        title: 'Falta registrada',
+        color: 'neutral',
+        actions: [{
+          label: 'Desfazer',
           color: 'neutral',
-          actions: [{
-            label: 'Desfazer',
-            color: 'neutral',
-            variant: 'outline',
-            onClick: async () => {
-              markingId.value = id
-              try {
-                const { error: undoError } = await undoNoShow(id)
-                if (!undoError) await refresh()
-              } finally {
-                markingId.value = null
-              }
+          variant: 'outline',
+          onClick: async () => {
+            markingId.value = id
+            try {
+              const { error: undoError } = await undoNoShow(id)
+              if (!undoError) await refresh()
+            } finally {
+              markingId.value = null
             }
-          }]
-        })
-      }
+          }
+        }]
+      })
     }
   } finally {
     confirmLoading.value = false
@@ -206,32 +156,23 @@ async function onConfirmAction() {
   }
 }
 
-function onExportPdf() {
-  downloadSchedulingDayPdf(
-    selectedDate.value,
-    dayAppointments.value.map(row => ({
-      inicio: row.inicio,
-      fim: row.fim,
-      clienteNome: row.clientes?.nome?.trim() || EMPTY_VALUE,
-      placa: row.veiculos?.placa || '',
-      servico: row.servico,
-      patioVaga: row.patio_vaga,
-      status: row.status
-    }))
-  )
-}
-
-function onSelectCalendarDay(day: Date) {
-  selectDay(day)
+async function onUndoNoShow(id: string) {
+  markingId.value = id
+  try {
+    const { error: undoError } = await undoNoShow(id)
+    if (!undoError) await refresh()
+  } finally {
+    markingId.value = null
+  }
 }
 
 function onShiftPrev() {
-  if (isCalendarView.value) shiftMonth(-1)
+  if (isWeekView.value) shiftWeek(-1)
   else shiftDay(-1)
 }
 
 function onShiftNext() {
-  if (isCalendarView.value) shiftMonth(1)
+  if (isWeekView.value) shiftWeek(1)
   else shiftDay(1)
 }
 </script>
@@ -247,24 +188,24 @@ function onShiftNext() {
             </p>
             <div class="mt-2 flex items-end gap-4">
               <p
-                v-if="!isCalendarView"
+                v-if="!isWeekView"
                 class="font-mono text-4xl font-bold leading-none tabular-nums tracking-tight text-highlighted sm:text-5xl"
               >
                 {{ boardDate.day }}
               </p>
               <div class="min-w-0 pb-0.5">
                 <p class="text-lg font-semibold text-pretty text-highlighted">
-                  {{ isCalendarView ? formatMonthHeading(selectedDate) : boardDate.weekday }}
+                  {{ isWeekView ? formatWeekHeading(selectedDate) : boardDate.weekday }}
                 </p>
                 <p
-                  v-if="!isCalendarView"
+                  v-if="!isWeekView"
                   class="text-sm text-muted"
                 >
                   {{ boardDate.monthYear }}
                 </p>
               </div>
               <span
-                v-if="isToday && !isCalendarView"
+                v-if="isToday && !isWeekView"
                 class="mb-1 size-2 shrink-0 rounded-full bg-primary motion-safe:animate-pulse"
                 aria-label="Hoje"
               />
@@ -276,7 +217,7 @@ function onShiftNext() {
                 color="neutral"
                 variant="ghost"
                 size="sm"
-                :aria-label="isCalendarView ? 'Mês anterior' : 'Dia anterior'"
+                :aria-label="isWeekView ? 'Semana anterior' : 'Dia anterior'"
                 class="motion-safe:active:scale-[0.98]"
                 @click="onShiftPrev"
               />
@@ -285,7 +226,7 @@ function onShiftNext() {
                 color="neutral"
                 variant="ghost"
                 size="sm"
-                :aria-label="isCalendarView ? 'Próximo mês' : 'Próximo dia'"
+                :aria-label="isWeekView ? 'Próxima semana' : 'Próximo dia'"
                 class="motion-safe:active:scale-[0.98]"
                 @click="onShiftNext"
               />
@@ -364,49 +305,28 @@ function onShiftNext() {
           </template>
         </UAlert>
 
-        <div
+        <SchedulingDailyTimeline
           v-if="view === 'daily'"
-          class="grid min-h-0 gap-4 xl:grid-cols-[minmax(0,1fr)_19rem] xl:items-start"
-        >
-          <SchedulingDailyTimeline
-            :appointments="dayAppointments"
-            :pending="pending"
-            :can-write="canWrite"
-            :can-create-order="canCreateOrder"
-            :marking-id="markingId"
-            :has-active-filters="hasActiveFilters"
-            :day-has-appointments="dayHasAppointments"
-            @create="openCreate"
-            @clear-filters="clearFilters"
-            @edit="openEdit"
-            @mark-no-show="requestNoShow"
-          />
-
-          <aside class="space-y-4">
-            <SchedulingPatioPanel
-              :slots="patioSlots"
-              :pending="pending"
-              :can-write="canWrite"
-              @edit="openEdit"
-              @create="openCreate({ patioVaga: $event })"
-            />
-            <SchedulingNoShowList
-              :items="noShows"
-              :pending="pending"
-              :can-write="canWrite"
-              :marking-id="markingId"
-              @handle="requestHandleNoShow"
-              @edit="openEdit"
-            />
-          </aside>
-        </div>
+          :appointments="dayAppointments"
+          :pending="pending"
+          :can-write="canWrite"
+          :can-create-order="canCreateOrder"
+          :marking-id="markingId"
+          :has-active-filters="hasActiveFilters"
+          :day-has-appointments="dayHasAppointments"
+          @create="openCreate"
+          @clear-filters="clearFilters"
+          @edit="openEdit"
+          @mark-no-show="requestNoShow"
+          @undo-no-show="onUndoNoShow"
+        />
 
         <SchedulingCalendar
           v-else
           :selected-date="selectedDate"
-          :counts="monthCounts"
+          :counts="weekCounts"
           :pending="pending"
-          @select="onSelectCalendarDay"
+          @select="selectDay"
         />
       </div>
 
@@ -421,15 +341,28 @@ function onShiftNext() {
         @submit="onSave"
       />
 
-      <SchedulingConfirmDialog
+      <UModal
         v-model:open="confirmOpen"
-        :title="confirmTitle"
-        :description="confirmDescription"
-        :confirm-label="confirmLabel"
-        :confirm-color="pendingConfirm?.kind === 'handle-no-show' ? 'neutral' : 'error'"
-        :loading="confirmLoading"
-        @confirm="onConfirmAction"
-      />
+        title="Marcar como faltou?"
+        :description="`${pendingNoShowLabel} será marcado como não compareceu.`"
+        :ui="{ content: 'overscroll-contain', footer: 'justify-end' }"
+      >
+        <template #footer>
+          <UButton
+            color="neutral"
+            variant="outline"
+            label="Voltar"
+            :disabled="confirmLoading"
+            @click="confirmOpen = false"
+          />
+          <UButton
+            color="error"
+            label="Faltou"
+            :loading="confirmLoading"
+            @click="onConfirmNoShow"
+          />
+        </template>
+      </UModal>
     </template>
   </UDashboardPanel>
 </template>

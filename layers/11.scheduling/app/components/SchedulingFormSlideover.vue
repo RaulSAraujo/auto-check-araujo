@@ -4,10 +4,8 @@ import type { SchedulingAppointment } from '../composables/useSchedulingBoard'
 import { ORDER_ROUTES } from '#layers/orders/app/utils/order-routes'
 import { useVehicleOptions } from '#layers/vehicles/app/composables/useVehicleOptions'
 import {
-  AGENDAMENTO_STATUS_SELECT_ITEMS,
   appointmentToDraft,
   emptyAppointmentDraft,
-  PATIO_SLOT_ITEMS,
   validateAppointmentDraft,
   type AppointmentCreatePrefill,
   type AppointmentDraft
@@ -52,6 +50,11 @@ const veiculoItems = computed(() =>
   })
 )
 
+const vehicleSearchInput = computed(() => ({
+  placeholder: 'Buscar…',
+  loading: vehiclesPending.value
+}))
+
 const draft = reactive(emptyAppointmentDraft(props.day))
 const snapshot = ref('')
 const discardOpen = ref(false)
@@ -66,14 +69,6 @@ const orderHref = computed(() =>
 const openOrderHref = computed(() => {
   if (!props.canCreateOrder || !props.appointment || props.appointment.ordem_servico_id) return null
   return ORDER_ROUTES.newFromAppointment(props.appointment.veiculo_id, props.appointment.id)
-})
-const statusItems = computed(() => {
-  if (isEdit.value) return AGENDAMENTO_STATUS_SELECT_ITEMS
-  return AGENDAMENTO_STATUS_SELECT_ITEMS.filter(item =>
-    item.value === 'agendado'
-    || item.value === 'confirmado'
-    || item.value === 'em_atendimento'
-  )
 })
 
 function resetDraft() {
@@ -153,11 +148,11 @@ function onSubmit(_event: FormSubmitEvent<AppointmentDraft>) {
             class="w-full"
             ignore-filter
             :loading="vehiclesPending"
-            :search-input="{ placeholder: 'Buscar…', loading: vehiclesPending }"
+            :search-input="vehicleSearchInput"
           />
         </UFormField>
 
-        <div class="grid gap-4 sm:grid-cols-3">
+        <div class="grid gap-4 sm:grid-cols-2">
           <UFormField
             label="Data"
             name="date"
@@ -171,7 +166,7 @@ function onSubmit(_event: FormSubmitEvent<AppointmentDraft>) {
             />
           </UFormField>
           <UFormField
-            label="Início"
+            label="Horário aproximado"
             name="startTime"
             required
           >
@@ -182,68 +177,19 @@ function onSubmit(_event: FormSubmitEvent<AppointmentDraft>) {
               class="w-full"
             />
           </UFormField>
-          <UFormField
-            label="Fim"
-            name="endTime"
-            required
-          >
-            <UInput
-              v-model="draft.endTime"
-              type="time"
-              autocomplete="off"
-              class="w-full"
-            />
-          </UFormField>
         </div>
 
         <UFormField
-          label="Serviço"
-          name="servico"
-        >
-          <UInput
-            v-model="draft.servico"
-            class="w-full"
-            placeholder="Revisão preventiva…"
-            autocomplete="off"
-          />
-        </UFormField>
-
-        <div class="grid gap-4 sm:grid-cols-2">
-          <UFormField
-            label="Status"
-            name="status"
-          >
-            <USelect
-              v-model="draft.status"
-              :items="statusItems"
-              class="w-full"
-            />
-          </UFormField>
-          <UFormField
-            label="Vaga"
-            name="patio_vaga"
-          >
-            <USelect
-              :model-value="draft.patio_vaga ?? undefined"
-              :items="PATIO_SLOT_ITEMS"
-              placeholder="Sem reserva"
-              class="w-full"
-              @update:model-value="draft.patio_vaga = $event == null ? null : Number($event)"
-            />
-          </UFormField>
-        </div>
-
-        <UFormField
-          label="Observações"
-          name="observacoes"
+          label="Problema relatado"
+          name="problema"
         >
           <UTextarea
-            v-model="draft.observacoes"
+            v-model="draft.problema"
             class="w-full"
-            :rows="2"
+            :rows="3"
             autoresize
-            :maxrows="6"
-            placeholder="Detalhes para a recepção…"
+            :maxrows="8"
+            placeholder="Barulho no freio, revisão, etc…"
           />
         </UFormField>
       </UForm>

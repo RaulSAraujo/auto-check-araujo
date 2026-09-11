@@ -57,11 +57,10 @@ if (linkedAppointment.value?.ordem_servico_id) {
 const initialState = emptyOrderForm(
   linkedAppointment.value?.veiculo_id || initialVeiculoId
 )
-if (linkedAppointment.value?.servico) {
-  initialState.reclamacao = linkedAppointment.value.servico
-}
-if (linkedAppointment.value?.observacoes) {
-  initialState.observacoes = linkedAppointment.value.observacoes
+if (linkedAppointment.value) {
+  const problema = linkedAppointment.value.servico?.trim()
+    || linkedAppointment.value.observacoes?.trim()
+  if (problema) initialState.reclamacao = problema
 }
 
 const state = reactive({ ...initialState })
@@ -75,7 +74,6 @@ const backFallback = computed(() => {
   if (agendamentoId.value) return APP_ROUTES.scheduling
 
   const origin = resolveOrderBreadcrumbOrigin()
-  if (origin === 'kanban') return APP_ROUTES.kanban
   if (origin === 'scheduling') return APP_ROUTES.scheduling
   return ORDER_ROUTES.list
 })
@@ -154,7 +152,7 @@ onMounted(() => {
           color="info"
           variant="subtle"
           title="Vinculada à agenda"
-          description="Ao abrir, este horário passa a em atendimento e o card entra no Kanban."
+          description="Ao abrir, este horário passa a em atendimento na agenda."
         />
 
         <OrdersNewForm
