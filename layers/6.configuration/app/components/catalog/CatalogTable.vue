@@ -132,7 +132,9 @@ watch(() => editDraft.tipo, (tipo: OrdemItemTipo) => {
             <th class="px-3 py-2.5 font-medium">
               Status
             </th>
-            <th class="w-24 px-3 py-2.5" />
+            <th class="w-24 px-3 py-2.5">
+              <span class="sr-only">Ações</span>
+            </th>
           </tr>
         </thead>
         <tbody class="divide-y divide-default">
@@ -141,26 +143,27 @@ watch(() => editDraft.tipo, (tipo: OrdemItemTipo) => {
             :key="item.id"
           >
             <tr
-              class="transition-colors hover:bg-elevated/40"
+              class="motion-safe:transition-colors hover:bg-elevated/40"
               :class="!item.ativo ? 'opacity-55' : ''"
             >
-              <td class="px-3 py-2.5 align-top">
+              <td class="min-w-0 px-3 py-2.5 align-top">
                 <UInput
                   v-if="editingId === item.id"
                   v-model="editDraft.nome"
                   size="sm"
+                  aria-label="Nome"
                   class="w-full min-w-40"
                 />
                 <div
                   v-else
-                  class="space-y-0.5"
+                  class="min-w-0 space-y-0.5"
                 >
-                  <span class="font-medium text-highlighted">{{ item.nome }}</span>
+                  <span class="block truncate font-medium text-highlighted">{{ item.nome }}</span>
                   <p
                     v-if="item.tipo === 'kit' && item.catalogo_kit_itens?.length"
                     class="text-xs text-muted"
                   >
-                    {{ item.catalogo_kit_itens.length }} item(ns) no kit
+                    {{ item.catalogo_kit_itens.length }} {{ item.catalogo_kit_itens.length === 1 ? 'item no kit' : 'itens no kit' }}
                   </p>
                 </div>
               </td>
@@ -170,6 +173,7 @@ watch(() => editDraft.tipo, (tipo: OrdemItemTipo) => {
                   v-model="editDraft.tipo"
                   :items="[...ORDEM_ITEM_TIPO_SELECT_ITEMS]"
                   size="sm"
+                  aria-label="Tipo"
                   class="min-w-28"
                 />
                 <UBadge
@@ -190,6 +194,7 @@ watch(() => editDraft.tipo, (tipo: OrdemItemTipo) => {
                     v-model="editDraft.valor_padrao"
                     size="sm"
                     empty-as-zero
+                    aria-label="Valor padrão"
                   />
                 </div>
                 <span v-else>{{ formatMoney(Number(item.valor_padrao)) }}</span>
@@ -206,6 +211,7 @@ watch(() => editDraft.tipo, (tipo: OrdemItemTipo) => {
                     v-model="editDraft.custo"
                     size="sm"
                     empty-as-zero
+                    aria-label="Custo"
                   />
                 </div>
                 <span v-else>{{ formatMoney(Number(item.custo)) }}</span>
@@ -219,11 +225,12 @@ watch(() => editDraft.tipo, (tipo: OrdemItemTipo) => {
                   v-model="supplierModel"
                   :items="supplierItems"
                   size="sm"
+                  aria-label="Fornecedor"
                   class="min-w-36"
                 />
                 <span
                   v-else
-                  class="text-muted"
+                  class="truncate text-muted"
                 >{{ item.fornecedores?.nome || EMPTY_VALUE }}</span>
               </td>
               <td
@@ -235,7 +242,9 @@ watch(() => editDraft.tipo, (tipo: OrdemItemTipo) => {
                     v-if="editDraft.tipo !== 'servico'"
                     v-model.number="editDraft.estoque"
                     type="number"
+                    inputmode="numeric"
                     size="sm"
+                    aria-label="Estoque"
                     class="ml-auto w-24 font-mono tabular-nums"
                     min="0"
                     step="1"
@@ -345,14 +354,17 @@ watch(() => editDraft.tipo, (tipo: OrdemItemTipo) => {
                       v-model="line.item_id"
                       :items="kitComponentOptions"
                       size="sm"
-                      class="flex-1"
+                      :aria-label="`Item ${index + 1} do kit`"
+                      class="min-w-0 flex-1"
                     />
                     <UInput
                       v-model.number="line.quantidade"
                       type="number"
+                      inputmode="decimal"
                       size="sm"
                       min="0.01"
                       step="0.01"
+                      :aria-label="`Quantidade do item ${index + 1}`"
                       class="w-24 font-mono tabular-nums"
                     />
                     <UButton

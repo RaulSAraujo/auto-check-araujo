@@ -37,11 +37,15 @@ function toCatalogPayload(draft: CatalogItemDraft) {
 }
 
 export function useCatalogList(
-  tipoFilter: Ref<CatalogTipoFilter> = ref('all')
+  initialTipo: CatalogTipoFilter = 'all'
 ) {
   const supabase = useTypedSupabaseClient()
+  const router = useRouter()
+  const route = useRoute()
+
   const q = ref('')
   const debouncedQ = ref('')
+  const tipoFilter = ref<CatalogTipoFilter>(initialTipo)
 
   let debounceTimer: ReturnType<typeof setTimeout> | undefined
   watch(q, (value) => {
@@ -88,8 +92,16 @@ export function useCatalogList(
     { watch: [tipoFilter, debouncedQ, page] }
   )
 
+  watch(tipoFilter, (value) => {
+    const nextQuery = { ...route.query } as Record<string, string | undefined>
+    if (value === 'all') delete nextQuery.tipo
+    else nextQuery.tipo = value
+    router.replace({ query: nextQuery })
+  })
+
   return {
     q,
+    tipoFilter,
     items: computed(() => data.value?.items ?? []),
     page,
     pageSize,
