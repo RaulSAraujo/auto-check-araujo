@@ -20,7 +20,6 @@ const props = defineProps<{
   deletingId: string | null
   updatingStatus: boolean
   printTo?: string
-  publicUrl?: string | null
   whatsappUrl?: string | null
   pdfLoading?: boolean
 }>()
@@ -32,7 +31,6 @@ const emit = defineEmits<{
   'submitForApproval': []
   'approve': []
   'reject': []
-  'reopen': []
   'downloadPdf': []
 }>()
 
@@ -41,9 +39,7 @@ const draftModel = defineModel<OrderItemDraft>('draft', { required: true })
 const showAddModal = ref(false)
 const rejectConfirmOpen = ref(false)
 
-const showShareMenu = computed(() =>
-  props.items.length > 0 && Boolean(props.printTo || props.publicUrl)
-)
+const showShareMenu = computed(() => props.items.length > 0)
 
 function onAddAndClose() {
   emit('add')
@@ -73,7 +69,6 @@ function onConfirmReject() {
       <OrdersPrintActions
         v-if="showShareMenu"
         :print-to="printTo"
-        :public-url="publicUrl"
         :whatsapp-url="whatsappUrl"
         print-label="Imprimir orçamento"
         show-pdf
@@ -206,23 +201,12 @@ function onConfirmReject() {
           @click="rejectConfirmOpen = true"
         />
       </template>
-      <UButton
-        v-if="canApprove && budgetStatus === 'rejeitado'"
-        label="Reabrir orçamento"
-        icon="i-lucide-pencil"
-        color="neutral"
-        variant="soft"
-        size="sm"
-        :loading="updatingStatus"
-        class="touch-manipulation"
-        @click="emit('reopen')"
-      />
     </div>
 
     <OrdersConfirmDialog
       v-model:open="rejectConfirmOpen"
       title="Rejeitar orçamento?"
-      description="O orçamento volta para edição. O cliente precisará de uma nova aprovação depois."
+      description="O orçamento fica rejeitado e volta para edição. Será preciso enviar e aprovar de novo."
       confirm-label="Rejeitar"
       confirm-color="error"
       :loading="updatingStatus"
@@ -306,18 +290,13 @@ function onConfirmReject() {
             </UFormField>
 
             <UFormField
-              label="Valor unitário (R$)"
+              label="Valor unitário"
               name="draft-valor"
             >
-              <UInput
-                v-model.number="draftModel.valor_unitario"
-                type="number"
-                inputmode="decimal"
-                class="w-full font-mono tabular-nums"
-                min="0"
-                step="0.01"
-                placeholder="0,00"
+              <BaseCurrencyInput
+                v-model="draftModel.valor_unitario"
                 name="valor_unitario"
+                empty-as-zero
               />
             </UFormField>
           </div>

@@ -13,12 +13,8 @@ export function buildWhatsAppUrl(telefone: string | null | undefined, message: s
   return `https://wa.me/${phone}?text=${encodeURIComponent(message)}`
 }
 
-export function buildBudgetWhatsAppMessage(numero: string, printUrl: string): string {
-  return `Olá! Segue o orçamento da ${numero} da ${WORKSHOP_NAME}:\n${printUrl}`
-}
-
-export function buildChecklistWhatsAppMessage(numero: string, printUrl: string): string {
-  return `Olá! Segue o checklist de inspeção da ${numero} da ${WORKSHOP_NAME}:\n${printUrl}`
+export function buildBudgetWhatsAppMessage(numero: string): string {
+  return `Olá! Segue o orçamento da ${numero} da ${WORKSHOP_NAME}. Em breve envio o PDF.`
 }
 
 export function printPage(): void {

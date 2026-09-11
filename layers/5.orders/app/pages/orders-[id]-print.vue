@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { ORDER_ROUTES } from '../utils/order-routes'
 import {
-  absolutePrintUrl,
   buildBudgetWhatsAppMessage,
   buildWhatsAppUrl
 } from '../utils/print'
@@ -26,42 +25,10 @@ const budgetStatus = computed(
   () => (ordem.value?.orcamento_status || 'rascunho') as OrcamentoStatus
 )
 
-const { ensureToken } = useOrderPublicToken()
-const publicToken = ref<string | null>(null)
-
-const canShareBudget = computed(() =>
-  budgetStatus.value === 'aguardando_aprovacao' || budgetStatus.value === 'aprovado'
-)
-
-watch(
-  [ordem, canShareBudget],
-  async () => {
-    if (!ordem.value || !canShareBudget.value) {
-      publicToken.value = null
-      return
-    }
-
-    publicToken.value = await ensureToken(
-      id.value,
-      ordem.value.orcamento_public_token ?? null
-    )
-  },
-  { immediate: true }
-)
-
-const budgetPublicUrl = computed(() => {
-  if (!publicToken.value) return null
-  return absolutePrintUrl(ORDER_ROUTES.publicBudget(publicToken.value))
-})
-
 const whatsappUrl = computed(() => {
-  if (!ordem.value || !budgetPublicUrl.value) return null
+  if (!ordem.value) return null
   const telefone = primaryPhone(ordem.value.veiculos?.clientes?.telefones)
-  const message = buildBudgetWhatsAppMessage(
-    ordem.value.numero,
-    budgetPublicUrl.value
-  )
-  return buildWhatsAppUrl(telefone, message)
+  return buildWhatsAppUrl(telefone, buildBudgetWhatsAppMessage(ordem.value.numero))
 })
 
 useHead({
@@ -84,6 +51,7 @@ async function onDownloadBudgetPdf() {
       veiculoLabel: [veiculo?.marca, veiculo?.modelo].filter(Boolean).join(' ') || null,
       kmEntrada: ordem.value.km_entrada,
       reclamacao: ordem.value.reclamacao,
+      diagnostico: ordem.value.diagnostico,
       items: items.value || []
     })
   } finally {
@@ -97,7 +65,6 @@ async function onDownloadBudgetPdf() {
     <OrdersPrintToolbar
       :back-to="ORDER_ROUTES.detail(id)"
       back-label="Voltar à OS"
-      :public-url="budgetPublicUrl"
       :whatsapp-url="whatsappUrl"
       show-pdf
       :pdf-loading="downloadingPdf"

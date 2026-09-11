@@ -122,7 +122,7 @@ export function useOrderMutations() {
     if (newStatus === 'concluida') {
       const { data: order, error: fetchError } = await supabase
         .from('ordens_servico')
-        .select('orcamento_status')
+        .select('orcamento_status, pago, valor_total')
         .eq('id', id)
         .maybeSingle()
 
@@ -132,12 +132,17 @@ export function useOrderMutations() {
       }
 
       if (!order || !canConcludeOrder(order)) {
+        const total = Number(order?.valor_total) || 0
         toast.add({
-          title: 'Orçamento necessário',
-          description: 'Aprove o orçamento antes de concluir a OS.',
+          title: total > 0 && order?.orcamento_status === 'aprovado'
+            ? 'Pagamento necessário'
+            : 'Orçamento necessário',
+          description: total > 0 && order?.orcamento_status === 'aprovado'
+            ? 'Registre o pagamento antes de concluir a OS.'
+            : 'Aprove o orçamento antes de concluir a OS.',
           color: 'warning'
         })
-        return { error: new Error('budget not approved'), unchanged: false }
+        return { error: new Error('cannot conclude order'), unchanged: false }
       }
     }
 
@@ -147,8 +152,6 @@ export function useOrderMutations() {
 
     if (newStatus === 'concluida') {
       patch.concluida_em = new Date().toISOString()
-    } else if (currentStatus === 'concluida' || newStatus === 'retrabalho') {
-      patch.concluida_em = null
     }
 
     const { error } = await supabase
@@ -165,23 +168,9 @@ export function useOrderMutations() {
     return { error: null, unchanged: false }
   }
 
-  async function startChecklist(ordemId: string) {
-    const { data, error } = await supabase.rpc('criar_checklist_da_os', {
-      p_ordem_servico_id: ordemId
-    })
-
-    if (error) {
-      toast.add({ title: 'Erro ao criar Checklist', description: error.message, color: 'error' })
-      return { data: null, error }
-    }
-
-    return { data, error: null }
-  }
-
   return {
     createOrder,
     updateOrder,
-    updateOrderStatus,
-    startChecklist
+    updateOrderStatus
   }
 }

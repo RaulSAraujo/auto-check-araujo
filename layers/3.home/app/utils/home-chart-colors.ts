@@ -2,14 +2,13 @@ import { STITCH_COLORS } from '~~/layers/1.base/app/utils/brand'
 import type { OrdemStatus } from '~~/shared/types/oficina'
 import { ORDEM_STATUS_LABEL } from '~~/shared/types/oficina'
 
-export const HOME_STATUS_ORDER = ['aberta', 'em_andamento', 'retrabalho'] as const
+export const HOME_STATUS_ORDER = ['aberta', 'em_andamento'] as const
 
 export type HomeActiveStatus = (typeof HOME_STATUS_ORDER)[number]
 
 export const HOME_STATUS_HEX: Record<HomeActiveStatus, string> = {
   aberta: STITCH_COLORS.primary,
-  em_andamento: STITCH_COLORS.tertiaryContainer,
-  retrabalho: STITCH_COLORS.error
+  em_andamento: STITCH_COLORS.tertiaryContainer
 }
 
 export function homeStatusCategories(dark = false) {

@@ -15,12 +15,11 @@ defineProps<{
 function statusTone(status: string) {
   if (status === 'aberta') return 'text-primary'
   if (status === 'em_andamento') return 'text-warning'
-  if (status === 'retrabalho') return 'text-error'
   return 'text-muted'
 }
 
 function statusDot(status: string) {
-  if (status === 'aberta' || status === 'em_andamento' || status === 'retrabalho') {
+  if (status === 'aberta' || status === 'em_andamento') {
     return HOME_STATUS_HEX[status as HomeActiveStatus]
   }
   return '#717783'

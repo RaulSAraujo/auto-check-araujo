@@ -7,7 +7,7 @@ import {
   emptyOrderItemDraft,
   type OrderItemDraft
 } from '../utils/budget'
-import { resolveCatalogUnitPrice } from '#layers/pricing/app/utils/pricing'
+import { resolveCatalogUnitPrice } from '#layers/configuration/app/utils/pricing'
 
 export function useOrderBudgetPage(
   orderId: MaybeRefOrGetter<string>,
@@ -174,16 +174,6 @@ export function useOrderBudgetPage(
     }
   }
 
-  async function onReopen() {
-    updatingStatus.value = true
-    try {
-      const { error } = await updateBudgetStatus(toValue(orderId), 'rascunho')
-      if (!error) await refreshAll()
-    } finally {
-      updatingStatus.value = false
-    }
-  }
-
   return {
     draft,
     selectedCatalogId,
@@ -199,7 +189,6 @@ export function useOrderBudgetPage(
     onDeleteItem,
     onSubmitForApproval,
     onApprove,
-    onReject,
-    onReopen
+    onReject
   }
 }

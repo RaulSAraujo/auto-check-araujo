@@ -1,5 +1,4 @@
-export type OrdemStatus = 'aberta' | 'em_andamento' | 'retrabalho' | 'concluida' | 'cancelada'
-export type ChecklistResultado = 'ok' | 'atencao' | 'ruim' | 'na'
+export type OrdemStatus = 'aberta' | 'em_andamento' | 'concluida' | 'cancelada'
 export type ColaboradorPapel = 'recepcao' | 'mecanico' | 'gerente'
 export type OrdemItemTipo = 'servico' | 'peca' | 'kit'
 export type OrcamentoStatus = 'rascunho' | 'aguardando_aprovacao' | 'aprovado' | 'rejeitado'
@@ -80,7 +79,6 @@ export const CONTA_FINANCEIRA_STATUS_COLOR: Record<
 export const ORDEM_STATUS_LABEL: Record<OrdemStatus, string> = {
   aberta: 'Aberta',
   em_andamento: 'Em andamento',
-  retrabalho: 'Retrabalho',
   concluida: 'Concluída',
   cancelada: 'Cancelada'
 }
@@ -88,16 +86,8 @@ export const ORDEM_STATUS_LABEL: Record<OrdemStatus, string> = {
 export const ORDEM_STATUS_COLOR: Record<OrdemStatus, 'info' | 'warning' | 'success' | 'neutral' | 'error'> = {
   aberta: 'info',
   em_andamento: 'warning',
-  retrabalho: 'error',
   concluida: 'success',
   cancelada: 'neutral'
-}
-
-export const CHECKLIST_RESULTADO_LABEL: Record<ChecklistResultado, string> = {
-  ok: 'OK',
-  atencao: 'Atenção',
-  ruim: 'Ruim',
-  na: 'N/A'
 }
 
 export const AGENDAMENTO_STATUS_LABEL: Record<AgendamentoStatus, string> = {
@@ -154,7 +144,7 @@ export const OCORRENCIA_TIPO_LABEL: Record<OcorrenciaTipo, string> = {
 }
 
 export function isOrderEditable(status: OrdemStatus): boolean {
-  return status === 'aberta' || status === 'em_andamento' || status === 'retrabalho'
+  return status === 'aberta' || status === 'em_andamento'
 }
 
 export function isBudgetEditable(
@@ -165,9 +155,33 @@ export function isBudgetEditable(
   return budgetStatus === 'rascunho' || budgetStatus === 'rejeitado'
 }
 
-/** Conclusão exige orçamento aprovado (valor pode ser R$ 0). */
+/**
+ * Conclusão exige orçamento aprovado e pagamento.
+ * Total R$ 0 dispensa marcar como pago.
+ * Em andamento não exige orçamento — análise/diagnóstico vem antes.
+ */
 export function canConcludeOrder(order: {
   orcamento_status: string | null
+  pago?: boolean | null
+  valor_total?: number | null
 }): boolean {
-  return order.orcamento_status === 'aprovado'
+  if (order.orcamento_status !== 'aprovado') return false
+  const total = Number(order.valor_total) || 0
+  if (total <= 0) return true
+  return Boolean(order.pago)
+}
+
+// ponytail: assert-based self-check — fails loud if conclude rules drift
+if (import.meta.dev) {
+  const cases: Array<{ ok: boolean, order: Parameters<typeof canConcludeOrder>[0] }> = [
+    { ok: false, order: { orcamento_status: 'rascunho', pago: true, valor_total: 100 } },
+    { ok: false, order: { orcamento_status: 'aprovado', pago: false, valor_total: 100 } },
+    { ok: true, order: { orcamento_status: 'aprovado', pago: true, valor_total: 100 } },
+    { ok: true, order: { orcamento_status: 'aprovado', pago: false, valor_total: 0 } }
+  ]
+  for (const c of cases) {
+    if (canConcludeOrder(c.order) !== c.ok) {
+      console.error('[oficina] canConcludeOrder self-check failed', c)
+    }
+  }
 }

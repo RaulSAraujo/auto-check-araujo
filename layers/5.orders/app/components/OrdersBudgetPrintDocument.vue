@@ -69,6 +69,15 @@ const total = computed(() => calcItemsTotal(props.items))
       </p>
     </div>
 
+    <div v-if="ordem.diagnostico">
+      <p class="print-section-title">
+        Diagnóstico
+      </p>
+      <p class="text-sm whitespace-pre-wrap">
+        {{ ordem.diagnostico }}
+      </p>
+    </div>
+
     <p class="print-section-title">
       Itens do orçamento
     </p>

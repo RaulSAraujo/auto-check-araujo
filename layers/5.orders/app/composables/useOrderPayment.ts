@@ -1,6 +1,7 @@
 import type { OrderDetail } from '../types/orders'
 import type { PaymentFormState } from '../utils/payment'
 import { emptyPaymentForm, paymentFormFromOrder } from '../utils/payment'
+import { isOrderEditable, type OrdemStatus } from '~~/shared/types/oficina'
 
 export function useOrderPayment(
   orderId: MaybeRefOrGetter<string>,
@@ -17,12 +18,16 @@ export function useOrderPayment(
   const canEditPayment = computed(() => {
     if (!can('orders.edit')) return false
     if (!ordem.value) return false
-    return ordem.value.status === 'concluida' && ordem.value.valor_total != null
+    // Pagamento precisa ser registrável antes da conclusão (exceto OS já fechada).
+    return isOrderEditable(ordem.value.status as OrdemStatus)
+      || ordem.value.status === 'concluida'
   })
 
   const showPaymentSection = computed(() => {
     if (!ordem.value) return false
-    return ordem.value.status === 'concluida' || ordem.value.valor_total != null
+    return ordem.value.orcamento_status === 'aprovado'
+      || ordem.value.status === 'concluida'
+      || Number(ordem.value.valor_total) > 0
   })
 
   const baseline = reactive<PaymentFormState>(emptyPaymentForm())

@@ -9,7 +9,6 @@ export type PermissionAction
     | 'orders.edit'
     | 'budget.edit'
     | 'budget.approve'
-    | 'checklist.fill'
     | 'finance.view'
     | 'catalog.manage'
     | 'scheduling.write'
@@ -33,9 +32,6 @@ export function can(papel: ColaboradorPapel, action: PermissionAction): boolean 
     case 'collaborators.manage':
       return papel === 'gerente'
 
-    case 'checklist.fill':
-      return true
-
     default:
       return false
   }
@@ -50,5 +46,5 @@ export function canChangeOrderStatus(
   // OS concluída é definitiva — sem mudança de status
   if (from === 'concluida') return false
   if (papel === 'gerente' || papel === 'recepcao') return true
-  return (from === 'em_andamento' || from === 'retrabalho') && to === 'concluida'
+  return from === 'em_andamento' && to === 'concluida'
 }

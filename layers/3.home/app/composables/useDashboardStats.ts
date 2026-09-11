@@ -1,4 +1,4 @@
-import type { FinanceSummary } from '#layers/finance/app/utils/finance'
+import type { FinanceSummary } from '#layers/management/app/utils/finance'
 import type { OrdemStatus, AgendamentoStatus } from '~~/shared/types/oficina'
 
 export type DashboardStats = {
@@ -8,7 +8,7 @@ export type DashboardStats = {
   os_andamento: number
 }
 
-export type DashboardStatusCounts = Record<'aberta' | 'em_andamento' | 'retrabalho', number>
+export type DashboardStatusCounts = Record<'aberta' | 'em_andamento', number>
 
 export type DashboardDayPoint = {
   key: string
@@ -59,8 +59,7 @@ type DashboardHomePayload = {
 
 const EMPTY_STATUS: DashboardStatusCounts = {
   aberta: 0,
-  em_andamento: 0,
-  retrabalho: 0
+  em_andamento: 0
 }
 
 const EMPTY_FINANCE: FinanceSummary = {
@@ -155,8 +154,7 @@ function normalizePayload(raw: unknown): {
 
   const statusCounts: DashboardStatusCounts = {
     aberta: Number(data.status_counts?.aberta ?? 0),
-    em_andamento: Number(data.status_counts?.em_andamento ?? 0),
-    retrabalho: Number(data.status_counts?.retrabalho ?? 0)
+    em_andamento: Number(data.status_counts?.em_andamento ?? 0)
   }
 
   return {
@@ -164,7 +162,7 @@ function normalizePayload(raw: unknown): {
       clientes: Number(data.clientes ?? 0),
       veiculos: Number(data.veiculos ?? 0),
       os_abertas: statusCounts.aberta,
-      os_andamento: statusCounts.em_andamento + statusCounts.retrabalho
+      os_andamento: statusCounts.em_andamento
     },
     statusCounts,
     weeklyTrend: mergeWeeklyTrend(localDate, data.weekly_trend ?? []),
@@ -194,13 +192,12 @@ export async function useDashboardStats() {
   const financeSummary = computed(() => data.value?.finance ?? null)
   const osAbertas = computed(() => stats.value?.os_abertas ?? statusCounts.value.aberta)
   const osAndamento = computed(() => stats.value?.os_andamento
-    ?? (statusCounts.value.em_andamento + statusCounts.value.retrabalho))
+    ?? statusCounts.value.em_andamento)
   const clientesCount = computed(() => stats.value?.clientes ?? 0)
   const veiculosCount = computed(() => stats.value?.veiculos ?? 0)
   const activeOrdersTotal = computed(() =>
     statusCounts.value.aberta
     + statusCounts.value.em_andamento
-    + statusCounts.value.retrabalho
   )
   const weeklyCompletedTotal = computed(() =>
     weeklyTrend.value.reduce((sum, point) => sum + point.count, 0)

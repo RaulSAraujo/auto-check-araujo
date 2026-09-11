@@ -74,9 +74,14 @@ export function useOrderStatusEditor(
 
     if (next === 'concluida') {
       if (!canConcludeOrder(ordem.value)) {
+        const total = Number(ordem.value.valor_total) || 0
         toast.add({
-          title: 'Orçamento necessário',
-          description: 'Aprove o orçamento antes de concluir a OS.',
+          title: total > 0 && ordem.value.orcamento_status === 'aprovado'
+            ? 'Pagamento necessário'
+            : 'Orçamento necessário',
+          description: total > 0 && ordem.value.orcamento_status === 'aprovado'
+            ? 'Registre o pagamento antes de concluir a OS.'
+            : 'Aprove o orçamento antes de concluir a OS.',
           color: 'warning'
         })
         selectedStatus.value = ordem.value.status

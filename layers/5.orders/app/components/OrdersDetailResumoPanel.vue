@@ -82,6 +82,40 @@ function onError(event: FormErrorEvent) {
         </blockquote>
       </div>
 
+      <div class="space-y-2">
+        <label
+          for="os-diagnostico"
+          class="flex items-center gap-2 text-sm font-semibold text-highlighted"
+        >
+          <UIcon
+            name="i-lucide-stethoscope"
+            class="size-4 text-muted"
+            aria-hidden="true"
+          />
+          Diagnóstico
+          <span class="text-xs font-normal text-muted">(após análise)</span>
+        </label>
+        <UTextarea
+          v-if="canEdit"
+          id="os-diagnostico"
+          v-model="state.diagnostico"
+          class="w-full"
+          variant="subtle"
+          :rows="4"
+          autoresize
+          :maxrows="12"
+          placeholder="O que a oficina encontrou e o que será orçado…"
+          autocomplete="off"
+          name="diagnostico"
+        />
+        <blockquote
+          v-else
+          class="rounded-lg border border-default bg-elevated/30 px-4 py-3 text-pretty leading-relaxed text-highlighted"
+        >
+          {{ ordem.diagnostico || EMPTY_VALUE }}
+        </blockquote>
+      </div>
+
       <UFormField
         label="Km de entrada"
         name="km_entrada"

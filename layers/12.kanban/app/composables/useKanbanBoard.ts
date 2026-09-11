@@ -70,7 +70,7 @@ export async function useKanbanBoard() {
         .from('ordens_servico')
         .select(KANBAN_SELECT)
         .or(
-          `status.in.(aberta,em_andamento,retrabalho),and(status.eq.concluida,concluida_em.gte.${cutoffIso})`
+          `status.in.(aberta,em_andamento),and(status.eq.concluida,concluida_em.gte.${cutoffIso})`
         )
         .order('updated_at', { ascending: false })
         .limit(200)

@@ -2,6 +2,7 @@ import type { OrdemServico, OrdemServicoInsert, OrdemServicoUpdate } from '~~/sh
 
 export interface OrderEditState {
   reclamacao: string
+  diagnostico: string
   km_entrada: number | undefined
   observacoes: string
 }
@@ -9,6 +10,7 @@ export interface OrderEditState {
 export interface OrderFormState {
   veiculo_id: string
   reclamacao: string
+  diagnostico: string
   km_entrada: number | undefined
   observacoes: string
 }
@@ -17,6 +19,7 @@ export function emptyOrderForm(veiculoId = ''): OrderFormState {
   return {
     veiculo_id: veiculoId,
     reclamacao: '',
+    diagnostico: '',
     km_entrada: undefined,
     observacoes: ''
   }
@@ -25,6 +28,7 @@ export function emptyOrderForm(veiculoId = ''): OrderFormState {
 export function emptyOrderEditForm(): OrderEditState {
   return {
     reclamacao: '',
+    diagnostico: '',
     km_entrada: undefined,
     observacoes: ''
   }
@@ -44,6 +48,7 @@ export function orderFormToInsert(
     aberto_por: abertoPor,
     numero: '',
     reclamacao: trimOrNull(state.reclamacao),
+    diagnostico: trimOrNull(state.diagnostico),
     km_entrada: state.km_entrada || null,
     observacoes: trimOrNull(state.observacoes),
     status: 'aberta'
@@ -55,7 +60,7 @@ export function isOrderFormValid(state: OrderFormState): boolean {
 }
 
 export interface OrderFormFieldError {
-  name: 'veiculo_id' | 'km_entrada' | 'reclamacao' | 'observacoes'
+  name: 'veiculo_id' | 'km_entrada' | 'reclamacao' | 'diagnostico' | 'observacoes'
   message: string
 }
 
@@ -86,23 +91,25 @@ export function isOrderFormDirty(
   return (
     state.veiculo_id !== initial.veiculo_id
     || state.reclamacao !== initial.reclamacao
+    || state.diagnostico !== initial.diagnostico
     || state.observacoes !== initial.observacoes
     || state.km_entrada !== initial.km_entrada
   )
 }
 
 export function orderEditFromRow(
-  ordem: Pick<OrdemServico, 'reclamacao' | 'km_entrada' | 'observacoes'>
+  ordem: Pick<OrdemServico, 'reclamacao' | 'diagnostico' | 'km_entrada' | 'observacoes'>
 ): OrderEditState {
   return {
     reclamacao: ordem.reclamacao || '',
+    diagnostico: ordem.diagnostico || '',
     km_entrada: ordem.km_entrada ?? undefined,
     observacoes: ordem.observacoes || ''
   }
 }
 
 export interface OrderEditFieldError {
-  name: 'km_entrada' | 'reclamacao' | 'observacoes'
+  name: 'km_entrada' | 'reclamacao' | 'diagnostico' | 'observacoes'
   message: string
 }
 
@@ -125,6 +132,7 @@ export function isOrderEditDirty(
 ): boolean {
   return (
     state.reclamacao !== baseline.reclamacao
+    || state.diagnostico !== baseline.diagnostico
     || state.observacoes !== baseline.observacoes
     || state.km_entrada !== baseline.km_entrada
   )
@@ -132,10 +140,11 @@ export function isOrderEditDirty(
 
 export function orderEditToUpdate(state: OrderEditState): Pick<
   OrdemServicoUpdate,
-  'reclamacao' | 'km_entrada' | 'observacoes'
+  'reclamacao' | 'diagnostico' | 'km_entrada' | 'observacoes'
 > {
   return {
     reclamacao: trimOrNull(state.reclamacao),
+    diagnostico: trimOrNull(state.diagnostico),
     km_entrada: state.km_entrada ?? null,
     observacoes: trimOrNull(state.observacoes)
   }

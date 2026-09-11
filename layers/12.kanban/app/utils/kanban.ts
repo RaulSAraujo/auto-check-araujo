@@ -1,7 +1,7 @@
 import type { OrcamentoStatus, OrdemStatus } from '~~/shared/types/oficina'
 import { EMPTY_VALUE } from '~~/shared/utils/empty'
 
-export type KanbanColumnId = 'agendados' | 'pre_orcamento' | 'em_andamento' | 'retrabalho' | 'finalizados'
+export type KanbanColumnId = 'agendados' | 'pre_orcamento' | 'em_andamento' | 'finalizados'
 
 export const KANBAN_COLUMNS: ReadonlyArray<{
   id: KanbanColumnId
@@ -11,7 +11,6 @@ export const KANBAN_COLUMNS: ReadonlyArray<{
   { id: 'agendados', label: 'Aguardando execução', hint: 'Orçamento aprovado — o serviço ainda não começou' },
   { id: 'pre_orcamento', label: 'Pré-orçamento', hint: 'OS aberta, orçamento ainda não aprovado' },
   { id: 'em_andamento', label: 'Em andamento', hint: 'Serviço em execução' },
-  { id: 'retrabalho', label: 'Retrabalho', hint: 'OS reaberta' },
   { id: 'finalizados', label: 'Finalizados', hint: 'Concluídas nos últimos 14 dias' }
 ] as const
 
@@ -20,7 +19,6 @@ export const KANBAN_OVERDUE_HOURS: Record<KanbanColumnId, number | null> = {
   agendados: 48,
   pre_orcamento: 24,
   em_andamento: 8,
-  retrabalho: 8,
   finalizados: null
 }
 
@@ -30,7 +28,6 @@ export function resolveKanbanColumn(
 ): KanbanColumnId | null {
   if (status === 'cancelada') return null
   if (status === 'concluida') return 'finalizados'
-  if (status === 'retrabalho') return 'retrabalho'
   if (status === 'em_andamento') return 'em_andamento'
   if (status === 'aberta') {
     return budgetStatus === 'aprovado' ? 'agendados' : 'pre_orcamento'
@@ -48,7 +45,7 @@ export function resolveStageStartedAt(order: {
   if (order.status === 'concluida' && order.concluida_em) {
     return order.concluida_em
   }
-  if (order.status === 'em_andamento' || order.status === 'retrabalho') {
+  if (order.status === 'em_andamento') {
     return order.updated_at
   }
   return order.updated_at || order.aberta_em

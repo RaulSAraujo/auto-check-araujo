@@ -1,11 +1,9 @@
 import { jsPDF } from 'jspdf'
 import autoTable from 'jspdf-autotable'
-import type { ChecklistItem, OrdemItem } from '~~/shared/types/database'
+import type { OrdemItem } from '~~/shared/types/database'
 import {
-  CHECKLIST_RESULTADO_LABEL,
   ORCAMENTO_STATUS_LABEL,
   ORDEM_ITEM_TIPO_LABEL,
-  type ChecklistResultado,
   type OrcamentoStatus
 } from '~~/shared/types/oficina'
 import { calcItemSubtotal, calcItemsTotal, formatMoney } from './budget'
@@ -20,18 +18,8 @@ export type BudgetPdfInput = {
   veiculoLabel: string | null
   kmEntrada: number | null
   reclamacao: string | null
+  diagnostico?: string | null
   items: Pick<OrdemItem, 'tipo' | 'descricao' | 'quantidade' | 'valor_unitario'>[]
-}
-
-export type ChecklistPdfInput = {
-  numero: string
-  createdAt: string
-  statusLabel: string
-  clienteNome: string | null
-  placa: string | null
-  veiculoLabel: string | null
-  kmEntrada: number | null
-  itensByCategoria: [string, ChecklistItem[]][]
 }
 
 function safeFilename(value: string): string {
@@ -113,6 +101,18 @@ export async function downloadBudgetPdf(input: BudgetPdfInput): Promise<void> {
     y += lines.length * 4.5 + 4
   }
 
+  if (input.diagnostico?.trim()) {
+    doc.setFont('helvetica', 'bold')
+    doc.setFontSize(10)
+    doc.text('Diagnóstico', 14, y)
+    y += 5
+    doc.setFont('helvetica', 'normal')
+    doc.setFontSize(9)
+    const lines = doc.splitTextToSize(input.diagnostico.trim(), 182)
+    doc.text(lines, 14, y)
+    y += lines.length * 4.5 + 4
+  }
+
   const body = input.items.map(item => [
     ORDEM_ITEM_TIPO_LABEL[item.tipo as keyof typeof ORDEM_ITEM_TIPO_LABEL] || item.tipo,
     item.descricao,
@@ -153,62 +153,4 @@ export async function downloadBudgetPdf(input: BudgetPdfInput): Promise<void> {
   )
 
   doc.save(`${safeFilename(`orcamento-${input.numero}`)}.pdf`)
-}
-
-export async function downloadChecklistPdf(input: ChecklistPdfInput): Promise<void> {
-  const doc = new jsPDF({ unit: 'mm', format: 'a4' })
-  const title = `Checklist de inspeção - ${input.numero}`
-
-  let y = addDocumentHeader(doc, title, [
-    input.createdAt,
-    input.statusLabel
-  ])
-
-  y = addMetaBlock(doc, y, [
-    ['Cliente', input.clienteNome || '-'],
-    ['Veículo', input.placa ? formatPlacaPdf(input.placa) : '-'],
-    ['Modelo', input.veiculoLabel || '-'],
-    ['Km entrada', input.kmEntrada != null ? input.kmEntrada.toLocaleString('pt-BR') : '-']
-  ])
-
-  for (const [categoria, itens] of input.itensByCategoria) {
-    if (y > 270) {
-      doc.addPage()
-      y = 18
-    }
-
-    doc.setFont('helvetica', 'bold')
-    doc.setFontSize(10)
-    doc.text(categoria, 14, y)
-    y += 3
-
-    const body = itens.map((item) => {
-      const resultado = item.resultado
-        ? (CHECKLIST_RESULTADO_LABEL[item.resultado as ChecklistResultado] || item.resultado)
-        : 'Pendente'
-      return [
-        item.label,
-        resultado,
-        item.observacao?.trim() || '-'
-      ]
-    })
-
-    autoTable(doc, {
-      startY: y,
-      head: [['Item', 'Resultado', 'Observação']],
-      body,
-      styles: { fontSize: 8, cellPadding: 2 },
-      headStyles: { fillColor: [27, 122, 206], textColor: 255 },
-      columnStyles: {
-        0: { cellWidth: 70 },
-        1: { cellWidth: 28 },
-        2: { cellWidth: 'auto' }
-      },
-      margin: { left: 14, right: 14 }
-    })
-
-    y = ((doc as jsPDF & { lastAutoTable?: { finalY: number } }).lastAutoTable?.finalY ?? y) + 8
-  }
-
-  doc.save(`${safeFilename(`checklist-${input.numero}`)}.pdf`)
 }
