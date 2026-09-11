@@ -9,7 +9,7 @@ definePageMeta({
 
 useSeoMeta({
   title: 'Fornecedores',
-  description: 'Configuração de fornecedores da oficina.'
+  description: 'Fornecedores da oficina usados no catálogo e no financeiro.'
 })
 
 useRequirePermission('catalog.manage')
@@ -25,6 +25,7 @@ const {
   setSupplierAtivo
 } = useSupplierMutations()
 
+const createOpen = ref(false)
 const supplierDraft = reactive(emptySupplierDraft())
 const supplierAdding = ref(false)
 const supplierSavingId = ref<string | null>(null)
@@ -44,12 +45,27 @@ const filteredSuppliers = computed(() => {
   )
 })
 
+const countLabel = computed(() => {
+  const n = activeSuppliers.value.length
+  if (suppliersPending.value && !n) return null
+  if (supplierQ.value.trim()) {
+    const found = filteredSuppliers.value.length
+    return found === 1 ? '1 encontrado' : `${found} encontrados`
+  }
+  return n === 1 ? '1 fornecedor' : `${n} fornecedores`
+})
+
+watch(createOpen, (open) => {
+  if (!open) Object.assign(supplierDraft, emptySupplierDraft())
+})
+
 async function onSupplierAdd() {
   supplierAdding.value = true
   try {
     const { error } = await createSupplier({ ...supplierDraft })
     if (!error) {
       Object.assign(supplierDraft, emptySupplierDraft())
+      createOpen.value = false
       await refreshSuppliers()
     }
   } finally {
@@ -79,10 +95,6 @@ async function onSupplierToggleAtivo(payload: { id: string, ativo: boolean }) {
     supplierTogglingId.value = null
   }
 }
-
-function countLabel(n: number, singular: string, plural: string) {
-  return `${n} ${n === 1 ? singular : plural}`
-}
 </script>
 
 <template>
@@ -92,99 +104,109 @@ function countLabel(n: number, singular: string, plural: string) {
         <div class="mx-auto w-full max-w-6xl space-y-5">
           <BasePageHeader
             title="Fornecedores"
-            description="Cadastre e mantenha os fornecedores usados no catálogo e no financeiro."
+            description="Usados no catálogo e no financeiro."
           >
-            <template #title-trailing>
-              <UBadge
-                color="neutral"
-                variant="subtle"
-                size="sm"
-              >
-                Configuração
-              </UBadge>
+            <template
+              v-if="countLabel"
+              #below
+            >
+              <p class="text-xs tabular-nums text-muted">
+                {{ countLabel }}
+              </p>
+            </template>
+
+            <template #actions>
+              <UButton
+                label="Novo fornecedor"
+                icon="i-lucide-plus"
+                @click="createOpen = true"
+              />
             </template>
           </BasePageHeader>
 
-          <div class="grid min-w-0 gap-5 lg:grid-cols-[minmax(0,20rem)_minmax(0,1fr)]">
-            <CatalogSuppliersForm
-              v-model:draft="supplierDraft"
-              :adding="supplierAdding"
-              @add="onSupplierAdd"
-            />
-
-            <section
-              class="min-w-0 space-y-3"
-              aria-labelledby="catalog-suppliers-heading"
+          <UInput
+            v-model="supplierQ"
+            icon="i-lucide-search"
+            placeholder="Buscar por nome, telefone ou e-mail…"
+            autocomplete="off"
+            aria-label="Buscar fornecedores"
+            class="w-full sm:max-w-md"
+            :ui="{ base: 'bg-default' }"
+          >
+            <template
+              v-if="supplierQ"
+              #trailing
             >
-              <div class="flex min-h-9 flex-wrap items-baseline gap-2">
-                <h2
-                  id="catalog-suppliers-heading"
-                  class="text-sm font-semibold uppercase tracking-widest text-muted"
-                >
-                  Lista
-                </h2>
-                <span
-                  v-if="!suppliersPending || activeSuppliers.length"
-                  class="text-xs tabular-nums text-muted"
-                >
-                  {{ countLabel(filteredSuppliers.length, 'encontrado', 'encontrados') }}
-                </span>
-              </div>
-
-              <UInput
-                v-model="supplierQ"
-                icon="i-lucide-search"
-                placeholder="Buscar por nome, telefone ou e-mail…"
-                autocomplete="off"
-                class="w-full"
-                :ui="{ base: 'bg-default' }"
-              >
-                <template
-                  v-if="supplierQ"
-                  #trailing
-                >
-                  <UButton
-                    icon="i-lucide-x"
-                    color="neutral"
-                    variant="link"
-                    size="sm"
-                    aria-label="Limpar busca"
-                    @click="supplierQ = ''"
-                  />
-                </template>
-              </UInput>
-
-              <div
-                v-if="suppliersPending && !activeSuppliers.length"
-                class="space-y-2"
-              >
-                <USkeleton class="h-10 w-full" />
-                <USkeleton class="h-10 w-full" />
-                <USkeleton class="h-10 w-full" />
-              </div>
-
-              <CatalogSuppliersTable
-                v-else-if="filteredSuppliers.length"
-                :suppliers="filteredSuppliers"
-                :saving-id="supplierSavingId"
-                :toggling-id="supplierTogglingId"
-                @save="onSupplierSave"
-                @toggle-ativo="onSupplierToggleAtivo"
+              <UButton
+                icon="i-lucide-x"
+                color="neutral"
+                variant="link"
+                size="sm"
+                aria-label="Limpar busca"
+                @click="supplierQ = ''"
               />
+            </template>
+          </UInput>
 
-              <BaseEmptyState
-                v-else
-                icon="i-lucide-truck"
-              >
-                <template v-if="supplierQ.trim()">
-                  Nenhum fornecedor encontrado. Ajuste a busca.
-                </template>
-                <template v-else>
-                  Nenhum fornecedor cadastrado. Use o formulário para adicionar.
-                </template>
-              </BaseEmptyState>
-            </section>
+          <div
+            v-if="suppliersPending && !activeSuppliers.length"
+            class="space-y-2"
+          >
+            <USkeleton class="h-10 w-full" />
+            <USkeleton class="h-10 w-full" />
+            <USkeleton class="h-10 w-full" />
           </div>
+
+          <CatalogSuppliersTable
+            v-else-if="filteredSuppliers.length"
+            :suppliers="filteredSuppliers"
+            :saving-id="supplierSavingId"
+            :toggling-id="supplierTogglingId"
+            @save="onSupplierSave"
+            @toggle-ativo="onSupplierToggleAtivo"
+          />
+
+          <BaseEmptyState
+            v-else
+            icon="i-lucide-truck"
+          >
+            <template v-if="supplierQ.trim()">
+              Nenhum fornecedor encontrado.
+            </template>
+            <template v-else>
+              Nenhum fornecedor cadastrado.
+            </template>
+            <template #actions>
+              <UButton
+                v-if="supplierQ.trim()"
+                label="Limpar busca"
+                color="neutral"
+                variant="soft"
+                @click="supplierQ = ''"
+              />
+              <UButton
+                v-else
+                label="Novo fornecedor"
+                icon="i-lucide-plus"
+                @click="createOpen = true"
+              />
+            </template>
+          </BaseEmptyState>
+
+          <USlideover
+            v-model:open="createOpen"
+            title="Novo fornecedor"
+            description="Entra no catálogo e no financeiro."
+            :ui="{ content: 'overscroll-contain' }"
+          >
+            <template #body>
+              <CatalogSuppliersForm
+                v-model:draft="supplierDraft"
+                :adding="supplierAdding"
+                @add="onSupplierAdd"
+              />
+            </template>
+          </USlideover>
         </div>
       </div>
     </template>

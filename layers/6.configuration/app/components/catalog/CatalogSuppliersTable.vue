@@ -66,28 +66,32 @@ watch(() => props.savingId, (id) => {
             <th class="px-3 py-2.5 font-medium">
               Status
             </th>
-            <th class="w-24 px-3 py-2.5" />
+            <th class="w-24 px-3 py-2.5">
+              <span class="sr-only">Ações</span>
+            </th>
           </tr>
         </thead>
         <tbody class="divide-y divide-default">
           <tr
             v-for="supplier in suppliers"
             :key="supplier.id"
-            class="transition-colors hover:bg-elevated/40"
+            class="motion-safe:transition-colors hover:bg-elevated/40"
             :class="!supplier.ativo ? 'opacity-55' : ''"
           >
-            <td class="px-3 py-2.5 align-top">
+            <td class="min-w-0 px-3 py-2.5 align-top">
               <UInput
                 v-if="editingId === supplier.id"
                 v-model="editDraft.nome"
                 size="sm"
+                aria-label="Nome"
+                autocomplete="organization"
                 class="w-full min-w-40"
               />
               <div
                 v-else
-                class="space-y-0.5"
+                class="min-w-0 space-y-0.5"
               >
-                <span class="font-medium text-highlighted">{{ supplier.nome }}</span>
+                <span class="block truncate font-medium text-highlighted">{{ supplier.nome }}</span>
                 <p
                   v-if="supplier.observacoes"
                   class="text-xs text-muted line-clamp-1"
@@ -100,8 +104,12 @@ watch(() => props.savingId, (id) => {
               <UInput
                 v-if="editingId === supplier.id"
                 v-model="editDraft.telefone"
+                type="tel"
+                inputmode="tel"
                 size="sm"
-                class="w-full min-w-32"
+                aria-label="Telefone"
+                autocomplete="tel"
+                class="w-full min-w-32 tabular-nums"
               />
               <span
                 v-else
@@ -109,18 +117,22 @@ watch(() => props.savingId, (id) => {
               >{{ supplier.telefone || EMPTY_VALUE }}</span>
             </td>
             <td
-              class="px-3 py-2.5 align-top"
+              class="min-w-0 px-3 py-2.5 align-top"
               :class="editingId === supplier.id ? 'table-cell' : 'hidden sm:table-cell'"
             >
               <UInput
                 v-if="editingId === supplier.id"
                 v-model="editDraft.email"
+                type="email"
                 size="sm"
+                aria-label="E-mail"
+                autocomplete="email"
+                spellcheck="false"
                 class="w-full min-w-40"
               />
               <span
                 v-else
-                class="text-muted"
+                class="block truncate text-muted"
               >{{ supplier.email || EMPTY_VALUE }}</span>
             </td>
             <td class="px-3 py-2.5 align-top">
