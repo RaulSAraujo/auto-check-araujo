@@ -1,16 +1,16 @@
 # Graph Report - auto-check-araujo  (2026-09-11)
 
 ## Corpus Check
-- 390 files · ~236,182 words
+- 391 files · ~237,504 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 2580 nodes · 3117 edges · 253 communities (209 shown, 44 thin omitted)
+- 2606 nodes · 3191 edges · 253 communities (209 shown, 44 thin omitted)
 - Extraction: 96% EXTRACTED · 4% INFERRED · 0% AMBIGUOUS · INFERRED: 121 edges (avg confidence: 0.85)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `060aa75a`
+- Built from commit: `c9f89b25`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -22,10 +22,10 @@
 - Nuxt SEO Skill
 - Prototype Picker Spec
 - database.ts
-- useFinanceWorkspace.ts
+- catalog-suppliers.vue
 - VehiclesDetailSummary.vue
 - Security and Hardening
-- catalog-suppliers.vue
+- pricing.ts
 - oficina.ts
 - finance.ts
 - scheduling.vue
@@ -33,7 +33,7 @@
 - Test-Driven Development
 - CI Workflows Guide
 - team.vue
-- Deployment Platform Choice
+- useVehicleDetailPage.ts
 - scheduling.ts
 - orders-new.vue
 - Client Utilities
@@ -52,7 +52,7 @@
 - Supabase Skill
 - customers-new.vue
 - prefetch-app-route.ts
-- CatalogSuppliersTable.vue
+- catalog.ts
 - SchedulingCalendar.vue
 - customer-form.ts
 - OrdersPhotosSection.vue
@@ -71,7 +71,7 @@
 - API and Interface Design
 - Type Patterns Guide
 - Dashboard Layout
-- Server Routes
+- Deployment
 - pnpm CLI Commands Guide
 - API Design Patterns (patterns/)
 - Rolldown Migration (Vite 8)
@@ -80,6 +80,7 @@
 - defineNuxtModule
 - Built-in Components
 - Forms Guidelines
+- useCustomerDetailPage.ts
 - Nuxt UI v4
 - pnpm CI/CD & Migration Guide
 - Project Setup Guide
@@ -87,13 +88,14 @@
 - login.vue
 - FinanceCashFlowChart.vue
 - orders-[id]-print.vue
+- pricing.vue
 - nuxt.config.ts
 - customers-[id].vue
 - Nuxt UI Conventions
 - Vite Plugin API
 - orders.ts
 - customer-status.ts
-- catalog.ts
+- TS Library CI Workflows
 - Testing Guide
 - TypeScript Configuration Guide
 - Oficina Domain Language
@@ -105,16 +107,18 @@
 - Fetch, bundle e waterfalls
 - CustomersDetailSummary.vue
 - OrdersBudgetSection.vue
+- startOfLocalDay
 - Vite Build and SSR
 - useFetch
 - Draft and Preview Model
+- 1. THE THREE DIALS (Core Configuration)
 - useCollaborators.ts
 - usePermissions.ts
 - Nuxt CLI Commands
 - Live Editing
 - Navigation Recipe
 - vehicles-new.vue
-- useVehicleDetailPage.ts
+- @antfu/eslint-config Guide
 - order-routes.ts
 - CustomersNewForm.vue
 - vehicle-form.ts
@@ -149,7 +153,6 @@
 - Code Simplification
 - CI Workflow
 - Home Page UX Critique
-- useCustomerDetailPage.ts
 - BaseBrandIcon.vue
 - Debugging and Error Recovery
 - tsconfig.json
@@ -159,7 +162,6 @@
 - VehiclesDeleteModal.vue
 - vehicles.vue
 - During the session
-- 7. DIAL DEFINITIONS (Technical Reference)
 - app-routes.ts
 - 1.base/nuxt.config.ts
 - CustomersDeleteModal.vue
@@ -199,9 +201,8 @@
 - Props Are Read-Only
 - Dashboard Dark Mode Hierarchy
 - Public Sans and JetBrains Mono Typography
-- TS Library CI Workflows
-- CatalogForm.vue
-- useAccountsPayable.ts
+- Server Routes
+- FinanceAccountForm.vue
 - FinanceAccountsTable.vue
 - TeamCollaboratorsCreateForm.vue
 - Design System: Taste Standard
@@ -215,7 +216,6 @@
 - Source-Driven Development
 - FinanceSuppliersPanel.vue
 - budget.ts
-- @antfu/eslint-config Guide
 - 4. DESIGN ENGINEERING DIRECTIVES (Bias Correction)
 - Refinement & Evaluation Criteria
 - 10. REFERENCE VOCABULARY (Pattern Names the Agent Should Know)
@@ -250,14 +250,14 @@
 ## Surprising Connections (you probably didn't know these)
 - `Workshop Ledger Theme` --semantically_similar_to--> `Workshop-Clean Atmosphere`  [INFERRED] [semantically similar]
   layers/11.scheduling/DESIGN.md → .stitch/DESIGN.md
-- `Library package.json Exports Setup` --semantically_similar_to--> `package.json exports Field`  [INFERRED] [semantically similar]
-  .cursor/skills/vite/references/build-and-ssr.md → .cursor/skills/ts-library/references/package-exports.md
 - `Motion and Interaction Rules` --conceptually_related_to--> `Agenda da Oficina Design System`  [INFERRED]
   .stitch/DESIGN.md → layers/11.scheduling/DESIGN.md
 - `Design Anti-Patterns Banned` --conceptually_related_to--> `Agenda da Oficina Design System`  [INFERRED]
   .stitch/DESIGN.md → layers/11.scheduling/DESIGN.md
 - `routeRules` --conceptually_related_to--> `nuxt.config.ts`  [INFERRED]
   .cursor/skills/nuxt/references/rendering-modes.md → .cursor/skills/nuxt/references/core-config.md
+- `TS Library CI Workflows` --semantically_similar_to--> `GitHub Actions pnpm Setup`  [INFERRED] [semantically similar]
+  .cursor/skills/ts-library/references/ci-workflows.md → .cursor/skills/pnpm/references/ci.md
 
 ## Import Cycles
 - None detected.
@@ -311,9 +311,13 @@ Nodes (7): Picker Behavior Contract, Prototype Picker Spec, Picker Highlight Sli
 Cohesion: 0.06
 Nodes (31): Agendamento, AgendamentoInsert, AgendamentoUpdate, CatalogoKitItem, Cliente, ClienteInsert, ClienteUpdate, Database (+23 more)
 
-### Community 7 - "useFinanceWorkspace.ts"
-Cohesion: 0.38
-Nodes (6): FINANCE_TAB_ITEMS, FinanceTab, useFinanceWorkspace(), AccountsFilter, emptyFinanceAccountDraft(), currentMonthValue()
+### Community 7 - "catalog-suppliers.vue"
+Cohesion: 0.12
+Nodes (14): activeSuppliers, breadcrumbItems, countLabel, createOpen, {
+  createSupplier,
+  updateSupplier,
+  setSupplierAtivo
+}, filteredSuppliers, onSupplierAdd(), supplierAdding (+6 more)
 
 ### Community 8 - "VehiclesDetailSummary.vue"
 Cohesion: 0.17
@@ -323,9 +327,9 @@ Nodes (9): brandModel, hasNotes, kmLabel, { veiculo }, { can }, VEHICLE_ROUTES, 
 Cohesion: 0.06
 Nodes (31): Always Do (No Exceptions), Ask First (Requires Human Approval), Broken Access Control, Broken Authentication, Common Rationalizations, Cross-Site Scripting (XSS), Data Privacy & Compliance, Destructive Operations on Derived Paths (+23 more)
 
-### Community 10 - "catalog-suppliers.vue"
-Cohesion: 0.05
-Nodes (50): creditCharge, creditNet, debitCharge, debitNet, draft, emit, suggestedHourly, suggestedPartPrice (+42 more)
+### Community 10 - "pricing.ts"
+Cohesion: 0.15
+Nodes (25): hourlyRate, hourlyRate, creditCharge, creditNet, debitCharge, debitNet, draft, emit (+17 more)
 
 ### Community 11 - "oficina.ts"
 Cohesion: 0.09
@@ -360,9 +364,9 @@ Nodes (25): bumpp Version Bumping, changelogen Changelog, Conventional Commits, 
 Cohesion: 0.12
 Nodes (11): breadcrumbItems, { collaborators, pending, refresh }, countLabel, createOpen, currentUserId, passwordOpen, passwordTarget, resettingPassword (+3 more)
 
-### Community 18 - "Deployment Platform Choice"
-Cohesion: 0.33
-Nodes (6): Cloudflare Pages, Netlify, Nitro Preset, Deployment Platform Choice, Vercel, Edge-Side Rendering
+### Community 18 - "useVehicleDetailPage.ts"
+Cohesion: 0.39
+Nodes (6): useVehicleDetailPage(), useVehicleForm(), isDirty, emptyVehicleForm(), isVehicleFormDirty(), vehicleFormFromRow()
 
 ### Community 19 - "scheduling.ts"
 Cohesion: 0.21
@@ -381,8 +385,8 @@ Cohesion: 0.13
 Nodes (22): Chart Wall vs Workshop-Clean P1, Operate Hierarchy Opportunity, Auto Check Araujo Design System, Design Anti-Patterns Banned, Customer Create and Detail Patterns, Floating Header Pill Shell, Home Screen Pattern §6, Login Split-Screen Pattern (+14 more)
 
 ### Community 23 - "Package Exports Guide"
-Cohesion: 0.18
-Nodes (15): Are The Types Wrong (attw), Export Condition Order, Package Exports Guide, Environment-Aware Exports, package.json exports Field, Multiple Entry Points, Plugin Entry Pattern (unplugin-*), publint Package Validation (+7 more)
+Cohesion: 0.12
+Nodes (21): Are The Types Wrong (attw), Export Condition Order, Package Exports Guide, Environment-Aware Exports, package.json exports Field, Multiple Entry Points, Peer Dependencies, Plugin Entry Pattern (unplugin-*) (+13 more)
 
 ### Community 24 - "Vue Components Patterns"
 Cohesion: 0.12
@@ -448,13 +452,13 @@ Nodes (17): Skill Feedback Issue Template, Debugging Workflows Feature, Declarat
 Cohesion: 0.20
 Nodes (9): allowLeave, { createCustomer }, initialState, isDirty, loading, router, { state }, isCustomerFormDirty() (+1 more)
 
-### Community 37 - "CatalogSuppliersTable.vue"
-Cohesion: 0.14
-Nodes (14): draftModel, emit, onSubmit(), props, showNotes, editDraft, editingId, emit (+6 more)
+### Community 37 - "catalog.ts"
+Cohesion: 0.10
+Nodes (23): draftModel, emit, onSubmit(), props, showNotes, editDraft, editingId, emit (+15 more)
 
 ### Community 38 - "SchedulingCalendar.vue"
-Cohesion: 0.15
-Nodes (17): countFor(), dayKey(), dayLabel(), days, emit, focusedKey, onDayKeydown(), props (+9 more)
+Cohesion: 0.23
+Nodes (11): countFor(), dayKey(), dayLabel(), days, emit, focusedKey, onDayKeydown(), props (+3 more)
 
 ### Community 39 - "customer-form.ts"
 Cohesion: 0.29
@@ -487,7 +491,7 @@ Nodes (17): { back: cancel }, emit, isDesktop, onSubmit(), showNotes, state, val
 
 ### Community 43 - "accounts-payable.ts"
 Cohesion: 0.15
-Nodes (13): confirmPay(), emit, payForma, payingId, {
+Nodes (15): FINANCE_TAB_ITEMS, FinanceTab, useFinanceWorkspace(), accountCreateOpen, {
   tab,
   tabItems,
   accountsFilter,
@@ -539,31 +543,31 @@ Nodes (13): confirmPay(), emit, payForma, payingId, {
   onAddSupplier,
   onSaveSupplier,
   onToggleSupplier
-}, ACCOUNTS_FILTER_ITEMS, accountStatusLabel(), displayAccountStatus() (+5 more)
+}, ACCOUNTS_FILTER_ITEMS, AccountsFilter, displayAccountStatus() (+7 more)
 
 ### Community 44 - "useFetch"
 Cohesion: 0.14
 Nodes (15): Avoid Double Fetching with $fetch in Setup, callOnce for Side Effects, createUseFetch Factory, Data Fetching Best Practices, $fetch, Explicit Cache Keys, useAsyncData, useFetch (+7 more)
 
 ### Community 45 - "CatalogTable.vue"
-Cohesion: 0.16
-Nodes (10): editDraft, editingId, emit, kitComponentOptions, props, saveEdit(), startEdit(), supplierItems (+2 more)
+Cohesion: 0.07
+Nodes (36): draftModel, emit, kitComponentOptions, onHoursUpdate(), onSubmit(), onUseSeed(), onValorPadraoUpdate(), { params: pricingParams } (+28 more)
 
 ### Community 46 - "FinanceCategoriesPanel.vue"
 Cohesion: 0.17
 Nodes (11): draft, editDraft, editingId, emit, onAdd(), props, saveEdit(), useFinanceCategoryMutations() (+3 more)
 
 ### Community 47 - "catalog.vue"
-Cohesion: 0.11
-Nodes (16): activeSuppliers, breadcrumbItems, budgetAdding, budgetDraft, budgetSavingId, budgetTogglingId, countLabel, {
+Cohesion: 0.10
+Nodes (17): activeSuppliers, breadcrumbItems, budgetAdding, budgetDraft, budgetSavingId, budgetTogglingId, countLabel, {
   createCatalogItem,
   updateCatalogItem,
   setCatalogItemAtivo
-} (+8 more)
+} (+9 more)
 
 ### Community 48 - "OrdersPaymentEditor.vue"
-Cohesion: 0.26
-Nodes (9): formaLabel, props, state, useOrderPayment(), useOrderStatusEditor(), discard(), emptyPaymentForm(), paymentFormFromOrder() (+1 more)
+Cohesion: 0.18
+Nodes (14): budgetTotal, chargeDiffers, emit, formaLabel, onChargeInput(), props, state, useOrderPayment() (+6 more)
 
 ### Community 49 - "Nuxt UI Components Index"
 Cohesion: 0.40
@@ -593,9 +597,9 @@ Nodes (12): Type-Level Testing, Brand Types (Nominal Typing), Compile-Time TypeE
 Cohesion: 0.15
 Nodes (13): useLazyFetch, UDashboardGroup, UTable, Chat Component Tree, Use #body Slot for Scrollable Content, Dashboard Layout, Multi-panel List-Detail, UDashboardPanel (+5 more)
 
-### Community 56 - "Server Routes"
-Cohesion: 0.17
-Nodes (12): Deployment, Nitro, Node.js Server Deployment, Static Generation, server/ Directory, addServerHandler, defineEventHandler, Nitro Server Engine (+4 more)
+### Community 56 - "Deployment"
+Cohesion: 0.15
+Nodes (13): Cloudflare Pages, Deployment, Netlify, Nitro, Nitro Preset, Node.js Server Deployment, Deployment Platform Choice, Static Generation (+5 more)
 
 ### Community 57 - "pnpm CLI Commands Guide"
 Cohesion: 0.18
@@ -606,8 +610,8 @@ Cohesion: 0.19
 Nodes (13): API Design Patterns (patterns/), Factory Functions Pattern, Lazy Getters Tree-shaking, Options / ResolvedOptions Pattern, unplugin Plugin Pattern, API Design Patterns (references/), Build Tooling Guide, Dual CJS/ESM Output (+5 more)
 
 ### Community 59 - "Rolldown Migration (Vite 8)"
-Cohesion: 0.14
-Nodes (16): bumpp Version Bumping, Library npm Scripts, tsdown Build Tool, Vitest Test Runner, Vitest Setup, DTS Generation via Build Tool, Vite Library Mode, Library package.json Exports Setup (+8 more)
+Cohesion: 0.17
+Nodes (13): bumpp Version Bumping, Library npm Scripts, tsdown Build Tool, Vitest Test Runner, Vitest Setup, DTS Generation via Build Tool, Rolldown Migration (Vite 8), Gradual Migration via rolldown-vite (+5 more)
 
 ### Community 60 - "BaseAppHeader.vue"
 Cohesion: 0.15
@@ -628,6 +632,10 @@ Nodes (12): Client/Server Components, componentIslands, Built-in Components, Cli
 ### Community 64 - "Forms Guidelines"
 Cohesion: 0.17
 Nodes (12): UAuthForm, UFormField, Component Selection Guidelines, Feedback Selection Matrix, Input Selection Matrix, useToast, UFormField name Must Match Schema, Forms Guidelines (+4 more)
+
+### Community 65 - "useCustomerDetailPage.ts"
+Cohesion: 0.48
+Nodes (5): useCustomerDetailPage(), useCustomerForm(), customerFormFromRow(), CustomerFormState, emptyCustomerForm()
 
 ### Community 66 - "Nuxt UI v4"
 Cohesion: 0.18
@@ -656,6 +664,10 @@ Nodes (8): categories, chartData, colorMode, props, CashFlowRow, useFinanceCashF
 ### Community 72 - "orders-[id]-print.vue"
 Cohesion: 0.21
 Nodes (10): budgetWhatsappUrl, budgetStatus, downloadingPdf, id, onDownloadBudgetPdf(), route, whatsappUrl, buildBudgetWhatsAppMessage() (+2 more)
+
+### Community 73 - "pricing.vue"
+Cohesion: 0.13
+Nodes (14): { can }, countLabel, visibleItems, breadcrumbItems, draft, { draftDefaults, pending, error, refresh }, hydrated, onSave() (+6 more)
 
 ### Community 74 - "nuxt.config.ts"
 Cohesion: 0.20
@@ -697,17 +709,17 @@ Nodes (7): OrderLinkedAppointment, OrderListItem, ORDEM_STATUS_FILTER_ALL, ORDEM
 Cohesion: 0.29
 Nodes (7): { can }, route, CUSTOMER_STATUS_FILTER_ACTIVE, CUSTOMER_STATUS_FILTER_ALL, CUSTOMER_STATUS_FILTER_INACTIVE, CUSTOMER_STATUS_FILTER_ITEMS, CustomerStatusFilter
 
-### Community 80 - "catalog.ts"
-Cohesion: 0.24
-Nodes (10): replaceKitItems(), toCatalogPayload(), useCatalogMutations(), CATALOG_TIPO_COLOR, CATALOG_TIPO_FILTER_ITEMS, CatalogItemDraft, CatalogKitDraftLine, CatalogKitItemWithRef (+2 more)
+### Community 80 - "TS Library CI Workflows"
+Cohesion: 0.50
+Nodes (4): TS Library CI Workflows, Matrix Testing Strategy, OIDC Provenance Release, pkg-pr-new PR Publish
 
 ### Community 81 - "Testing Guide"
 Cohesion: 0.22
 Nodes (10): Vitest Coverage (v8), Testing Guide, Fixture-Based Testing, Idempotency Testing, Vitest Mocking (vi.mock), Vitest Workspace Projects, Testing Workflow, Type-Level Testing (+2 more)
 
 ### Community 82 - "TypeScript Configuration Guide"
-Cohesion: 0.21
-Nodes (12): moduleResolution Bundler, TypeScript Configuration Guide, isolatedDeclarations, Library Base tsconfig, Monorepo tsconfig References, moduleResolution Node16/NodeNext, Path Aliases, verbatimModuleSyntax (+4 more)
+Cohesion: 0.27
+Nodes (10): moduleResolution Bundler, TypeScript Configuration Guide, isolatedDeclarations, Library Base tsconfig, Monorepo tsconfig References, moduleResolution Node16/NodeNext, verbatimModuleSyntax, moduleResolution Bundler (+2 more)
 
 ### Community 83 - "Oficina Domain Language"
 Cohesion: 0.20
@@ -745,9 +757,13 @@ Nodes (7): { cliente }, documento, emails, hasNotes, phones, formatDocumento(), 
 Cohesion: 0.24
 Nodes (9): draftModel, emit, onAddAndClose(), onConfirmReject(), props, rejectConfirmOpen, showAddModal, showShareMenu (+1 more)
 
+### Community 92 - "startOfLocalDay"
+Cohesion: 0.38
+Nodes (6): ConflictRow, useSchedulingMutations(), ACTIVE_SCHEDULING_STATUSES, AppointmentDraft, combineLocalDateTime(), startOfLocalDay()
+
 ### Community 93 - "Vite Build and SSR"
-Cohesion: 0.09
-Nodes (24): Peer Dependencies, build() JavaScript API, createServer JavaScript API, Vite Build and SSR, loadEnv, Multi-Page App Build, preview() JavaScript API, SSR Externals (noExternal) (+16 more)
+Cohesion: 0.10
+Nodes (23): Path Aliases, build() JavaScript API, createServer JavaScript API, Vite Build and SSR, loadEnv, Multi-Page App Build, preview() JavaScript API, SSR Externals (noExternal) (+15 more)
 
 ### Community 94 - "useFetch"
 Cohesion: 0.36
@@ -756,6 +772,10 @@ Nodes (8): Avoid Double-Fetching, createUseAsyncData, createUseFetch, Data Fetch
 ### Community 95 - "Draft and Preview Model"
 Cohesion: 0.25
 Nodes (8): Draft and Preview Model, IndexedDB Drafts, Media Library (public/), NuxtHub Blob External Media, SQLite WASM Content Dump, Studio AI Assistance, useChat (@ai-sdk/vue), Vercel AI SDK Integration
+
+### Community 96 - "1. THE THREE DIALS (Core Configuration)"
+Cohesion: 0.50
+Nodes (4): 1.A Dial Inference (design read → dial values), 1.B Use-Case Presets, 1.C How the Dials Drive Output, 1. THE THREE DIALS (Core Configuration)
 
 ### Community 98 - "usePermissions.ts"
 Cohesion: 0.50
@@ -781,9 +801,9 @@ Nodes (10): allowLeave, { back }, backFallback, {
   pending: clientesPending
 }, { createVehicle }, initialState, loading, route (+2 more)
 
-### Community 103 - "useVehicleDetailPage.ts"
-Cohesion: 0.39
-Nodes (6): useVehicleDetailPage(), useVehicleForm(), isDirty, emptyVehicleForm(), isVehicleFormDirty(), vehicleFormFromRow()
+### Community 103 - "@antfu/eslint-config Guide"
+Cohesion: 0.67
+Nodes (3): @antfu/eslint-config Flat Config, @antfu/eslint-config Guide, Type-Aware ESLint Rules
 
 ### Community 104 - "order-routes.ts"
 Cohesion: 0.24
@@ -932,10 +952,6 @@ Nodes (3): CI Workflow, CI Lint Step, CI Typecheck Step
 Cohesion: 0.67
 Nodes (3): Home Page UX Critique, Design Health Score 22/40, Missing Home Error State P1
 
-### Community 138 - "useCustomerDetailPage.ts"
-Cohesion: 0.48
-Nodes (5): useCustomerDetailPage(), useCustomerForm(), customerFormFromRow(), CustomerFormState, emptyCustomerForm()
-
 ### Community 140 - "Debugging and Error Recovery"
 Cohesion: 0.09
 Nodes (21): Build Failure Triage, Common Rationalizations, Debugging and Error Recovery, Error-Specific Patterns, Instrumentation Guidelines, Overview, Red Flags, Runtime Error Triage (+13 more)
@@ -951,10 +967,6 @@ Nodes (21): ADR Lifecycle, ADR Template, API Documentation, Architecture Decisio
 ### Community 149 - "During the session"
 Cohesion: 0.09
 Nodes (19): ADR Format, Numbering, Optional sections, Template, What qualifies, When to offer an ADR, CONTEXT.md Format, Rules (+11 more)
-
-### Community 150 - "7. DIAL DEFINITIONS (Technical Reference)"
-Cohesion: 0.50
-Nodes (4): 7. DIAL DEFINITIONS (Technical Reference), DESIGN_VARIANCE (Level 1-10), MOTION_INTENSITY (Level 1-10), VISUAL_DENSITY (Level 1-10)
 
 ### Community 162 - "useVehicleOptions.ts"
 Cohesion: 0.40
@@ -992,21 +1004,17 @@ Nodes (15): 1. Define "working" before instrumenting, 2. Pick the right signal f
 Cohesion: 0.13
 Nodes (14): Anti-patterns to Avoid, Detailed Instructions, How It Works, Idea Refine, Output, Phase 1: Understand & Expand (Divergent), Phase 2: Evaluate & Converge, Phase 3: Sharpen & Ship (+6 more)
 
-### Community 203 - "TS Library CI Workflows"
-Cohesion: 0.50
-Nodes (4): TS Library CI Workflows, Matrix Testing Strategy, OIDC Provenance Release, pkg-pr-new PR Publish
+### Community 203 - "Server Routes"
+Cohesion: 0.40
+Nodes (5): server/ Directory, addServerHandler, defineEventHandler, Server Middleware, Server Routes
 
-### Community 209 - "CatalogForm.vue"
-Cohesion: 0.16
-Nodes (11): draftModel, emit, kitComponentOptions, onSubmit(), props, showKitBuilder, showStock, supplierItems (+3 more)
-
-### Community 217 - "useAccountsPayable.ts"
+### Community 217 - "FinanceAccountForm.vue"
 Cohesion: 0.13
-Nodes (19): activeCategories, activeSuppliers, categoryItems, draftModel, emit, props, showNotes, supplierItems (+11 more)
+Nodes (19): activeCategories, activeSuppliers, categoryItems, draftModel, emit, onSubmit(), props, showNotes (+11 more)
 
 ### Community 218 - "FinanceAccountsTable.vue"
-Cohesion: 0.20
-Nodes (6): columns, confirmPay(), emit, payForma, payingId, accountStatusColor()
+Cohesion: 0.11
+Nodes (12): columns, confirmPay(), emit, payForma, payingId, confirmPay(), emit, payForma (+4 more)
 
 ### Community 219 - "TeamCollaboratorsCreateForm.vue"
 Cohesion: 0.15
@@ -1053,10 +1061,6 @@ Nodes (7): draft, editDraft, editingId, emit, onAdd(), props, saveEdit()
 Cohesion: 0.28
 Nodes (9): props, total, useOrderBudgetMutations(), useOrderBudgetPage(), calcItemsTotal(), emptyOrderItemDraft(), isOrderItemDraftValid(), OrderItemDraft (+1 more)
 
-### Community 232 - "@antfu/eslint-config Guide"
-Cohesion: 0.67
-Nodes (3): @antfu/eslint-config Flat Config, @antfu/eslint-config Guide, Type-Aware ESLint Rules
-
 ### Community 233 - "4. DESIGN ENGINEERING DIRECTIVES (Bias Correction)"
 Cohesion: 0.17
 Nodes (12): 4.10 Quotes & Testimonials, 4.11 Page Theme Lock (Light / Dark Mode Consistency), 4.1 Typography, 4.2 Color Calibration, 4.3 Layout Diversification, 4.4 Materiality, Shadows, Cards, 4.5 Interactive UI States, 4.6 Data & Form Patterns (+4 more)
@@ -1071,7 +1075,7 @@ Nodes (10): 10. REFERENCE VOCABULARY (Pattern Names the Agent Should Know), Anim
 
 ### Community 239 - "tasteskill: Anti-Slop Frontend Skill"
 Cohesion: 0.20
-Nodes (10): 13. OUT OF SCOPE, 14. FINAL PRE-FLIGHT CHECK, 1.A Dial Inference (design read → dial values), 1.B Use-Case Presets, 1.C How the Dials Drive Output, 1. THE THREE DIALS (Core Configuration), 2.A When to reach for a real design system (use official packages), 2.B When the brief is an aesthetic, not a system (+2 more)
+Nodes (10): 13. OUT OF SCOPE, 14. FINAL PRE-FLIGHT CHECK, 2.A When to reach for a real design system (use official packages), 2.B When the brief is an aesthetic, not a system, 2. BRIEF → DESIGN SYSTEM MAP, 7. DIAL DEFINITIONS (Technical Reference), DESIGN_VARIANCE (Level 1-10), MOTION_INTENSITY (Level 1-10) (+2 more)
 
 ### Community 241 - "OrdersConfirmDialog.vue"
 Cohesion: 0.50
@@ -1122,21 +1126,21 @@ Cohesion: 0.29
 Nodes (6): columns, emit, onPapelChange(), PAPEL_COLOR, papelItems, props
 
 ## Knowledge Gaps
-- **1339 isolated node(s):** `idea-refine.sh script`, `route`, `colorMode`, `{ signOut }`, `{ nome: profileNome }` (+1334 more)
+- **1344 isolated node(s):** `idea-refine.sh script`, `route`, `colorMode`, `{ signOut }`, `{ nome: profileNome }` (+1339 more)
   These have ≤1 connection - possible missing edges or undocumented components.
 - **44 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `save()` connect `order-form.ts` to `useCustomerDetailPage.ts`, `orders-[id].vue`, `useVehicleDetailPage.ts`?**
+- **Why does `save()` connect `order-form.ts` to `useCustomerDetailPage.ts`, `useVehicleDetailPage.ts`, `orders-[id].vue`?**
   _High betweenness centrality (0.015) - this node is a cross-community bridge._
 - **Why does `useCustomerDetailPage()` connect `useCustomerDetailPage.ts` to `order-form.ts`, `customers-new.vue`?**
   _High betweenness centrality (0.009) - this node is a cross-community bridge._
 - **Why does `useVehicleDetailPage()` connect `useVehicleDetailPage.ts` to `order-form.ts`?**
   _High betweenness centrality (0.009) - this node is a cross-community bridge._
 - **What connects `idea-refine.sh script`, `route`, `colorMode` to the rest of the system?**
-  _1339 weakly-connected nodes found - possible documentation gaps or missing edges._
+  _1344 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `useDashboardStats.ts` be split into smaller, more focused modules?**
   _Cohesion score 0.06475485661424607 - nodes in this community are weakly interconnected._
 - **Should `dependencies` be split into smaller, more focused modules?**
