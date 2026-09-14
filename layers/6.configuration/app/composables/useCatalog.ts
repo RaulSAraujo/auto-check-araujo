@@ -34,7 +34,7 @@ function toCatalogPayload(draft: CatalogItemDraft) {
     nome: draft.nome.trim(),
     tipo,
     valor_padrao: draft.valor_padrao,
-    custo: draft.custo,
+    custo: isService ? 0 : draft.custo,
     estoque: stockForTipo(tipo, draft.estoque),
     fornecedor_id: draft.fornecedor_id || null,
     horas_estimadas: isService

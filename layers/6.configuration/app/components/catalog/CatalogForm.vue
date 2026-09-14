@@ -97,6 +97,7 @@ watch(suggestedPrice, (value) => {
 watch(() => draftModel.value.tipo, (tipo: OrdemItemTipo) => {
   if (tipo === 'servico') {
     draftModel.value.estoque = null
+    draftModel.value.custo = 0
     draftModel.value.kit_itens = []
   } else {
     draftModel.value.horas_estimadas = null
@@ -229,7 +230,10 @@ function onSubmit() {
       />
     </div>
 
-    <div class="grid grid-cols-2 gap-3">
+    <div
+      class="grid gap-3"
+      :class="showStock ? 'grid-cols-2' : 'grid-cols-1'"
+    >
       <UFormField
         label="Valor padrão"
         name="valor_padrao"
@@ -243,6 +247,7 @@ function onSubmit() {
       </UFormField>
 
       <UFormField
+        v-if="showStock"
         label="Custo"
         name="custo"
       >
