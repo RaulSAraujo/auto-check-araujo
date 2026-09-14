@@ -83,8 +83,8 @@ async function handleAddAccount() {
 <template>
   <UDashboardPanel>
     <template #body>
-      <div class="bg-muted p-4 sm:p-5">
-        <div class="mx-auto w-full max-w-6xl space-y-5">
+      <div class="bg-muted p-4 sm:p-6">
+        <div class="w-full space-y-6">
           <BasePageHeader
             title="Financeiro"
             description="Caixa, contas a pagar e recebíveis da oficina."
@@ -124,7 +124,7 @@ async function handleAddAccount() {
 
           <div
             :key="tab"
-            class="finance-pane space-y-5"
+            class="finance-pane space-y-6"
           >
             <template v-if="tab === 'resumo'">
               <FinanceSummaryPanel

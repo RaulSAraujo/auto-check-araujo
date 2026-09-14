@@ -68,17 +68,12 @@ function cancelPay() {
 </script>
 
 <template>
-  <div class="min-w-0 overflow-hidden rounded-lg border border-default bg-default shadow-sm dark:border-accented dark:bg-elevated dark:shadow-none">
+  <div class="min-w-0">
     <UTable
       :data="accounts"
       :columns="columns"
       :loading="loading"
       class="w-full min-w-0"
-      :ui="{
-        base: 'table-fixed w-full min-w-0',
-        th: 'px-2 py-2 text-xs',
-        td: 'px-2 py-2 text-sm'
-      }"
     >
       <template #descricao-cell="{ row }">
         <div class="min-w-0">

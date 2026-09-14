@@ -71,8 +71,8 @@ async function onCreated() {
 <template>
   <UDashboardPanel>
     <template #body>
-      <div class="bg-muted p-4 sm:p-5">
-        <div class="mx-auto w-full max-w-6xl space-y-5">
+      <div class="bg-muted p-4 sm:p-6">
+        <div class="w-full space-y-6">
           <BasePageHeader
             title="Equipe"
             description="Quem entra no sistema e com qual papel."
@@ -99,17 +99,15 @@ async function onCreated() {
             </template>
           </BasePageHeader>
 
-          <BasePanel>
-            <TeamCollaboratorsTable
-              :collaborators="collaborators || []"
-              :loading="pending"
-              :current-user-id="currentUserId"
-              :updating-id="updatingId"
-              @update:papel="onUpdatePapel"
-              @reset-password="onResetPassword"
-              @create="createOpen = true"
-            />
-          </BasePanel>
+          <TeamCollaboratorsTable
+            :collaborators="collaborators || []"
+            :loading="pending"
+            :current-user-id="currentUserId"
+            :updating-id="updatingId"
+            @update:papel="onUpdatePapel"
+            @reset-password="onResetPassword"
+            @create="createOpen = true"
+          />
 
           <USlideover
             v-model:open="createOpen"

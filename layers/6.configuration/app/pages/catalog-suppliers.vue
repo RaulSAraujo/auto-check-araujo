@@ -160,8 +160,8 @@ async function onSupplierConfirmDelete() {
 <template>
   <UDashboardPanel>
     <template #body>
-      <div class="bg-muted p-4 sm:p-5">
-        <div class="mx-auto w-full max-w-6xl space-y-5">
+      <div class="bg-muted p-4 sm:p-6">
+        <div class="w-full space-y-6">
           <BasePageHeader
             title="Fornecedores"
             description="Usados no catálogo e no financeiro."

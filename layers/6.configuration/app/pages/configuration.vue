@@ -28,8 +28,8 @@ const countLabel = computed(() => {
 <template>
   <UDashboardPanel>
     <template #body>
-      <div class="bg-muted p-4 sm:p-5">
-        <div class="mx-auto w-full max-w-xl space-y-5 pb-2">
+      <div class="bg-muted p-4 sm:p-6">
+        <div class="mx-auto w-full max-w-xl space-y-6 pb-2">
           <BasePageHeader
             title="Configuração"
             description="O que a oficina usa no dia a dia."

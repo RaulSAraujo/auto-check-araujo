@@ -27,8 +27,8 @@ const {
 <template>
   <UDashboardPanel>
     <template #body>
-      <div class="bg-muted p-4 sm:p-5">
-        <div class="mx-auto w-full max-w-5xl space-y-5">
+      <div class="bg-muted p-4 sm:p-6">
+        <div class="mx-auto w-full max-w-5xl space-y-6">
           <BasePageHeader
             title="Início"
             description="Resumo operacional da oficina."

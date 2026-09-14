@@ -47,10 +47,10 @@ function rowMenuItems(item: CatalogItemRow, togglingId: string | null): Dropdown
 </script>
 
 <template>
-  <div class="min-w-0 overflow-hidden rounded-lg border border-default bg-default shadow-sm dark:border-accented dark:bg-elevated dark:shadow-none">
-    <div class="overflow-x-auto">
+  <div class="min-w-0 overflow-x-auto">
+    <div>
       <table class="w-full min-w-0 text-sm sm:min-w-[36rem]">
-        <thead class="border-b border-default bg-elevated/40 text-left text-xs text-muted">
+        <thead class="border-b border-default text-left text-xs text-muted">
           <tr>
             <th class="px-3 py-2.5 font-medium">
               Nome

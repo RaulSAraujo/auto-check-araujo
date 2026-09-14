@@ -208,7 +208,7 @@ onMounted(() => {
     <template #body>
       <div
         v-if="pending && !ordem"
-        class="mx-auto w-full max-w-6xl space-y-4 p-4 sm:p-6"
+        class="mx-auto w-full max-w-6xl space-y-6 p-4 sm:p-6"
       >
         <div class="space-y-2">
           <USkeleton class="h-4 w-64" />

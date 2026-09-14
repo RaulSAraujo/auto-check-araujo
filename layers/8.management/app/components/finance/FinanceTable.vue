@@ -30,7 +30,7 @@ function paymentLabel(forma: string | null): string {
 </script>
 
 <template>
-  <div class="overflow-hidden rounded-lg border border-default bg-default shadow-sm dark:border-accented dark:bg-elevated dark:shadow-none">
+  <div>
   <UTable
     :data="orders"
     :columns="columns"

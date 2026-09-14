@@ -16,7 +16,7 @@ const props = defineProps<{
 const emit = defineEmits<{
   'update:papel': [payload: { id: string, papel: ColaboradorPapel }]
   'reset-password': [row: CollaboratorRow]
-  create: []
+  'create': []
 }>()
 
 const PAPEL_COLOR: Record<ColaboradorPapel, 'primary' | 'warning' | 'neutral'> = {
@@ -58,6 +58,10 @@ function onPapelChange(id: string, papel: ColaboradorPapel) {
     :columns="columns"
     :loading="loading"
     class="w-full"
+    :ui="{
+      root: 'rounded-none border-0 bg-transparent shadow-none',
+      base: 'rounded-none bg-transparent'
+    }"
   >
     <template #nome-cell="{ row }">
       <div class="flex items-center gap-3 min-w-0">
