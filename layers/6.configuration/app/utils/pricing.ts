@@ -16,6 +16,19 @@ export type PricingParamsDraft = {
 export const PRICING_EXAMPLE_PART_COST = 100
 export const PRICING_EXAMPLE_SALE = 100
 
+/** Ajuda por campo na tela de precificação (ícone ao lado do label). */
+export const PRICING_FIELD_HELP = {
+  valor_hora: 'Quanto a mão de obra custa por hora.',
+  custo_fixo_mensal: 'Aluguel, luz, salários fixos e outros custos do mês.',
+  margem_alvo: 'Percentual de lucro desejado sobre o custo da hora.',
+  horas_produtivas_mes: 'Horas produtivas no mês que realmente geram serviço.',
+  hora_cobrada: 'Referência para precificar serviços no catálogo (horas × esta taxa).',
+  markup_pecas: 'Percentual somado ao custo da peça no catálogo.',
+  precificacao_automatica: 'Quando ligado, o preço da peça é calculado pelo custo + acréscimo.',
+  taxa_cartao_debito: 'Percentual cobrado pela maquininha ou adquirente no débito.',
+  taxa_cartao_credito: 'Percentual cobrado pela maquininha ou adquirente no crédito.'
+} as const
+
 export function roundMoney(value: number): number {
   return Math.round(value * 100) / 100
 }

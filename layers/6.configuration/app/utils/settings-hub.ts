@@ -35,7 +35,7 @@ export const SETTINGS_HUB_ITEMS: SettingsHubItem[] = [
   },
   {
     label: 'Precificação',
-    description: 'Mão de obra, markup e taxas',
+    description: 'Mão de obra, peças e taxas',
     icon: 'i-lucide-percent',
     to: APP_ROUTES.pricing,
     permission: 'catalog.manage'

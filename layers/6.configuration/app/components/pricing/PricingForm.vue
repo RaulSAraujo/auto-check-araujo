@@ -3,10 +3,12 @@ import { formatMoney } from '~~/shared/utils/money'
 import {
   PRICING_EXAMPLE_PART_COST,
   PRICING_EXAMPLE_SALE,
+  PRICING_FIELD_HELP,
   applyMarkup,
   calcChargeToNet,
   calcNetAfterFee,
   calcSuggestedHourlyRate,
+  isPricingDraftValid,
   type PricingParamsDraft
 } from '../../utils/pricing'
 
@@ -38,6 +40,7 @@ const debitCharge = computed(() =>
 const creditCharge = computed(() =>
   calcChargeToNet(PRICING_EXAMPLE_SALE, draft.value.taxa_cartao_credito)
 )
+const canSave = computed(() => isPricingDraftValid(draft.value))
 </script>
 
 <template>
@@ -50,10 +53,16 @@ const creditCharge = computed(() =>
       </template>
 
       <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        <UFormField
-          label="Valor/hora"
-          name="valor_hora"
-        >
+        <UFormField name="valor_hora">
+          <template #label>
+            <span class="inline-flex items-center gap-1 whitespace-nowrap">
+              <PricingHelpIcon
+                label="Custo da hora"
+                :text="PRICING_FIELD_HELP.valor_hora"
+              />
+              Custo da hora
+            </span>
+          </template>
           <BaseCurrencyInput
             v-model="draft.valor_hora"
             name="valor_hora"
@@ -61,10 +70,16 @@ const creditCharge = computed(() =>
           />
         </UFormField>
 
-        <UFormField
-          label="Custo fixo mensal"
-          name="custo_fixo_mensal"
-        >
+        <UFormField name="custo_fixo_mensal">
+          <template #label>
+            <span class="inline-flex items-center gap-1 whitespace-nowrap">
+              <PricingHelpIcon
+                label="Custo fixo mensal"
+                :text="PRICING_FIELD_HELP.custo_fixo_mensal"
+              />
+              Custo fixo mensal
+            </span>
+          </template>
           <BaseCurrencyInput
             v-model="draft.custo_fixo_mensal"
             name="custo_fixo_mensal"
@@ -72,13 +87,21 @@ const creditCharge = computed(() =>
           />
         </UFormField>
 
-        <UFormField
-          label="Margem alvo (%)"
-          name="margem_alvo"
-        >
+        <UFormField name="margem_alvo">
+          <template #label>
+            <span class="inline-flex items-center gap-1 whitespace-nowrap">
+              <PricingHelpIcon
+                label="Lucro alvo (%)"
+                :text="PRICING_FIELD_HELP.margem_alvo"
+              />
+              Lucro alvo (%)
+            </span>
+          </template>
           <UInput
             v-model.number="draft.margem_alvo"
             type="number"
+            inputmode="decimal"
+            autocomplete="off"
             min="0"
             max="100"
             step="0.1"
@@ -86,13 +109,21 @@ const creditCharge = computed(() =>
           />
         </UFormField>
 
-        <UFormField
-          label="Horas produtivas / mês"
-          name="horas_produtivas_mes"
-        >
+        <UFormField name="horas_produtivas_mes">
+          <template #label>
+            <span class="inline-flex items-center gap-1 whitespace-nowrap">
+              <PricingHelpIcon
+                label="Horas/mês"
+                :text="PRICING_FIELD_HELP.horas_produtivas_mes"
+              />
+              Horas/mês
+            </span>
+          </template>
           <UInput
             v-model.number="draft.horas_produtivas_mes"
             type="number"
+            inputmode="numeric"
+            autocomplete="off"
             min="1"
             step="1"
             class="w-full font-mono tabular-nums"
@@ -103,11 +134,18 @@ const creditCharge = computed(() =>
       <div class="mt-4 rounded-lg border border-primary/20 bg-primary/5 px-4 py-3">
         <div class="flex flex-col gap-1 sm:flex-row sm:items-end sm:justify-between">
           <div>
-            <p class="text-sm font-medium text-highlighted">
+            <p class="inline-flex items-center gap-1 text-sm font-medium text-highlighted whitespace-nowrap">
+              <PricingHelpIcon
+                label="Hora cobrada sugerida"
+                :text="PRICING_FIELD_HELP.hora_cobrada"
+              />
               Hora cobrada sugerida
             </p>
-            <p class="text-xs text-muted">
-              Referência para precificar serviços no catálogo (horas × esta taxa).
+            <p class="mt-1 font-mono text-xs tabular-nums text-muted whitespace-nowrap overflow-x-auto">
+              ({{ formatMoney(draft.valor_hora) }}
+              + {{ formatMoney(draft.custo_fixo_mensal) }}
+              ÷ {{ draft.horas_produtivas_mes }} h)
+              × (1 + {{ draft.margem_alvo }}%)
             </p>
           </div>
           <p class="font-mono text-2xl font-semibold tabular-nums text-primary">
@@ -125,37 +163,51 @@ const creditCharge = computed(() =>
       </template>
 
       <div class="grid gap-4 sm:grid-cols-2">
-        <UFormField
-          label="Markup padrão (%)"
-          name="markup_pecas"
-        >
+        <UFormField name="markup_pecas">
+          <template #label>
+            <span class="inline-flex items-center gap-1 whitespace-nowrap">
+              <PricingHelpIcon
+                label="Acréscimo (%)"
+                :text="PRICING_FIELD_HELP.markup_pecas"
+              />
+              Acréscimo (%)
+            </span>
+          </template>
           <UInput
             v-model.number="draft.markup_pecas"
             type="number"
+            inputmode="decimal"
+            autocomplete="off"
             min="0"
             step="0.1"
             class="w-full font-mono tabular-nums"
           />
         </UFormField>
 
-        <UFormField
-          label="Precificação automática"
-          name="precificacao_automatica"
-        >
-          <div class="flex min-h-9 items-center">
+        <UFormField name="precificacao_automatica">
+          <template #label>
+            <span class="inline-flex items-center gap-1 whitespace-nowrap">
+              <PricingHelpIcon
+                label="Preço automático"
+                :text="PRICING_FIELD_HELP.precificacao_automatica"
+              />
+              Preço automático
+            </span>
+          </template>
+          <div class="flex h-9 items-center">
             <USwitch
               v-model="draft.precificacao_automatica"
-              label="Aplicar markup sobre custo do catálogo"
+              aria-label="Preço automático"
             />
           </div>
         </UFormField>
       </div>
 
       <div class="mt-4 rounded-lg border border-default bg-elevated/50 px-4 py-3">
-        <p class="font-mono text-sm tabular-nums text-muted">
-          Custo {{ formatMoney(PRICING_EXAMPLE_PART_COST) }}
-          → Preço sugerido
-          <span class="font-semibold text-highlighted">{{ formatMoney(suggestedPartPrice) }}</span>
+        <p class="text-sm text-muted">
+          Exemplo: custo {{ formatMoney(PRICING_EXAMPLE_PART_COST) }}
+          → preço sugerido
+          <span class="font-mono font-semibold tabular-nums text-highlighted">{{ formatMoney(suggestedPartPrice) }}</span>
         </p>
       </div>
     </BasePanel>
@@ -167,14 +219,22 @@ const creditCharge = computed(() =>
         </p>
       </template>
 
-      <div class="grid gap-4 sm:grid-cols-3">
-        <UFormField
-          label="Taxa cartão débito (%)"
-          name="taxa_cartao_debito"
-        >
+      <div class="grid gap-4 sm:grid-cols-2">
+        <UFormField name="taxa_cartao_debito">
+          <template #label>
+            <span class="inline-flex items-center gap-1 whitespace-nowrap">
+              <PricingHelpIcon
+                label="Taxa no débito (%)"
+                :text="PRICING_FIELD_HELP.taxa_cartao_debito"
+              />
+              Taxa no débito (%)
+            </span>
+          </template>
           <UInput
             v-model.number="draft.taxa_cartao_debito"
             type="number"
+            inputmode="decimal"
+            autocomplete="off"
             min="0"
             max="99.99"
             step="0.01"
@@ -182,13 +242,21 @@ const creditCharge = computed(() =>
           />
         </UFormField>
 
-        <UFormField
-          label="Taxa cartão crédito (%)"
-          name="taxa_cartao_credito"
-        >
+        <UFormField name="taxa_cartao_credito">
+          <template #label>
+            <span class="inline-flex items-center gap-1 whitespace-nowrap">
+              <PricingHelpIcon
+                label="Taxa no crédito (%)"
+                :text="PRICING_FIELD_HELP.taxa_cartao_credito"
+              />
+              Taxa no crédito (%)
+            </span>
+          </template>
           <UInput
             v-model.number="draft.taxa_cartao_credito"
             type="number"
+            inputmode="decimal"
+            autocomplete="off"
             min="0"
             max="99.99"
             step="0.01"
@@ -197,21 +265,25 @@ const creditCharge = computed(() =>
         </UFormField>
       </div>
 
-      <div class="mt-4 space-y-2 rounded-lg border border-default bg-elevated/50 px-4 py-3 text-sm">
-        <p class="font-mono tabular-nums text-muted">
-          Venda {{ formatMoney(PRICING_EXAMPLE_SALE) }}
-          → líquido débito
-          <span class="font-semibold text-highlighted">{{ formatMoney(debitNet) }}</span>
-          · crédito
-          <span class="font-semibold text-highlighted">{{ formatMoney(creditNet) }}</span>
-        </p>
-        <p class="font-mono tabular-nums text-muted">
-          Para líquido {{ formatMoney(PRICING_EXAMPLE_SALE) }}
-          → cobrar débito
-          <span class="font-semibold text-highlighted">{{ formatMoney(debitCharge) }}</span>
-          · crédito
-          <span class="font-semibold text-highlighted">{{ formatMoney(creditCharge) }}</span>
-        </p>
+      <div class="mt-4 space-y-3 rounded-lg border border-default bg-elevated/50 px-4 py-3 text-sm">
+        <div>
+          <p class="text-muted">
+            Na venda de {{ formatMoney(PRICING_EXAMPLE_SALE) }}, você recebe:
+          </p>
+          <p class="mt-0.5 font-mono tabular-nums text-highlighted">
+            Débito {{ formatMoney(debitNet) }}
+            · Crédito {{ formatMoney(creditNet) }}
+          </p>
+        </div>
+        <div>
+          <p class="text-muted">
+            Para receber {{ formatMoney(PRICING_EXAMPLE_SALE) }} líquidos, cobre:
+          </p>
+          <p class="mt-0.5 font-mono tabular-nums text-highlighted">
+            Débito {{ formatMoney(debitCharge) }}
+            · Crédito {{ formatMoney(creditCharge) }}
+          </p>
+        </div>
       </div>
     </BasePanel>
 
@@ -220,6 +292,7 @@ const creditCharge = computed(() =>
         label="Salvar parâmetros"
         icon="i-lucide-save"
         :loading="saving"
+        :disabled="!canSave"
         @click="emit('save')"
       />
     </div>
