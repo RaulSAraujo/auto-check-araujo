@@ -50,7 +50,12 @@ export function usePricingMutations() {
         markup_pecas: draft.markup_pecas,
         precificacao_automatica: draft.precificacao_automatica,
         taxa_cartao_debito: draft.taxa_cartao_debito,
-        taxa_cartao_credito: draft.taxa_cartao_credito
+        taxa_cartao_credito: draft.taxa_cartao_credito,
+        valor_minimo_servico: draft.valor_minimo_servico,
+        fator_servico_rapido: draft.fator_servico_rapido,
+        fator_servico_padrao: draft.fator_servico_padrao,
+        fator_servico_tecnico: draft.fator_servico_tecnico,
+        fator_servico_especializado: draft.fator_servico_especializado
       })
       .eq('id', 1)
 

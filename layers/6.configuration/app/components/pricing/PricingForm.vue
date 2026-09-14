@@ -161,6 +161,78 @@ const canSave = computed(() => isPricingDraftValid(draft.value))
     <BasePanel>
       <template #header>
         <p class="text-xs font-semibold uppercase tracking-wide text-muted">
+          Serviços
+        </p>
+      </template>
+
+      <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
+        <UFormField
+          name="valor_minimo_servico"
+          label="Preço mínimo"
+        >
+          <BaseCurrencyInput
+            v-model="draft.valor_minimo_servico"
+            empty-as-zero
+            size="lg"
+          />
+        </UFormField>
+        <UFormField
+          name="fator_servico_rapido"
+          label="Rápido"
+        >
+          <UInput
+            v-model.number="draft.fator_servico_rapido"
+            type="number"
+            min="0.01"
+            step="0.05"
+            class="min-h-11 w-full font-mono tabular-nums"
+          />
+        </UFormField>
+        <UFormField
+          name="fator_servico_padrao"
+          label="Padrão"
+        >
+          <UInput
+            v-model.number="draft.fator_servico_padrao"
+            type="number"
+            min="0.01"
+            step="0.05"
+            class="min-h-11 w-full font-mono tabular-nums"
+          />
+        </UFormField>
+        <UFormField
+          name="fator_servico_tecnico"
+          label="Técnico"
+        >
+          <UInput
+            v-model.number="draft.fator_servico_tecnico"
+            type="number"
+            min="0.01"
+            step="0.05"
+            class="min-h-11 w-full font-mono tabular-nums"
+          />
+        </UFormField>
+        <UFormField
+          name="fator_servico_especializado"
+          label="Especializado"
+        >
+          <UInput
+            v-model.number="draft.fator_servico_especializado"
+            type="number"
+            min="0.01"
+            step="0.05"
+            class="min-h-11 w-full font-mono tabular-nums"
+          />
+        </UFormField>
+      </div>
+      <p class="mt-3 text-xs text-muted">
+        Sugestão: horas estimadas × hora cobrada × fator técnico, respeitando o preço mínimo.
+      </p>
+    </BasePanel>
+
+    <BasePanel>
+      <template #header>
+        <p class="text-xs font-semibold uppercase tracking-wide text-muted">
           Peças
         </p>
       </template>

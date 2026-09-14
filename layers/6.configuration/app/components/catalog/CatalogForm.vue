@@ -4,7 +4,7 @@ import type { OrdemItemTipo } from '~~/shared/types/oficina'
 import { ORDEM_ITEM_TIPO_SELECT_ITEMS } from '#layers/orders/app/utils/budget-select-items'
 import { formatMoney } from '~~/shared/utils/money'
 import {
-  applyServiceHourSeed,
+  applyServiceSuggestedPrice,
   clearServicePriceManual,
   isCatalogItemDraftValid,
   markServicePriceManual,
@@ -12,10 +12,12 @@ import {
   type CatalogItemRow
 } from '../../utils/catalog'
 import {
-  calcServiceSeedPrice,
+  SERVICE_TECHNICAL_LEVEL_ITEMS,
+  calcServiceSuggestedPrice,
   calcSuggestedHourlyRate,
   emptyPricingDraft,
   pricingDraftFromRow,
+  serviceTechnicalFactor,
   type PricingParamsRow
 } from '../../utils/pricing'
 
@@ -40,16 +42,20 @@ const draftModel = defineModel<CatalogItemDraft>('draft', { required: true })
 
 const { params } = usePricingParams()
 
-const hourlyRate = computed(() => {
+const pricingDraft = computed(() => {
   const row = params.value as PricingParamsRow | null
-  const draft = row ? pricingDraftFromRow(row) : emptyPricingDraft()
-  return calcSuggestedHourlyRate(draft)
+  return row ? pricingDraftFromRow(row) : emptyPricingDraft()
 })
-
-const seedPreview = computed(() => {
+const hourlyRate = computed(() => calcSuggestedHourlyRate(pricingDraft.value))
+const suggestedPrice = computed(() => {
   const hours = Number(draftModel.value.horas_estimadas)
   if (!hours || hours <= 0) return null
-  return calcServiceSeedPrice(hours, hourlyRate.value)
+  return calcServiceSuggestedPrice({
+    hours,
+    hourlyRate: hourlyRate.value,
+    minimumServicePrice: pricingDraft.value.valor_minimo_servico,
+    technicalFactor: serviceTechnicalFactor(pricingDraft.value, draftModel.value.nivel_tecnico)
+  })
 })
 
 const supplierItems = computed(() => [
@@ -84,6 +90,10 @@ const showKitBuilder = computed(() => draftModel.value.tipo === 'kit')
 const showServiceHours = computed(() => draftModel.value.tipo === 'servico')
 const isEdit = computed(() => props.mode === 'edit')
 
+watch(suggestedPrice, (value) => {
+  if (value != null) applyServiceSuggestedPrice(draftModel.value, value)
+})
+
 watch(() => draftModel.value.tipo, (tipo: OrdemItemTipo) => {
   if (tipo === 'servico') {
     draftModel.value.estoque = null
@@ -104,15 +114,16 @@ function onHoursUpdate(value: number | null) {
   draftModel.value.horas_estimadas = value == null || Number.isNaN(Number(value))
     ? null
     : Number(value)
-  applyServiceHourSeed(draftModel.value, hourlyRate.value)
 }
 
 function onValorPadraoUpdate(value: number | undefined) {
-  markServicePriceManual(draftModel.value, value ?? 0, hourlyRate.value)
+  markServicePriceManual(draftModel.value, value ?? 0, suggestedPrice.value ?? 0)
 }
 
-function onUseSeed() {
-  clearServicePriceManual(draftModel.value, hourlyRate.value)
+function onUseSuggestedPrice() {
+  if (suggestedPrice.value != null) {
+    clearServicePriceManual(draftModel.value, suggestedPrice.value)
+  }
 }
 
 function addKitLine() {
@@ -173,7 +184,7 @@ function onSubmit() {
       <UFormField
         label="Horas estimadas"
         name="horas_estimadas"
-        hint="Multiplica pela hora cobrada sugerida"
+        hint="Base para a sugestão de preço e para planejar a agenda"
       >
         <UInput
           :model-value="draftModel.horas_estimadas ?? undefined"
@@ -187,21 +198,34 @@ function onSubmit() {
           @update:model-value="onHoursUpdate(Number($event))"
         />
       </UFormField>
+      <UFormField
+        label="Nível técnico"
+        name="nivel_tecnico"
+        hint="Considera especialização, risco e ferramentas necessárias"
+      >
+        <USelect
+          v-model="draftModel.nivel_tecnico"
+          name="nivel_tecnico"
+          :items="[...SERVICE_TECHNICAL_LEVEL_ITEMS]"
+          class="w-full"
+        />
+      </UFormField>
       <p
-        v-if="seedPreview != null"
+        v-if="suggestedPrice != null"
         class="font-mono text-xs tabular-nums text-muted"
       >
         {{ draftModel.horas_estimadas }} h × {{ formatMoney(hourlyRate) }}
-        → {{ formatMoney(seedPreview) }}
+        × {{ serviceTechnicalFactor(pricingDraft, draftModel.nivel_tecnico) }}
+        → {{ formatMoney(suggestedPrice) }}
       </p>
       <UButton
-        v-if="draftModel.preco_manual && seedPreview != null"
+        v-if="draftModel.preco_manual && suggestedPrice != null"
         type="button"
         size="xs"
         color="neutral"
         variant="soft"
-        label="Voltar à fórmula"
-        @click="onUseSeed"
+        label="Usar preço sugerido"
+        @click="onUseSuggestedPrice"
       />
     </div>
 

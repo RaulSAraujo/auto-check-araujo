@@ -11,7 +11,22 @@ export type PricingParamsDraft = {
   precificacao_automatica: boolean
   taxa_cartao_debito: number
   taxa_cartao_credito: number
+  valor_minimo_servico: number
+  fator_servico_rapido: number
+  fator_servico_padrao: number
+  fator_servico_tecnico: number
+  fator_servico_especializado: number
 }
+
+export const SERVICE_TECHNICAL_LEVELS = ['rapido', 'padrao', 'tecnico', 'especializado'] as const
+export type ServiceTechnicalLevel = typeof SERVICE_TECHNICAL_LEVELS[number]
+
+export const SERVICE_TECHNICAL_LEVEL_ITEMS = [
+  { label: 'Rápido', value: 'rapido' },
+  { label: 'Padrão', value: 'padrao' },
+  { label: 'Técnico', value: 'tecnico' },
+  { label: 'Especializado', value: 'especializado' }
+] as const
 
 export const PRICING_EXAMPLE_PART_COST = 100
 export const PRICING_EXAMPLE_SALE = 100
@@ -22,11 +37,13 @@ export const PRICING_FIELD_HELP = {
   custo_fixo_mensal: 'Aluguel, luz, salários fixos e outros custos do mês.',
   margem_alvo: 'Percentual de lucro desejado sobre o custo da hora.',
   horas_produtivas_mes: 'Horas produtivas no mês que realmente geram serviço.',
-  hora_cobrada: 'Referência para precificar serviços no catálogo (horas × esta taxa).',
+  hora_cobrada: 'Base da sugestão: horas estimadas × fator técnico, respeitando o preço mínimo.',
   markup_pecas: 'Percentual somado ao custo da peça no catálogo.',
   precificacao_automatica: 'Quando ligado, o preço da peça é calculado pelo custo + acréscimo.',
   taxa_cartao_debito: 'Percentual cobrado pela maquininha ou adquirente no débito.',
-  taxa_cartao_credito: 'Percentual cobrado pela maquininha ou adquirente no crédito.'
+  taxa_cartao_credito: 'Percentual cobrado pela maquininha ou adquirente no crédito.',
+  valor_minimo_servico: 'Menor valor de mão de obra cobrado, mesmo em serviços rápidos.',
+  fatores_tecnicos: 'Ajustam a hora cobrada conforme especialização, risco e ferramental.'
 } as const
 
 export function roundMoney(value: number): number {
@@ -42,7 +59,12 @@ export function emptyPricingDraft(): PricingParamsDraft {
     markup_pecas: 40,
     precificacao_automatica: true,
     taxa_cartao_debito: 1.5,
-    taxa_cartao_credito: 3.5
+    taxa_cartao_credito: 3.5,
+    valor_minimo_servico: 150,
+    fator_servico_rapido: 0.8,
+    fator_servico_padrao: 1,
+    fator_servico_tecnico: 1.35,
+    fator_servico_especializado: 1.7
   }
 }
 
@@ -55,7 +77,12 @@ export function pricingDraftFromRow(row: PricingParamsRow): PricingParamsDraft {
     markup_pecas: Number(row.markup_pecas),
     precificacao_automatica: Boolean(row.precificacao_automatica),
     taxa_cartao_debito: Number(row.taxa_cartao_debito),
-    taxa_cartao_credito: Number(row.taxa_cartao_credito)
+    taxa_cartao_credito: Number(row.taxa_cartao_credito),
+    valor_minimo_servico: Number(row.valor_minimo_servico),
+    fator_servico_rapido: Number(row.fator_servico_rapido),
+    fator_servico_padrao: Number(row.fator_servico_padrao),
+    fator_servico_tecnico: Number(row.fator_servico_tecnico),
+    fator_servico_especializado: Number(row.fator_servico_especializado)
   }
 }
 
@@ -71,6 +98,11 @@ export function isPricingDraftValid(draft: PricingParamsDraft): boolean {
     && draft.taxa_cartao_debito < 100
     && draft.taxa_cartao_credito >= 0
     && draft.taxa_cartao_credito < 100
+    && draft.valor_minimo_servico >= 0
+    && draft.fator_servico_rapido > 0
+    && draft.fator_servico_padrao > 0
+    && draft.fator_servico_tecnico > 0
+    && draft.fator_servico_especializado > 0
   )
 }
 
@@ -82,6 +114,27 @@ export function calcSuggestedHourlyRate(draft: Pick<
   const hours = Math.max(Number(draft.horas_produtivas_mes) || 0, 0.01)
   const costPerHour = Number(draft.valor_hora) + Number(draft.custo_fixo_mensal) / hours
   return roundMoney(costPerHour * (1 + Number(draft.margem_alvo) / 100))
+}
+
+export function serviceTechnicalFactor(
+  draft: Pick<PricingParamsDraft, 'fator_servico_rapido' | 'fator_servico_padrao' | 'fator_servico_tecnico' | 'fator_servico_especializado'>,
+  level: ServiceTechnicalLevel
+): number {
+  return Number(draft[`fator_servico_${level}`])
+}
+
+export function calcServiceSuggestedPrice(input: {
+  hours: number
+  hourlyRate: number
+  minimumServicePrice: number
+  technicalFactor: number
+}): number {
+  return roundMoney(Math.max(
+    Number(input.minimumServicePrice) || 0,
+    Math.max(Number(input.hours) || 0, 0)
+    * Math.max(Number(input.hourlyRate) || 0, 0)
+    * Math.max(Number(input.technicalFactor) || 0, 0)
+  ))
 }
 
 export function applyMarkup(cost: number, markupPercent: number): number {
@@ -113,11 +166,6 @@ export function resolveCatalogUnitPrice(input: {
     return applyMarkup(input.custo, input.markupPecas)
   }
   return roundMoney(Number(input.valorPadrao) || 0)
-}
-
-/** Seed de serviço: horas × hora cobrada sugerida. */
-export function calcServiceSeedPrice(hours: number, hourlyRate: number): number {
-  return roundMoney(Math.max(Number(hours) || 0, 0) * Math.max(Number(hourlyRate) || 0, 0))
 }
 
 export function suggestChargeAmount(

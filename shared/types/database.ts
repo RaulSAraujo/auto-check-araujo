@@ -286,11 +286,16 @@ export type Database = {
           id: number
           margem_alvo: number
           markup_pecas: number
+          fator_servico_rapido: number
+          fator_servico_padrao: number
+          fator_servico_tecnico: number
+          fator_servico_especializado: number
           precificacao_automatica: boolean
           taxa_cartao_credito: number
           taxa_cartao_debito: number
           updated_at: string
           valor_hora: number
+          valor_minimo_servico: number
         }
         Insert: {
           custo_fixo_mensal?: number
@@ -298,11 +303,16 @@ export type Database = {
           id?: number
           margem_alvo?: number
           markup_pecas?: number
+          fator_servico_rapido?: number
+          fator_servico_padrao?: number
+          fator_servico_tecnico?: number
+          fator_servico_especializado?: number
           precificacao_automatica?: boolean
           taxa_cartao_credito?: number
           taxa_cartao_debito?: number
           updated_at?: string
           valor_hora?: number
+          valor_minimo_servico?: number
         }
         Update: {
           custo_fixo_mensal?: number
@@ -310,11 +320,16 @@ export type Database = {
           id?: number
           margem_alvo?: number
           markup_pecas?: number
+          fator_servico_rapido?: number
+          fator_servico_padrao?: number
+          fator_servico_tecnico?: number
+          fator_servico_especializado?: number
           precificacao_automatica?: boolean
           taxa_cartao_credito?: number
           taxa_cartao_debito?: number
           updated_at?: string
           valor_hora?: number
+          valor_minimo_servico?: number
         }
         Relationships: []
       }
@@ -512,6 +527,7 @@ export type Database = {
           horas_estimadas: number | null
           id: string
           nome: string
+          nivel_tecnico: string
           preco_manual: boolean
           tipo: string
           valor_padrao: number
@@ -525,6 +541,7 @@ export type Database = {
           horas_estimadas?: number | null
           id?: string
           nome: string
+          nivel_tecnico?: string
           preco_manual?: boolean
           tipo: string
           valor_padrao?: number
@@ -538,6 +555,7 @@ export type Database = {
           horas_estimadas?: number | null
           id?: string
           nome?: string
+          nivel_tecnico?: string
           preco_manual?: boolean
           tipo?: string
           valor_padrao?: number

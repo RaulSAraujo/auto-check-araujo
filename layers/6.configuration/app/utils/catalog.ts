@@ -1,6 +1,6 @@
 import type { OrdemItemTipo } from '~~/shared/types/oficina'
 import type { CatalogoKitItem, Fornecedor, ServicoCatalogo } from '~~/shared/types/database'
-import { calcServiceSeedPrice, roundMoney } from './pricing'
+import { roundMoney, type ServiceTechnicalLevel } from './pricing'
 
 export interface CatalogKitDraftLine {
   item_id: string
@@ -15,6 +15,7 @@ export interface CatalogItemDraft {
   estoque: number | null
   fornecedor_id: string | undefined
   horas_estimadas: number | null
+  nivel_tecnico: ServiceTechnicalLevel
   preco_manual: boolean
   kit_itens: CatalogKitDraftLine[]
 }
@@ -52,6 +53,7 @@ export function emptyCatalogItemDraft(): CatalogItemDraft {
     estoque: null,
     fornecedor_id: undefined,
     horas_estimadas: null,
+    nivel_tecnico: 'padrao',
     preco_manual: false,
     kit_itens: []
   }
@@ -66,6 +68,7 @@ export function catalogDraftFromRow(item: CatalogItemRow): CatalogItemDraft {
     estoque: item.estoque == null ? null : Number(item.estoque),
     fornecedor_id: item.fornecedor_id || undefined,
     horas_estimadas: item.horas_estimadas == null ? null : Number(item.horas_estimadas),
+    nivel_tecnico: item.nivel_tecnico as ServiceTechnicalLevel,
     preco_manual: Boolean(item.preco_manual),
     kit_itens: (item.catalogo_kit_itens || []).map(line => ({
       item_id: line.item_id,
@@ -93,39 +96,24 @@ export function stockForTipo(tipo: OrdemItemTipo, estoque: number | null | undef
   return Number(estoque)
 }
 
-/** Aplica seed de hora quando o serviço não está em preço manual. */
-export function applyServiceHourSeed(
-  draft: CatalogItemDraft,
-  hourlyRate: number
-): void {
-  if (draft.tipo !== 'servico' || draft.preco_manual) return
-  const hours = Number(draft.horas_estimadas)
-  if (!hours || hours <= 0) return
-  draft.valor_padrao = calcServiceSeedPrice(hours, hourlyRate)
+export function applyServiceSuggestedPrice(draft: CatalogItemDraft, suggestedPrice: number): void {
+  if (draft.tipo === 'servico' && !draft.preco_manual) {
+    draft.valor_padrao = suggestedPrice
+  }
 }
 
 export function markServicePriceManual(
   draft: CatalogItemDraft,
   nextPrice: number,
-  hourlyRate: number
+  suggestedPrice: number
 ): void {
   draft.valor_padrao = roundMoney(Math.max(Number(nextPrice) || 0, 0))
-  if (draft.tipo !== 'servico') {
-    draft.preco_manual = false
-    return
-  }
-  const hours = Number(draft.horas_estimadas)
-  if (!hours || hours <= 0 || hourlyRate <= 0) {
-    draft.preco_manual = true
-    return
-  }
-  const seeded = calcServiceSeedPrice(hours, hourlyRate)
-  draft.preco_manual = draft.valor_padrao !== seeded
+  draft.preco_manual = draft.tipo === 'servico' && draft.valor_padrao !== suggestedPrice
 }
 
-export function clearServicePriceManual(draft: CatalogItemDraft, hourlyRate: number): void {
+export function clearServicePriceManual(draft: CatalogItemDraft, suggestedPrice: number): void {
   draft.preco_manual = false
-  applyServiceHourSeed(draft, hourlyRate)
+  applyServiceSuggestedPrice(draft, suggestedPrice)
 }
 
 export function emptySupplierDraft() {

@@ -14,6 +14,7 @@ const CATALOG_SELECT = `
   ativo,
   fornecedor_id,
   horas_estimadas,
+  nivel_tecnico,
   preco_manual,
   created_at,
   fornecedores ( id, nome ),
@@ -41,6 +42,7 @@ function toCatalogPayload(draft: CatalogItemDraft) {
           ? null
           : draft.horas_estimadas)
       : null,
+    nivel_tecnico: isService ? draft.nivel_tecnico : 'padrao',
     preco_manual: isService ? draft.preco_manual : false
   }
 }
