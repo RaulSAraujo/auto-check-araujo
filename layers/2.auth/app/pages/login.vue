@@ -47,7 +47,7 @@ async function onSubmit() {
 <template>
   <div class="auth-login light flex min-h-dvh flex-col antialiased text-highlighted md:flex-row">
     <aside
-      class="auth-login__brand relative z-10 flex min-h-[19rem] w-full shrink-0 flex-col justify-between overflow-hidden p-8 shadow-[4px_0_24px_rgba(0,0,0,0.1)] md:min-h-dvh md:w-[45%] md:p-16 lg:p-24"
+      class="auth-login__brand relative z-10 flex min-h-64 w-full shrink-0 flex-col justify-between overflow-hidden p-5 shadow-[4px_0_24px_rgba(0,0,0,0.1)] sm:p-8 md:min-h-dvh md:w-[45%] md:p-16 lg:p-24"
       aria-label="Marca Araujo Auto Center"
     >
       <div
@@ -100,9 +100,9 @@ async function onSubmit() {
       </div>
     </aside>
 
-    <main class="relative flex w-full flex-1 items-center justify-center bg-muted p-8 md:w-[55%] md:p-16">
+    <main class="relative flex w-full flex-1 items-center justify-center bg-muted p-4 sm:p-8 md:w-[55%] md:p-16">
       <div
-        class="auth-login__card w-full max-w-[400px] rounded-lg border border-default bg-default p-8 shadow-sm md:p-10"
+        class="auth-login__card w-full max-w-[400px] rounded-lg border border-default bg-default p-5 shadow-sm sm:p-8 md:p-10"
       >
         <header class="mb-8">
           <p class="mb-2 text-xs font-semibold uppercase tracking-wider text-dimmed">

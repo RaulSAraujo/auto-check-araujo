@@ -94,37 +94,47 @@ const yFormatter = (value: number) =>
         </template>
       </BaseEmptyState>
 
-      <div
-        v-else
-        class="p-3 sm:p-4"
-        role="img"
-        :aria-label="`${totalCount} ordens concluídas nos últimos 7 dias`"
-      >
-        <ClientOnly>
-          <BarChart
-            :data="chartData"
-            :categories="categories"
-            :height="200"
-            :y-axis="['count']"
-            x-axis="day"
-            :x-formatter="xFormatter"
-            :y-formatter="yFormatter"
-            :duration="duration"
-            :hide-legend="true"
-            :radius="4"
-            :y-num-ticks="4"
-            :x-num-ticks="7"
-            :bar-padding="0.2"
-            :y-grid-line="true"
-            :x-grid-line="false"
-            :x-tick-line="false"
-            :y-tick-line="false"
-          />
-          <template #fallback>
-            <USkeleton class="h-56 w-full" />
-          </template>
-        </ClientOnly>
-      </div>
+      <template v-else>
+        <div class="p-4 sm:hidden">
+          <p class="text-sm text-muted">
+            {{ totalCount === 1 ? '1 OS concluída' : `${totalCount} OS concluídas` }} nos últimos 7 dias.
+          </p>
+          <p class="mt-1 home-num text-lg font-bold tabular-nums text-highlighted">
+            {{ formatMoney(totalRevenue) }}
+          </p>
+        </div>
+
+        <div
+          class="hidden p-3 sm:block sm:p-4"
+          role="img"
+          :aria-label="`${totalCount} ordens concluídas nos últimos 7 dias`"
+        >
+          <ClientOnly>
+            <BarChart
+              :data="chartData"
+              :categories="categories"
+              :height="200"
+              :y-axis="['count']"
+              x-axis="day"
+              :x-formatter="xFormatter"
+              :y-formatter="yFormatter"
+              :duration="duration"
+              :hide-legend="true"
+              :radius="4"
+              :y-num-ticks="4"
+              :x-num-ticks="7"
+              :bar-padding="0.2"
+              :y-grid-line="true"
+              :x-grid-line="false"
+              :x-tick-line="false"
+              :y-tick-line="false"
+            />
+            <template #fallback>
+              <USkeleton class="h-56 w-full" />
+            </template>
+          </ClientOnly>
+        </div>
+      </template>
     </div>
   </section>
 </template>

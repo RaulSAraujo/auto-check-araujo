@@ -62,8 +62,10 @@ async function onCaptionBlur(photoId: string, event: FocusEvent) {
             class="size-4 text-muted"
             aria-hidden="true"
           />
-          Fotos
-          <span class="text-xs font-normal text-muted">(evidência da OS)</span>
+          <span>
+            <span class="block">Fotos</span>
+            <span class="mt-0.5 block whitespace-nowrap text-xs font-normal text-muted">Evidência da OS</span>
+          </span>
         </h3>
         <p class="mt-0.5 text-xs text-muted">
           Detalhes do diagnóstico — só uso interno.

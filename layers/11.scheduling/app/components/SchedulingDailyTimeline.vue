@@ -67,18 +67,11 @@ const sortedAppointments = computed(() =>
 
     <div
       v-else-if="!appointments.length"
-      class="mt-4 flex flex-wrap items-center gap-3 px-1"
+      class="mt-4 px-1"
     >
       <p class="text-sm text-muted">
         Nenhum horário neste dia.
       </p>
-      <UButton
-        v-if="canWrite"
-        label="Novo agendamento"
-        icon="i-lucide-plus"
-        size="sm"
-        @click="emit('create')"
-      />
     </div>
 
     <ul

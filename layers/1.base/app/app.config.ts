@@ -56,7 +56,9 @@ export default defineAppConfig({
     },
     table: {
       slots: {
-        th: 'text-xs uppercase tracking-wide text-muted'
+        root: 'relative overflow-x-auto touch-pan-x outline-primary/25 focus-visible:outline-3',
+        th: 'px-3 py-3 text-xs uppercase tracking-wide text-muted sm:px-4 sm:py-3.5',
+        td: 'p-3 text-sm text-muted whitespace-nowrap [&:has([role=checkbox])]:pe-0 sm:p-4'
       }
     }
   }

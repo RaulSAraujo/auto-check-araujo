@@ -39,6 +39,7 @@ const { can } = usePermissions()
               :to="ORDER_ROUTES.new"
               icon="i-lucide-plus"
               label="Nova OS"
+              class="w-full justify-center sm:w-auto"
             />
           </template>
         </BasePageHeader>

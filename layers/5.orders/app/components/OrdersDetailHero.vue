@@ -15,7 +15,6 @@ const props = defineProps<{
 
 const emit = defineEmits<{
   'update:selectedStatus': [value: string]
-  'back': []
 }>()
 
 const status = computed(() => props.ordem.status as OrdemStatus)
@@ -29,8 +28,8 @@ const statusChanged = computed(() => props.selectedStatus !== props.ordem.status
 
 <template>
   <header class="orders-hero overflow-hidden rounded-2xl bg-elevated/30 ring-1 ring-default/60">
-    <div class="px-5 pb-5 pt-5 sm:px-6 sm:pb-6 sm:pt-6">
-      <div class="flex flex-wrap items-start justify-between gap-4">
+    <div class="px-5 py-5 sm:px-6 sm:py-6">
+      <div class="flex flex-col gap-4 sm:flex-row sm:flex-wrap sm:items-start sm:justify-between">
         <div class="min-w-0 space-y-2">
           <div class="flex flex-wrap items-baseline gap-x-3 gap-y-1">
             <NuxtLink
@@ -104,20 +103,12 @@ const statusChanged = computed(() => props.selectedStatus !== props.ordem.status
             {{ ORDEM_STATUS_LABEL[status] }}
           </UBadge>
 
-          <UButton
-            color="neutral"
-            variant="ghost"
-            label="Voltar"
-            icon="i-lucide-arrow-left"
-            class="min-h-11 touch-manipulation active:scale-[0.98]"
-            @click="emit('back')"
-          />
         </div>
       </div>
     </div>
 
-    <div class="grid grid-cols-1 gap-px bg-default/50 sm:grid-cols-3">
-      <div class="bg-default/40 px-4 py-3.5 sm:px-5">
+    <div class="grid grid-cols-2 gap-px bg-default/50 sm:grid-cols-3">
+      <div class="order-1 bg-default/40 px-4 py-3.5 sm:px-5">
         <p class="text-xs font-medium text-muted">
           Aberta em
         </p>
@@ -125,7 +116,7 @@ const statusChanged = computed(() => props.selectedStatus !== props.ordem.status
           {{ formatDateTime(ordem.aberta_em) }}
         </p>
       </div>
-      <div class="bg-default/40 px-4 py-3.5 sm:px-5">
+      <div class="order-3 col-span-2 bg-default/40 px-4 py-3.5 sm:order-2 sm:col-span-1 sm:px-5">
         <p class="text-xs font-medium text-muted">
           Aberta por
         </p>
@@ -133,7 +124,7 @@ const statusChanged = computed(() => props.selectedStatus !== props.ordem.status
           {{ ordem.profiles?.nome || '—' }}
         </p>
       </div>
-      <div class="bg-default/40 px-4 py-3.5 sm:px-5">
+      <div class="order-2 bg-default/40 px-4 py-3.5 sm:order-3 sm:px-5">
         <p class="text-xs font-medium text-muted">
           Concluída em
         </p>

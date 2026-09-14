@@ -180,8 +180,8 @@ function onShiftNext() {
 <template>
   <UDashboardPanel>
     <template #body>
-      <div class="mx-auto flex h-full min-h-0 w-full max-w-[1400px] flex-col gap-6 p-4 sm:p-6">
-        <header class="flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
+      <div class="mx-auto flex h-full min-h-0 w-full max-w-[1400px] flex-col gap-4 p-4 sm:gap-6 sm:p-6">
+        <header class="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
           <div class="min-w-0">
             <p class="text-xs font-semibold uppercase tracking-widest text-muted">
               Agendamentos
@@ -218,7 +218,7 @@ function onShiftNext() {
                 variant="ghost"
                 size="sm"
                 :aria-label="isWeekView ? 'Semana anterior' : 'Dia anterior'"
-                class="motion-safe:active:scale-[0.98]"
+                class="min-h-11 min-w-11 motion-safe:active:scale-[0.98]"
                 @click="onShiftPrev"
               />
               <UButton
@@ -227,7 +227,7 @@ function onShiftNext() {
                 variant="ghost"
                 size="sm"
                 :aria-label="isWeekView ? 'Próxima semana' : 'Próximo dia'"
-                class="motion-safe:active:scale-[0.98]"
+                class="min-h-11 min-w-11 motion-safe:active:scale-[0.98]"
                 @click="onShiftNext"
               />
               <UButton
@@ -236,6 +236,7 @@ function onShiftNext() {
                 size="sm"
                 label="Hoje"
                 :aria-current="isToday ? 'date' : undefined"
+                class="min-h-11"
                 @click="goToday"
               />
               <UTabs
@@ -249,7 +250,7 @@ function onShiftNext() {
             </div>
           </div>
 
-          <div class="flex flex-wrap items-center gap-2">
+          <div class="flex w-full flex-col gap-2 lg:w-auto lg:flex-row lg:flex-wrap lg:items-center">
             <UInput
               v-model="search"
               icon="i-lucide-search"
@@ -257,33 +258,36 @@ function onShiftNext() {
               aria-label="Buscar cliente ou placa"
               autocomplete="off"
               name="scheduling-search"
-              class="w-full sm:w-56"
+              class="w-full lg:w-56"
             />
             <USelect
               v-model="statusFilter"
               :items="SCHEDULING_STATUS_FILTER_ITEMS"
               size="md"
-              class="w-36"
+              class="w-full lg:w-36"
               aria-label="Filtrar por status"
             />
-            <UButton
-              v-if="canWrite"
-              icon="i-lucide-plus"
-              label="Novo agendamento"
-              class="motion-safe:active:scale-[0.98]"
-              @click="openCreate()"
-            />
-            <UDropdownMenu
-              :items="moreMenuItems"
-              :content="{ align: 'end' }"
-            >
+            <div class="flex w-full items-center gap-2 lg:w-auto">
               <UButton
-                icon="i-lucide-ellipsis"
-                color="neutral"
-                variant="ghost"
-                aria-label="Mais ações"
+                v-if="canWrite"
+                icon="i-lucide-plus"
+                label="Novo agendamento"
+                class="min-h-11 flex-1 justify-center motion-safe:active:scale-[0.98] lg:flex-none"
+                @click="openCreate()"
               />
-            </UDropdownMenu>
+              <UDropdownMenu
+                :items="moreMenuItems"
+                :content="{ align: 'end' }"
+              >
+                <UButton
+                  icon="i-lucide-ellipsis"
+                  color="neutral"
+                  variant="ghost"
+                  class="min-h-11 min-w-11"
+                  aria-label="Mais ações"
+                />
+              </UDropdownMenu>
+            </div>
           </div>
         </header>
 

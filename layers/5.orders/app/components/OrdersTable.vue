@@ -10,14 +10,76 @@ defineProps<{
   ordens: OrderListItem[]
   loading?: boolean
 }>()
+
+const mobileDateFormatter = new Intl.DateTimeFormat('pt-BR', {
+  day: '2-digit',
+  month: 'short',
+  hour: '2-digit',
+  minute: '2-digit'
+})
+
+function formatMobileOpenedAt(value: string) {
+  return mobileDateFormatter.format(new Date(value)).replace('.', '')
+}
+
+function vehicleModel(order: OrderListItem) {
+  return [order.veiculos?.marca, order.veiculos?.modelo].filter(Boolean).join(' ')
+}
 </script>
 
 <template>
+  <div class="space-y-2 md:hidden">
+    <template v-if="loading">
+      <USkeleton
+        v-for="n in 3"
+        :key="n"
+        class="h-24 w-full"
+      />
+    </template>
+
+    <template v-else-if="ordens.length">
+      <NuxtLink
+        v-for="ordem in ordens"
+        :key="ordem.id"
+        :to="ORDER_ROUTES.detail(ordem.id)"
+        class="block min-h-24 rounded-lg border border-default bg-default px-3 py-3 active:bg-elevated"
+      >
+        <span class="flex items-center justify-between gap-3">
+          <span class="font-mono font-medium tabular-nums text-primary">{{ ordem.numero }}</span>
+          <UBadge
+            :color="ORDEM_STATUS_COLOR[ordem.status as OrdemStatus] || 'neutral'"
+            variant="subtle"
+            size="sm"
+          >
+            {{ ORDEM_STATUS_LABEL[ordem.status as OrdemStatus] || ordem.status }}
+          </UBadge>
+        </span>
+        <span class="mt-2 flex min-w-0 items-center justify-between gap-3 text-sm">
+          <span class="min-w-0 truncate text-highlighted">
+            <span class="font-mono font-medium tracking-wide">{{ ordem.veiculos ? formatPlaca(ordem.veiculos.placa) : EMPTY_VALUE }}</span>
+            <span
+              v-if="ordem.veiculos?.marca || ordem.veiculos?.modelo"
+              class="text-muted"
+            > · {{ vehicleModel(ordem) }}</span>
+          </span>
+          <time class="shrink-0 text-xs tabular-nums text-muted">{{ formatMobileOpenedAt(ordem.aberta_em) }}</time>
+        </span>
+      </NuxtLink>
+    </template>
+
+    <BaseEmptyState
+      v-else
+      icon="i-lucide-clipboard-list"
+    >
+      Nenhuma OS encontrada.
+    </BaseEmptyState>
+  </div>
+
   <UTable
     :data="ordens"
     :columns="ORDER_LIST_COLUMNS"
     :loading="loading"
-    class="w-full"
+    class="hidden w-full md:block"
   >
     <template #numero-cell="{ row }">
       <NuxtLink

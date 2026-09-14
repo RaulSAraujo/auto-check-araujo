@@ -28,7 +28,7 @@ const {
   <UDashboardPanel>
     <template #body>
       <div class="bg-muted p-4 sm:p-6">
-        <div class="mx-auto w-full max-w-5xl space-y-6">
+        <div class="mx-auto w-full max-w-5xl space-y-4 sm:space-y-6">
           <BasePageHeader
             title="Início"
             description="Resumo operacional da oficina."
@@ -39,6 +39,7 @@ const {
                 label="Nova OS"
                 color="primary"
                 icon="i-lucide-plus"
+                class="w-full justify-center sm:w-auto"
               />
             </template>
           </BasePageHeader>
@@ -64,20 +65,22 @@ const {
           </UAlert>
 
           <template v-else>
-            <div class="grid gap-4 lg:grid-cols-2 lg:items-stretch">
-              <LazyHomeOrdersStatusChart
-                :pending="pending"
-                :status-counts="statusCounts"
-                :total="activeOrdersTotal"
-              />
+            <div class="grid min-w-0 gap-4 lg:grid-cols-2 lg:items-stretch [&>*]:min-w-0">
               <HomeActiveOrdersList
+                class="order-1 lg:order-2"
                 :pending="pending"
                 :orders="activeOrders"
                 :total="activeOrdersTotal"
               />
+              <LazyHomeOrdersStatusChart
+                class="order-2 lg:order-1"
+                :pending="pending"
+                :status-counts="statusCounts"
+                :total="activeOrdersTotal"
+              />
             </div>
 
-            <div class="grid gap-4 lg:grid-cols-2 lg:items-stretch">
+            <div class="grid min-w-0 gap-4 lg:grid-cols-2 lg:items-stretch [&>*]:min-w-0">
               <HomeTodaySchedule
                 :pending="pending"
                 :appointments="todayAppointments"

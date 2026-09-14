@@ -16,10 +16,8 @@ definePageMeta({
 
 const route = useRoute()
 const router = useRouter()
-
 const id = computed(() => route.params.id as string)
 const allowLeave = ref(false)
-
 const { back } = useSmartBack(ORDER_ROUTES.list)
 
 /** Capture entry once so the trail stays stable while editing. */
@@ -226,7 +224,17 @@ onMounted(() => {
         class="mx-auto w-full max-w-6xl space-y-6 p-4 pb-28 sm:p-6 sm:pb-28"
       >
         <div class="space-y-3">
-          <UBreadcrumb :items="breadcrumbItems" />
+          <div class="flex items-center justify-between gap-3">
+            <UBreadcrumb :items="breadcrumbItems" />
+            <UButton
+              color="neutral"
+              variant="ghost"
+              label="Voltar"
+              icon="i-lucide-arrow-left"
+              class="min-h-11 shrink-0 touch-manipulation active:scale-[0.98]"
+              @click="back"
+            />
+          </div>
 
           <OrdersDetailHero
             :ordem="ordem"
@@ -235,7 +243,6 @@ onMounted(() => {
             :saving-status="savingStatus"
             :can-edit="canEdit"
             @update:selected-status="selectedStatus = $event"
-            @back="back"
           />
         </div>
 
@@ -260,7 +267,7 @@ onMounted(() => {
           </template>
         </UAlert>
 
-        <div class="grid items-stretch gap-6 lg:grid-cols-2">
+        <div class="grid min-w-0 items-stretch gap-6 lg:grid-cols-2 [&>*]:min-w-0">
           <section class="flex flex-col overflow-hidden rounded-2xl bg-default ring-1 ring-default/60">
             <div class="flex-1 p-5 pb-6 sm:p-6 sm:pb-7">
               <OrdersDetailResumoPanel
@@ -272,7 +279,7 @@ onMounted(() => {
             </div>
           </section>
 
-          <section class="flex h-full min-h-0 flex-col rounded-2xl bg-default p-5 pb-6 sm:p-6 sm:pb-7 ring-1 ring-default/60">
+          <section class="flex h-full min-h-0 min-w-0 flex-col rounded-2xl bg-default p-5 pb-6 sm:p-6 sm:pb-7 ring-1 ring-default/60">
             <OrdersBudgetSection
               v-model:draft="draft"
               class="flex min-h-0 flex-1 flex-col"

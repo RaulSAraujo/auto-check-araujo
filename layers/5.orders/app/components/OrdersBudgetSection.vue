@@ -53,7 +53,7 @@ function onConfirmReject() {
 </script>
 
 <template>
-  <section class="flex h-full min-h-0 flex-col gap-5">
+  <section class="flex h-full min-h-0 min-w-0 flex-col gap-5">
     <div class="flex flex-wrap items-center justify-between gap-3">
       <div class="flex min-w-0 items-center gap-2.5">
         <h2 class="text-lg font-semibold text-highlighted">
@@ -107,14 +107,15 @@ function onConfirmReject() {
           class="flex items-center gap-3 px-3.5 py-3 transition-colors hover:bg-elevated/40"
         >
           <div class="min-w-0 flex-1">
-            <div class="flex items-center gap-2">
-              <p class="truncate text-sm font-medium text-highlighted">
+            <div class="flex min-w-0 items-center gap-2">
+              <p class="min-w-0 flex-1 truncate text-sm font-medium text-highlighted">
                 {{ item.descricao }}
               </p>
               <UBadge
                 color="neutral"
                 variant="subtle"
                 size="xs"
+                class="shrink-0"
               >
                 {{ ORDEM_ITEM_TIPO_LABEL[item.tipo as keyof typeof ORDEM_ITEM_TIPO_LABEL] }}
               </UBadge>
@@ -154,7 +155,7 @@ function onConfirmReject() {
 
     <div
       v-if="items.length > 0"
-      class="flex flex-wrap items-center gap-2"
+      class="flex flex-col gap-2 sm:flex-row sm:flex-wrap sm:items-center"
     >
       <UButton
         v-if="canEditItems"
@@ -163,11 +164,11 @@ function onConfirmReject() {
         size="sm"
         color="neutral"
         variant="soft"
-        class="touch-manipulation"
+        class="min-h-11 w-full justify-center touch-manipulation sm:min-h-0 sm:w-auto"
         @click="showAddModal = true"
       />
 
-      <div class="flex-1" />
+      <div class="hidden flex-1 sm:block" />
 
       <UButton
         v-if="canEditItems && canApprove && budgetStatus !== 'aguardando_aprovacao'"
@@ -177,7 +178,7 @@ function onConfirmReject() {
         color="primary"
         :loading="updatingStatus"
         :disabled="items.length === 0"
-        class="touch-manipulation"
+        class="min-h-11 w-full justify-center touch-manipulation sm:min-h-0 sm:w-auto"
         @click="emit('submitForApproval')"
       />
       <template v-if="canApprove && budgetStatus === 'aguardando_aprovacao'">
@@ -187,7 +188,7 @@ function onConfirmReject() {
           color="success"
           size="sm"
           :loading="updatingStatus"
-          class="touch-manipulation"
+          class="min-h-11 w-full justify-center touch-manipulation sm:min-h-0 sm:w-auto"
           @click="emit('approve')"
         />
         <UButton
@@ -197,7 +198,7 @@ function onConfirmReject() {
           variant="soft"
           size="sm"
           :loading="updatingStatus"
-          class="touch-manipulation"
+          class="min-h-11 w-full justify-center touch-manipulation sm:min-h-0 sm:w-auto"
           @click="rejectConfirmOpen = true"
         />
       </template>
