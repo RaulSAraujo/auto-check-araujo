@@ -22,7 +22,7 @@ const categories = computed(() =>
 )
 
 const rows = computed(() =>
-  HOME_STATUS_ORDER.map((status) => ({
+  HOME_STATUS_ORDER.map(status => ({
     status,
     label: ORDEM_STATUS_LABEL[status],
     count: props.statusCounts[status],

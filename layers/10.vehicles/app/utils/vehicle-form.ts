@@ -113,8 +113,7 @@ export function validateVehicleForm(
       name: 'placa',
       message: 'Digite a placa'
     })
-  }
-  else if (plate.length !== 7) {
+  } else if (plate.length !== 7) {
     errors.push({
       name: 'placa',
       message: 'Placa incompleta. Use 7 caracteres (ex.: ABC1D23)'

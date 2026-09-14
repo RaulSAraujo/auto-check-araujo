@@ -104,7 +104,7 @@ const yFormatter = (value: number) =>
           <BarChart
             :data="chartData"
             :categories="categories"
-              :height="200"
+            :height="200"
             :y-axis="['count']"
             x-axis="day"
             :x-formatter="xFormatter"

@@ -20,7 +20,7 @@ const phones = computed(() => {
     const digits = raw.replace(/\D/g, '')
     return {
       label: formatPhoneBr(raw),
-                  href: digits ? `tel:${digits}` : null
+      href: digits ? `tel:${digits}` : null
     }
   })
 })

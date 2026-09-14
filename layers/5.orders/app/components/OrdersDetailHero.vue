@@ -15,7 +15,7 @@ const props = defineProps<{
 
 const emit = defineEmits<{
   'update:selectedStatus': [value: string]
-  back: []
+  'back': []
 }>()
 
 const status = computed(() => props.ordem.status as OrdemStatus)

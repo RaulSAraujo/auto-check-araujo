@@ -13,7 +13,7 @@ export const HOME_STATUS_HEX: Record<HomeActiveStatus, string> = {
 
 export function homeStatusCategories(dark = false) {
   return Object.fromEntries(
-    HOME_STATUS_ORDER.map((status) => [
+    HOME_STATUS_ORDER.map(status => [
       status,
       {
         name: ORDEM_STATUS_LABEL[status as OrdemStatus],

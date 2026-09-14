@@ -90,10 +90,6 @@ export type Database = {
         ]
       }
 
-
-
-
-
       clientes: {
         Row: {
           ativo: boolean
@@ -612,7 +608,6 @@ export type Database = {
     }
     Functions: {
 
-
       dashboard_stats: {
         Args: Record<PropertyKey, never>
         Returns: Json
@@ -626,7 +621,7 @@ export type Database = {
         Returns: Json
       }
       finance_statement: {
-        Args: { p_mes: string; p_limit?: number; p_offset?: number }
+        Args: { p_mes: string, p_limit?: number, p_offset?: number }
         Returns: {
           id: string
           tipo: string

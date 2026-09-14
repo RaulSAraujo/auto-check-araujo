@@ -15,7 +15,7 @@ const props = defineProps<{
 }>()
 
 const emit = defineEmits<{
-  'select': [date: Date]
+  select: [date: Date]
 }>()
 
 const weekdays = ['Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb', 'Dom']
@@ -58,8 +58,7 @@ function onDayKeydown(event: KeyboardEvent, index: number) {
     const current = days.value[index]
     if (current) emit('select', current)
     return
-  }
-  else {
+  } else {
     return
   }
 

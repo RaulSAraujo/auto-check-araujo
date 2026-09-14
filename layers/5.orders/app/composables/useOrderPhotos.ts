@@ -52,7 +52,7 @@ export function useOrderPhotos(
 
       const rows = (data || []) as OrdemFoto[]
       photos.value = await Promise.all(
-        rows.map(async (row) => ({
+        rows.map(async row => ({
           ...row,
           url: await signedUrl(row.storage_path)
         }))
