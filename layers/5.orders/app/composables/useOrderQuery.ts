@@ -15,7 +15,7 @@ export function useOrderQuery(id: MaybeRefOrGetter<string>) {
 
       if (error) throw error
 
-      const raw = data as OrderDetail
+      const raw = data as unknown as OrderDetail
       const appointmentsRel = Array.isArray(raw.agendamentos)
         ? raw.agendamentos
         : raw.agendamentos

@@ -14,7 +14,7 @@ export function useOrderItemsQuery(orderId: MaybeRefOrGetter<string>) {
         .order('ordem')
 
       if (error) throw error
-      return data as OrdemItem[]
+      return data as unknown as OrdemItem[]
     },
     { lazy: true }
   )
