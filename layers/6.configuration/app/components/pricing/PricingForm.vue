@@ -89,7 +89,6 @@ const creditCharge = computed(() =>
         <UFormField
           label="Horas produtivas / mês"
           name="horas_produtivas_mes"
-          hint="Para ratear o custo fixo"
         >
           <UInput
             v-model.number="draft.horas_produtivas_mes"
