@@ -53,7 +53,7 @@ function setPlaca(value: string) {
           :items="clienteItems"
           value-key="value"
           placeholder="Buscar proprietário…"
-          class="w-full"
+          class="min-h-11 w-full [&>button]:min-h-11"
           ignore-filter
           :loading="clientesPending"
           :disabled="disabled"
@@ -69,7 +69,7 @@ function setPlaca(value: string) {
       >
         <UInput
           :model-value="state.placa"
-          class="w-full font-mono uppercase"
+          class="min-h-11 w-full font-mono uppercase [&>input]:min-h-11"
           placeholder="ABC-1D23"
           maxlength="8"
           spellcheck="false"
@@ -89,7 +89,7 @@ function setPlaca(value: string) {
         >
           <UInput
             v-model="state.marca"
-            class="w-full"
+            class="min-h-11 w-full [&>input]:min-h-11"
             placeholder="Fiat…"
             autocomplete="off"
             enterkeyhint="next"
@@ -104,7 +104,7 @@ function setPlaca(value: string) {
         >
           <UInput
             v-model="state.modelo"
-            class="w-full"
+            class="min-h-11 w-full [&>input]:min-h-11"
             placeholder="Argo…"
             autocomplete="off"
             enterkeyhint="next"
@@ -121,7 +121,7 @@ function setPlaca(value: string) {
             v-model.number="state.ano"
             type="number"
             inputmode="numeric"
-            class="w-full font-mono tabular-nums"
+            class="min-h-11 w-full font-mono tabular-nums [&>input]:min-h-11"
             placeholder="2020"
             enterkeyhint="next"
             name="ano"
@@ -135,7 +135,7 @@ function setPlaca(value: string) {
         >
           <UInput
             v-model="state.cor"
-            class="w-full"
+            class="min-h-11 w-full [&>input]:min-h-11"
             placeholder="Prata…"
             autocomplete="off"
             enterkeyhint="next"
@@ -154,7 +154,7 @@ function setPlaca(value: string) {
             type="number"
             inputmode="numeric"
             min="0"
-            class="w-full font-mono tabular-nums"
+            class="min-h-11 w-full font-mono tabular-nums [&>input]:min-h-11"
             placeholder="45000"
             enterkeyhint="done"
             name="km_atual"
@@ -189,7 +189,7 @@ function setPlaca(value: string) {
         >
           <UTextarea
             v-model="state.observacoes"
-            class="w-full"
+            class="w-full [&>textarea]:min-h-24"
             :rows="2"
             autoresize
             :maxrows="6"
@@ -200,6 +200,13 @@ function setPlaca(value: string) {
           />
         </UFormField>
       </div>
+    </div>
+
+    <div
+      v-if="$slots.actions"
+      class="mt-6 border-t border-default pt-4"
+    >
+      <slot name="actions" />
     </div>
   </component>
 </template>

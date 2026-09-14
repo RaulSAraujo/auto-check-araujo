@@ -41,7 +41,71 @@ function rowMenuItems(supplier: Fornecedor, togglingId: string | null): Dropdown
 </script>
 
 <template>
-  <div class="min-w-0 overflow-x-auto">
+  <div class="space-y-2 md:hidden">
+    <article
+      v-for="supplier in suppliers"
+      :key="supplier.id"
+      class="rounded-xl border border-default bg-default p-3"
+      :class="!supplier.ativo ? 'opacity-55' : ''"
+    >
+      <div class="flex items-start justify-between gap-2">
+        <div class="min-w-0 space-y-1">
+          <p class="truncate font-medium text-highlighted">
+            {{ supplier.nome }}
+          </p>
+          <p
+            v-if="supplier.observacoes"
+            class="line-clamp-1 text-xs text-muted"
+          >
+            {{ supplier.observacoes }}
+          </p>
+        </div>
+        <UDropdownMenu
+          :items="rowMenuItems(supplier, togglingId)"
+          :content="{ align: 'end' }"
+        >
+          <UButton
+            icon="i-lucide-ellipsis"
+            color="neutral"
+            variant="ghost"
+            size="xs"
+            class="-mr-1 min-h-9 min-w-9 touch-manipulation"
+            :loading="togglingId === supplier.id"
+            aria-label="Ações do fornecedor"
+          />
+        </UDropdownMenu>
+      </div>
+
+      <div class="mt-3 flex items-center justify-between gap-3 border-t border-default pt-3">
+        <div class="min-w-0 space-y-0.5 text-sm text-muted">
+          <template v-if="supplier.telefone || supplier.email">
+            <p
+              v-if="supplier.telefone"
+              class="truncate tabular-nums"
+            >
+              {{ supplier.telefone }}
+            </p>
+            <p
+              v-if="supplier.email"
+              class="truncate"
+            >
+              {{ supplier.email }}
+            </p>
+          </template>
+          <p v-else>Sem contato cadastrado</p>
+        </div>
+        <UBadge
+          :color="supplier.ativo ? 'success' : 'neutral'"
+          variant="subtle"
+          size="sm"
+        >
+          {{ supplier.ativo ? 'Ativo' : 'Inativo' }}
+        </UBadge>
+      </div>
+    </article>
+  </div>
+
+  <div class="hidden min-w-0 overflow-x-auto md:block">
     <div>
       <table class="w-full min-w-[32rem] text-sm">
         <thead class="border-b border-default text-left text-xs text-muted">

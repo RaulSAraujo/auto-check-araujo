@@ -30,7 +30,11 @@ const hydrated = ref(false)
 watch(
   draftDefaults,
   (value) => {
-    draft.value = { ...value }
+    if (value) {
+      draft.value = { ...value }
+    } else {
+      draft.value = emptyPricingDraft()
+    }
     hydrated.value = true
   },
   { immediate: true }
@@ -63,6 +67,7 @@ async function onSave() {
               icon="i-lucide-refresh-cw"
               color="neutral"
               variant="ghost"
+              class="ml-auto"
               aria-label="Atualizar parâmetros"
               :loading="pending"
               @click="refresh()"

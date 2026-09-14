@@ -69,11 +69,23 @@ function cancelPay() {
 
 <template>
   <div class="min-w-0">
+    <div class="space-y-2 md:hidden">
+      <template v-if="loading"><USkeleton v-for="n in 3" :key="n" class="h-24 w-full rounded-xl" /></template>
+      <template v-else-if="accounts.length">
+        <div v-for="account in accounts" :key="account.id" class="rounded-xl bg-elevated/40 px-3 py-3 ring-1 ring-default/70">
+          <div class="flex items-center justify-between gap-3"><p class="min-w-0 truncate font-medium text-highlighted">{{ account.descricao }}</p><UBadge :color="accountStatusColor(displayAccountStatus(account))" variant="subtle" size="sm">{{ accountStatusLabel(displayAccountStatus(account)) }}</UBadge></div>
+          <p class="mt-1 truncate text-xs text-muted">{{ metaLine(account) }} · vence {{ formatDate(account.vencimento) }}</p>
+          <div class="mt-2 flex items-center justify-between gap-3"><span class="font-mono font-semibold">{{ formatMoney(Number(account.valor)) }}</span><UButton v-if="account.status === 'a_pagar'" label="Pagar" size="sm" icon="i-lucide-check" :loading="actingId === account.id" @click="startPay(account.id)" /></div>
+          <div v-if="payingId === account.id" class="mt-2 flex gap-2"><USelect v-model="payForma" :items="[...FORMA_PAGAMENTO_SELECT_ITEMS]" size="sm" class="min-w-0 flex-1" /><UButton icon="i-lucide-check" size="sm" square @click="confirmPay(account.id)" /><UButton icon="i-lucide-x" size="sm" color="neutral" variant="ghost" square @click="cancelPay" /></div>
+        </div>
+      </template>
+      <BaseEmptyState v-else icon="i-lucide-receipt">Nenhuma conta neste filtro.</BaseEmptyState>
+    </div>
     <UTable
       :data="accounts"
       :columns="columns"
       :loading="loading"
-      class="w-full min-w-0"
+      class="hidden w-full min-w-0 md:block"
     >
       <template #descricao-cell="{ row }">
         <div class="min-w-0">

@@ -94,6 +94,7 @@ async function onCreated() {
               <UButton
                 label="Novo colaborador"
                 icon="i-lucide-user-plus"
+                class="w-full justify-center sm:w-auto"
                 @click="createOpen = true"
               />
             </template>

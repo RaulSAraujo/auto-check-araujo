@@ -88,12 +88,12 @@ function cancelPay() {
 
     <ul
       v-else
-      class="divide-y divide-default overflow-hidden rounded-lg border border-default bg-default shadow-sm dark:border-accented dark:bg-elevated dark:shadow-none"
+      class="divide-y divide-default overflow-hidden rounded-xl border border-default bg-default shadow-sm dark:border-accented dark:bg-elevated dark:shadow-none"
     >
       <li
         v-for="account in accounts"
         :key="account.id"
-        class="flex flex-col gap-2 px-4 py-3 transition-colors duration-200 ease-[var(--ease-out)] hover:bg-elevated/60 sm:flex-row sm:items-center sm:justify-between"
+        class="grid grid-cols-[minmax(0,1fr)_auto] items-start gap-x-3 px-4 py-3 transition-colors duration-200 ease-[var(--ease-out)] hover:bg-elevated/60 sm:flex sm:items-center sm:justify-between"
       >
         <div class="min-w-0 space-y-0.5">
           <div class="flex flex-wrap items-center gap-2">
@@ -108,7 +108,7 @@ function cancelPay() {
               {{ accountStatusLabel(displayAccountStatus(account)) }}
             </UBadge>
           </div>
-          <p class="text-xs text-muted">
+          <p class="truncate text-xs text-muted">
             {{ account.financeiro_categorias?.nome || EMPTY_VALUE }}
             · vence
             <span class="font-mono tabular-nums">{{ formatDate(account.vencimento) }}</span>
@@ -119,7 +119,7 @@ function cancelPay() {
           </p>
         </div>
 
-        <div class="flex shrink-0 flex-nowrap items-center gap-2 whitespace-nowrap">
+        <div class="row-span-2 flex min-w-0 flex-wrap items-center justify-end gap-2 self-center whitespace-nowrap sm:shrink-0">
           <p class="font-mono text-base font-semibold tabular-nums text-highlighted">
             {{ formatMoney(Number(account.valor)) }}
           </p>

@@ -11,6 +11,7 @@ import {
   isPricingDraftValid,
   type PricingParamsDraft
 } from '../../utils/pricing'
+import PricingHelpIcon from './PricingHelpIcon.vue'
 
 defineOptions({ name: 'PricingForm' })
 
@@ -67,6 +68,7 @@ const canSave = computed(() => isPricingDraftValid(draft.value))
             v-model="draft.valor_hora"
             name="valor_hora"
             empty-as-zero
+            size="lg"
           />
         </UFormField>
 
@@ -84,6 +86,7 @@ const canSave = computed(() => isPricingDraftValid(draft.value))
             v-model="draft.custo_fixo_mensal"
             name="custo_fixo_mensal"
             empty-as-zero
+            size="lg"
           />
         </UFormField>
 
@@ -105,7 +108,7 @@ const canSave = computed(() => isPricingDraftValid(draft.value))
             min="0"
             max="100"
             step="0.1"
-            class="w-full font-mono tabular-nums"
+            class="min-h-11 w-full font-mono tabular-nums"
           />
         </UFormField>
 
@@ -126,13 +129,13 @@ const canSave = computed(() => isPricingDraftValid(draft.value))
             autocomplete="off"
             min="1"
             step="1"
-            class="w-full font-mono tabular-nums"
+            class="min-h-11 w-full font-mono tabular-nums"
           />
         </UFormField>
       </div>
 
       <div class="mt-4 rounded-lg border border-primary/20 bg-primary/5 px-4 py-3">
-        <div class="flex flex-col gap-1 sm:flex-row sm:items-end sm:justify-between">
+        <div class="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
           <div>
             <p class="inline-flex items-center gap-1 text-sm font-medium text-highlighted whitespace-nowrap">
               <PricingHelpIcon
@@ -141,14 +144,14 @@ const canSave = computed(() => isPricingDraftValid(draft.value))
               />
               Hora cobrada sugerida
             </p>
-            <p class="mt-1 font-mono text-xs tabular-nums text-muted whitespace-nowrap overflow-x-auto">
+            <p class="mt-1 font-mono text-xs leading-5 tabular-nums text-muted">
               ({{ formatMoney(draft.valor_hora) }}
               + {{ formatMoney(draft.custo_fixo_mensal) }}
               ÷ {{ draft.horas_produtivas_mes }} h)
               × (1 + {{ draft.margem_alvo }}%)
             </p>
           </div>
-          <p class="font-mono text-2xl font-semibold tabular-nums text-primary">
+          <p class="font-mono text-2xl font-semibold tabular-nums text-primary sm:text-right">
             {{ formatMoney(suggestedHourly) }}
           </p>
         </div>
@@ -180,7 +183,7 @@ const canSave = computed(() => isPricingDraftValid(draft.value))
             autocomplete="off"
             min="0"
             step="0.1"
-            class="w-full font-mono tabular-nums"
+            class="min-h-11 w-full font-mono tabular-nums"
           />
         </UFormField>
 
@@ -194,7 +197,7 @@ const canSave = computed(() => isPricingDraftValid(draft.value))
               Preço automático
             </span>
           </template>
-          <div class="flex h-9 items-center">
+          <div class="flex min-h-11 items-center rounded-md border border-default px-3">
             <USwitch
               v-model="draft.precificacao_automatica"
               aria-label="Preço automático"
@@ -238,7 +241,7 @@ const canSave = computed(() => isPricingDraftValid(draft.value))
             min="0"
             max="99.99"
             step="0.01"
-            class="w-full font-mono tabular-nums"
+            class="min-h-11 w-full font-mono tabular-nums"
           />
         </UFormField>
 
@@ -260,39 +263,41 @@ const canSave = computed(() => isPricingDraftValid(draft.value))
             min="0"
             max="99.99"
             step="0.01"
-            class="w-full font-mono tabular-nums"
+            class="min-h-11 w-full font-mono tabular-nums"
           />
         </UFormField>
       </div>
 
-      <div class="mt-4 space-y-3 rounded-lg border border-default bg-elevated/50 px-4 py-3 text-sm">
-        <div>
+      <div class="mt-4 grid gap-3 rounded-lg border border-default bg-elevated/50 px-4 py-3 text-sm sm:grid-cols-2">
+        <div class="space-y-1">
           <p class="text-muted">
             Na venda de {{ formatMoney(PRICING_EXAMPLE_SALE) }}, você recebe:
           </p>
-          <p class="mt-0.5 font-mono tabular-nums text-highlighted">
-            Débito {{ formatMoney(debitNet) }}
-            · Crédito {{ formatMoney(creditNet) }}
+          <p class="font-mono tabular-nums text-highlighted">
+            Débito {{ formatMoney(debitNet) }}<br>
+            Crédito {{ formatMoney(creditNet) }}
           </p>
         </div>
-        <div>
+        <div class="space-y-1">
           <p class="text-muted">
             Para receber {{ formatMoney(PRICING_EXAMPLE_SALE) }} líquidos, cobre:
           </p>
-          <p class="mt-0.5 font-mono tabular-nums text-highlighted">
-            Débito {{ formatMoney(debitCharge) }}
-            · Crédito {{ formatMoney(creditCharge) }}
+          <p class="font-mono tabular-nums text-highlighted">
+            Débito {{ formatMoney(debitCharge) }}<br>
+            Crédito {{ formatMoney(creditCharge) }}
           </p>
         </div>
       </div>
     </BasePanel>
 
-    <div class="flex justify-end sm:hidden">
+    <div class="sm:hidden">
       <UButton
         label="Salvar parâmetros"
         icon="i-lucide-save"
         :loading="saving"
         :disabled="!canSave"
+        block
+        class="min-h-11 touch-manipulation"
         @click="emit('save')"
       />
     </div>

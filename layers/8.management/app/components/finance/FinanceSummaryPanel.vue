@@ -21,8 +21,8 @@ defineProps<{
         Caixa do mês
       </h2>
 
-      <div class="overflow-hidden rounded-lg border border-default bg-default shadow-sm dark:border-accented dark:bg-elevated dark:shadow-none sm:grid sm:grid-cols-[1.4fr_1fr_1fr] sm:divide-x sm:divide-default">
-        <div class="px-5 py-5">
+      <div class="grid grid-cols-2 overflow-hidden rounded-xl border border-default bg-default shadow-sm dark:border-accented dark:bg-elevated dark:shadow-none sm:grid-cols-[1.4fr_1fr_1fr] sm:divide-x sm:divide-default">
+        <div class="col-span-2 px-5 py-5 sm:col-span-1">
           <p class="mb-2 text-xs font-medium uppercase tracking-wide text-muted">
             Saldo
           </p>
@@ -37,7 +37,7 @@ defineProps<{
             <span v-else>{{ formatMoney(summary.saldo) }}</span>
           </p>
         </div>
-        <div class="border-t border-default px-5 py-5 sm:border-t-0">
+        <div class="border-t border-default px-5 py-4 sm:border-t-0">
           <p class="mb-2 text-xs font-medium uppercase tracking-wide text-muted">
             Entradas
           </p>
@@ -49,7 +49,7 @@ defineProps<{
             <span v-else>{{ formatMoney(summary.entradas) }}</span>
           </p>
         </div>
-        <div class="border-t border-default px-5 py-5 sm:border-t-0">
+        <div class="border-l border-t border-default px-5 py-4 sm:border-l-0 sm:border-t-0">
           <p class="mb-2 text-xs font-medium uppercase tracking-wide text-muted">
             Saídas
           </p>
@@ -73,8 +73,8 @@ defineProps<{
         >
           Ordens de serviço
         </h2>
-        <div class="overflow-hidden rounded-lg border border-default bg-default shadow-sm dark:border-accented dark:bg-elevated dark:shadow-none sm:grid sm:grid-cols-3 sm:divide-x sm:divide-default">
-          <div class="px-4 py-4">
+        <div class="grid grid-cols-2 overflow-hidden rounded-xl border border-default bg-default shadow-sm dark:border-accented dark:bg-elevated dark:shadow-none sm:grid-cols-3 sm:divide-x sm:divide-default">
+          <div class="col-span-2 px-4 py-4 sm:col-span-1">
             <p class="mb-1.5 text-xs font-medium uppercase tracking-wide text-muted">
               Faturamento
             </p>
@@ -86,7 +86,7 @@ defineProps<{
               <span v-else>{{ formatMoney(summary.total_faturado) }}</span>
             </p>
           </div>
-          <div class="border-t border-default px-4 py-4 sm:border-t-0">
+          <div class="border-t border-default px-4 py-4 sm:border-l-0 sm:border-t-0">
             <p class="mb-1.5 text-xs font-medium uppercase tracking-wide text-muted">
               Recebido
             </p>
@@ -98,7 +98,7 @@ defineProps<{
               <span v-else>{{ formatMoney(summary.total_pago) }}</span>
             </p>
           </div>
-          <div class="border-t border-default px-4 py-4 sm:border-t-0">
+          <div class="border-l border-t border-default px-4 py-4 sm:border-l-0 sm:border-t-0">
             <p class="mb-1.5 text-xs font-medium uppercase tracking-wide text-muted">
               Pendente
             </p>
@@ -121,8 +121,8 @@ defineProps<{
         >
           Contas a pagar
         </h2>
-        <div class="overflow-hidden rounded-lg border border-default bg-default shadow-sm dark:border-accented dark:bg-elevated dark:shadow-none sm:grid sm:grid-cols-3 sm:divide-x sm:divide-default">
-          <div class="px-4 py-4">
+        <div class="grid grid-cols-2 overflow-hidden rounded-xl border border-default bg-default shadow-sm dark:border-accented dark:bg-elevated dark:shadow-none sm:grid-cols-3 sm:divide-x sm:divide-default">
+          <div class="col-span-2 px-4 py-4 sm:col-span-1">
             <p class="mb-1.5 text-xs font-medium uppercase tracking-wide text-muted">
               A pagar
             </p>
@@ -134,7 +134,7 @@ defineProps<{
               <span v-else>{{ formatMoney(summary.total_a_pagar) }}</span>
             </p>
           </div>
-          <div class="border-t border-default px-4 py-4 sm:border-t-0">
+          <div class="border-t border-default px-4 py-4 sm:border-l-0 sm:border-t-0">
             <p class="mb-1.5 text-xs font-medium uppercase tracking-wide text-muted">
               Pagas
             </p>
@@ -146,7 +146,7 @@ defineProps<{
               <span v-else>{{ formatMoney(summary.total_pago_despesas) }}</span>
             </p>
           </div>
-          <div class="border-t border-default px-4 py-4 sm:border-t-0">
+          <div class="border-l border-t border-default px-4 py-4 sm:border-l-0 sm:border-t-0">
             <p class="mb-1.5 text-xs font-medium uppercase tracking-wide text-muted">
               Vencido
             </p>

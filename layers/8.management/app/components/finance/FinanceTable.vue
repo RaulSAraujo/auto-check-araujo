@@ -31,11 +31,30 @@ function paymentLabel(forma: string | null): string {
 
 <template>
   <div>
+    <div class="space-y-2 md:hidden">
+      <template v-if="loading">
+        <USkeleton v-for="n in 3" :key="n" class="h-24 w-full rounded-xl" />
+      </template>
+      <template v-else-if="orders.length">
+        <NuxtLink v-for="order in orders" :key="order.id" :to="ORDER_ROUTES.detail(order.id)" class="block rounded-xl bg-elevated/40 px-3 py-3 ring-1 ring-default/70">
+          <div class="flex items-center justify-between gap-3">
+            <span class="font-mono font-semibold text-primary">{{ order.numero }}</span>
+            <UBadge :color="order.pago ? 'success' : 'warning'" variant="subtle" size="sm">{{ order.pago ? 'Pago' : 'Pendente' }}</UBadge>
+          </div>
+          <div class="mt-2 flex items-center justify-between gap-3 text-sm text-muted">
+            <span class="font-mono">{{ order.veiculos ? formatPlaca(order.veiculos.placa) : EMPTY_VALUE }}</span>
+            <span class="font-mono font-semibold text-highlighted">{{ order.valor_total != null ? formatMoney(Number(order.valor_total)) : EMPTY_VALUE }}</span>
+          </div>
+          <p class="mt-1 truncate font-mono text-xs text-muted">{{ order.concluida_em ? formatDateTime(order.concluida_em) : EMPTY_VALUE }} · {{ paymentLabel(order.forma_pagamento) }}</p>
+        </NuxtLink>
+      </template>
+      <BaseEmptyState v-else icon="i-lucide-wallet">Nenhuma OS concluída com valor neste mês.</BaseEmptyState>
+    </div>
     <UTable
       :data="orders"
       :columns="columns"
       :loading="loading"
-      class="w-full"
+      class="hidden w-full md:block"
     >
       <template #numero-cell="{ row }">
         <NuxtLink

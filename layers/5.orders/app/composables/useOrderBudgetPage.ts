@@ -17,7 +17,7 @@ export function useOrderBudgetPage(
   refreshItems: () => Promise<void>
 ) {
   const { data: catalog } = useServiceCatalog()
-  const { params: pricingParams } = usePricingParams()
+  const { params } = usePricingParams()
   const { can } = usePermissions()
   const {
     addOrderItem,
@@ -63,8 +63,8 @@ export function useOrderBudgetPage(
       tipo: entry.tipo,
       valorPadrao: Number(entry.valor_padrao),
       custo: Number(entry.custo) || 0,
-      markupPecas: Number(pricingParams.value?.markup_pecas) || 0,
-      precificacaoAutomatica: Boolean(pricingParams.value?.precificacao_automatica)
+      markupPecas: Number(params.value?.markup_pecas) || 0,
+      precificacaoAutomatica: Boolean(params.value?.precificacao_automatica)
     })
     if (!draft.quantidade || draft.quantidade < 1) {
       draft.quantidade = 1

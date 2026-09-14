@@ -31,17 +31,23 @@ function formatKm(value: number | null | undefined) {
         v-for="veiculo in veiculos"
         :key="veiculo.id"
         :to="VEHICLE_ROUTES.detail(veiculo.id)"
-        class="block min-h-24 rounded-lg border border-default bg-default px-3 py-3 active:bg-elevated"
+        class="group block min-h-24 rounded-xl bg-elevated/40 px-3 py-3 ring-1 ring-default/70 transition-colors active:bg-elevated"
       >
         <span class="flex items-center justify-between gap-3">
-          <span class="font-mono font-medium tracking-wide text-highlighted">{{ formatPlaca(veiculo.placa) }}</span>
+          <span class="font-mono font-semibold tracking-wide text-highlighted">{{ formatPlaca(veiculo.placa) }}</span>
           <UIcon
             name="i-lucide-chevron-right"
-            class="size-5 shrink-0 text-dimmed"
+            class="size-5 shrink-0 text-dimmed transition-transform group-active:translate-x-0.5"
           />
         </span>
         <span class="mt-2 block truncate text-sm text-muted">{{ [veiculo.marca, veiculo.modelo].filter(Boolean).join(' ') || EMPTY_VALUE }}</span>
-        <span class="mt-1 block truncate text-xs text-muted">{{ veiculo.clientes?.nome || EMPTY_VALUE }}</span>
+        <span class="mt-1 flex min-w-0 items-center gap-1.5 text-xs text-muted">
+          <UIcon
+            name="i-lucide-user-round"
+            class="size-3.5 shrink-0 text-dimmed"
+          />
+          <span class="truncate">{{ veiculo.clientes?.nome || EMPTY_VALUE }}</span>
+        </span>
       </NuxtLink>
     </template>
 

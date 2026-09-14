@@ -76,48 +76,53 @@ function onSubmit() {
             bare
           />
         </div>
-      </section>
-    </div>
 
-    <div
-      class="customers-edit-sticky sticky bottom-0 z-10 -mx-4 border-t border-default px-4 py-3 sm:mx-0 sm:rounded-lg sm:border"
-      :class="{ 'customers-edit-sticky--dirty': dirty && !loading }"
-    >
-      <div class="flex flex-col-reverse gap-2 sm:flex-row sm:items-center sm:justify-between">
-        <div class="flex flex-col items-stretch gap-2 sm:flex-row sm:items-center sm:gap-3">
-          <UButton
-            color="neutral"
-            variant="ghost"
-            label="Cancelar"
-            :disabled="loading"
-            class="min-h-11 justify-center touch-manipulation transition-transform motion-safe:active:scale-[0.98] sm:justify-start"
-            style="transition-duration: var(--duration-press)"
-            @click="emit('cancel')"
-          />
+        <div class="mt-6 border-t border-default pt-4">
+          <div class="flex items-center gap-2 sm:justify-between">
+            <div class="flex shrink-0 items-center sm:gap-3">
+              <UButton
+                color="neutral"
+                variant="ghost"
+                label="Cancelar"
+                :disabled="loading"
+                class="min-h-11 shrink-0 justify-center touch-manipulation transition-transform motion-safe:active:scale-[0.98] sm:justify-start"
+                style="transition-duration: var(--duration-press)"
+                @click="emit('cancel')"
+              />
+              <UBadge
+                v-if="dirty && !loading"
+                color="warning"
+                variant="subtle"
+                label="Alterações não salvas"
+                class="hidden justify-center sm:flex sm:justify-start"
+                aria-live="polite"
+              />
+            </div>
+            <UButton
+              type="submit"
+              :label="loading ? 'Salvando…' : 'Salvar alterações'"
+              icon="i-lucide-check"
+              :loading="loading"
+              class="min-h-11 flex-1 justify-center touch-manipulation transition-transform motion-safe:active:scale-[0.98] sm:min-w-44 sm:flex-none"
+              style="transition-duration: var(--duration-press)"
+            />
+          </div>
           <UBadge
             v-if="dirty && !loading"
             color="warning"
             variant="subtle"
             label="Alterações não salvas"
-            class="justify-center sm:justify-start"
+            class="mt-2 justify-center sm:hidden"
             aria-live="polite"
           />
+          <p
+            class="sr-only"
+            aria-live="polite"
+          >
+            {{ loading ? 'Salvando alterações…' : dirty ? 'Há alterações não salvas' : '' }}
+          </p>
         </div>
-        <UButton
-          type="submit"
-          :label="loading ? 'Salvando…' : 'Salvar alterações'"
-          icon="i-lucide-check"
-          :loading="loading"
-          class="min-h-11 justify-center touch-manipulation transition-transform motion-safe:active:scale-[0.98] sm:min-w-44"
-          style="transition-duration: var(--duration-press)"
-        />
-      </div>
-      <p
-        class="sr-only"
-        aria-live="polite"
-      >
-        {{ loading ? 'Salvando alterações…' : dirty ? 'Há alterações não salvas' : '' }}
-      </p>
+      </section>
     </div>
   </UForm>
 </template>
@@ -125,41 +130,6 @@ function onSubmit() {
 <style scoped>
 .customers-edit-panel {
   animation: customers-edit-rise 280ms var(--ease-out, cubic-bezier(0.16, 1, 0.3, 1)) both;
-}
-
-.customers-edit-sticky {
-  padding-bottom: max(0.75rem, env(safe-area-inset-bottom));
-  background: color-mix(in oklab, var(--ui-bg) 92%, transparent);
-  backdrop-filter: blur(10px) saturate(1.2);
-  -webkit-backdrop-filter: blur(10px) saturate(1.2);
-  box-shadow:
-    inset 0 1px 0 color-mix(in oklab, white 40%, transparent),
-    0 -8px 24px color-mix(in oklab, var(--ui-text) 4%, transparent);
-  transition: box-shadow var(--duration-ui) var(--ease-out);
-}
-
-.customers-edit-sticky--dirty {
-  box-shadow:
-    inset 0 1px 0 color-mix(in oklab, white 40%, transparent),
-    0 -8px 28px color-mix(in oklab, var(--ui-warning, #d97706) 12%, transparent);
-}
-
-:global(.dark) .customers-edit-sticky {
-  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.06);
-}
-
-:global(.dark) .customers-edit-sticky--dirty {
-  box-shadow:
-    inset 0 1px 0 rgb(255 255 255 / 0.06),
-    0 -8px 28px color-mix(in oklab, var(--ui-warning, #d97706) 18%, transparent);
-}
-
-@media (prefers-reduced-transparency: reduce) {
-  .customers-edit-sticky {
-    background: var(--ui-bg);
-    backdrop-filter: none;
-    -webkit-backdrop-filter: none;
-  }
 }
 
 @keyframes customers-edit-rise {
@@ -179,8 +149,5 @@ function onSubmit() {
     animation: none;
   }
 
-  .customers-edit-sticky {
-    transition: none;
-  }
 }
 </style>

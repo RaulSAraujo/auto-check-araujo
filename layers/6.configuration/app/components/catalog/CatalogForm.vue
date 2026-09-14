@@ -38,10 +38,10 @@ const emit = defineEmits<{
 
 const draftModel = defineModel<CatalogItemDraft>('draft', { required: true })
 
-const { params: pricingParams } = usePricingParams()
+const { params } = usePricingParams()
 
 const hourlyRate = computed(() => {
-  const row = pricingParams.value as PricingParamsRow | null
+  const row = params.value as PricingParamsRow | null
   const draft = row ? pricingDraftFromRow(row) : emptyPricingDraft()
   return calcSuggestedHourlyRate(draft)
 })

@@ -51,7 +51,7 @@ defineProps<{
       <li
         v-for="item in items"
         :key="item.id"
-        class="flex flex-col gap-1 px-4 py-3 transition-colors duration-200 ease-[var(--ease-out)] hover:bg-elevated/60 sm:flex-row sm:items-center sm:justify-between"
+        class="grid grid-cols-[minmax(0,1fr)_auto] items-start gap-x-3 px-4 py-3 transition-colors duration-200 ease-[var(--ease-out)] hover:bg-elevated/60 sm:flex sm:items-center sm:justify-between"
       >
         <div class="min-w-0 space-y-0.5">
           <div class="flex flex-wrap items-center gap-2">
@@ -66,7 +66,7 @@ defineProps<{
               {{ item.descricao }}
             </p>
           </div>
-          <p class="font-mono text-xs tabular-nums text-muted">
+          <p class="truncate font-mono text-xs tabular-nums text-muted">
             {{ formatDateTime(item.pago_em) }}
             <span v-if="item.meta"> · {{ item.meta }}</span>
             <span v-if="item.forma_pagamento">
@@ -76,7 +76,7 @@ defineProps<{
           </p>
         </div>
         <p
-          class="shrink-0 font-mono text-base font-semibold tabular-nums"
+          class="row-span-2 self-center text-right font-mono text-base font-semibold tabular-nums sm:shrink-0"
           :class="item.tipo === 'entrada' ? 'text-success' : 'text-highlighted'"
         >
           {{ item.tipo === 'entrada' ? '+' : '−' }}{{ formatMoney(item.valor) }}

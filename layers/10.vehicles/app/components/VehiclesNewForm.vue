@@ -75,35 +75,32 @@ function onSubmit() {
         :cliente-items="clienteItems"
         :clientes-pending="clientesPending"
         :disabled="loading"
-      />
-    </div>
-
-    <div class="vehicles-new-sticky sticky bottom-0 z-10 -mx-4 border-t border-default px-4 py-3 sm:mx-0 sm:rounded-lg sm:border">
-      <div class="flex flex-col-reverse gap-2 sm:flex-row sm:items-center sm:justify-between">
-        <UButton
-          color="neutral"
-          variant="ghost"
-          label="Cancelar"
-          :disabled="loading"
-          class="min-h-11 justify-center touch-manipulation transition-transform motion-safe:active:scale-[0.98] sm:justify-start"
-          style="transition-duration: var(--duration-press)"
-          @click="cancel"
-        />
-        <UButton
-          type="submit"
-          :label="loading ? 'Salvando…' : 'Salvar veículo'"
-          icon="i-lucide-car"
-          :loading="loading"
-          class="min-h-11 justify-center touch-manipulation transition-transform motion-safe:active:scale-[0.98] sm:min-w-44"
-          style="transition-duration: var(--duration-press)"
-        />
-      </div>
-      <p
-        class="sr-only"
-        aria-live="polite"
       >
-        {{ loading ? 'Salvando veículo…' : '' }}
-      </p>
+        <template #actions>
+          <div class="flex items-center gap-2 sm:justify-between">
+            <UButton
+              color="neutral"
+              variant="ghost"
+              label="Cancelar"
+              :disabled="loading"
+              class="min-h-11 shrink-0 justify-center touch-manipulation transition-transform motion-safe:active:scale-[0.98] sm:justify-start"
+              style="transition-duration: var(--duration-press)"
+              @click="cancel"
+            />
+            <UButton
+              type="submit"
+              :label="loading ? 'Salvando…' : 'Salvar veículo'"
+              icon="i-lucide-car"
+              :loading="loading"
+              class="min-h-11 flex-1 justify-center touch-manipulation transition-transform motion-safe:active:scale-[0.98] sm:min-w-44 sm:flex-none"
+              style="transition-duration: var(--duration-press)"
+            />
+          </div>
+          <p class="sr-only" aria-live="polite">
+            {{ loading ? 'Salvando veículo…' : '' }}
+          </p>
+        </template>
+      </VehiclesFormFields>
     </div>
   </UForm>
 </template>
@@ -111,28 +108,6 @@ function onSubmit() {
 <style scoped>
 .vehicles-new-panel {
   animation: vehicles-new-rise 280ms var(--ease-out, cubic-bezier(0.16, 1, 0.3, 1)) both;
-}
-
-.vehicles-new-sticky {
-  padding-bottom: max(0.75rem, env(safe-area-inset-bottom));
-  background: color-mix(in oklab, var(--ui-bg) 92%, transparent);
-  backdrop-filter: blur(10px) saturate(1.2);
-  -webkit-backdrop-filter: blur(10px) saturate(1.2);
-  box-shadow:
-    inset 0 1px 0 color-mix(in oklab, white 40%, transparent),
-    0 -8px 24px color-mix(in oklab, var(--ui-text) 4%, transparent);
-}
-
-:global(.dark) .vehicles-new-sticky {
-  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.06);
-}
-
-@media (prefers-reduced-transparency: reduce) {
-  .vehicles-new-sticky {
-    background: var(--ui-bg);
-    backdrop-filter: none;
-    -webkit-backdrop-filter: none;
-  }
 }
 
 @keyframes vehicles-new-rise {

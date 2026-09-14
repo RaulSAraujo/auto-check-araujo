@@ -59,35 +59,35 @@ function onSubmit() {
       <CustomersFormFields
         v-model="state"
         :disabled="loading"
-      />
-    </div>
-
-    <div class="customers-new-sticky sticky bottom-0 z-10 -mx-4 border-t border-default px-4 py-3 sm:mx-0 sm:rounded-lg sm:border">
-      <div class="flex flex-col-reverse gap-2 sm:flex-row sm:items-center sm:justify-between">
-        <UButton
-          :to="CUSTOMER_ROUTES.list"
-          color="neutral"
-          variant="ghost"
-          label="Cancelar"
-          :disabled="loading"
-          class="min-h-11 justify-center touch-manipulation transition-transform motion-safe:active:scale-[0.98] sm:justify-start"
-          style="transition-duration: var(--duration-press)"
-        />
-        <UButton
-          type="submit"
-          :label="loading ? 'Salvando…' : 'Salvar cliente'"
-          icon="i-lucide-user-plus"
-          :loading="loading"
-          class="min-h-11 justify-center touch-manipulation transition-transform motion-safe:active:scale-[0.98] sm:min-w-44"
-          style="transition-duration: var(--duration-press)"
-        />
-      </div>
-      <p
-        class="sr-only"
-        aria-live="polite"
       >
-        {{ loading ? 'Salvando cliente…' : '' }}
-      </p>
+        <template #actions>
+          <div class="flex items-center gap-2 sm:justify-between">
+            <UButton
+              :to="CUSTOMER_ROUTES.list"
+              color="neutral"
+              variant="ghost"
+              label="Cancelar"
+              :disabled="loading"
+              class="min-h-11 shrink-0 justify-center touch-manipulation transition-transform motion-safe:active:scale-[0.98] sm:justify-start"
+              style="transition-duration: var(--duration-press)"
+            />
+            <UButton
+              type="submit"
+              :label="loading ? 'Salvando…' : 'Salvar cliente'"
+              icon="i-lucide-user-plus"
+              :loading="loading"
+              class="min-h-11 flex-1 justify-center touch-manipulation transition-transform motion-safe:active:scale-[0.98] sm:min-w-44 sm:flex-none"
+              style="transition-duration: var(--duration-press)"
+            />
+          </div>
+          <p
+            class="sr-only"
+            aria-live="polite"
+          >
+            {{ loading ? 'Salvando cliente…' : '' }}
+          </p>
+        </template>
+      </CustomersFormFields>
     </div>
   </UForm>
 </template>
@@ -95,28 +95,6 @@ function onSubmit() {
 <style scoped>
 .customers-new-panel {
   animation: customers-new-rise 280ms var(--ease-out, cubic-bezier(0.16, 1, 0.3, 1)) both;
-}
-
-.customers-new-sticky {
-  padding-bottom: max(0.75rem, env(safe-area-inset-bottom));
-  background: color-mix(in oklab, var(--ui-bg) 92%, transparent);
-  backdrop-filter: blur(10px) saturate(1.2);
-  -webkit-backdrop-filter: blur(10px) saturate(1.2);
-  box-shadow:
-    inset 0 1px 0 color-mix(in oklab, white 40%, transparent),
-    0 -8px 24px color-mix(in oklab, var(--ui-text) 4%, transparent);
-}
-
-:global(.dark) .customers-new-sticky {
-  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.06);
-}
-
-@media (prefers-reduced-transparency: reduce) {
-  .customers-new-sticky {
-    background: var(--ui-bg);
-    backdrop-filter: none;
-    -webkit-backdrop-filter: none;
-  }
 }
 
 @keyframes customers-new-rise {

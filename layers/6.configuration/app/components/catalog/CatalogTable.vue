@@ -47,7 +47,80 @@ function rowMenuItems(item: CatalogItemRow, togglingId: string | null): Dropdown
 </script>
 
 <template>
-  <div class="min-w-0 overflow-x-auto">
+  <div class="space-y-2 md:hidden">
+    <article
+      v-for="item in items"
+      :key="item.id"
+      class="rounded-xl border border-default bg-default p-3"
+      :class="!item.ativo ? 'opacity-55' : ''"
+    >
+      <div class="flex items-start justify-between gap-2">
+        <div class="min-w-0 space-y-1">
+          <p class="truncate font-medium text-highlighted">
+            {{ item.nome }}
+          </p>
+          <p
+            v-if="item.tipo === 'kit' && item.catalogo_kit_itens?.length"
+            class="text-xs text-muted"
+          >
+            {{ item.catalogo_kit_itens.length }} {{ item.catalogo_kit_itens.length === 1 ? 'item no kit' : 'itens no kit' }}
+          </p>
+        </div>
+        <UDropdownMenu
+          :items="rowMenuItems(item, togglingId)"
+          :content="{ align: 'end' }"
+        >
+          <UButton
+            icon="i-lucide-ellipsis"
+            color="neutral"
+            variant="ghost"
+            size="xs"
+            class="-mr-1 min-h-9 min-w-9 touch-manipulation"
+            :loading="togglingId === item.id"
+            aria-label="Ações do item"
+          />
+        </UDropdownMenu>
+      </div>
+
+      <div class="mt-3 flex flex-wrap items-center gap-2">
+        <UBadge
+          :color="CATALOG_TIPO_COLOR[item.tipo as OrdemItemTipo]"
+          variant="subtle"
+          size="sm"
+        >
+          {{ ORDEM_ITEM_TIPO_LABEL[item.tipo as OrdemItemTipo] }}
+        </UBadge>
+        <UBadge
+          :color="item.ativo ? 'success' : 'neutral'"
+          variant="subtle"
+          size="sm"
+        >
+          {{ item.ativo ? 'Ativo' : 'Inativo' }}
+        </UBadge>
+      </div>
+
+      <div class="mt-3 grid grid-cols-2 gap-3 border-t border-default pt-3 text-sm">
+        <div>
+          <p class="text-xs text-muted">Valor padrão</p>
+          <p class="font-mono font-medium tabular-nums text-highlighted">{{ formatMoney(Number(item.valor_padrao)) }}</p>
+        </div>
+        <div>
+          <p class="text-xs text-muted">{{ item.tipo === 'servico' ? 'Custo' : 'Estoque' }}</p>
+          <p class="font-mono font-medium tabular-nums text-highlighted">
+            {{ item.tipo === 'servico' ? formatMoney(Number(item.custo)) : item.estoque ?? 0 }}
+          </p>
+        </div>
+      </div>
+      <p
+        v-if="item.fornecedores?.nome"
+        class="mt-2 truncate text-xs text-muted"
+      >
+        {{ item.fornecedores.nome }}
+      </p>
+    </article>
+  </div>
+
+  <div class="hidden min-w-0 overflow-x-auto md:block">
     <div>
       <table class="w-full min-w-0 text-sm sm:min-w-[36rem]">
         <thead class="border-b border-default text-left text-xs text-muted">

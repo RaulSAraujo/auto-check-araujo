@@ -50,12 +50,12 @@ const { can } = usePermissions()
             v-model="q"
             icon="i-lucide-search"
             placeholder="Buscar por nome, telefone, documento ou e-mail"
-            class="min-h-11 flex-1 [&>input]:min-h-11"
+            class="flex-1"
           />
           <USelect
             v-model="statusFilter"
             :items="[...statusItems]"
-            class="min-h-11 sm:w-40"
+            class="sm:w-40"
           />
         </div>
 

@@ -19,7 +19,7 @@ export function useOrderPayment(
   const supabase = useTypedSupabaseClient()
   const toast = useToast()
   const { can } = usePermissions()
-  const { params: pricingParams } = usePricingParams()
+  const { params } = usePricingParams()
 
   const state = reactive<PaymentFormState>(emptyPaymentForm())
   const saving = ref(false)
@@ -41,7 +41,7 @@ export function useOrderPayment(
   })
 
   const cardFees = computed(() => {
-    const row = pricingParams.value as PricingParamsRow | null
+    const row = params.value as PricingParamsRow | null
     if (!row) return { debito: 0, credito: 0 }
     const draft = pricingDraftFromRow(row)
     return {

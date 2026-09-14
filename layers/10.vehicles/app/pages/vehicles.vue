@@ -23,6 +23,7 @@ const { can } = usePermissions()
               :to="VEHICLE_ROUTES.new"
               icon="i-lucide-plus"
               label="Novo veículo"
+              class="w-full justify-center sm:w-auto"
             />
           </template>
         </BasePageHeader>
@@ -31,7 +32,7 @@ const { can } = usePermissions()
           v-model="q"
           icon="i-lucide-search"
           placeholder="Pesquisar por placa…"
-          class="max-w-md font-mono uppercase"
+          class="w-full font-mono uppercase sm:max-w-md"
           autocomplete="off"
           spellcheck="false"
         />

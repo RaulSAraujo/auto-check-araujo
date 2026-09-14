@@ -83,7 +83,7 @@ function setEmail(index: number, value: string) {
       >
         <UInput
           v-model="state.nome"
-          class="w-full"
+          class="min-h-11 w-full [&>input]:min-h-11"
           placeholder="Maria Silva…"
           autocomplete="name"
           autocapitalize="words"
@@ -109,7 +109,7 @@ function setEmail(index: number, value: string) {
               autocomplete="tel"
               enterkeyhint="next"
               spellcheck="false"
-              class="min-w-0 w-full"
+              class="min-h-11 min-w-0 w-full [&>input]:min-h-11"
               placeholder="(16) 99999-9999…"
               :name="index === 1 ? 'telefones' : `telefones.${index - 1}`"
               :disabled="disabled"
@@ -156,7 +156,7 @@ function setEmail(index: number, value: string) {
               autocomplete="email"
               enterkeyhint="next"
               spellcheck="false"
-              class="min-w-0 w-full"
+              class="min-h-11 min-w-0 w-full [&>input]:min-h-11"
               placeholder="maria@email.com…"
               :name="index === 1 ? 'emails' : `emails.${index - 1}`"
               :disabled="disabled"
@@ -200,7 +200,7 @@ function setEmail(index: number, value: string) {
           spellcheck="false"
           enterkeyhint="done"
           name="documento"
-          class="w-full font-mono tabular-nums"
+          class="min-h-11 w-full font-mono tabular-nums [&>input]:min-h-11"
           placeholder="000.000.000-00…"
           :disabled="disabled"
           @update:model-value="state.documento = formatDocumento($event)"
@@ -233,7 +233,7 @@ function setEmail(index: number, value: string) {
         >
           <UTextarea
             v-model="state.observacoes"
-            class="w-full"
+            class="w-full [&>textarea]:min-h-24"
             :rows="2"
             autoresize
             :maxrows="6"
@@ -244,6 +244,13 @@ function setEmail(index: number, value: string) {
           />
         </UFormField>
       </div>
+    </div>
+
+    <div
+      v-if="$slots.actions"
+      class="mt-6 border-t border-default pt-4"
+    >
+      <slot name="actions" />
     </div>
   </component>
 </template>

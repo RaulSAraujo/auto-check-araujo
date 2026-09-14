@@ -53,11 +53,21 @@ function onPapelChange(id: string, papel: ColaboradorPapel) {
 </script>
 
 <template>
+  <div class="space-y-2 md:hidden">
+    <template v-if="loading"><USkeleton v-for="n in 3" :key="n" class="h-24 w-full rounded-xl" /></template>
+    <template v-else-if="collaborators.length">
+      <div v-for="collaborator in collaborators" :key="collaborator.id" class="rounded-xl bg-elevated/40 p-3 ring-1 ring-default/70">
+        <div class="flex items-center gap-3"><UAvatar :text="initials(collaborator.nome)" size="md" :alt="collaborator.nome" /><div class="min-w-0 flex-1"><p class="truncate font-semibold text-highlighted">{{ collaborator.nome }}</p><p class="truncate font-mono text-xs text-muted">{{ collaborator.username }}</p></div><UBadge v-if="collaborator.id === currentUserId" color="neutral" variant="subtle" size="sm">Você</UBadge></div>
+        <div class="mt-3 flex items-center gap-2"><USelect v-if="collaborator.id !== currentUserId" :model-value="collaborator.papel" :items="papelItems" value-key="value" :loading="updatingId === collaborator.id" class="min-w-0 flex-1" @update:model-value="onPapelChange(collaborator.id, $event as ColaboradorPapel)" /><UBadge v-else :color="PAPEL_COLOR[collaborator.papel]" variant="subtle">{{ COLABORADOR_PAPEL_LABEL[collaborator.papel] }}</UBadge><UButton icon="i-lucide-key-round" color="neutral" variant="ghost" square :aria-label="`Redefinir senha de ${collaborator.nome}`" @click="emit('reset-password', collaborator)" /></div>
+      </div>
+    </template>
+    <BaseEmptyState v-else icon="i-lucide-users">Nenhum colaborador ainda.</BaseEmptyState>
+  </div>
   <UTable
     :data="collaborators"
     :columns="columns"
     :loading="loading"
-    class="w-full"
+    class="hidden w-full md:block"
     :ui="{
       root: 'rounded-none border-0 bg-transparent shadow-none',
       base: 'rounded-none bg-transparent'

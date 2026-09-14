@@ -29,11 +29,57 @@ defineProps<{
       </p>
     </div>
 
+    <div class="space-y-2 md:hidden">
+      <template v-if="loading">
+        <USkeleton
+          v-for="n in 3"
+          :key="n"
+          class="h-24 w-full rounded-xl"
+        />
+      </template>
+
+      <template v-else-if="ordens.length">
+        <NuxtLink
+          v-for="ordem in ordens"
+          :key="ordem.id"
+          :to="`/ordens/${ordem.id}`"
+          class="group block min-h-24 rounded-xl bg-elevated/40 px-3 py-3 ring-1 ring-default/70 transition-colors active:bg-elevated"
+        >
+          <span class="flex items-center justify-between gap-3">
+            <span class="font-mono font-semibold tabular-nums text-primary">{{ ordem.numero }}</span>
+            <UBadge
+              :color="ORDEM_STATUS_COLOR[ordem.status as OrdemStatus]"
+              variant="subtle"
+              size="sm"
+              class="shrink-0"
+            >
+              {{ ORDEM_STATUS_LABEL[ordem.status as OrdemStatus] }}
+            </UBadge>
+          </span>
+          <span class="mt-2 flex items-center justify-between gap-3 text-sm text-muted">
+            <span class="font-mono truncate tracking-wide">{{ ordem.veiculos ? formatPlaca(ordem.veiculos.placa) : '—' }}</span>
+            <UIcon
+              name="i-lucide-chevron-right"
+              class="size-5 shrink-0 text-dimmed transition-transform group-active:translate-x-0.5"
+            />
+          </span>
+          <span class="mt-1 block font-mono text-xs tabular-nums text-muted">{{ formatDateTime(ordem.aberta_em) }}</span>
+        </NuxtLink>
+      </template>
+
+      <BaseEmptyState
+        v-else
+        icon="i-lucide-clipboard-list"
+      >
+        Nenhuma OS neste cliente.
+      </BaseEmptyState>
+    </div>
+
     <UTable
       :data="ordens"
       :columns="CUSTOMER_ORDER_COLUMNS"
       :loading="loading"
-      class="w-full"
+      class="hidden w-full md:block"
     >
       <template #numero-cell="{ row }">
         <NuxtLink
