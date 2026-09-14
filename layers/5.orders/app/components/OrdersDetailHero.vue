@@ -102,7 +102,6 @@ const statusChanged = computed(() => props.selectedStatus !== props.ordem.status
           >
             {{ ORDEM_STATUS_LABEL[status] }}
           </UBadge>
-
         </div>
       </div>
     </div>

@@ -31,73 +31,73 @@ function paymentLabel(forma: string | null): string {
 
 <template>
   <div>
-  <UTable
-    :data="orders"
-    :columns="columns"
-    :loading="loading"
-    class="w-full"
-  >
-    <template #numero-cell="{ row }">
-      <NuxtLink
-        :to="ORDER_ROUTES.detail(row.original.id)"
-        class="font-mono font-medium tabular-nums text-primary hover:underline"
-      >
-        {{ row.original.numero }}
-      </NuxtLink>
-    </template>
+    <UTable
+      :data="orders"
+      :columns="columns"
+      :loading="loading"
+      class="w-full"
+    >
+      <template #numero-cell="{ row }">
+        <NuxtLink
+          :to="ORDER_ROUTES.detail(row.original.id)"
+          class="font-mono font-medium tabular-nums text-primary hover:underline"
+        >
+          {{ row.original.numero }}
+        </NuxtLink>
+      </template>
 
-    <template #placa-cell="{ row }">
-      <span class="font-mono tracking-wide">
-        {{ row.original.veiculos ? formatPlaca(row.original.veiculos.placa) : EMPTY_VALUE }}
-      </span>
-    </template>
+      <template #placa-cell="{ row }">
+        <span class="font-mono tracking-wide">
+          {{ row.original.veiculos ? formatPlaca(row.original.veiculos.placa) : EMPTY_VALUE }}
+        </span>
+      </template>
 
-    <template #concluida_em-cell="{ row }">
-      <span class="font-mono tabular-nums">
-        {{ row.original.concluida_em ? formatDateTime(row.original.concluida_em) : EMPTY_VALUE }}
-      </span>
-    </template>
+      <template #concluida_em-cell="{ row }">
+        <span class="font-mono tabular-nums">
+          {{ row.original.concluida_em ? formatDateTime(row.original.concluida_em) : EMPTY_VALUE }}
+        </span>
+      </template>
 
-    <template #valor_total-cell="{ row }">
-      <span class="font-mono tabular-nums">
-        {{ row.original.valor_total != null ? formatMoney(Number(row.original.valor_total)) : EMPTY_VALUE }}
-      </span>
-    </template>
+      <template #valor_total-cell="{ row }">
+        <span class="font-mono tabular-nums">
+          {{ row.original.valor_total != null ? formatMoney(Number(row.original.valor_total)) : EMPTY_VALUE }}
+        </span>
+      </template>
 
-    <template #pagamento-cell="{ row }">
-      <div class="space-y-1">
-        <UBadge
-          :color="row.original.pago ? 'success' : 'warning'"
-          variant="subtle"
+      <template #pagamento-cell="{ row }">
+        <div class="space-y-1">
+          <UBadge
+            :color="row.original.pago ? 'success' : 'warning'"
+            variant="subtle"
+            size="sm"
+          >
+            {{ row.original.pago ? 'Pago' : 'Pendente' }}
+          </UBadge>
+          <p
+            v-if="row.original.pago && row.original.forma_pagamento"
+            class="text-xs text-muted"
+          >
+            {{ paymentLabel(row.original.forma_pagamento) }}
+          </p>
+        </div>
+      </template>
+
+      <template #actions-cell="{ row }">
+        <UButton
+          :to="ORDER_ROUTES.detail(row.original.id)"
+          icon="i-lucide-chevron-right"
+          color="neutral"
+          variant="ghost"
           size="sm"
-        >
-          {{ row.original.pago ? 'Pago' : 'Pendente' }}
-        </UBadge>
-        <p
-          v-if="row.original.pago && row.original.forma_pagamento"
-          class="text-xs text-muted"
-        >
-          {{ paymentLabel(row.original.forma_pagamento) }}
-        </p>
-      </div>
-    </template>
+          aria-label="Abrir ordem de serviço"
+        />
+      </template>
 
-    <template #actions-cell="{ row }">
-      <UButton
-        :to="ORDER_ROUTES.detail(row.original.id)"
-        icon="i-lucide-chevron-right"
-        color="neutral"
-        variant="ghost"
-        size="sm"
-        aria-label="Abrir ordem de serviço"
-      />
-    </template>
-
-    <template #empty>
-      <BaseEmptyState icon="i-lucide-wallet">
-        Nenhuma OS concluída com valor neste mês.
-      </BaseEmptyState>
-    </template>
-  </UTable>
+      <template #empty>
+        <BaseEmptyState icon="i-lucide-wallet">
+          Nenhuma OS concluída com valor neste mês.
+        </BaseEmptyState>
+      </template>
+    </UTable>
   </div>
 </template>
