@@ -1,48 +1,43 @@
 <script setup lang="ts">
+import type { DropdownMenuItem } from '@nuxt/ui'
 import type { Fornecedor } from '~~/shared/types/database'
 import { EMPTY_VALUE } from '~~/shared/utils/empty'
-import {
-  emptySupplierDraft,
-  isSupplierDraftValid,
-  type SupplierDraft
-} from '../../utils/catalog'
 
 defineOptions({ name: 'CatalogSuppliersTable' })
 
-const props = defineProps<{
+defineProps<{
   suppliers: Fornecedor[]
-  savingId: string | null
   togglingId: string | null
 }>()
 
 const emit = defineEmits<{
-  save: [payload: { id: string, draft: SupplierDraft }]
+  edit: [payload: { id: string }]
   toggleAtivo: [payload: { id: string, ativo: boolean }]
+  delete: [payload: { id: string }]
 }>()
 
-const editingId = ref<string | null>(null)
-const editDraft = reactive<SupplierDraft>(emptySupplierDraft())
-
-function startEdit(supplier: Fornecedor) {
-  editingId.value = supplier.id
-  editDraft.nome = supplier.nome
-  editDraft.telefone = supplier.telefone || ''
-  editDraft.email = supplier.email || ''
-  editDraft.observacoes = supplier.observacoes || ''
+function rowMenuItems(supplier: Fornecedor, togglingId: string | null): DropdownMenuItem[][] {
+  return [[
+    {
+      label: 'Editar',
+      icon: 'i-lucide-pencil',
+      onSelect: () => { emit('edit', { id: supplier.id }) }
+    },
+    {
+      label: supplier.ativo ? 'Desativar' : 'Reativar',
+      icon: supplier.ativo ? 'i-lucide-eye-off' : 'i-lucide-eye',
+      color: supplier.ativo ? 'warning' : 'success',
+      disabled: togglingId === supplier.id,
+      onSelect: () => { emit('toggleAtivo', { id: supplier.id, ativo: !supplier.ativo }) }
+    },
+    {
+      label: 'Excluir',
+      icon: 'i-lucide-trash',
+      color: 'error',
+      onSelect: () => { emit('delete', { id: supplier.id }) }
+    }
+  ]]
 }
-
-function cancelEdit() {
-  editingId.value = null
-}
-
-function saveEdit(id: string) {
-  if (!isSupplierDraftValid(editDraft)) return
-  emit('save', { id, draft: { ...editDraft } })
-}
-
-watch(() => props.savingId, (id) => {
-  if (!id) editingId.value = null
-})
 </script>
 
 <template>
@@ -57,16 +52,13 @@ watch(() => props.savingId, (id) => {
             <th class="px-3 py-2.5 font-medium">
               Telefone
             </th>
-            <th
-              class="px-3 py-2.5 font-medium"
-              :class="editingId ? 'table-cell' : 'hidden sm:table-cell'"
-            >
+            <th class="hidden px-3 py-2.5 font-medium sm:table-cell">
               E-mail
             </th>
             <th class="px-3 py-2.5 font-medium">
               Status
             </th>
-            <th class="w-24 px-3 py-2.5">
+            <th class="w-12 px-3 py-2.5">
               <span class="sr-only">Ações</span>
             </th>
           </tr>
@@ -78,19 +70,8 @@ watch(() => props.savingId, (id) => {
             class="motion-safe:transition-colors hover:bg-elevated/40"
             :class="!supplier.ativo ? 'opacity-55' : ''"
           >
-            <td class="min-w-0 px-3 py-2.5 align-top">
-              <UInput
-                v-if="editingId === supplier.id"
-                v-model="editDraft.nome"
-                size="sm"
-                aria-label="Nome"
-                autocomplete="organization"
-                class="w-full min-w-40"
-              />
-              <div
-                v-else
-                class="min-w-0 space-y-0.5"
-              >
+            <td class="min-w-0 px-3 py-2.5 align-middle">
+              <div class="min-w-0 space-y-0.5">
                 <span class="block truncate font-medium text-highlighted">{{ supplier.nome }}</span>
                 <p
                   v-if="supplier.observacoes"
@@ -100,42 +81,13 @@ watch(() => props.savingId, (id) => {
                 </p>
               </div>
             </td>
-            <td class="px-3 py-2.5 align-top">
-              <UInput
-                v-if="editingId === supplier.id"
-                v-model="editDraft.telefone"
-                type="tel"
-                inputmode="tel"
-                size="sm"
-                aria-label="Telefone"
-                autocomplete="tel"
-                class="w-full min-w-32 tabular-nums"
-              />
-              <span
-                v-else
-                class="text-muted tabular-nums"
-              >{{ supplier.telefone || EMPTY_VALUE }}</span>
+            <td class="px-3 py-2.5 align-middle tabular-nums text-muted">
+              {{ supplier.telefone || EMPTY_VALUE }}
             </td>
-            <td
-              class="min-w-0 px-3 py-2.5 align-top"
-              :class="editingId === supplier.id ? 'table-cell' : 'hidden sm:table-cell'"
-            >
-              <UInput
-                v-if="editingId === supplier.id"
-                v-model="editDraft.email"
-                type="email"
-                size="sm"
-                aria-label="E-mail"
-                autocomplete="email"
-                spellcheck="false"
-                class="w-full min-w-40"
-              />
-              <span
-                v-else
-                class="block truncate text-muted"
-              >{{ supplier.email || EMPTY_VALUE }}</span>
+            <td class="hidden min-w-0 px-3 py-2.5 align-middle sm:table-cell">
+              <span class="block truncate text-muted">{{ supplier.email || EMPTY_VALUE }}</span>
             </td>
-            <td class="px-3 py-2.5 align-top">
+            <td class="px-3 py-2.5 align-middle">
               <UBadge
                 :color="supplier.ativo ? 'success' : 'neutral'"
                 variant="subtle"
@@ -144,56 +96,22 @@ watch(() => props.savingId, (id) => {
                 {{ supplier.ativo ? 'Ativo' : 'Inativo' }}
               </UBadge>
             </td>
-            <td class="px-3 py-2.5 align-top">
-              <div class="flex justify-end gap-0.5">
-                <template v-if="editingId === supplier.id">
-                  <UTooltip text="Salvar">
-                    <UButton
-                      icon="i-lucide-check"
-                      color="success"
-                      variant="ghost"
-                      size="xs"
-                      :loading="savingId === supplier.id"
-                      :disabled="!isSupplierDraftValid(editDraft)"
-                      aria-label="Salvar"
-                      @click="saveEdit(supplier.id)"
-                    />
-                  </UTooltip>
-                  <UTooltip text="Cancelar">
-                    <UButton
-                      icon="i-lucide-x"
-                      color="neutral"
-                      variant="ghost"
-                      size="xs"
-                      :disabled="savingId === supplier.id"
-                      aria-label="Cancelar"
-                      @click="cancelEdit"
-                    />
-                  </UTooltip>
-                </template>
-                <template v-else>
-                  <UTooltip text="Editar">
-                    <UButton
-                      icon="i-lucide-pencil"
-                      color="neutral"
-                      variant="ghost"
-                      size="xs"
-                      aria-label="Editar"
-                      @click="startEdit(supplier)"
-                    />
-                  </UTooltip>
-                  <UTooltip :text="supplier.ativo ? 'Desativar' : 'Reativar'">
-                    <UButton
-                      :icon="supplier.ativo ? 'i-lucide-eye-off' : 'i-lucide-eye'"
-                      :color="supplier.ativo ? 'warning' : 'success'"
-                      variant="ghost"
-                      size="xs"
-                      :loading="togglingId === supplier.id"
-                      :aria-label="supplier.ativo ? 'Desativar' : 'Reativar'"
-                      @click="emit('toggleAtivo', { id: supplier.id, ativo: !supplier.ativo })"
-                    />
-                  </UTooltip>
-                </template>
+            <td class="px-3 py-2.5 align-middle">
+              <div class="flex justify-end">
+                <UDropdownMenu
+                  :items="rowMenuItems(supplier, togglingId)"
+                  :content="{ align: 'end' }"
+                >
+                  <UButton
+                    icon="i-lucide-ellipsis"
+                    color="neutral"
+                    variant="ghost"
+                    size="xs"
+                    class="min-h-9 min-w-9 touch-manipulation"
+                    :loading="togglingId === supplier.id"
+                    aria-label="Ações do fornecedor"
+                  />
+                </UDropdownMenu>
               </div>
             </td>
           </tr>

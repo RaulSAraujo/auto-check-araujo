@@ -122,9 +122,64 @@ export function useSupplierMutations() {
     return { error: null }
   }
 
+  async function deleteSupplier(id: string) {
+    const [catalogRes, financeRes] = await Promise.all([
+      supabase
+        .from('servicos_catalogo')
+        .select('id', { count: 'exact', head: true })
+        .eq('fornecedor_id', id),
+      supabase
+        .from('financeiro_contas')
+        .select('id', { count: 'exact', head: true })
+        .eq('fornecedor_id', id)
+    ])
+
+    if (catalogRes.error) {
+      toast.add({ title: 'Erro ao excluir', description: catalogRes.error.message, color: 'error' })
+      return { error: catalogRes.error, blocked: false }
+    }
+    if (financeRes.error) {
+      toast.add({ title: 'Erro ao excluir', description: financeRes.error.message, color: 'error' })
+      return { error: financeRes.error, blocked: false }
+    }
+
+    const catalogCount = catalogRes.count ?? 0
+    const financeCount = financeRes.count ?? 0
+    if (catalogCount > 0 || financeCount > 0) {
+      const parts: string[] = []
+      if (catalogCount > 0) {
+        parts.push(catalogCount === 1 ? '1 item no catálogo' : `${catalogCount} itens no catálogo`)
+      }
+      if (financeCount > 0) {
+        parts.push(financeCount === 1 ? '1 conta a pagar' : `${financeCount} contas a pagar`)
+      }
+      toast.add({
+        title: 'Não é possível excluir',
+        description: `Remova o vínculo (${parts.join(' e ')}) antes de excluir o fornecedor.`,
+        color: 'warning'
+      })
+      return { error: null, blocked: true }
+    }
+
+    const { error } = await supabase
+      .from('fornecedores')
+      .delete()
+      .eq('id', id)
+
+    if (error) {
+      toast.add({ title: 'Erro ao excluir', description: error.message, color: 'error' })
+      return { error, blocked: false }
+    }
+
+    toast.add({ title: 'Fornecedor excluído', color: 'success' })
+    await refreshSuppliers()
+    return { error: null, blocked: false }
+  }
+
   return {
     createSupplier,
     updateSupplier,
-    setSupplierAtivo
+    setSupplierAtivo,
+    deleteSupplier
   }
 }

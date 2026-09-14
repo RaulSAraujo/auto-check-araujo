@@ -238,9 +238,45 @@ export function useCatalogMutations() {
     return { error: null }
   }
 
+  async function deleteCatalogItem(id: string) {
+    const { count, error: countError } = await supabase
+      .from('catalogo_kit_itens')
+      .select('id', { count: 'exact', head: true })
+      .eq('item_id', id)
+
+    if (countError) {
+      toast.add({ title: 'Erro ao excluir', description: countError.message, color: 'error' })
+      return { error: countError, blocked: false }
+    }
+
+    if ((count ?? 0) > 0) {
+      toast.add({
+        title: 'Não é possível excluir',
+        description: 'Este item faz parte de um ou mais kits. Remova-o dos kits antes de excluí-lo.',
+        color: 'warning'
+      })
+      return { error: null, blocked: true }
+    }
+
+    const { error } = await supabase
+      .from('servicos_catalogo')
+      .delete()
+      .eq('id', id)
+
+    if (error) {
+      toast.add({ title: 'Erro ao excluir', description: error.message, color: 'error' })
+      return { error, blocked: false }
+    }
+
+    toast.add({ title: 'Item excluído', color: 'success' })
+    await refreshCatalogCaches()
+    return { error: null, blocked: false }
+  }
+
   return {
     createCatalogItem,
     updateCatalogItem,
-    setCatalogItemAtivo
+    setCatalogItemAtivo,
+    deleteCatalogItem
   }
 }

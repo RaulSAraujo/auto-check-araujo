@@ -1,142 +1,48 @@
 <script setup lang="ts">
-import type { Fornecedor } from '~~/shared/types/database'
+import type { DropdownMenuItem } from '@nuxt/ui'
 import type { OrdemItemTipo } from '~~/shared/types/oficina'
 import { ORDEM_ITEM_TIPO_LABEL } from '~~/shared/types/oficina'
-import { ORDEM_ITEM_TIPO_SELECT_ITEMS } from '#layers/orders/app/utils/budget-select-items'
 import { formatMoney } from '~~/shared/utils/money'
 import { EMPTY_VALUE } from '~~/shared/utils/empty'
 import {
   CATALOG_TIPO_COLOR,
-  applyServiceHourSeed,
-  catalogDraftFromRow,
-  clearServicePriceManual,
-  emptyCatalogItemDraft,
-  isCatalogItemDraftValid,
-  markServicePriceManual,
-  type CatalogItemDraft,
   type CatalogItemRow
 } from '../../utils/catalog'
-import {
-  calcServiceSeedPrice,
-  calcSuggestedHourlyRate,
-  emptyPricingDraft,
-  pricingDraftFromRow,
-  type PricingParamsRow
-} from '../../utils/pricing'
 
 defineOptions({ name: 'CatalogTable' })
 
-const props = defineProps<{
+defineProps<{
   items: CatalogItemRow[]
-  suppliers: Fornecedor[]
-  catalogItems: Pick<CatalogItemRow, 'id' | 'nome' | 'tipo' | 'ativo'>[]
-  savingId: string | null
   togglingId: string | null
 }>()
 
 const emit = defineEmits<{
-  save: [payload: { id: string, draft: CatalogItemDraft }]
+  edit: [payload: { id: string }]
   toggleAtivo: [payload: { id: string, ativo: boolean }]
+  delete: [payload: { id: string }]
 }>()
 
-const editingId = ref<string | null>(null)
-const editDraft = reactive<CatalogItemDraft>(emptyCatalogItemDraft())
-
-const { params: pricingParams } = usePricingParams()
-
-const hourlyRate = computed(() => {
-  const row = pricingParams.value as PricingParamsRow | null
-  const draft = row ? pricingDraftFromRow(row) : emptyPricingDraft()
-  return calcSuggestedHourlyRate(draft)
-})
-
-const seedPreview = computed(() => {
-  if (editDraft.tipo !== 'servico') return null
-  const hours = Number(editDraft.horas_estimadas)
-  if (!hours || hours <= 0) return null
-  return calcServiceSeedPrice(hours, hourlyRate.value)
-})
-
-const supplierItems = computed(() => [
-  { label: 'Sem fornecedor', value: '__none__' },
-  ...props.suppliers
-    .filter(s => s.ativo || s.id === editDraft.fornecedor_id)
-    .map(s => ({ label: s.nome, value: s.id }))
-])
-
-const supplierModel = computed({
-  get: () => editDraft.fornecedor_id || '__none__',
-  set: (value: string) => {
-    editDraft.fornecedor_id = value === '__none__' ? undefined : value
-  }
-})
-
-const kitComponentOptions = computed(() =>
-  props.catalogItems
-    .filter(item => item.ativo && item.tipo !== 'kit' && item.id !== editingId.value)
-    .map(item => ({
-      label: `${item.nome} (${item.tipo === 'peca' ? 'Peça' : 'Serviço'})`,
-      value: item.id
-    }))
-)
-
-function startEdit(item: CatalogItemRow) {
-  editingId.value = item.id
-  Object.assign(editDraft, catalogDraftFromRow(item))
-}
-
-function cancelEdit() {
-  editingId.value = null
-}
-
-function saveEdit(id: string) {
-  if (!isCatalogItemDraftValid(editDraft)) return
-  emit('save', { id, draft: { ...editDraft, kit_itens: [...editDraft.kit_itens] } })
-}
-
-function addKitLine() {
-  const first = kitComponentOptions.value[0]
-  if (!first) return
-  editDraft.kit_itens.push({ item_id: first.value, quantidade: 1 })
-}
-
-function removeKitLine(index: number) {
-  editDraft.kit_itens.splice(index, 1)
-}
-
-watch(() => props.savingId, (id) => {
-  if (!id) editingId.value = null
-})
-
-watch(() => editDraft.tipo, (tipo: OrdemItemTipo) => {
-  if (tipo === 'servico') {
-    editDraft.estoque = null
-    editDraft.kit_itens = []
-  } else {
-    editDraft.horas_estimadas = null
-    editDraft.preco_manual = false
-    if (editDraft.estoque == null) {
-      editDraft.estoque = 0
+function rowMenuItems(item: CatalogItemRow, togglingId: string | null): DropdownMenuItem[][] {
+  return [[
+    {
+      label: 'Editar',
+      icon: 'i-lucide-pencil',
+      onSelect: () => { emit('edit', { id: item.id }) }
+    },
+    {
+      label: item.ativo ? 'Desativar' : 'Reativar',
+      icon: item.ativo ? 'i-lucide-eye-off' : 'i-lucide-eye',
+      color: item.ativo ? 'warning' : 'success',
+      disabled: togglingId === item.id,
+      onSelect: () => { emit('toggleAtivo', { id: item.id, ativo: !item.ativo }) }
+    },
+    {
+      label: 'Excluir',
+      icon: 'i-lucide-trash',
+      color: 'error',
+      onSelect: () => { emit('delete', { id: item.id }) }
     }
-  }
-  if (tipo !== 'kit') {
-    editDraft.kit_itens = []
-  }
-})
-
-function onHoursUpdate(value: number | null) {
-  editDraft.horas_estimadas = value == null || Number.isNaN(Number(value))
-    ? null
-    : Number(value)
-  applyServiceHourSeed(editDraft, hourlyRate.value)
-}
-
-function onValorPadraoUpdate(value: number | undefined) {
-  markServicePriceManual(editDraft, value ?? 0, hourlyRate.value)
-}
-
-function onUseSeed() {
-  clearServicePriceManual(editDraft, hourlyRate.value)
+  ]]
 }
 </script>
 
@@ -155,305 +61,94 @@ function onUseSeed() {
             <th class="px-3 py-2.5 font-medium text-right">
               Valor
             </th>
-            <th
-              class="px-3 py-2.5 font-medium text-right"
-              :class="editingId ? 'table-cell' : 'hidden md:table-cell'"
-            >
+            <th class="hidden px-3 py-2.5 font-medium text-right md:table-cell">
               Custo
             </th>
-            <th
-              class="px-3 py-2.5 font-medium"
-              :class="editingId ? 'table-cell' : 'hidden lg:table-cell'"
-            >
+            <th class="hidden px-3 py-2.5 font-medium lg:table-cell">
               Fornecedor
             </th>
-            <th
-              class="px-3 py-2.5 font-medium text-right"
-              :class="editingId ? 'table-cell' : 'hidden sm:table-cell'"
-            >
+            <th class="hidden px-3 py-2.5 font-medium text-right sm:table-cell">
               Estoque
             </th>
             <th class="px-3 py-2.5 font-medium">
               Status
             </th>
-            <th class="w-24 px-3 py-2.5">
+            <th class="w-12 px-3 py-2.5">
               <span class="sr-only">Ações</span>
             </th>
           </tr>
         </thead>
         <tbody class="divide-y divide-default">
-          <template
+          <tr
             v-for="item in items"
             :key="item.id"
+            class="motion-safe:transition-colors hover:bg-elevated/40"
+            :class="!item.ativo ? 'opacity-55' : ''"
           >
-            <tr
-              class="motion-safe:transition-colors hover:bg-elevated/40"
-              :class="!item.ativo ? 'opacity-55' : ''"
-            >
-              <td class="min-w-0 px-3 py-2.5 align-top">
-                <UInput
-                  v-if="editingId === item.id"
-                  v-model="editDraft.nome"
-                  size="sm"
-                  aria-label="Nome"
-                  class="w-full min-w-40"
-                />
-                <div
-                  v-else
-                  class="min-w-0 space-y-0.5"
+            <td class="min-w-0 px-3 py-2.5 align-middle">
+              <div class="min-w-0 space-y-0.5">
+                <span class="block truncate font-medium text-highlighted">{{ item.nome }}</span>
+                <p
+                  v-if="item.tipo === 'kit' && item.catalogo_kit_itens?.length"
+                  class="text-xs text-muted"
                 >
-                  <span class="block truncate font-medium text-highlighted">{{ item.nome }}</span>
-                  <p
-                    v-if="item.tipo === 'kit' && item.catalogo_kit_itens?.length"
-                    class="text-xs text-muted"
-                  >
-                    {{ item.catalogo_kit_itens.length }} {{ item.catalogo_kit_itens.length === 1 ? 'item no kit' : 'itens no kit' }}
-                  </p>
-                </div>
-              </td>
-              <td class="px-3 py-2.5 align-top">
-                <USelect
-                  v-if="editingId === item.id"
-                  v-model="editDraft.tipo"
-                  :items="[...ORDEM_ITEM_TIPO_SELECT_ITEMS]"
-                  size="sm"
-                  aria-label="Tipo"
-                  class="min-w-28"
-                />
-                <UBadge
-                  v-else
-                  :color="CATALOG_TIPO_COLOR[item.tipo as OrdemItemTipo]"
-                  variant="subtle"
-                  size="sm"
-                >
-                  {{ ORDEM_ITEM_TIPO_LABEL[item.tipo as OrdemItemTipo] }}
-                </UBadge>
-              </td>
-              <td class="px-3 py-2.5 text-right font-mono tabular-nums align-top">
-                <div
-                  v-if="editingId === item.id"
-                  class="ml-auto space-y-1"
-                >
-                  <div
-                    v-if="editDraft.tipo === 'servico'"
-                    class="flex items-center justify-end gap-1"
-                  >
-                    <UInput
-                      :model-value="editDraft.horas_estimadas ?? undefined"
-                      type="number"
-                      inputmode="decimal"
-                      size="sm"
-                      min="0"
-                      step="0.25"
-                      aria-label="Horas estimadas"
-                      class="w-20 font-mono tabular-nums"
-                      placeholder="h"
-                      @update:model-value="onHoursUpdate(Number($event))"
-                    />
-                    <UButton
-                      v-if="editDraft.preco_manual && seedPreview != null"
-                      type="button"
-                      size="xs"
-                      color="neutral"
-                      variant="ghost"
-                      icon="i-lucide-rotate-ccw"
-                      aria-label="Voltar à fórmula"
-                      @click="onUseSeed"
-                    />
-                  </div>
-                  <div class="w-32 ml-auto">
-                    <BaseCurrencyInput
-                      :model-value="editDraft.valor_padrao"
-                      size="sm"
-                      empty-as-zero
-                      aria-label="Valor padrão"
-                      @update:model-value="onValorPadraoUpdate"
-                    />
-                  </div>
-                </div>
-                <span v-else>{{ formatMoney(Number(item.valor_padrao)) }}</span>
-              </td>
-              <td
-                class="px-3 py-2.5 text-right font-mono tabular-nums align-top text-muted"
-                :class="editingId === item.id ? 'table-cell' : 'hidden md:table-cell'"
+                  {{ item.catalogo_kit_itens.length }} {{ item.catalogo_kit_itens.length === 1 ? 'item no kit' : 'itens no kit' }}
+                </p>
+              </div>
+            </td>
+            <td class="px-3 py-2.5 align-middle">
+              <UBadge
+                :color="CATALOG_TIPO_COLOR[item.tipo as OrdemItemTipo]"
+                variant="subtle"
+                size="sm"
               >
-                <div
-                  v-if="editingId === item.id"
-                  class="ml-auto w-32"
+                {{ ORDEM_ITEM_TIPO_LABEL[item.tipo as OrdemItemTipo] }}
+              </UBadge>
+            </td>
+            <td class="px-3 py-2.5 text-right font-mono tabular-nums align-middle">
+              {{ formatMoney(Number(item.valor_padrao)) }}
+            </td>
+            <td class="hidden px-3 py-2.5 text-right font-mono tabular-nums align-middle text-muted md:table-cell">
+              {{ formatMoney(Number(item.custo)) }}
+            </td>
+            <td class="hidden min-w-0 px-3 py-2.5 align-middle lg:table-cell">
+              <span class="block truncate text-muted">{{ item.fornecedores?.nome || EMPTY_VALUE }}</span>
+            </td>
+            <td class="hidden px-3 py-2.5 text-right font-mono tabular-nums align-middle sm:table-cell">
+              <span
+                v-if="item.tipo === 'servico'"
+                class="text-muted"
+              >{{ EMPTY_VALUE }}</span>
+              <span v-else>{{ item.estoque ?? 0 }}</span>
+            </td>
+            <td class="px-3 py-2.5 align-middle">
+              <UBadge
+                :color="item.ativo ? 'success' : 'neutral'"
+                variant="subtle"
+                size="sm"
+              >
+                {{ item.ativo ? 'Ativo' : 'Inativo' }}
+              </UBadge>
+            </td>
+            <td class="px-3 py-2.5 align-middle">
+              <div class="flex justify-end">
+                <UDropdownMenu
+                  :items="rowMenuItems(item, togglingId)"
+                  :content="{ align: 'end' }"
                 >
-                  <BaseCurrencyInput
-                    v-model="editDraft.custo"
-                    size="sm"
-                    empty-as-zero
-                    aria-label="Custo"
+                  <UButton
+                    icon="i-lucide-ellipsis"
+                    color="neutral"
+                    variant="ghost"
+                    size="xs"
+                    class="min-h-9 min-w-9 touch-manipulation"
+                    :loading="togglingId === item.id"
+                    aria-label="Ações do item"
                   />
-                </div>
-                <span v-else>{{ formatMoney(Number(item.custo)) }}</span>
-              </td>
-              <td
-                class="px-3 py-2.5 align-top"
-                :class="editingId === item.id ? 'table-cell' : 'hidden lg:table-cell'"
-              >
-                <USelect
-                  v-if="editingId === item.id"
-                  v-model="supplierModel"
-                  :items="supplierItems"
-                  size="sm"
-                  aria-label="Fornecedor"
-                  class="min-w-36"
-                />
-                <span
-                  v-else
-                  class="truncate text-muted"
-                >{{ item.fornecedores?.nome || EMPTY_VALUE }}</span>
-              </td>
-              <td
-                class="px-3 py-2.5 text-right font-mono tabular-nums align-top"
-                :class="editingId === item.id ? 'table-cell' : 'hidden sm:table-cell'"
-              >
-                <template v-if="editingId === item.id">
-                  <UInput
-                    v-if="editDraft.tipo !== 'servico'"
-                    v-model.number="editDraft.estoque"
-                    type="number"
-                    inputmode="numeric"
-                    size="sm"
-                    aria-label="Estoque"
-                    class="ml-auto w-24 font-mono tabular-nums"
-                    min="0"
-                    step="1"
-                  />
-                  <span
-                    v-else
-                    class="text-muted"
-                  >{{ EMPTY_VALUE }}</span>
-                </template>
-                <span
-                  v-else-if="item.tipo === 'servico'"
-                  class="text-muted"
-                >{{ EMPTY_VALUE }}</span>
-                <span v-else>{{ item.estoque ?? 0 }}</span>
-              </td>
-              <td class="px-3 py-2.5 align-top">
-                <UBadge
-                  :color="item.ativo ? 'success' : 'neutral'"
-                  variant="subtle"
-                  size="sm"
-                >
-                  {{ item.ativo ? 'Ativo' : 'Inativo' }}
-                </UBadge>
-              </td>
-              <td class="px-3 py-2.5 align-top">
-                <div class="flex justify-end gap-0.5">
-                  <template v-if="editingId === item.id">
-                    <UTooltip text="Salvar">
-                      <UButton
-                        icon="i-lucide-check"
-                        color="success"
-                        variant="ghost"
-                        size="xs"
-                        :loading="savingId === item.id"
-                        :disabled="!isCatalogItemDraftValid(editDraft)"
-                        aria-label="Salvar"
-                        @click="saveEdit(item.id)"
-                      />
-                    </UTooltip>
-                    <UTooltip text="Cancelar">
-                      <UButton
-                        icon="i-lucide-x"
-                        color="neutral"
-                        variant="ghost"
-                        size="xs"
-                        :disabled="savingId === item.id"
-                        aria-label="Cancelar"
-                        @click="cancelEdit"
-                      />
-                    </UTooltip>
-                  </template>
-                  <template v-else>
-                    <UTooltip text="Editar">
-                      <UButton
-                        icon="i-lucide-pencil"
-                        color="neutral"
-                        variant="ghost"
-                        size="xs"
-                        aria-label="Editar"
-                        @click="startEdit(item)"
-                      />
-                    </UTooltip>
-                    <UTooltip :text="item.ativo ? 'Desativar' : 'Reativar'">
-                      <UButton
-                        :icon="item.ativo ? 'i-lucide-eye-off' : 'i-lucide-eye'"
-                        :color="item.ativo ? 'warning' : 'success'"
-                        variant="ghost"
-                        size="xs"
-                        :loading="togglingId === item.id"
-                        :aria-label="item.ativo ? 'Desativar' : 'Reativar'"
-                        @click="emit('toggleAtivo', { id: item.id, ativo: !item.ativo })"
-                      />
-                    </UTooltip>
-                  </template>
-                </div>
-              </td>
-            </tr>
-
-            <tr
-              v-if="editingId === item.id && editDraft.tipo === 'kit'"
-              class="bg-elevated/30"
-            >
-              <td
-                colspan="8"
-                class="px-3 py-3"
-              >
-                <div class="space-y-2">
-                  <div class="flex items-center justify-between gap-2">
-                    <p class="text-xs font-medium text-muted">
-                      Itens do kit
-                    </p>
-                    <UButton
-                      label="Incluir"
-                      icon="i-lucide-plus"
-                      size="xs"
-                      variant="soft"
-                      :disabled="!kitComponentOptions.length"
-                      @click="addKitLine"
-                    />
-                  </div>
-                  <div
-                    v-for="(line, index) in editDraft.kit_itens"
-                    :key="`${line.item_id}-${index}`"
-                    class="flex flex-col gap-2 sm:flex-row sm:items-end"
-                  >
-                    <USelect
-                      v-model="line.item_id"
-                      :items="kitComponentOptions"
-                      size="sm"
-                      :aria-label="`Item ${index + 1} do kit`"
-                      class="min-w-0 flex-1"
-                    />
-                    <UInput
-                      v-model.number="line.quantidade"
-                      type="number"
-                      inputmode="decimal"
-                      size="sm"
-                      min="0.01"
-                      step="0.01"
-                      :aria-label="`Quantidade do item ${index + 1}`"
-                      class="w-24 font-mono tabular-nums"
-                    />
-                    <UButton
-                      icon="i-lucide-trash-2"
-                      color="error"
-                      variant="ghost"
-                      size="xs"
-                      aria-label="Remover item do kit"
-                      @click="removeKitLine(index)"
-                    />
-                  </div>
-                </div>
-              </td>
-            </tr>
-          </template>
+                </UDropdownMenu>
+              </div>
+            </td>
+          </tr>
         </tbody>
       </table>
     </div>

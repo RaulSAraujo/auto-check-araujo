@@ -3,19 +3,23 @@ import { isSupplierDraftValid, type SupplierDraft } from '../../utils/catalog'
 
 defineOptions({ name: 'CatalogSuppliersForm' })
 
-const props = defineProps<{
-  adding: boolean
-}>()
+const props = withDefaults(defineProps<{
+  saving: boolean
+  mode?: 'create' | 'edit'
+}>(), {
+  mode: 'create'
+})
 
 const emit = defineEmits<{
-  add: []
+  submit: []
 }>()
 
 const draftModel = defineModel<SupplierDraft>('draft', { required: true })
 const showNotes = ref(false)
+const isEdit = computed(() => props.mode === 'edit')
 
-watch(() => props.adding, (adding) => {
-  if (!adding) showNotes.value = false
+watch(() => props.saving, (saving) => {
+  if (!saving && !isEdit.value) showNotes.value = false
 })
 
 watch(
@@ -30,9 +34,17 @@ watch(
   }
 )
 
+watch(
+  () => draftModel.value.observacoes,
+  (notes) => {
+    if (notes) showNotes.value = true
+  },
+  { immediate: true }
+)
+
 function onSubmit() {
-  if (!isSupplierDraftValid(draftModel.value) || props.adding) return
-  emit('add')
+  if (!isSupplierDraftValid(draftModel.value) || props.saving) return
+  emit('submit')
 }
 </script>
 
@@ -116,11 +128,11 @@ function onSubmit() {
 
     <UButton
       type="submit"
-      label="Adicionar fornecedor"
-      icon="i-lucide-plus"
+      :label="isEdit ? 'Salvar alterações' : 'Adicionar fornecedor'"
+      :icon="isEdit ? 'i-lucide-check' : 'i-lucide-plus'"
       block
-      class="active:scale-[0.98]"
-      :loading="adding"
+      class="min-h-11 touch-manipulation active:scale-[0.98]"
+      :loading="saving"
       :disabled="!isSupplierDraftValid(draftModel)"
     />
   </form>

@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import type { Fornecedor } from '~~/shared/types/database'
 import { emptySupplierDraft } from '../utils/catalog'
 import { settingsHubBreadcrumb } from '../utils/settings-hub'
 
@@ -25,14 +26,19 @@ const {
 const {
   createSupplier,
   updateSupplier,
-  setSupplierAtivo
+  setSupplierAtivo,
+  deleteSupplier
 } = useSupplierMutations()
 
-const createOpen = ref(false)
+const formOpen = ref(false)
+const formMode = ref<'create' | 'edit'>('create')
+const editingId = ref<string | null>(null)
 const supplierDraft = reactive(emptySupplierDraft())
-const supplierAdding = ref(false)
-const supplierSavingId = ref<string | null>(null)
+const formSaving = ref(false)
 const supplierTogglingId = ref<string | null>(null)
+const deleteOpen = ref(false)
+const deleteTargetId = ref<string | null>(null)
+const deleting = ref(false)
 const supplierQ = ref('')
 
 const activeSuppliers = computed(() => suppliers.value || [])
@@ -58,34 +64,62 @@ const countLabel = computed(() => {
   return n === 1 ? '1 fornecedor' : `${n} fornecedores`
 })
 
-watch(createOpen, (open) => {
-  if (!open) Object.assign(supplierDraft, emptySupplierDraft())
+const formTitle = computed(() =>
+  formMode.value === 'edit' ? 'Editar fornecedor' : 'Novo fornecedor'
+)
+
+const formDescription = computed(() =>
+  formMode.value === 'edit'
+    ? 'Altere os dados e salve.'
+    : 'Entra no catálogo e no financeiro.'
+)
+
+watch(formOpen, (open) => {
+  if (!open) {
+    formMode.value = 'create'
+    editingId.value = null
+    Object.assign(supplierDraft, emptySupplierDraft())
+  }
 })
 
-async function onSupplierAdd() {
-  supplierAdding.value = true
+function openCreate() {
+  formMode.value = 'create'
+  editingId.value = null
+  Object.assign(supplierDraft, emptySupplierDraft())
+  formOpen.value = true
+}
+
+function onSupplierEdit(payload: { id: string }) {
+  const supplier = activeSuppliers.value.find((row: Fornecedor) => row.id === payload.id)
+  if (!supplier) return
+  formMode.value = 'edit'
+  editingId.value = supplier.id
+  supplierDraft.nome = supplier.nome
+  supplierDraft.telefone = supplier.telefone || ''
+  supplierDraft.email = supplier.email || ''
+  supplierDraft.observacoes = supplier.observacoes || ''
+  formOpen.value = true
+}
+
+async function onFormSubmit() {
+  formSaving.value = true
   try {
+    if (formMode.value === 'edit' && editingId.value) {
+      const { error } = await updateSupplier(editingId.value, { ...supplierDraft })
+      if (!error) {
+        formOpen.value = false
+        await refreshSuppliers()
+      }
+      return
+    }
+
     const { error } = await createSupplier({ ...supplierDraft })
     if (!error) {
-      Object.assign(supplierDraft, emptySupplierDraft())
-      createOpen.value = false
+      formOpen.value = false
       await refreshSuppliers()
     }
   } finally {
-    supplierAdding.value = false
-  }
-}
-
-async function onSupplierSave(payload: {
-  id: string
-  draft: ReturnType<typeof emptySupplierDraft>
-}) {
-  supplierSavingId.value = payload.id
-  try {
-    const { error } = await updateSupplier(payload.id, payload.draft)
-    if (!error) await refreshSuppliers()
-  } finally {
-    supplierSavingId.value = null
+    formSaving.value = false
   }
 }
 
@@ -96,6 +130,29 @@ async function onSupplierToggleAtivo(payload: { id: string, ativo: boolean }) {
     if (!error) await refreshSuppliers()
   } finally {
     supplierTogglingId.value = null
+  }
+}
+
+function onSupplierRequestDelete(payload: { id: string }) {
+  deleteTargetId.value = payload.id
+  deleteOpen.value = true
+}
+
+async function onSupplierConfirmDelete() {
+  if (!deleteTargetId.value) return
+  deleting.value = true
+  try {
+    const { error, blocked } = await deleteSupplier(deleteTargetId.value)
+    if (!error && !blocked) {
+      deleteOpen.value = false
+      deleteTargetId.value = null
+      await refreshSuppliers()
+    } else if (blocked) {
+      deleteOpen.value = false
+      deleteTargetId.value = null
+    }
+  } finally {
+    deleting.value = false
   }
 }
 </script>
@@ -126,7 +183,7 @@ async function onSupplierToggleAtivo(payload: { id: string, ativo: boolean }) {
               <UButton
                 label="Novo fornecedor"
                 icon="i-lucide-plus"
-                @click="createOpen = true"
+                @click="openCreate"
               />
             </template>
           </BasePageHeader>
@@ -167,10 +224,10 @@ async function onSupplierToggleAtivo(payload: { id: string, ativo: boolean }) {
           <CatalogSuppliersTable
             v-else-if="filteredSuppliers.length"
             :suppliers="filteredSuppliers"
-            :saving-id="supplierSavingId"
             :toggling-id="supplierTogglingId"
-            @save="onSupplierSave"
+            @edit="onSupplierEdit"
             @toggle-ativo="onSupplierToggleAtivo"
+            @delete="onSupplierRequestDelete"
           />
 
           <BaseEmptyState
@@ -195,25 +252,34 @@ async function onSupplierToggleAtivo(payload: { id: string, ativo: boolean }) {
                 v-else
                 label="Novo fornecedor"
                 icon="i-lucide-plus"
-                @click="createOpen = true"
+                @click="openCreate"
               />
             </template>
           </BaseEmptyState>
 
           <USlideover
-            v-model:open="createOpen"
-            title="Novo fornecedor"
-            description="Entra no catálogo e no financeiro."
+            v-model:open="formOpen"
+            :title="formTitle"
+            :description="formDescription"
             :ui="{ content: 'overscroll-contain' }"
           >
             <template #body>
               <CatalogSuppliersForm
                 v-model:draft="supplierDraft"
-                :adding="supplierAdding"
-                @add="onSupplierAdd"
+                :mode="formMode"
+                :saving="formSaving"
+                @submit="onFormSubmit"
               />
             </template>
           </USlideover>
+
+          <CatalogDeleteModal
+            v-model:open="deleteOpen"
+            title="Excluir fornecedor?"
+            description="Esta ação não pode ser desfeita. Só é permitido se não houver itens no catálogo nem contas a pagar vinculadas."
+            :loading="deleting"
+            @confirm="onSupplierConfirmDelete"
+          />
         </div>
       </div>
     </template>

@@ -21,14 +21,19 @@ import {
 
 defineOptions({ name: 'CatalogForm' })
 
-const props = defineProps<{
-  adding: boolean
+const props = withDefaults(defineProps<{
+  saving: boolean
+  mode?: 'create' | 'edit'
+  excludeItemId?: string | null
   suppliers: Fornecedor[]
   catalogItems: Pick<CatalogItemRow, 'id' | 'nome' | 'tipo' | 'ativo'>[]
-}>()
+}>(), {
+  mode: 'create',
+  excludeItemId: null
+})
 
 const emit = defineEmits<{
-  add: []
+  submit: []
 }>()
 
 const draftModel = defineModel<CatalogItemDraft>('draft', { required: true })
@@ -50,7 +55,7 @@ const seedPreview = computed(() => {
 const supplierItems = computed(() => [
   { label: 'Sem fornecedor', value: '__none__' },
   ...props.suppliers
-    .filter(s => s.ativo)
+    .filter(s => s.ativo || s.id === draftModel.value.fornecedor_id)
     .map(s => ({ label: s.nome, value: s.id }))
 ])
 
@@ -63,7 +68,11 @@ const supplierModel = computed({
 
 const kitComponentOptions = computed(() =>
   props.catalogItems
-    .filter(item => item.ativo && item.tipo !== 'kit')
+    .filter(item =>
+      item.ativo
+      && item.tipo !== 'kit'
+      && item.id !== props.excludeItemId
+    )
     .map(item => ({
       label: `${item.nome} (${item.tipo === 'peca' ? 'Peça' : 'Serviço'})`,
       value: item.id
@@ -73,6 +82,7 @@ const kitComponentOptions = computed(() =>
 const showStock = computed(() => draftModel.value.tipo !== 'servico')
 const showKitBuilder = computed(() => draftModel.value.tipo === 'kit')
 const showServiceHours = computed(() => draftModel.value.tipo === 'servico')
+const isEdit = computed(() => props.mode === 'edit')
 
 watch(() => draftModel.value.tipo, (tipo: OrdemItemTipo) => {
   if (tipo === 'servico') {
@@ -119,8 +129,8 @@ function removeKitLine(index: number) {
 }
 
 function onSubmit() {
-  if (!isCatalogItemDraftValid(draftModel.value) || props.adding) return
-  emit('add')
+  if (!isCatalogItemDraftValid(draftModel.value) || props.saving) return
+  emit('submit')
 }
 </script>
 
@@ -315,11 +325,11 @@ function onSubmit() {
 
     <UButton
       type="submit"
-      label="Adicionar item"
-      icon="i-lucide-plus"
+      :label="isEdit ? 'Salvar alterações' : 'Adicionar item'"
+      :icon="isEdit ? 'i-lucide-check' : 'i-lucide-plus'"
       block
-      class="active:scale-[0.98]"
-      :loading="adding"
+      class="min-h-11 touch-manipulation active:scale-[0.98]"
+      :loading="saving"
       :disabled="!isCatalogItemDraftValid(draftModel)"
     />
   </form>

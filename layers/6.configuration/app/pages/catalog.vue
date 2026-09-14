@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import {
   CATALOG_TIPO_FILTER_ITEMS,
+  catalogDraftFromRow,
   emptyCatalogItemDraft,
+  type CatalogItemRow,
   type CatalogTipoFilter
 } from '../utils/catalog'
 import { settingsHubBreadcrumb } from '../utils/settings-hub'
@@ -41,14 +43,19 @@ const { suppliers } = useSuppliersList()
 const {
   createCatalogItem,
   updateCatalogItem,
-  setCatalogItemAtivo
+  setCatalogItemAtivo,
+  deleteCatalogItem
 } = useCatalogMutations()
 
-const createOpen = ref(false)
+const formOpen = ref(false)
+const formMode = ref<'create' | 'edit'>('create')
+const editingId = ref<string | null>(null)
 const budgetDraft = reactive(emptyCatalogItemDraft())
-const budgetAdding = ref(false)
-const budgetSavingId = ref<string | null>(null)
+const formSaving = ref(false)
 const budgetTogglingId = ref<string | null>(null)
+const deleteOpen = ref(false)
+const deleteTargetId = ref<string | null>(null)
+const deleting = ref(false)
 
 const activeSuppliers = computed(() => suppliers.value || [])
 
@@ -62,37 +69,65 @@ const hasActiveFilters = computed(() =>
   Boolean(budgetQ.value.trim()) || tipoFilter.value !== 'all'
 )
 
-watch(createOpen, (open) => {
-  if (!open) Object.assign(budgetDraft, emptyCatalogItemDraft())
+const formTitle = computed(() =>
+  formMode.value === 'edit' ? 'Editar item' : 'Novo item'
+)
+
+const formDescription = computed(() =>
+  formMode.value === 'edit'
+    ? 'Altere os dados e salve.'
+    : 'Entra no catálogo para orçamentos.'
+)
+
+watch(formOpen, (open) => {
+  if (!open) {
+    formMode.value = 'create'
+    editingId.value = null
+    Object.assign(budgetDraft, emptyCatalogItemDraft())
+  }
 })
 
-async function onBudgetAdd() {
-  budgetAdding.value = true
+function openCreate() {
+  formMode.value = 'create'
+  editingId.value = null
+  Object.assign(budgetDraft, emptyCatalogItemDraft())
+  formOpen.value = true
+}
+
+function onBudgetEdit(payload: { id: string }) {
+  const item = (budgetItems.value as CatalogItemRow[]).find(row => row.id === payload.id)
+  if (!item) return
+  formMode.value = 'edit'
+  editingId.value = item.id
+  Object.assign(budgetDraft, catalogDraftFromRow(item))
+  formOpen.value = true
+}
+
+async function onFormSubmit() {
+  formSaving.value = true
   try {
+    if (formMode.value === 'edit' && editingId.value) {
+      const { error } = await updateCatalogItem(editingId.value, {
+        ...budgetDraft,
+        kit_itens: [...budgetDraft.kit_itens]
+      })
+      if (!error) {
+        formOpen.value = false
+        await refreshBudget()
+      }
+      return
+    }
+
     const { error } = await createCatalogItem({
       ...budgetDraft,
       kit_itens: [...budgetDraft.kit_itens]
     })
     if (!error) {
-      Object.assign(budgetDraft, emptyCatalogItemDraft())
-      createOpen.value = false
+      formOpen.value = false
       await refreshBudget()
     }
   } finally {
-    budgetAdding.value = false
-  }
-}
-
-async function onBudgetSave(payload: {
-  id: string
-  draft: ReturnType<typeof emptyCatalogItemDraft>
-}) {
-  budgetSavingId.value = payload.id
-  try {
-    const { error } = await updateCatalogItem(payload.id, payload.draft)
-    if (!error) await refreshBudget()
-  } finally {
-    budgetSavingId.value = null
+    formSaving.value = false
   }
 }
 
@@ -103,6 +138,29 @@ async function onBudgetToggleAtivo(payload: { id: string, ativo: boolean }) {
     if (!error) await refreshBudget()
   } finally {
     budgetTogglingId.value = null
+  }
+}
+
+function onBudgetRequestDelete(payload: { id: string }) {
+  deleteTargetId.value = payload.id
+  deleteOpen.value = true
+}
+
+async function onBudgetConfirmDelete() {
+  if (!deleteTargetId.value) return
+  deleting.value = true
+  try {
+    const { error, blocked } = await deleteCatalogItem(deleteTargetId.value)
+    if (!error && !blocked) {
+      deleteOpen.value = false
+      deleteTargetId.value = null
+      await refreshBudget()
+    } else if (blocked) {
+      deleteOpen.value = false
+      deleteTargetId.value = null
+    }
+  } finally {
+    deleting.value = false
   }
 }
 
@@ -138,7 +196,7 @@ function clearFilters() {
               <UButton
                 label="Novo item"
                 icon="i-lucide-plus"
-                @click="createOpen = true"
+                @click="openCreate"
               />
             </template>
           </BasePageHeader>
@@ -188,12 +246,10 @@ function clearFilters() {
           <CatalogTable
             v-else-if="budgetItems.length"
             :items="budgetItems"
-            :suppliers="activeSuppliers"
-            :catalog-items="activeCatalogItems || []"
-            :saving-id="budgetSavingId"
             :toggling-id="budgetTogglingId"
-            @save="onBudgetSave"
+            @edit="onBudgetEdit"
             @toggle-ativo="onBudgetToggleAtivo"
+            @delete="onBudgetRequestDelete"
           />
 
           <BaseEmptyState
@@ -218,7 +274,7 @@ function clearFilters() {
                 v-else
                 label="Novo item"
                 icon="i-lucide-plus"
-                @click="createOpen = true"
+                @click="openCreate"
               />
             </template>
           </BaseEmptyState>
@@ -237,21 +293,29 @@ function clearFilters() {
           </div>
 
           <USlideover
-            v-model:open="createOpen"
-            title="Novo item"
-            description="Entra no catálogo para orçamentos."
+            v-model:open="formOpen"
+            :title="formTitle"
+            :description="formDescription"
             :ui="{ content: 'overscroll-contain' }"
           >
             <template #body>
               <CatalogForm
                 v-model:draft="budgetDraft"
-                :adding="budgetAdding"
+                :mode="formMode"
+                :saving="formSaving"
+                :exclude-item-id="editingId"
                 :suppliers="activeSuppliers"
                 :catalog-items="activeCatalogItems || []"
-                @add="onBudgetAdd"
+                @submit="onFormSubmit"
               />
             </template>
           </USlideover>
+
+          <CatalogDeleteModal
+            v-model:open="deleteOpen"
+            :loading="deleting"
+            @confirm="onBudgetConfirmDelete"
+          />
         </div>
       </div>
     </template>
