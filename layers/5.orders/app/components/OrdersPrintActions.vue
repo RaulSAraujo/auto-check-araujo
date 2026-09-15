@@ -14,6 +14,7 @@ const props = defineProps<{
 
 const emit = defineEmits<{
   downloadPdf: []
+  printPdf: []
 }>()
 
 const moreItems = computed<DropdownMenuItem[][]>(() => {
@@ -23,8 +24,7 @@ const moreItems = computed<DropdownMenuItem[][]>(() => {
     items.push({
       label: props.printLabel || 'Imprimir',
       icon: 'i-lucide-printer',
-      to: props.printTo,
-      target: '_blank'
+      onSelect: () => { emit('printPdf') }
     })
   }
 

@@ -16,6 +16,7 @@ const props = defineProps<{
   total: number
   selectedCatalogId: string | undefined
   catalogItems: { label: string, value: string }[]
+  isSuggestedCatalogPrice: boolean
   adding: boolean
   deletingId: string | null
   updatingStatus: boolean
@@ -32,6 +33,7 @@ const emit = defineEmits<{
   'approve': []
   'reject': []
   'downloadPdf': []
+  'printPdf': []
 }>()
 
 const draftModel = defineModel<OrderItemDraft>('draft', { required: true })
@@ -74,6 +76,7 @@ function onConfirmReject() {
         show-pdf
         :pdf-loading="pdfLoading"
         @download-pdf="emit('downloadPdf')"
+        @print-pdf="emit('printPdf')"
       />
     </div>
 
@@ -294,11 +297,23 @@ function onConfirmReject() {
               label="Valor unitário"
               name="draft-valor"
             >
-              <BaseCurrencyInput
-                v-model="draftModel.valor_unitario"
-                name="valor_unitario"
-                empty-as-zero
-              />
+              <div class="relative">
+                <BaseCurrencyInput
+                  v-model="draftModel.valor_unitario"
+                  name="valor_unitario"
+                  empty-as-zero
+                />
+                <UTooltip
+                  v-if="isSuggestedCatalogPrice"
+                  text="Preço sugerido pela precificação; você pode ajustar."
+                >
+                  <UIcon
+                    name="i-lucide-wand-sparkles"
+                    class="absolute right-2.5 top-1/2 size-3.5 -translate-y-1/2 text-info"
+                    aria-label="Preço sugerido pela precificação; você pode ajustar"
+                  />
+                </UTooltip>
+              </div>
             </UFormField>
           </div>
 

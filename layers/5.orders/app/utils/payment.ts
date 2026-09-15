@@ -4,6 +4,7 @@ import { suggestChargeAmount } from '#layers/configuration/app/utils/pricing'
 export interface PaymentFormState {
   pago: boolean
   forma_pagamento: FormaPagamento | undefined
+  parcelas: number | null
   valor_cobrado: number | null
 }
 
@@ -11,6 +12,7 @@ export function emptyPaymentForm(): PaymentFormState {
   return {
     pago: false,
     forma_pagamento: undefined,
+    parcelas: null,
     valor_cobrado: null
   }
 }
@@ -18,6 +20,7 @@ export function emptyPaymentForm(): PaymentFormState {
 export function paymentFormFromOrder(order: {
   pago: boolean
   forma_pagamento: string | null
+  parcelas: number | null
   valor_cobrado: number | null
   valor_total: number | null
 }): PaymentFormState {
@@ -26,6 +29,7 @@ export function paymentFormFromOrder(order: {
   return {
     pago: order.pago,
     forma_pagamento: forma,
+    parcelas: forma === 'cartao_credito' ? (order.parcelas ?? 1) : null,
     valor_cobrado: order.pago
       ? (order.valor_cobrado == null ? budget : Number(order.valor_cobrado))
       : null

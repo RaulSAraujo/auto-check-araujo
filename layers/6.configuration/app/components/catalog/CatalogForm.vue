@@ -185,7 +185,6 @@ function onSubmit() {
       <UFormField
         label="Horas estimadas"
         name="horas_estimadas"
-        hint="Base para a sugestão de preço e para planejar a agenda"
       >
         <UInput
           :model-value="draftModel.horas_estimadas ?? undefined"
@@ -202,7 +201,6 @@ function onSubmit() {
       <UFormField
         label="Nível técnico"
         name="nivel_tecnico"
-        hint="Considera especialização, risco e ferramentas necessárias"
       >
         <USelect
           v-model="draftModel.nivel_tecnico"
@@ -213,11 +211,19 @@ function onSubmit() {
       </UFormField>
       <p
         v-if="suggestedPrice != null"
-        class="font-mono text-xs tabular-nums text-muted"
+        class="flex items-center gap-1 font-mono text-xs tabular-nums text-muted"
       >
-        {{ draftModel.horas_estimadas }} h × {{ formatMoney(hourlyRate) }}
-        × {{ serviceTechnicalFactor(pricingDraft, draftModel.nivel_tecnico) }}
-        → {{ formatMoney(suggestedPrice) }}
+        <span>Sugestão: {{ formatMoney(suggestedPrice) }}</span>
+        <UTooltip
+          v-if="!draftModel.preco_manual"
+          :text="`${draftModel.horas_estimadas} h × ${formatMoney(hourlyRate)} × ${serviceTechnicalFactor(pricingDraft, draftModel.nivel_tecnico)}`"
+        >
+          <UIcon
+            name="i-lucide-wand-sparkles"
+            class="size-3.5 text-info"
+            aria-label="Preço sugerido pela precificação"
+          />
+        </UTooltip>
       </p>
       <UButton
         v-if="draftModel.preco_manual && suggestedPrice != null"
@@ -237,7 +243,6 @@ function onSubmit() {
       <UFormField
         label="Valor padrão"
         name="valor_padrao"
-        :hint="draftModel.preco_manual && showServiceHours ? 'Preço manual' : undefined"
       >
         <BaseCurrencyInput
           :model-value="draftModel.valor_padrao"

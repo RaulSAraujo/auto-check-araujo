@@ -4,7 +4,7 @@ import {
   buildBudgetWhatsAppMessage,
   buildWhatsAppUrl
 } from '../utils/print'
-import { downloadBudgetPdf } from '../utils/pdf'
+import { downloadBudgetPdf, printBudgetPdf } from '../utils/pdf'
 import { primaryPhone } from '~~/shared/utils/contact'
 import type { OrcamentoStatus } from '~~/shared/types/oficina'
 
@@ -63,6 +63,23 @@ async function onDownloadBudgetPdf() {
     downloadingPdf.value = false
   }
 }
+
+function onPrintBudgetPdf() {
+  if (!ordem.value || !import.meta.client) return
+  const veiculo = ordem.value.veiculos
+  printBudgetPdf({
+    numero: ordem.value.numero,
+    abertaEm: formatDateTime(ordem.value.aberta_em),
+    budgetStatus: budgetStatus.value,
+    clienteNome: veiculo?.clientes?.nome ?? null,
+    placa: veiculo?.placa ?? null,
+    veiculoLabel: [veiculo?.marca, veiculo?.modelo].filter(Boolean).join(' ') || null,
+    kmEntrada: ordem.value.km_entrada,
+    reclamacao: ordem.value.reclamacao,
+    diagnostico: ordem.value.diagnostico,
+    items: items.value || []
+  })
+}
 </script>
 
 <template>
@@ -74,6 +91,7 @@ async function onDownloadBudgetPdf() {
       show-pdf
       :pdf-loading="downloadingPdf"
       @download-pdf="onDownloadBudgetPdf"
+      @print-pdf="onPrintBudgetPdf"
     />
 
     <div

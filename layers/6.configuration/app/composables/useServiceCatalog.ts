@@ -4,7 +4,7 @@ export function useServiceCatalog() {
   return useAsyncData('servicos-catalogo', async () => {
     const { data, error } = await supabase
       .from('servicos_catalogo')
-      .select('id, nome, tipo, valor_padrao, custo, estoque, ativo')
+      .select('id, nome, tipo, valor_padrao, custo, estoque, ativo, horas_estimadas, nivel_tecnico, preco_manual')
       .eq('ativo', true)
       .order('nome')
       .limit(REPORT_SOFT_LIMIT)

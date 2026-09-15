@@ -51,6 +51,7 @@ export function usePricingMutations() {
         precificacao_automatica: draft.precificacao_automatica,
         taxa_cartao_debito: draft.taxa_cartao_debito,
         taxa_cartao_credito: draft.taxa_cartao_credito,
+        acrescimo_cartao_credito_parcela: draft.acrescimo_cartao_credito_parcela,
         valor_minimo_servico: draft.valor_minimo_servico,
         fator_servico_rapido: draft.fator_servico_rapido,
         fator_servico_padrao: draft.fator_servico_padrao,

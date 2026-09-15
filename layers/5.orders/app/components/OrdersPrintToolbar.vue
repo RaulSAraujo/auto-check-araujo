@@ -11,6 +11,7 @@ defineProps<{
 
 const emit = defineEmits<{
   downloadPdf: []
+  printPdf: []
 }>()
 </script>
 
@@ -47,7 +48,7 @@ const emit = defineEmits<{
       <UButton
         label="Imprimir"
         icon="i-lucide-printer"
-        @click="printPage()"
+        @click="emit('printPdf')"
       />
     </div>
   </div>

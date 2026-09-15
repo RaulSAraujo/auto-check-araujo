@@ -292,6 +292,7 @@ export type Database = {
           fator_servico_especializado: number
           precificacao_automatica: boolean
           taxa_cartao_credito: number
+          acrescimo_cartao_credito_parcela: number
           taxa_cartao_debito: number
           updated_at: string
           valor_hora: number
@@ -309,6 +310,7 @@ export type Database = {
           fator_servico_especializado?: number
           precificacao_automatica?: boolean
           taxa_cartao_credito?: number
+          acrescimo_cartao_credito_parcela?: number
           taxa_cartao_debito?: number
           updated_at?: string
           valor_hora?: number
@@ -326,6 +328,7 @@ export type Database = {
           fator_servico_especializado?: number
           precificacao_automatica?: boolean
           taxa_cartao_credito?: number
+          acrescimo_cartao_credito_parcela?: number
           taxa_cartao_debito?: number
           updated_at?: string
           valor_hora?: number
@@ -425,6 +428,7 @@ export type Database = {
           orcamento_status: string
           pago: boolean
           pago_em: string | null
+          parcelas: number | null
           reclamacao: string | null
           status: string
           updated_at: string
@@ -447,6 +451,7 @@ export type Database = {
           orcamento_status?: string
           pago?: boolean
           pago_em?: string | null
+          parcelas?: number | null
           reclamacao?: string | null
           status?: string
           updated_at?: string
@@ -469,6 +474,7 @@ export type Database = {
           orcamento_status?: string
           pago?: boolean
           pago_em?: string | null
+          parcelas?: number | null
           reclamacao?: string | null
           status?: string
           updated_at?: string

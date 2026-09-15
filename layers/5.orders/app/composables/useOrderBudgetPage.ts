@@ -7,7 +7,12 @@ import {
   emptyOrderItemDraft,
   type OrderItemDraft
 } from '../utils/budget'
-import { resolveCatalogUnitPrice } from '#layers/configuration/app/utils/pricing'
+import {
+  emptyPricingDraft,
+  pricingDraftFromRow,
+  resolveCatalogUnitPrice,
+  type PricingParamsRow
+} from '#layers/configuration/app/utils/pricing'
 
 export function useOrderBudgetPage(
   orderId: MaybeRefOrGetter<string>,
@@ -46,11 +51,41 @@ export function useOrderBudgetPage(
 
   const total = computed(() => calcItemsTotal(items.value || []))
 
+  const pricingDraft = computed(() => {
+    const row = params.value as PricingParamsRow | null
+    return row ? pricingDraftFromRow(row) : emptyPricingDraft()
+  })
+
+  function catalogUnitPrice(entry: NonNullable<typeof catalog.value>[number]): number {
+    return resolveCatalogUnitPrice({
+      tipo: entry.tipo,
+      valorPadrao: Number(entry.valor_padrao),
+      custo: Number(entry.custo) || 0,
+      markupPecas: pricingDraft.value.markup_pecas,
+      precificacaoAutomatica: pricingDraft.value.precificacao_automatica,
+      horasEstimadas: entry.horas_estimadas,
+      nivelTecnico: entry.nivel_tecnico as 'rapido' | 'padrao' | 'tecnico' | 'especializado',
+      precoManual: entry.preco_manual,
+      servicePricing: pricingDraft.value
+    })
+  }
+
   const catalogItems = computed(() => {
     return (catalog.value || []).map(item => ({
-      label: `${item.nome} · ${ORDEM_ITEM_TIPO_LABEL[item.tipo as keyof typeof ORDEM_ITEM_TIPO_LABEL] || item.tipo} · ${formatMoney(Number(item.valor_padrao))}`,
+      label: `${item.nome} · ${ORDEM_ITEM_TIPO_LABEL[item.tipo as keyof typeof ORDEM_ITEM_TIPO_LABEL] || item.tipo} · ${formatMoney(catalogUnitPrice(item))}`,
       value: item.id
     }))
+  })
+
+  const isSuggestedCatalogPrice = computed(() => {
+    const entry = catalog.value?.find(item => item.id === selectedCatalogId.value)
+    return Boolean(
+      entry
+      && entry.tipo === 'servico'
+      && !entry.preco_manual
+      && Number(entry.horas_estimadas) > 0
+      && Number(draft.valor_unitario) === catalogUnitPrice(entry)
+    )
   })
 
   watch(selectedCatalogId, (id) => {
@@ -59,13 +94,7 @@ export function useOrderBudgetPage(
     if (!entry) return
     draft.tipo = entry.tipo as OrderItemDraft['tipo']
     draft.descricao = entry.nome
-    draft.valor_unitario = resolveCatalogUnitPrice({
-      tipo: entry.tipo,
-      valorPadrao: Number(entry.valor_padrao),
-      custo: Number(entry.custo) || 0,
-      markupPecas: Number(params.value?.markup_pecas) || 0,
-      precificacaoAutomatica: Boolean(params.value?.precificacao_automatica)
-    })
+    draft.valor_unitario = catalogUnitPrice(entry)
     if (!draft.quantidade || draft.quantidade < 1) {
       draft.quantidade = 1
     }
@@ -185,6 +214,7 @@ export function useOrderBudgetPage(
     canApproveBudget,
     total,
     catalogItems,
+    isSuggestedCatalogPrice,
     onAddItem,
     onDeleteItem,
     onSubmitForApproval,

@@ -294,7 +294,7 @@ const canSave = computed(() => isPricingDraftValid(draft.value))
         </p>
       </template>
 
-      <div class="grid gap-4 sm:grid-cols-2">
+      <div class="grid gap-4 sm:grid-cols-3">
         <UFormField name="taxa_cartao_debito">
           <template #label>
             <span class="inline-flex items-center gap-1 whitespace-nowrap">
@@ -321,10 +321,10 @@ const canSave = computed(() => isPricingDraftValid(draft.value))
           <template #label>
             <span class="inline-flex items-center gap-1 whitespace-nowrap">
               <PricingHelpIcon
-                label="Taxa no crédito (%)"
+                label="Taxa em 1x (%)"
                 :text="PRICING_FIELD_HELP.taxa_cartao_credito"
               />
-              Taxa no crédito (%)
+              1x (%)
             </span>
           </template>
           <UInput
@@ -338,7 +338,31 @@ const canSave = computed(() => isPricingDraftValid(draft.value))
             class="min-h-11 w-full font-mono tabular-nums"
           />
         </UFormField>
+        <UFormField name="acrescimo_cartao_credito_parcela">
+          <template #label>
+            <span class="inline-flex items-center gap-1 whitespace-nowrap">
+              <PricingHelpIcon
+                label="Acréscimo por parcela (%)"
+                :text="PRICING_FIELD_HELP.acrescimo_cartao_credito_parcela"
+              />
+              Acréscimo por parcela (%)
+            </span>
+          </template>
+          <UInput
+            v-model.number="draft.acrescimo_cartao_credito_parcela"
+            type="number"
+            inputmode="decimal"
+            autocomplete="off"
+            min="0"
+            max="99.99"
+            step="0.01"
+            class="min-h-11 w-full font-mono tabular-nums"
+          />
+        </UFormField>
       </div>
+      <p class="mt-3 text-xs text-muted">
+        Exemplo: 1x com 5% e acréscimo de 1% gera 10% em 6x. Ajuste o valor cobrado na OS se a maquininha usar outra regra.
+      </p>
 
       <div class="mt-4 grid gap-3 rounded-lg border border-default bg-elevated/50 px-4 py-3 text-sm sm:grid-cols-2">
         <div class="space-y-1">
@@ -347,7 +371,7 @@ const canSave = computed(() => isPricingDraftValid(draft.value))
           </p>
           <p class="font-mono tabular-nums text-highlighted">
             Débito {{ formatMoney(debitNet) }}<br>
-            Crédito {{ formatMoney(creditNet) }}
+            Crédito 1x {{ formatMoney(creditNet) }}
           </p>
         </div>
         <div class="space-y-1">
@@ -356,7 +380,7 @@ const canSave = computed(() => isPricingDraftValid(draft.value))
           </p>
           <p class="font-mono tabular-nums text-highlighted">
             Débito {{ formatMoney(debitCharge) }}<br>
-            Crédito {{ formatMoney(creditCharge) }}
+            Crédito 1x {{ formatMoney(creditCharge) }}
           </p>
         </div>
       </div>

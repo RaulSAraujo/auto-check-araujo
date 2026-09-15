@@ -7,6 +7,7 @@ import {
 } from '../utils/payment'
 import { isOrderEditable, type OrdemStatus } from '~~/shared/types/oficina'
 import {
+  creditInstallmentFee,
   pricingDraftFromRow,
   type PricingParamsRow
 } from '#layers/configuration/app/utils/pricing'
@@ -46,7 +47,11 @@ export function useOrderPayment(
     const draft = pricingDraftFromRow(row)
     return {
       debito: draft.taxa_cartao_debito,
-      credito: draft.taxa_cartao_credito
+      credito: creditInstallmentFee(
+        draft.taxa_cartao_credito,
+        draft.acrescimo_cartao_credito_parcela,
+        state.parcelas ?? 1
+      )
     }
   })
 
@@ -55,6 +60,11 @@ export function useOrderPayment(
   const suggestedCharge = computed(() =>
     defaultChargeForForma(budgetTotal.value, state.forma_pagamento, cardFees.value)
   )
+  const suggestedFee = computed(() => {
+    if (state.forma_pagamento === 'cartao_debito') return cardFees.value.debito
+    if (state.forma_pagamento === 'cartao_credito') return cardFees.value.credito
+    return null
+  })
 
   const baseline = reactive<PaymentFormState>(emptyPaymentForm())
 
@@ -62,6 +72,7 @@ export function useOrderPayment(
     if (!canEditPayment.value) return false
     return state.pago !== baseline.pago
       || state.forma_pagamento !== baseline.forma_pagamento
+      || state.parcelas !== baseline.parcelas
       || Number(state.valor_cobrado ?? 0) !== Number(baseline.valor_cobrado ?? 0)
   })
 
@@ -94,6 +105,7 @@ export function useOrderPayment(
   watch(() => state.pago, (pago) => {
     if (!pago) {
       state.forma_pagamento = undefined
+      state.parcelas = null
       state.valor_cobrado = null
       chargeTouched.value = false
       return
@@ -105,8 +117,14 @@ export function useOrderPayment(
 
   watch(() => state.forma_pagamento, (forma) => {
     if (!state.pago || !forma) return
+    state.parcelas = forma === 'cartao_credito' ? (state.parcelas ?? 1) : null
     if (chargeTouched.value) return
     state.valor_cobrado = defaultChargeForForma(budgetTotal.value, forma, cardFees.value)
+  })
+
+  watch(() => state.parcelas, () => {
+    if (!state.pago || state.forma_pagamento !== 'cartao_credito' || chargeTouched.value) return
+    state.valor_cobrado = defaultChargeForForma(budgetTotal.value, state.forma_pagamento, cardFees.value)
   })
 
   async function savePayment(): Promise<boolean> {
@@ -131,6 +149,7 @@ export function useOrderPayment(
           pago: state.pago,
           pago_em: state.pago ? new Date().toISOString() : null,
           forma_pagamento: state.pago ? state.forma_pagamento : null,
+          parcelas: state.pago ? state.parcelas : null,
           valor_cobrado: state.pago ? state.valor_cobrado : null
         })
         .eq('id', toValue(orderId))
@@ -158,6 +177,7 @@ export function useOrderPayment(
     showPaymentSection,
     isDirty,
     suggestedCharge,
+    suggestedFee,
     applySuggestedCharge,
     markChargeTouched,
     discard,

@@ -11,6 +11,7 @@ export type PricingParamsDraft = {
   precificacao_automatica: boolean
   taxa_cartao_debito: number
   taxa_cartao_credito: number
+  acrescimo_cartao_credito_parcela: number
   valor_minimo_servico: number
   fator_servico_rapido: number
   fator_servico_padrao: number
@@ -30,6 +31,9 @@ export const SERVICE_TECHNICAL_LEVEL_ITEMS = [
 
 export const PRICING_EXAMPLE_PART_COST = 100
 export const PRICING_EXAMPLE_SALE = 100
+export function creditInstallmentFee(baseFee: number, installmentIncrease: number, installments: number): number {
+  return roundMoney(Number(baseFee) + Math.max(0, installments - 1) * Number(installmentIncrease))
+}
 
 /** Ajuda por campo na tela de precificação (ícone ao lado do label). */
 export const PRICING_FIELD_HELP = {
@@ -41,7 +45,8 @@ export const PRICING_FIELD_HELP = {
   markup_pecas: 'Percentual somado ao custo da peça no catálogo.',
   precificacao_automatica: 'Quando ligado, o preço da peça é calculado pelo custo + acréscimo.',
   taxa_cartao_debito: 'Percentual cobrado pela maquininha ou adquirente no débito.',
-  taxa_cartao_credito: 'Percentual cobrado pela maquininha ou adquirente no crédito.',
+  taxa_cartao_credito: 'Taxa total cobrada pela maquininha no crédito à vista (1x).',
+  acrescimo_cartao_credito_parcela: 'Percentual adicional por parcela depois de 1x.',
   valor_minimo_servico: 'Menor valor de mão de obra cobrado, mesmo em serviços rápidos.',
   fatores_tecnicos: 'Ajustam a hora cobrada conforme especialização, risco e ferramental.'
 } as const
@@ -60,6 +65,7 @@ export function emptyPricingDraft(): PricingParamsDraft {
     precificacao_automatica: true,
     taxa_cartao_debito: 1.5,
     taxa_cartao_credito: 3.5,
+    acrescimo_cartao_credito_parcela: 0,
     valor_minimo_servico: 150,
     fator_servico_rapido: 0.8,
     fator_servico_padrao: 1,
@@ -78,6 +84,7 @@ export function pricingDraftFromRow(row: PricingParamsRow): PricingParamsDraft {
     precificacao_automatica: Boolean(row.precificacao_automatica),
     taxa_cartao_debito: Number(row.taxa_cartao_debito),
     taxa_cartao_credito: Number(row.taxa_cartao_credito),
+    acrescimo_cartao_credito_parcela: Number(row.acrescimo_cartao_credito_parcela ?? 0),
     valor_minimo_servico: Number(row.valor_minimo_servico),
     fator_servico_rapido: Number(row.fator_servico_rapido),
     fator_servico_padrao: Number(row.fator_servico_padrao),
@@ -98,6 +105,8 @@ export function isPricingDraftValid(draft: PricingParamsDraft): boolean {
     && draft.taxa_cartao_debito < 100
     && draft.taxa_cartao_credito >= 0
     && draft.taxa_cartao_credito < 100
+    && draft.acrescimo_cartao_credito_parcela >= 0
+    && draft.acrescimo_cartao_credito_parcela < 100
     && draft.valor_minimo_servico >= 0
     && draft.fator_servico_rapido > 0
     && draft.fator_servico_padrao > 0
@@ -157,6 +166,10 @@ export function resolveCatalogUnitPrice(input: {
   custo: number
   markupPecas: number
   precificacaoAutomatica: boolean
+  horasEstimadas?: number | null
+  nivelTecnico?: ServiceTechnicalLevel
+  precoManual?: boolean
+  servicePricing?: PricingParamsDraft
 }): number {
   if (
     input.precificacaoAutomatica
@@ -164,6 +177,21 @@ export function resolveCatalogUnitPrice(input: {
     && Number(input.custo) > 0
   ) {
     return applyMarkup(input.custo, input.markupPecas)
+  }
+  if (
+    input.tipo === 'servico'
+    && !input.precoManual
+    && Number(input.valorPadrao) <= 0
+    && Number(input.horasEstimadas) > 0
+    && input.nivelTecnico
+    && input.servicePricing
+  ) {
+    return calcServiceSuggestedPrice({
+      hours: Number(input.horasEstimadas),
+      hourlyRate: calcSuggestedHourlyRate(input.servicePricing),
+      minimumServicePrice: input.servicePricing.valor_minimo_servico,
+      technicalFactor: serviceTechnicalFactor(input.servicePricing, input.nivelTecnico)
+    })
   }
   return roundMoney(Number(input.valorPadrao) || 0)
 }

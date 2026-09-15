@@ -4,7 +4,7 @@ import {
   buildBudgetWhatsAppMessage,
   buildWhatsAppUrl
 } from '../utils/print'
-import { downloadBudgetPdf } from '../utils/pdf'
+import { downloadBudgetPdf, printBudgetPdf } from '../utils/pdf'
 import { primaryPhone } from '~~/shared/utils/contact'
 import { formatTimeShort, schedulingDayPath } from '#layers/scheduling/app/utils/scheduling'
 
@@ -49,6 +49,7 @@ const {
   canApproveBudget,
   total,
   catalogItems,
+  isSuggestedCatalogPrice,
   onAddItem,
   onDeleteItem,
   onSubmitForApproval,
@@ -82,6 +83,7 @@ const {
   showPaymentSection,
   isDirty: isPaymentDirty,
   suggestedCharge,
+  suggestedFee,
   applySuggestedCharge,
   markChargeTouched,
   discard: discardPayment,
@@ -147,6 +149,23 @@ async function onDownloadBudgetPdf() {
   } finally {
     downloadingPdf.value = false
   }
+}
+
+function onPrintBudgetPdf() {
+  if (!ordem.value || !import.meta.client) return
+  const veiculo = ordem.value.veiculos
+  printBudgetPdf({
+    numero: ordem.value.numero,
+    abertaEm: formatDateTime(ordem.value.aberta_em),
+    budgetStatus: budgetStatus.value,
+    clienteNome: veiculo?.clientes?.nome ?? null,
+    placa: veiculo?.placa ?? null,
+    veiculoLabel: [veiculo?.marca, veiculo?.modelo].filter(Boolean).join(' ') || null,
+    kmEntrada: ordem.value.km_entrada,
+    reclamacao: ordem.value.reclamacao,
+    diagnostico: ordem.value.diagnostico,
+    items: budgetItems.value || []
+  })
 }
 
 const leaveOpen = ref(false)
@@ -290,6 +309,7 @@ onMounted(() => {
               :total="total"
               :selected-catalog-id="selectedCatalogId"
               :catalog-items="catalogItems"
+              :is-suggested-catalog-price="isSuggestedCatalogPrice"
               :adding="adding"
               :deleting-id="deletingId"
               :updating-status="updatingStatus"
@@ -297,6 +317,7 @@ onMounted(() => {
               :whatsapp-url="budgetWhatsappUrl"
               :pdf-loading="downloadingPdf"
               @update:selected-catalog-id="selectedCatalogId = $event"
+              @print-pdf="onPrintBudgetPdf"
               @add="onAddItem"
               @delete="onDeleteItem"
               @submit-for-approval="onSubmitForApproval"
@@ -323,6 +344,7 @@ onMounted(() => {
             :ordem="ordem"
             :can-edit="canEditPayment"
             :suggested-charge="suggestedCharge"
+            :suggested-fee="suggestedFee"
             @apply-suggested="applySuggestedCharge"
             @charge-touch="markChargeTouched"
           />
@@ -338,7 +360,7 @@ onMounted(() => {
         >
           <div
             v-if="isDirty"
-            class="orders-detail-command fixed inset-x-4 bottom-4 z-30 mx-auto flex max-w-lg items-center gap-3 rounded-full border border-default/80 bg-default/95 px-4 py-2.5 backdrop-blur-md sm:inset-x-auto sm:left-1/2 sm:-translate-x-1/2"
+            class="orders-detail-command fixed inset-x-4 bottom-[calc(3.5rem+env(safe-area-inset-bottom)+1rem)] z-30 mx-auto flex max-w-lg items-center gap-3 rounded-full border border-default/80 bg-default/95 px-4 py-2.5 backdrop-blur-md sm:inset-x-auto sm:left-1/2 sm:-translate-x-1/2 sm:bottom-4"
             role="status"
             aria-live="polite"
             style="padding-bottom: max(0.625rem, env(safe-area-inset-bottom))"

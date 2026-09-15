@@ -5,6 +5,12 @@ import { ORDEM_ITEM_TIPO_LABEL } from '~~/shared/types/oficina'
 import { formatMoney } from '~~/shared/utils/money'
 import { EMPTY_VALUE } from '~~/shared/utils/empty'
 import {
+  emptyPricingDraft,
+  pricingDraftFromRow,
+  resolveCatalogUnitPrice,
+  type PricingParamsRow
+} from '../../utils/pricing'
+import {
   CATALOG_TIPO_COLOR,
   type CatalogItemRow
 } from '../../utils/catalog'
@@ -21,6 +27,33 @@ const emit = defineEmits<{
   toggleAtivo: [payload: { id: string, ativo: boolean }]
   delete: [payload: { id: string }]
 }>()
+
+const { params } = usePricingParams()
+
+const pricingDraft = computed(() => {
+  const row = params.value as PricingParamsRow | null
+  return row ? pricingDraftFromRow(row) : emptyPricingDraft()
+})
+
+function displayPrice(item: CatalogItemRow): number {
+  return resolveCatalogUnitPrice({
+    tipo: item.tipo,
+    valorPadrao: Number(item.valor_padrao),
+    custo: Number(item.custo) || 0,
+    markupPecas: pricingDraft.value.markup_pecas,
+    precificacaoAutomatica: pricingDraft.value.precificacao_automatica,
+    horasEstimadas: item.horas_estimadas,
+    nivelTecnico: item.nivel_tecnico as 'rapido' | 'padrao' | 'tecnico' | 'especializado',
+    precoManual: item.preco_manual,
+    servicePricing: pricingDraft.value
+  })
+}
+
+function hasSuggestedPrice(item: CatalogItemRow): boolean {
+  return item.tipo === 'servico'
+    && !item.preco_manual
+    && Number(item.horas_estimadas) > 0
+}
 
 function rowMenuItems(item: CatalogItemRow, togglingId: string | null): DropdownMenuItem[][] {
   return [[
@@ -101,11 +134,29 @@ function rowMenuItems(item: CatalogItemRow, togglingId: string | null): Dropdown
 
       <div class="mt-3 grid grid-cols-2 gap-3 border-t border-default pt-3 text-sm">
         <div>
-          <p class="text-xs text-muted">Valor padrão</p>
-          <p class="font-mono font-medium tabular-nums text-highlighted">{{ formatMoney(Number(item.valor_padrao)) }}</p>
+          <p class="text-xs text-muted">
+            Valor padrão
+          </p>
+          <div class="flex items-center gap-1">
+            <p class="font-mono font-medium tabular-nums text-highlighted">
+              {{ formatMoney(displayPrice(item)) }}
+            </p>
+            <UTooltip
+              v-if="hasSuggestedPrice(item)"
+              text="Preço sugerido pela precificação"
+            >
+              <UIcon
+                name="i-lucide-wand-sparkles"
+                class="size-3.5 text-info"
+                aria-label="Preço sugerido pela precificação"
+              />
+            </UTooltip>
+          </div>
         </div>
         <div>
-          <p class="text-xs text-muted">{{ item.tipo === 'servico' ? 'Custo' : 'Estoque' }}</p>
+          <p class="text-xs text-muted">
+            {{ item.tipo === 'servico' ? 'Custo' : 'Estoque' }}
+          </p>
           <p class="font-mono font-medium tabular-nums text-highlighted">
             {{ item.tipo === 'servico' ? formatMoney(Number(item.custo)) : item.estoque ?? 0 }}
           </p>
@@ -178,8 +229,20 @@ function rowMenuItems(item: CatalogItemRow, togglingId: string | null): Dropdown
                 {{ ORDEM_ITEM_TIPO_LABEL[item.tipo as OrdemItemTipo] }}
               </UBadge>
             </td>
-            <td class="px-3 py-2.5 text-right font-mono tabular-nums align-middle">
-              {{ formatMoney(Number(item.valor_padrao)) }}
+            <td class="px-3 py-2.5 align-middle">
+              <div class="flex items-center justify-end gap-1">
+                <span class="font-mono tabular-nums">{{ formatMoney(displayPrice(item)) }}</span>
+                <UTooltip
+                  v-if="hasSuggestedPrice(item)"
+                  text="Preço sugerido pela precificação"
+                >
+                  <UIcon
+                    name="i-lucide-wand-sparkles"
+                    class="size-3.5 text-info"
+                    aria-label="Preço sugerido pela precificação"
+                  />
+                </UTooltip>
+              </div>
             </td>
             <td class="hidden px-3 py-2.5 text-right font-mono tabular-nums align-middle text-muted md:table-cell">
               {{ formatMoney(Number(item.custo)) }}
