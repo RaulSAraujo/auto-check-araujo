@@ -21,13 +21,16 @@ const user = useSupabaseUser()
 const currentUserId = computed(() => user.value?.id)
 
 const { collaborators, pending, refresh } = useCollaboratorsList()
-const { updatePapel, resetCollaboratorPassword } = useCollaboratorMutations()
+const { updatePapel, resetCollaboratorPassword, deleteCollaborator } = useCollaboratorMutations()
 
 const createOpen = ref(false)
 const passwordOpen = ref(false)
+const deleteOpen = ref(false)
 const passwordTarget = ref<CollaboratorRow | null>(null)
+const deleteTarget = ref<CollaboratorRow | null>(null)
 const updatingId = ref<string | null>(null)
 const resettingPassword = ref(false)
+const deleting = ref(false)
 
 const countLabel = computed(() => {
   const n = collaborators.value?.length ?? 0
@@ -49,6 +52,27 @@ async function onUpdatePapel(payload: { id: string, papel: ColaboradorPapel }) {
 function onResetPassword(row: CollaboratorRow) {
   passwordTarget.value = row
   passwordOpen.value = true
+}
+
+function onDelete(row: CollaboratorRow) {
+  if (row.id === currentUserId.value) return
+  deleteTarget.value = row
+  deleteOpen.value = true
+}
+
+async function onConfirmDelete() {
+  if (!deleteTarget.value) return
+  deleting.value = true
+  try {
+    const { error } = await deleteCollaborator(deleteTarget.value.id)
+    if (!error) {
+      deleteOpen.value = false
+      deleteTarget.value = null
+      await refresh()
+    }
+  } finally {
+    deleting.value = false
+  }
 }
 
 async function onConfirmPassword(password: string) {
@@ -105,8 +129,10 @@ async function onCreated() {
             :loading="pending"
             :current-user-id="currentUserId"
             :updating-id="updatingId"
+            :deleting-id="deleting ? deleteTarget?.id : null"
             @update:papel="onUpdatePapel"
             @reset-password="onResetPassword"
+            @delete="onDelete"
             @create="createOpen = true"
           />
 
@@ -126,6 +152,13 @@ async function onCreated() {
             :collaborator="passwordTarget"
             :loading="resettingPassword"
             @confirm="onConfirmPassword"
+          />
+
+          <TeamCollaboratorsDeleteModal
+            v-model:open="deleteOpen"
+            :collaborator="deleteTarget"
+            :loading="deleting"
+            @confirm="onConfirmDelete"
           />
         </div>
       </div>

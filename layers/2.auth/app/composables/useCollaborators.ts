@@ -106,9 +106,24 @@ export function useCollaboratorMutations() {
     }
   }
 
+  async function deleteCollaborator(id: string) {
+    try {
+      await $fetch(`/api/collaborators/${id}`, { method: 'DELETE' })
+      toast.add({ title: 'Colaborador excluído', color: 'success' })
+      return { error: null }
+    } catch (err: unknown) {
+      const message = err instanceof Error
+        ? err.message
+        : (err as { data?: { message?: string } })?.data?.message || 'Erro ao excluir colaborador'
+      toast.add({ title: 'Erro ao excluir colaborador', description: message, color: 'error' })
+      return { error: err }
+    }
+  }
+
   return {
     updatePapel,
     createCollaborator,
-    resetCollaboratorPassword
+    resetCollaboratorPassword,
+    deleteCollaborator
   }
 }

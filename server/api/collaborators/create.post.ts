@@ -47,7 +47,7 @@ function parseCreateBody(body: CreateBody) {
 
 export default defineEventHandler(async (event) => {
   const user = await serverSupabaseUser(event)
-  if (!user) {
+  if (!user?.sub) {
     throw createError({ statusCode: 401, message: 'Não autenticado' })
   }
 
@@ -55,7 +55,7 @@ export default defineEventHandler(async (event) => {
   const { data: profile, error: profileError } = await client
     .from('profiles')
     .select('papel')
-    .eq('id', user.id)
+    .eq('id', user.sub)
     .single()
 
   if (profileError || profile?.papel !== 'gerente') {
