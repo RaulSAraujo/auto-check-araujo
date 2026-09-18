@@ -60,22 +60,6 @@ const { back } = useSmartBack(backFallback)
 
 const breadcrumbItems = computed<BreadcrumbItem[]>(() => {
   const plate = veiculo.value ? formatPlaca(veiculo.value.placa) : 'Veículo'
-  const owner = veiculo.value?.clientes
-
-  if (owner) {
-    return [
-      {
-        label: 'Clientes',
-        to: VEHICLE_ROUTES.customers
-      },
-      {
-        label: owner.nome,
-        to: VEHICLE_ROUTES.customerDetail(owner.id)
-      },
-      { label: plate }
-    ]
-  }
-
   return [
     {
       label: 'Veículos',
