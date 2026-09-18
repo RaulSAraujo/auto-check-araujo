@@ -92,7 +92,9 @@ function rowMenuItems(supplier: Fornecedor, togglingId: string | null): Dropdown
               {{ supplier.email }}
             </p>
           </template>
-          <p v-else>Sem contato cadastrado</p>
+          <p v-else>
+            Sem contato cadastrado
+          </p>
         </div>
         <UBadge
           :color="supplier.ativo ? 'success' : 'neutral'"

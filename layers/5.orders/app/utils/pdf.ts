@@ -172,13 +172,15 @@ function createBudgetPdf(input: BudgetPdfInput): jsPDF {
 
   y = ensureSpace(doc, y, 28, title)
 
-  const body = input.items.length ? input.items.map(item => [
-    ORDEM_ITEM_TIPO_LABEL[item.tipo as keyof typeof ORDEM_ITEM_TIPO_LABEL] || item.tipo,
-    item.descricao,
-    Number(item.quantidade).toLocaleString('pt-BR'),
-    formatMoney(Number(item.valor_unitario)),
-    formatMoney(calcItemSubtotal(item))
-  ]) : [['', 'Nenhum item adicionado ao orçamento.', '', '', '']]
+  const body = input.items.length
+    ? input.items.map(item => [
+        ORDEM_ITEM_TIPO_LABEL[item.tipo as keyof typeof ORDEM_ITEM_TIPO_LABEL] || item.tipo,
+        item.descricao,
+        Number(item.quantidade).toLocaleString('pt-BR'),
+        formatMoney(Number(item.valor_unitario)),
+        formatMoney(calcItemSubtotal(item))
+      ])
+    : [['', 'Nenhum item adicionado ao orçamento.', '', '', '']]
 
   autoTable(doc, {
     startY: y,

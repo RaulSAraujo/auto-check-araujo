@@ -127,7 +127,10 @@ function onSubmit() {
             class="mt-2 justify-center sm:hidden"
             aria-live="polite"
           />
-          <p class="sr-only" aria-live="polite">
+          <p
+            class="sr-only"
+            aria-live="polite"
+          >
             {{ loading ? 'Salvando alterações…' : dirty ? 'Há alterações não salvas' : '' }}
           </p>
         </div>

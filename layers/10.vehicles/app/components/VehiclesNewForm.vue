@@ -96,7 +96,10 @@ function onSubmit() {
               style="transition-duration: var(--duration-press)"
             />
           </div>
-          <p class="sr-only" aria-live="polite">
+          <p
+            class="sr-only"
+            aria-live="polite"
+          >
             {{ loading ? 'Salvando veículo…' : '' }}
           </p>
         </template>

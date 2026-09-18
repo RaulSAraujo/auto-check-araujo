@@ -181,9 +181,9 @@ async function onSupplierConfirmDelete() {
 
             <template #actions>
               <UButton
-              label="Novo fornecedor"
-              icon="i-lucide-plus"
-              class="w-full justify-center sm:w-auto"
+                label="Novo fornecedor"
+                icon="i-lucide-plus"
+                class="w-full justify-center sm:w-auto"
                 @click="openCreate"
               />
             </template>

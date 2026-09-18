@@ -17,7 +17,7 @@ const props = defineProps<{
 const emit = defineEmits<{
   'update:papel': [payload: { id: string, papel: ColaboradorPapel }]
   'reset-password': [row: CollaboratorRow]
-  delete: [row: CollaboratorRow]
+  'delete': [row: CollaboratorRow]
   'create': []
 }>()
 
@@ -56,14 +56,80 @@ function onPapelChange(id: string, papel: ColaboradorPapel) {
 
 <template>
   <div class="space-y-2 md:hidden">
-    <template v-if="loading"><USkeleton v-for="n in 3" :key="n" class="h-24 w-full rounded-xl" /></template>
+    <template v-if="loading">
+      <USkeleton
+        v-for="n in 3"
+        :key="n"
+        class="h-24 w-full rounded-xl"
+      />
+    </template>
     <template v-else-if="collaborators.length">
-      <div v-for="collaborator in collaborators" :key="collaborator.id" class="rounded-xl bg-elevated/40 p-3 ring-1 ring-default/70">
-        <div class="flex items-center gap-3"><UAvatar :text="initials(collaborator.nome)" size="md" :alt="collaborator.nome" /><div class="min-w-0 flex-1"><p class="truncate font-semibold text-highlighted">{{ collaborator.nome }}</p><p class="truncate font-mono text-xs text-muted">{{ collaborator.username }}</p></div><UBadge v-if="collaborator.id === currentUserId" color="neutral" variant="subtle" size="sm">Você</UBadge></div>
-        <div class="mt-3 flex items-center gap-2"><USelect v-if="collaborator.id !== currentUserId" :model-value="collaborator.papel" :items="papelItems" value-key="value" :loading="updatingId === collaborator.id" class="min-w-0 flex-1" @update:model-value="onPapelChange(collaborator.id, $event as ColaboradorPapel)" /><UBadge v-else :color="PAPEL_COLOR[collaborator.papel]" variant="subtle">{{ COLABORADOR_PAPEL_LABEL[collaborator.papel] }}</UBadge><UButton icon="i-lucide-key-round" color="neutral" variant="ghost" square :aria-label="`Redefinir senha de ${collaborator.nome}`" @click="emit('reset-password', collaborator)" /><UButton v-if="collaborator.id !== currentUserId" icon="i-lucide-trash-2" color="error" variant="ghost" square :loading="deletingId === collaborator.id" :aria-label="`Excluir ${collaborator.nome}`" @click="emit('delete', collaborator)" /></div>
+      <div
+        v-for="collaborator in collaborators"
+        :key="collaborator.id"
+        class="rounded-xl bg-elevated/40 p-3 ring-1 ring-default/70"
+      >
+        <div class="flex items-center gap-3">
+          <UAvatar
+            :text="initials(collaborator.nome)"
+            size="md"
+            :alt="collaborator.nome"
+          /><div class="min-w-0 flex-1">
+            <p class="truncate font-semibold text-highlighted">
+              {{ collaborator.nome }}
+            </p><p class="truncate font-mono text-xs text-muted">
+              {{ collaborator.username }}
+            </p>
+          </div><UBadge
+            v-if="collaborator.id === currentUserId"
+            color="neutral"
+            variant="subtle"
+            size="sm"
+          >
+            Você
+          </UBadge>
+        </div>
+        <div class="mt-3 flex items-center gap-2">
+          <USelect
+            v-if="collaborator.id !== currentUserId"
+            :model-value="collaborator.papel"
+            :items="papelItems"
+            value-key="value"
+            :loading="updatingId === collaborator.id"
+            class="min-w-0 flex-1"
+            @update:model-value="onPapelChange(collaborator.id, $event as ColaboradorPapel)"
+          /><UBadge
+            v-else
+            :color="PAPEL_COLOR[collaborator.papel]"
+            variant="subtle"
+          >
+            {{ COLABORADOR_PAPEL_LABEL[collaborator.papel] }}
+          </UBadge><UButton
+            icon="i-lucide-key-round"
+            color="neutral"
+            variant="ghost"
+            square
+            :aria-label="`Redefinir senha de ${collaborator.nome}`"
+            @click="emit('reset-password', collaborator)"
+          /><UButton
+            v-if="collaborator.id !== currentUserId"
+            icon="i-lucide-trash-2"
+            color="error"
+            variant="ghost"
+            square
+            :loading="deletingId === collaborator.id"
+            :aria-label="`Excluir ${collaborator.nome}`"
+            @click="emit('delete', collaborator)"
+          />
+        </div>
       </div>
     </template>
-    <BaseEmptyState v-else icon="i-lucide-users">Nenhum colaborador ainda.</BaseEmptyState>
+    <BaseEmptyState
+      v-else
+      icon="i-lucide-users"
+    >
+      Nenhum colaborador ainda.
+    </BaseEmptyState>
   </div>
   <UTable
     :data="collaborators"

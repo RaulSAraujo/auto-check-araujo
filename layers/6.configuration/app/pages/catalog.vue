@@ -194,9 +194,9 @@ function clearFilters() {
 
             <template #actions>
               <UButton
-              label="Novo item"
-              icon="i-lucide-plus"
-              class="w-full justify-center sm:w-auto"
+                label="Novo item"
+                icon="i-lucide-plus"
+                class="w-full justify-center sm:w-auto"
                 @click="openCreate"
               />
             </template>
