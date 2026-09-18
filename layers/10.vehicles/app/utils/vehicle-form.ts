@@ -1,4 +1,5 @@
 import type { Veiculo, VeiculoInsert, VeiculoUpdate } from '~~/shared/types/database'
+import { sentenceCaseOrNull, titleCaseOrNull } from '~~/shared/utils/text-case'
 
 export interface VehicleFormState {
   cliente_id: string
@@ -54,11 +55,6 @@ export function vehicleFormFromRow(veiculo: Veiculo): VehicleFormState {
   }
 }
 
-function trimOrNull(value: string): string | null {
-  const trimmed = value.trim()
-  return trimmed || null
-}
-
 /** Máscara de digitação: ABC-1D23 (até 7 alfanuméricos). */
 export function formatPlacaInput(value: string): string {
   const normalized = normalizePlaca(value).slice(0, 7)
@@ -82,12 +78,12 @@ export function vehicleFormToInsert(state: VehicleFormState): VeiculoInsert {
   return {
     cliente_id: state.cliente_id,
     placa: normalizedPlaca(state),
-    marca: trimOrNull(state.marca),
-    modelo: trimOrNull(state.modelo),
+    marca: titleCaseOrNull(state.marca),
+    modelo: titleCaseOrNull(state.modelo),
     ano: isFilledNumber(state.ano) ? Number(state.ano) : null,
-    cor: trimOrNull(state.cor),
+    cor: titleCaseOrNull(state.cor),
     km_atual: isFilledNumber(state.km_atual) ? Number(state.km_atual) : null,
-    observacoes: trimOrNull(state.observacoes)
+    observacoes: sentenceCaseOrNull(state.observacoes)
   }
 }
 

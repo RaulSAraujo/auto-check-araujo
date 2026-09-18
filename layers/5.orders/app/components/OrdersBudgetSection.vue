@@ -5,6 +5,7 @@ import { ORCAMENTO_STATUS_COLOR, ORCAMENTO_STATUS_LABEL, ORDEM_ITEM_TIPO_LABEL }
 import { ORDEM_ITEM_TIPO_SELECT_ITEMS } from '../utils/budget-select-items'
 import { calcItemSubtotal, formatMoney, isOrderItemDraftValid } from '../utils/budget'
 import type { OrderItemDraft } from '../utils/budget'
+import { toSentenceCase } from '~~/shared/utils/text-case'
 
 defineOptions({ name: 'OrdersBudgetSection' })
 
@@ -274,6 +275,7 @@ function onConfirmReject() {
                 placeholder="Ex.: Troca de óleo…"
                 name="descricao"
                 autofocus
+                @blur="draftModel.descricao = toSentenceCase(draftModel.descricao)"
               />
             </UFormField>
 

@@ -6,6 +6,7 @@ import {
   type SupplierDraft
 } from '#layers/configuration/app/utils/catalog'
 import { EMPTY_VALUE } from '~~/shared/utils/empty'
+import { toSentenceCase, toTitleCasePt } from '~~/shared/utils/text-case'
 
 defineOptions({ name: 'FinanceSuppliersPanel' })
 
@@ -72,6 +73,7 @@ watch(() => props.savingId, (id) => {
           autocomplete="organization"
           class="w-full"
           placeholder="Auto Peças Central…"
+          @blur="draft.nome = toTitleCasePt(draft.nome)"
         />
       </UFormField>
 
@@ -115,6 +117,7 @@ watch(() => props.savingId, (id) => {
           class="w-full"
           :rows="2"
           placeholder="Prazo de entrega, contato…"
+          @blur="draft.observacoes = toSentenceCase(draft.observacoes)"
         />
       </UFormField>
 
@@ -163,6 +166,7 @@ watch(() => props.savingId, (id) => {
               size="sm"
               class="w-full"
               placeholder="Nome"
+              @blur="editDraft.nome = toTitleCasePt(editDraft.nome)"
             />
             <UInput
               v-model="editDraft.telefone"

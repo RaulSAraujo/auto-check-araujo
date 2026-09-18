@@ -1,5 +1,6 @@
 import type { CatalogItemDraft, CatalogItemRow, CatalogKitDraftLine, CatalogTipoFilter } from '../utils/catalog'
 import { stockForTipo } from '../utils/catalog'
+import { toTitleCasePt } from '~~/shared/utils/text-case'
 
 const CATALOG_LIST_KEY = 'catalog-list'
 const CATALOG_ACTIVE_KEY = 'servicos-catalogo'
@@ -31,7 +32,7 @@ function toCatalogPayload(draft: CatalogItemDraft) {
   const tipo = draft.tipo
   const isService = tipo === 'servico'
   return {
-    nome: draft.nome.trim(),
+    nome: toTitleCasePt(draft.nome),
     tipo,
     valor_padrao: draft.valor_padrao,
     custo: isService ? 0 : draft.custo,

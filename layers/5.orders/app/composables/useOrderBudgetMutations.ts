@@ -2,6 +2,7 @@ import type { OrdemItemInsert } from '~~/shared/types/database'
 import type { OrcamentoStatus, OrdemItemTipo } from '~~/shared/types/oficina'
 import type { OrderItemDraft } from '../utils/budget'
 import { isOrderItemDraftValid } from '../utils/budget'
+import { toSentenceCase } from '~~/shared/utils/text-case'
 
 export function useOrderBudgetMutations() {
   const supabase = useTypedSupabaseClient()
@@ -23,7 +24,7 @@ export function useOrderBudgetMutations() {
     const row: OrdemItemInsert = {
       ordem_servico_id: orderId,
       tipo: draft.tipo,
-      descricao: draft.descricao.trim(),
+      descricao: toSentenceCase(draft.descricao),
       quantidade: draft.quantidade,
       valor_unitario: draft.valor_unitario,
       ordem: nextOrdem
@@ -46,9 +47,13 @@ export function useOrderBudgetMutations() {
     itemId: string,
     patch: Partial<Pick<OrderItemDraft, 'descricao' | 'quantidade' | 'valor_unitario' | 'tipo'>>
   ) {
+    const payload = {
+      ...patch,
+      ...(patch.descricao != null ? { descricao: toSentenceCase(patch.descricao) } : {})
+    }
     const { error } = await supabase
       .from('ordem_itens')
-      .update(patch)
+      .update(payload)
       .eq('id', itemId)
 
     if (error) {

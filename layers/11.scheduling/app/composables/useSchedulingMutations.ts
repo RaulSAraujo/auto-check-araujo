@@ -1,5 +1,6 @@
 import type { AgendamentoInsert, AgendamentoUpdate } from '~~/shared/types/database'
 import type { AgendamentoStatus } from '~~/shared/types/oficina'
+import { sentenceCaseOrNull } from '~~/shared/utils/text-case'
 import {
   ACTIVE_SCHEDULING_STATUSES,
   combineLocalDateTime,
@@ -114,7 +115,7 @@ export function useSchedulingMutations() {
       inicio: iso,
       fim: iso,
       status: 'agendado',
-      servico: draft.problema.trim() || null,
+      servico: sentenceCaseOrNull(draft.problema),
       patio_vaga: null,
       observacoes: null,
       criado_por: user.value?.id ?? null
@@ -158,7 +159,7 @@ export function useSchedulingMutations() {
       veiculo_id: draft.veiculo_id,
       inicio: iso,
       fim: iso,
-      servico: draft.problema.trim() || null,
+      servico: sentenceCaseOrNull(draft.problema),
       patio_vaga: null,
       observacoes: null
     }

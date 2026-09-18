@@ -4,6 +4,7 @@ import type { OrderVehicleSelectItem } from '../composables/useOrderVehicleOptio
 import type { OrderFormState } from '../utils/order-form'
 import { validateOrderForm } from '../utils/order-form'
 import { ORDER_ROUTES } from '../utils/order-routes'
+import { toSentenceCase } from '~~/shared/utils/text-case'
 
 defineOptions({ name: 'OrdersNewForm' })
 
@@ -249,6 +250,7 @@ const vehicleLabel = computed(() => {
             placeholder="Barulho na dianteira ao frear…"
             autocomplete="off"
             name="reclamacao"
+            @blur="state.reclamacao = toSentenceCase(state.reclamacao)"
           />
         </UFormField>
 
@@ -317,6 +319,7 @@ const vehicleLabel = computed(() => {
             placeholder="Peças sob encomenda, cliente aguarda ligação…"
             autocomplete="off"
             name="observacoes"
+            @blur="state.observacoes = toSentenceCase(state.observacoes)"
           />
         </UFormField>
       </div>

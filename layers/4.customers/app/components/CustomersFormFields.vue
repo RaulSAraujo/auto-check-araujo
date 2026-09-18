@@ -4,6 +4,7 @@ import {
   formatDocumento,
   formatPhoneBr
 } from '../utils/customer-form'
+import { toSentenceCase, toTitleCasePt } from '~~/shared/utils/text-case'
 
 defineOptions({ name: 'CustomersFormFields' })
 
@@ -90,6 +91,7 @@ function setEmail(index: number, value: string) {
           enterkeyhint="next"
           name="nome"
           :disabled="disabled"
+          @blur="state.nome = toTitleCasePt(state.nome)"
         />
       </UFormField>
 
@@ -241,6 +243,7 @@ function setEmail(index: number, value: string) {
             autocomplete="off"
             name="observacoes"
             :disabled="disabled"
+            @blur="state.observacoes = toSentenceCase(state.observacoes)"
           />
         </UFormField>
       </div>

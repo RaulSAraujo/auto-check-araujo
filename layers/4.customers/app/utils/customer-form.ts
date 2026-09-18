@@ -1,5 +1,6 @@
 import type { Cliente, ClienteInsert, ClienteUpdate } from '~~/shared/types/database'
 import { normalizeContactList } from '~~/shared/utils/contact'
+import { sentenceCaseOrNull, toTitleCasePt } from '~~/shared/utils/text-case'
 
 export interface CustomerFormState {
   nome: string
@@ -117,11 +118,11 @@ function isValidDocumento(value: string): boolean {
 
 export function customerFormToInsert(state: CustomerFormState): ClienteInsert {
   return {
-    nome: state.nome.trim(),
+    nome: toTitleCasePt(state.nome),
     telefones: normalizeContactList(state.telefones.map(formatPhoneBr)),
     emails: normalizeContactList(state.emails),
     documento: trimOrNull(formatDocumento(state.documento)),
-    observacoes: trimOrNull(state.observacoes),
+    observacoes: sentenceCaseOrNull(state.observacoes),
     ativo: state.ativo
   }
 }

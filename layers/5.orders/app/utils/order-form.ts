@@ -1,4 +1,5 @@
 import type { OrdemServico, OrdemServicoInsert, OrdemServicoUpdate } from '~~/shared/types/database'
+import { sentenceCaseOrNull } from '~~/shared/utils/text-case'
 
 export interface OrderEditState {
   reclamacao: string
@@ -34,11 +35,6 @@ export function emptyOrderEditForm(): OrderEditState {
   }
 }
 
-function trimOrNull(value: string): string | null {
-  const trimmed = value.trim()
-  return trimmed || null
-}
-
 export function orderFormToInsert(
   state: OrderFormState,
   abertoPor: string
@@ -47,10 +43,10 @@ export function orderFormToInsert(
     veiculo_id: state.veiculo_id,
     aberto_por: abertoPor,
     numero: '',
-    reclamacao: trimOrNull(state.reclamacao),
-    diagnostico: trimOrNull(state.diagnostico),
+    reclamacao: sentenceCaseOrNull(state.reclamacao),
+    diagnostico: sentenceCaseOrNull(state.diagnostico),
     km_entrada: state.km_entrada || null,
-    observacoes: trimOrNull(state.observacoes),
+    observacoes: sentenceCaseOrNull(state.observacoes),
     status: 'aberta'
   }
 }
@@ -143,9 +139,9 @@ export function orderEditToUpdate(state: OrderEditState): Pick<
   'reclamacao' | 'diagnostico' | 'km_entrada' | 'observacoes'
 > {
   return {
-    reclamacao: trimOrNull(state.reclamacao),
-    diagnostico: trimOrNull(state.diagnostico),
+    reclamacao: sentenceCaseOrNull(state.reclamacao),
+    diagnostico: sentenceCaseOrNull(state.diagnostico),
     km_entrada: state.km_entrada ?? null,
-    observacoes: trimOrNull(state.observacoes)
+    observacoes: sentenceCaseOrNull(state.observacoes)
   }
 }

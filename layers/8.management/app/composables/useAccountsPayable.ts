@@ -10,6 +10,7 @@ import {
   isFinanceAccountDraftValid,
   todayDateValue
 } from '../utils/accounts-payable'
+import { sentenceCaseOrNull, toSentenceCase } from '~~/shared/utils/text-case'
 
 const ACCOUNTS_LIST_KEY = 'finance-accounts-list'
 const DUE_LIST_KEY = 'finance-due-list'
@@ -30,11 +31,6 @@ const ACCOUNT_SELECT = `
   financeiro_categorias(id, nome),
   fornecedores(id, nome)
 `
-
-function trimOrNull(value: string): string | null {
-  const trimmed = value.trim()
-  return trimmed || null
-}
 
 async function refreshFinanceRelated() {
   await refreshNuxtData([
@@ -142,12 +138,12 @@ export function useAccountsPayableMutations(onChanged?: () => Promise<void> | vo
     const { error } = await supabase
       .from('financeiro_contas')
       .insert({
-        descricao: draft.descricao.trim(),
+        descricao: toSentenceCase(draft.descricao),
         categoria_id: draft.categoria_id,
         fornecedor_id: draft.fornecedor_id || null,
         valor: Number(draft.valor),
         vencimento: draft.vencimento,
-        observacoes: trimOrNull(draft.observacoes),
+        observacoes: sentenceCaseOrNull(draft.observacoes),
         status: 'a_pagar'
       })
 

@@ -20,6 +20,7 @@ import {
   serviceTechnicalFactor,
   type PricingParamsRow
 } from '../../utils/pricing'
+import { toTitleCasePt } from '~~/shared/utils/text-case'
 
 defineOptions({ name: 'CatalogForm' })
 
@@ -163,6 +164,7 @@ function onSubmit() {
         autocomplete="off"
         class="w-full"
         placeholder="Ex.: Troca de óleo…"
+        @blur="draftModel.nome = toTitleCasePt(draftModel.nome)"
       />
     </UFormField>
 

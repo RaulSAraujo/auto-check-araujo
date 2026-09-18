@@ -4,6 +4,7 @@ import {
   isFinanceAccountDraftValid,
   type FinanceAccountDraft
 } from '../../utils/accounts-payable'
+import { toSentenceCase } from '~~/shared/utils/text-case'
 
 defineOptions({ name: 'FinanceAccountForm' })
 
@@ -84,6 +85,7 @@ function onSubmit() {
         autocomplete="off"
         class="w-full"
         placeholder="Conta de luz — setembro…"
+        @blur="draftModel.descricao = toSentenceCase(draftModel.descricao)"
       />
     </UFormField>
 
@@ -210,6 +212,7 @@ function onSubmit() {
         class="w-full"
         :rows="2"
         placeholder="Número da fatura, referência…"
+        @blur="draftModel.observacoes = toSentenceCase(draftModel.observacoes)"
       />
     </div>
 

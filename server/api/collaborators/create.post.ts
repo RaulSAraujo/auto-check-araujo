@@ -5,6 +5,7 @@ import {
   normalizeUsername,
   usernameToAuthEmail
 } from '~~/shared/utils/username'
+import { toTitleCasePt } from '~~/shared/utils/text-case'
 import { getSupabaseAdminConfig, supabaseAdminFetch } from '../../utils/supabase-admin'
 
 type CreateBody = {
@@ -17,7 +18,7 @@ type CreateBody = {
 function parseCreateBody(body: CreateBody) {
   const username = normalizeUsername(body.username ?? '')
   const password = body.password ?? ''
-  const nome = body.nome?.trim() ?? ''
+  const nome = toTitleCasePt(body.nome ?? '')
   const papel = body.papel
 
   if (!isValidUsername(username)) {

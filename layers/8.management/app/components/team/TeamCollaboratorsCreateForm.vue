@@ -2,6 +2,7 @@
 import type { ColaboradorPapel } from '~~/shared/types/oficina'
 import { COLABORADOR_PAPEL_LABEL } from '~~/shared/types/oficina'
 import { isValidCollaboratorPassword, isValidUsername, normalizeUsername } from '~~/shared/utils/username'
+import { toTitleCasePt } from '~~/shared/utils/text-case'
 
 defineOptions({ name: 'TeamCollaboratorsCreateForm' })
 
@@ -42,7 +43,7 @@ async function onSubmit() {
     const { error } = await createCollaborator({
       username: normalizeUsername(username.value),
       password: password.value,
-      nome: nome.value.trim(),
+      nome: toTitleCasePt(nome.value),
       papel: papel.value
     })
     if (!error) {
@@ -77,6 +78,7 @@ async function onSubmit() {
         placeholder="Nome completo"
         required
         class="w-full"
+        @blur="nome = toTitleCasePt(nome)"
       />
     </UFormField>
 

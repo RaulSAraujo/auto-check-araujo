@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { VehicleFormState } from '../utils/vehicle-form'
 import { formatPlacaInput } from '../utils/vehicle-form'
+import { toSentenceCase, toTitleCasePt } from '~~/shared/utils/text-case'
 
 defineOptions({ name: 'VehiclesFormFields' })
 
@@ -95,6 +96,7 @@ function setPlaca(value: string) {
             enterkeyhint="next"
             name="marca"
             :disabled="disabled"
+            @blur="state.marca = toTitleCasePt(state.marca)"
           />
         </UFormField>
 
@@ -110,6 +112,7 @@ function setPlaca(value: string) {
             enterkeyhint="next"
             name="modelo"
             :disabled="disabled"
+            @blur="state.modelo = toTitleCasePt(state.modelo)"
           />
         </UFormField>
 
@@ -141,6 +144,7 @@ function setPlaca(value: string) {
             enterkeyhint="next"
             name="cor"
             :disabled="disabled"
+            @blur="state.cor = toTitleCasePt(state.cor)"
           />
         </UFormField>
 
@@ -197,6 +201,7 @@ function setPlaca(value: string) {
             autocomplete="off"
             name="observacoes"
             :disabled="disabled"
+            @blur="state.observacoes = toSentenceCase(state.observacoes)"
           />
         </UFormField>
       </div>

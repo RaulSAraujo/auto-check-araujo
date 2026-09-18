@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { isSupplierDraftValid, type SupplierDraft } from '../../utils/catalog'
+import { toSentenceCase, toTitleCasePt } from '~~/shared/utils/text-case'
 
 defineOptions({ name: 'CatalogSuppliersForm' })
 
@@ -65,6 +66,7 @@ function onSubmit() {
         autocomplete="organization"
         class="w-full"
         placeholder="Ex.: Auto Peças Central…"
+        @blur="draftModel.nome = toTitleCasePt(draftModel.nome)"
       />
     </UFormField>
 
@@ -123,6 +125,7 @@ function onSubmit() {
         name="observacoes"
         class="w-full"
         :rows="2"
+        @blur="draftModel.observacoes = toSentenceCase(draftModel.observacoes)"
       />
     </UFormField>
 

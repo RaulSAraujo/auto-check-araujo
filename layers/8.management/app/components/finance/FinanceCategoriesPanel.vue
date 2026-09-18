@@ -5,6 +5,7 @@ import {
   isFinanceCategoryDraftValid,
   type FinanceCategoryDraft
 } from '../../utils/accounts-payable'
+import { toTitleCasePt } from '~~/shared/utils/text-case'
 
 defineOptions({ name: 'FinanceCategoriesPanel' })
 
@@ -68,6 +69,7 @@ watch(() => props.savingId, (id) => {
           autocomplete="off"
           class="min-w-0 flex-1"
           placeholder="Combustível…"
+          @blur="draft.nome = toTitleCasePt(draft.nome)"
           @keydown.enter.prevent="onAdd"
         />
         <UButton
@@ -113,6 +115,7 @@ watch(() => props.savingId, (id) => {
             v-model="editDraft.nome"
             size="sm"
             class="min-w-0 flex-1"
+            @blur="editDraft.nome = toTitleCasePt(editDraft.nome)"
             @keydown.enter.prevent="saveEdit(category.id)"
           />
           <div class="flex shrink-0 gap-0.5">

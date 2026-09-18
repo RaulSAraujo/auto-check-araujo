@@ -1,6 +1,7 @@
 import type { Fornecedor } from '~~/shared/types/database'
 import type { SupplierDraft } from '../utils/catalog'
 import { isSupplierDraftValid } from '../utils/catalog'
+import { sentenceCaseOrNull, toTitleCasePt } from '~~/shared/utils/text-case'
 
 const SUPPLIERS_LIST_KEY = 'fornecedores-list'
 
@@ -55,10 +56,10 @@ export function useSupplierMutations() {
     const { data, error } = await supabase
       .from('fornecedores')
       .insert({
-        nome: draft.nome.trim(),
+        nome: toTitleCasePt(draft.nome),
         telefone: trimOrNull(draft.telefone),
         email: trimOrNull(draft.email),
-        observacoes: trimOrNull(draft.observacoes)
+        observacoes: sentenceCaseOrNull(draft.observacoes)
       })
       .select('id')
       .single()
@@ -82,10 +83,10 @@ export function useSupplierMutations() {
     const { error } = await supabase
       .from('fornecedores')
       .update({
-        nome: draft.nome.trim(),
+        nome: toTitleCasePt(draft.nome),
         telefone: trimOrNull(draft.telefone),
         email: trimOrNull(draft.email),
-        observacoes: trimOrNull(draft.observacoes)
+        observacoes: sentenceCaseOrNull(draft.observacoes)
       })
       .eq('id', id)
 

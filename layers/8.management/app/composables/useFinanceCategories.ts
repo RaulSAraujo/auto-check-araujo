@@ -1,6 +1,7 @@
 import type { FinanceiroCategoria } from '~~/shared/types/database'
 import type { FinanceCategoryDraft } from '../utils/accounts-payable'
 import { isFinanceCategoryDraftValid } from '../utils/accounts-payable'
+import { toTitleCasePt } from '~~/shared/utils/text-case'
 
 const CATEGORIES_LIST_KEY = 'finance-categories-list'
 
@@ -52,7 +53,7 @@ export function useFinanceCategoryMutations() {
 
     const { error } = await supabase
       .from('financeiro_categorias')
-      .insert({ nome: draft.nome.trim() })
+      .insert({ nome: toTitleCasePt(draft.nome) })
 
     if (error) {
       toast.add({ title: 'Erro ao adicionar categoria', description: error.message, color: 'error' })
@@ -72,7 +73,7 @@ export function useFinanceCategoryMutations() {
 
     const { error } = await supabase
       .from('financeiro_categorias')
-      .update({ nome: draft.nome.trim() })
+      .update({ nome: toTitleCasePt(draft.nome) })
       .eq('id', id)
 
     if (error) {

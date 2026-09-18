@@ -10,6 +10,7 @@ import {
   type AppointmentCreatePrefill,
   type AppointmentDraft
 } from '../utils/scheduling'
+import { toSentenceCase } from '~~/shared/utils/text-case'
 
 defineOptions({ name: 'SchedulingFormSlideover' })
 
@@ -190,6 +191,7 @@ function onSubmit(_event: FormSubmitEvent<AppointmentDraft>) {
             autoresize
             :maxrows="8"
             placeholder="Barulho no freio, revisão, etc…"
+            @blur="draft.problema = toSentenceCase(draft.problema)"
           />
         </UFormField>
       </UForm>

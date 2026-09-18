@@ -4,6 +4,7 @@ import type { OrderDetail } from '../types/orders'
 import type { OrderEditState } from '../utils/order-form'
 import { validateOrderEditForm } from '../utils/order-form'
 import { EMPTY_VALUE } from '~~/shared/utils/empty'
+import { toSentenceCase } from '~~/shared/utils/text-case'
 
 defineOptions({ name: 'OrdersDetailResumoPanel' })
 
@@ -73,6 +74,7 @@ function onError(event: FormErrorEvent) {
           placeholder="Descreva o que o cliente reportou…"
           autocomplete="off"
           name="reclamacao"
+          @blur="state.reclamacao = toSentenceCase(state.reclamacao)"
         />
         <blockquote
           v-else
@@ -107,6 +109,7 @@ function onError(event: FormErrorEvent) {
           placeholder="O que a oficina encontrou e o que será orçado…"
           autocomplete="off"
           name="diagnostico"
+          @blur="state.diagnostico = toSentenceCase(state.diagnostico)"
         />
         <blockquote
           v-else
@@ -166,6 +169,7 @@ function onError(event: FormErrorEvent) {
           placeholder="Notas que o cliente não vê…"
           autocomplete="off"
           name="observacoes"
+          @blur="state.observacoes = toSentenceCase(state.observacoes)"
         />
         <p
           v-else-if="ordem.observacoes"
