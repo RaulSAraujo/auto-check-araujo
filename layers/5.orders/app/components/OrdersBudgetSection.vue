@@ -104,7 +104,7 @@ function onConfirmReject() {
       v-if="items.length > 0"
       class="flex flex-col overflow-hidden rounded-lg bg-elevated/25 ring-1 ring-default/60"
     >
-      <div class="divide-y divide-default/80">
+      <div class="max-h-80 divide-y divide-default/80 overflow-y-auto sm:max-h-96">
         <div
           v-for="item in items"
           :key="item.id"
