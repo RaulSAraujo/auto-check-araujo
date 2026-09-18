@@ -55,7 +55,7 @@ function onConfirmReject() {
 </script>
 
 <template>
-  <section class="flex h-full min-h-0 min-w-0 flex-col gap-5">
+  <section class="flex min-w-0 flex-col gap-5">
     <div class="flex flex-wrap items-center justify-between gap-3">
       <div class="flex min-w-0 items-center gap-2.5">
         <h2 class="text-lg font-semibold text-highlighted">
@@ -101,9 +101,9 @@ function onConfirmReject() {
 
     <div
       v-if="items.length > 0"
-      class="flex min-h-0 flex-1 flex-col overflow-hidden rounded-lg bg-elevated/25 ring-1 ring-default/60"
+      class="flex flex-col overflow-hidden rounded-lg bg-elevated/25 ring-1 ring-default/60"
     >
-      <div class="min-h-0 flex-1 divide-y divide-default/80 overflow-y-auto overscroll-contain">
+      <div class="divide-y divide-default/80">
         <div
           v-for="item in items"
           :key="item.id"

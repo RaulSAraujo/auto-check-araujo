@@ -298,10 +298,10 @@ onMounted(() => {
             </div>
           </section>
 
-          <section class="flex h-full min-h-0 min-w-0 flex-col rounded-2xl bg-default p-5 pb-6 sm:p-6 sm:pb-7 ring-1 ring-default/60">
+          <section class="flex min-w-0 flex-col rounded-2xl bg-default p-5 pb-6 sm:p-6 sm:pb-7 ring-1 ring-default/60">
             <OrdersBudgetSection
               v-model:draft="draft"
-              class="flex min-h-0 flex-1 flex-col"
+              class="flex flex-col"
               :items="budgetItems || []"
               :budget-status="budgetStatus"
               :can-edit-items="canEditItems"
