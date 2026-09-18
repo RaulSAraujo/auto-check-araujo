@@ -1,11 +1,11 @@
 # Graph Report - auto-check-araujo  (2026-09-15)
 
 ## Corpus Check
-- 400 files · ~240,287 words
+- 400 files · ~240,314 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 2630 nodes · 3214 edges · 256 communities (209 shown, 47 thin omitted)
+- 2630 nodes · 3214 edges · 260 communities (213 shown, 47 thin omitted)
 - Extraction: 96% EXTRACTED · 4% INFERRED · 0% AMBIGUOUS · INFERRED: 116 edges (avg confidence: 0.85)
 - Token cost: 0 input · 0 output
 
@@ -70,10 +70,10 @@
 - CustomersFormFields.vue
 - API and Interface Design
 - Type Patterns Guide
-- UDashboardPanel
+- Dashboard Layout
 - Server Routes
 - pnpm CLI Commands Guide
-- TypeScript Library Skill
+- API Design Patterns (patterns/)
 - Rolldown Migration (Vite 8)
 - BaseAppHeader.vue
 - Module Authoring
@@ -95,6 +95,7 @@
 - Vite Plugin API
 - useOrderPayment.ts
 - customer-status.ts
+- TS Library CI Workflows
 - Testing Guide
 - TypeScript Configuration Guide
 - Oficina Domain Language
@@ -114,9 +115,10 @@
 - useCollaborators.ts
 - usePermissions.ts
 - Nuxt CLI Commands
-- Nuxt UI Components Index
+- Live Editing
 - Navigation Recipe
 - vehicles-new.vue
+- @antfu/eslint-config Guide
 - OrdersTable.vue
 - CustomersNewForm.vue
 - vehicle-form.ts
@@ -124,7 +126,8 @@
 - Araújo Auto Center Logo
 - username.ts
 - app.config.ts
-- API Design Patterns (patterns/)
+- Component Selection Guidelines
+- Type Patterns Guide
 - Custom Directives
 - Vue Router Typing
 - vehicles-[id].vue
@@ -201,6 +204,7 @@
 - pdf.ts
 - OrdersDetailHero.vue
 - CatalogDeleteModal.vue
+- Nuxt UI Components Index
 - FinanceAccountForm.vue
 - FinanceAccountsTable.vue
 - TeamCollaboratorsCreateForm.vue
@@ -251,16 +255,16 @@
 10. `Frontend UI Engineering` - 13 edges
 
 ## Surprising Connections (you probably didn't know these)
-- `API Design Patterns (patterns/)` --semantically_similar_to--> `API Design Patterns (references/)`  [INFERRED] [semantically similar]
-  .cursor/skills/ts-library/patterns/api.md → .cursor/skills/ts-library/references/api-design.md
+- `Form in Slideover` --semantically_similar_to--> `Form in Modal Pattern`  [INFERRED] [semantically similar]
+  .cursor/skills/nuxt-ui/references/recipes/overlays.md → .cursor/skills/nuxt-ui/references/guidelines/forms.md
 - `routeRules` --conceptually_related_to--> `nuxt.config.ts`  [INFERRED]
   .cursor/skills/nuxt/references/rendering-modes.md → .cursor/skills/nuxt/references/core-config.md
 - `TS Library CI Workflows` --semantically_similar_to--> `GitHub Actions pnpm Setup`  [INFERRED] [semantically similar]
   .cursor/skills/ts-library/references/ci-workflows.md → .cursor/skills/pnpm/references/ci.md
 - `pnpm --filter Filtering` --semantically_similar_to--> `Build Changed Packages Filter`  [INFERRED] [semantically similar]
   .cursor/skills/pnpm/references/cli.md → .cursor/skills/pnpm/references/ci.md
-- `package.json exports Field` --semantically_similar_to--> `package.json exports Field`  [INFERRED] [semantically similar]
-  .cursor/skills/ts-library/references/package-exports.md → .cursor/skills/ts-library/setup/exports.md
+- `API Design Patterns (patterns/)` --semantically_similar_to--> `API Design Patterns (references/)`  [INFERRED] [semantically similar]
+  .cursor/skills/ts-library/patterns/api.md → .cursor/skills/ts-library/references/api-design.md
 
 ## Import Cycles
 - None detected.
@@ -283,7 +287,7 @@
 - **Favicon Brand Visual Composition** — public_favicon_chrome_sphere, public_favicon_dark_gradient_background, public_favicon_blue_specular_highlights, public_favicon_app_brand_mark [INFERRED 0.85]
 - **Logo Brand Mark Visual Elements** — public_logo_tire_graphic, public_logo_araujo_wordmark, public_logo_auto_center_wordmark [EXTRACTED 1.00]
 
-## Communities (256 total, 47 thin omitted)
+## Communities (260 total, 47 thin omitted)
 
 ### Community 0 - "orders.ts"
 Cohesion: 0.17
@@ -598,9 +602,9 @@ Nodes (24): 1. Contract First, 2. Consistent Error Semantics, 3. Validate at Bou
 Cohesion: 0.20
 Nodes (12): Type-Level Testing, Brand Types (Nominal Typing), Compile-Time TypeError Messages, Conditional Type Extraction, Data Tagging with Symbols, Distributive Conditionals, Type Patterns Guide, Function Overloads (+4 more)
 
-### Community 55 - "UDashboardPanel"
-Cohesion: 0.20
-Nodes (10): useLazyFetch, UTable, Chat Component Tree, Use #body Slot for Scrollable Content, Multi-panel List-Detail, UDashboardPanel, Data Tables Recipe, Table Row Selection (+2 more)
+### Community 55 - "Dashboard Layout"
+Cohesion: 0.15
+Nodes (13): useLazyFetch, UDashboardGroup, UTable, Chat Component Tree, Use #body Slot for Scrollable Content, Dashboard Layout, Multi-panel List-Detail, UDashboardPanel (+5 more)
 
 ### Community 56 - "Server Routes"
 Cohesion: 0.17
@@ -610,9 +614,9 @@ Nodes (12): Deployment, Nitro, Node.js Server Deployment, Static Generation, ser
 Cohesion: 0.18
 Nodes (13): pnpm CLI Commands Guide, pnpm --filter Filtering, pnpm patch / patch-commit, pnpm -r Recursive Workspace Commands, Content-Addressable Store, pnpm Features Guide, pnpmfile.cjs Hooks, pnpm Overrides (+5 more)
 
-### Community 58 - "TypeScript Library Skill"
-Cohesion: 0.15
-Nodes (15): API Design Patterns (references/), Build Tooling Guide, Dual CJS/ESM Output, tsdown Configuration, unbuild Configuration, TS Library CI Workflows, Matrix Testing Strategy, OIDC Provenance Release (+7 more)
+### Community 58 - "API Design Patterns (patterns/)"
+Cohesion: 0.19
+Nodes (13): API Design Patterns (patterns/), Factory Functions Pattern, Lazy Getters Tree-shaking, Options / ResolvedOptions Pattern, unplugin Plugin Pattern, API Design Patterns (references/), Build Tooling Guide, Dual CJS/ESM Output (+5 more)
 
 ### Community 59 - "Rolldown Migration (Vite 8)"
 Cohesion: 0.17
@@ -635,8 +639,8 @@ Cohesion: 0.17
 Nodes (12): Client/Server Components, componentIslands, Built-in Components, ClientOnly, NuxtIsland, NuxtLayout, NuxtPage, Client-Side Rendering (CSR) (+4 more)
 
 ### Community 64 - "Forms Guidelines"
-Cohesion: 0.17
-Nodes (12): UAuthForm, UFormField, Component Selection Guidelines, Feedback Selection Matrix, Input Selection Matrix, useToast, UFormField name Must Match Schema, Forms Guidelines (+4 more)
+Cohesion: 0.25
+Nodes (9): UAuthForm, UForm, UFormField, UFormField name Must Match Schema, Form in Modal Pattern, Forms Guidelines, Standard Schema Validation, Auth Forms Recipe (+1 more)
 
 ### Community 65 - "useCustomerDetailPage.ts"
 Cohesion: 0.48
@@ -714,6 +718,10 @@ Nodes (7): useOrderPayment(), useOrderStatusEditor(), discard(), defaultChargeFo
 Cohesion: 0.29
 Nodes (7): { can }, route, CUSTOMER_STATUS_FILTER_ACTIVE, CUSTOMER_STATUS_FILTER_ALL, CUSTOMER_STATUS_FILTER_INACTIVE, CUSTOMER_STATUS_FILTER_ITEMS, CustomerStatusFilter
 
+### Community 80 - "TS Library CI Workflows"
+Cohesion: 0.50
+Nodes (4): TS Library CI Workflows, Matrix Testing Strategy, OIDC Provenance Release, pkg-pr-new PR Publish
+
 ### Community 81 - "Testing Guide"
 Cohesion: 0.22
 Nodes (10): Vitest Coverage (v8), Testing Guide, Fixture-Based Testing, Idempotency Testing, Vitest Mocking (vi.mock), Vitest Workspace Projects, Testing Workflow, Type-Level Testing (+2 more)
@@ -786,9 +794,9 @@ Nodes (5): usePermissions(), useRequirePermission(), can(), canChangeOrderStatus
 Cohesion: 0.33
 Nodes (7): nuxi init --template layer, Nuxt CLI Commands, nuxi init, nuxt build, nuxt dev, nuxt generate, nuxt prepare
 
-### Community 100 - "Nuxt UI Components Index"
-Cohesion: 0.14
-Nodes (16): Code Editor, Live Editing, Schema Forms, Visual Editor (TipTap), Nuxt UI Components Index, Prose Components, UChatMessages, UDashboardGroup (+8 more)
+### Community 100 - "Live Editing"
+Cohesion: 0.29
+Nodes (7): Code Editor, Live Editing, Schema Forms, Visual Editor (TipTap), UEditor, Editor Layout, Tiptap Editor Instance
 
 ### Community 101 - "Navigation Recipe"
 Cohesion: 0.33
@@ -801,6 +809,10 @@ Nodes (10): allowLeave, { back }, backFallback, {
   searchTerm: clienteSearchTerm,
   pending: clientesPending
 }, { createVehicle }, initialState, loading, route (+2 more)
+
+### Community 103 - "@antfu/eslint-config Guide"
+Cohesion: 0.67
+Nodes (3): @antfu/eslint-config Flat Config, @antfu/eslint-config Guide, Type-Aware ESLint Rules
 
 ### Community 104 - "OrdersTable.vue"
 Cohesion: 0.15
@@ -830,9 +842,13 @@ Nodes (3): normalizeUsername(), USERNAME_EMAIL_DOMAIN, usernameToAuthEmail()
 Cohesion: 0.40
 Nodes (6): app.config.ts, Nuxt Configuration, runtimeConfig, runtimeConfig vs app.config, useAppConfig, useRuntimeConfig
 
-### Community 112 - "API Design Patterns (patterns/)"
-Cohesion: 0.18
-Nodes (11): Builder Pattern with Type Accumulation, API Design Patterns (patterns/), Factory Functions Pattern, Lazy Getters Tree-shaking, Options / ResolvedOptions Pattern, unplugin Plugin Pattern, Type Accumulation in Builders, Brand Types Nominal Typing (+3 more)
+### Community 111 - "Component Selection Guidelines"
+Cohesion: 0.22
+Nodes (9): UDrawer, USlideover, Component Selection Guidelines, Feedback Selection Matrix, Input Selection Matrix, Overlay Selection Matrix, useToast, Form in Slideover (+1 more)
+
+### Community 112 - "Type Patterns Guide"
+Cohesion: 0.33
+Nodes (6): Builder Pattern with Type Accumulation, Type Accumulation in Builders, Brand Types Nominal Typing, Type Patterns Guide, Module Augmentation via Register, Utility Types (Awaitable, Arrayable, etc.)
 
 ### Community 113 - "Custom Directives"
 Cohesion: 0.33
@@ -1013,6 +1029,10 @@ Nodes (8): addDocumentHeader(), addMetaBlock(), addPageFooter(), addTextSection(
 Cohesion: 0.29
 Nodes (6): emit, props, status, statusChanged, vehicle, vehicleLabel
 
+### Community 209 - "Nuxt UI Components Index"
+Cohesion: 0.40
+Nodes (6): Nuxt UI Components Index, Prose Components, UChatMessages, Prefer Prose Over Generic UI in Markdown, Chat Layout, Comark Streaming Markdown
+
 ### Community 217 - "FinanceAccountForm.vue"
 Cohesion: 0.13
 Nodes (19): activeCategories, activeSuppliers, categoryItems, draftModel, emit, onSubmit(), props, showNotes (+11 more)
@@ -1123,8 +1143,8 @@ Cohesion: 0.40
 Nodes (5): 8.A Token Strategy (pick one, stick to it), 8.B Do Not Prescribe Specific Colors Here, 8.C Default Mode, 8.D Test in Both Modes Before Finishing, 8. DARK MODE PROTOCOL
 
 ### Community 257 - "UModal"
-Cohesion: 0.20
-Nodes (12): UDrawer, UForm, UModal, USlideover, Overlay Selection Matrix, useOverlay Programmatic Overlays, useOverlay, Form in Modal Pattern (+4 more)
+Cohesion: 0.40
+Nodes (6): UModal, useOverlay Programmatic Overlays, useOverlay, Confirmation Dialog Pattern, Overlays Recipe, Programmatic Confirmation via useOverlay
 
 ### Community 265 - "TeamCollaboratorsTable.vue"
 Cohesion: 0.29
