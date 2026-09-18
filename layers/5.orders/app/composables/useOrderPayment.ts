@@ -67,6 +67,10 @@ export function useOrderPayment(
   })
 
   const baseline = reactive<PaymentFormState>(emptyPaymentForm())
+  // Skip side-effect watchers while hydrating from the order (otherwise
+  // forma/parcelas watchers overwrite valor_cobrado with the fee suggestion
+  // and mark a paid OS dirty on every visit).
+  let syncing = false
 
   const isDirty = computed(() => {
     if (!canEditPayment.value) return false
@@ -78,9 +82,13 @@ export function useOrderPayment(
 
   function syncFromOrder(value: OrderDetail) {
     const next = paymentFormFromOrder(value)
+    syncing = true
     Object.assign(baseline, next)
     Object.assign(state, next)
     chargeTouched.value = false
+    nextTick(() => {
+      syncing = false
+    })
   }
 
   function discard() {
@@ -103,6 +111,7 @@ export function useOrderPayment(
   }, { immediate: true })
 
   watch(() => state.pago, (pago) => {
+    if (syncing) return
     if (!pago) {
       state.forma_pagamento = undefined
       state.parcelas = null
@@ -116,13 +125,14 @@ export function useOrderPayment(
   })
 
   watch(() => state.forma_pagamento, (forma) => {
-    if (!state.pago || !forma) return
+    if (syncing || !state.pago || !forma) return
     state.parcelas = forma === 'cartao_credito' ? (state.parcelas ?? 1) : null
     if (chargeTouched.value) return
     state.valor_cobrado = defaultChargeForForma(budgetTotal.value, forma, cardFees.value)
   })
 
   watch(() => state.parcelas, () => {
+    if (syncing) return
     if (!state.pago || state.forma_pagamento !== 'cartao_credito' || chargeTouched.value) return
     state.valor_cobrado = defaultChargeForForma(budgetTotal.value, state.forma_pagamento, cardFees.value)
   })
