@@ -1024,15 +1024,15 @@
       "norm_label": "options_fetch_limit"
     },
     {
-      "label": "SEARCH_DEBOUNCE_MS",
+      "label": "OPTIONS_SEARCH_DEBOUNCE_MS",
       "file_type": "code",
       "source_file": "layers/1.base/app/utils/supabase-search.ts",
       "source_location": "L14",
       "_origin": "ast",
-      "id": "layers_1_base_app_utils_supabase_search_search_debounce_ms",
+      "id": "layers_1_base_app_utils_supabase_search_options_search_debounce_ms",
       "community": 131,
       "community_name": "supabase-search.ts",
-      "norm_label": "search_debounce_ms"
+      "norm_label": "options_search_debounce_ms"
     },
     {
       "label": "sanitizeIlikeTerm()",
@@ -5994,8 +5994,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "layers_5_orders_app_components_ordersbudgetprintdocument",
-      "community": 72,
-      "community_name": "print.ts",
+      "community": 231,
+      "community_name": "budget.ts",
       "norm_label": "ordersbudgetprintdocument.vue"
     },
     {
@@ -6005,8 +6005,8 @@
       "source_location": "L11",
       "_origin": "ast",
       "id": "layers_5_orders_app_components_ordersbudgetprintdocument_props",
-      "community": 72,
-      "community_name": "print.ts",
+      "community": 231,
+      "community_name": "budget.ts",
       "norm_label": "props"
     },
     {
@@ -6016,8 +6016,8 @@
       "source_location": "L17",
       "_origin": "ast",
       "id": "layers_5_orders_app_components_ordersbudgetprintdocument_total",
-      "community": 72,
-      "community_name": "print.ts",
+      "community": 231,
+      "community_name": "budget.ts",
       "norm_label": "total"
     },
     {
@@ -7175,7 +7175,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "layers_5_orders_app_pages_orders_id_print",
-      "community": 80,
+      "community": 72,
       "community_name": "orders-[id]-print.vue",
       "norm_label": "orders-[id]-print.vue"
     },
@@ -7186,7 +7186,7 @@
       "source_location": "L18",
       "_origin": "ast",
       "id": "layers_5_orders_app_pages_orders_id_print_route",
-      "community": 80,
+      "community": 72,
       "community_name": "orders-[id]-print.vue",
       "norm_label": "route"
     },
@@ -7197,7 +7197,7 @@
       "source_location": "L19",
       "_origin": "ast",
       "id": "layers_5_orders_app_pages_orders_id_print_id",
-      "community": 80,
+      "community": 72,
       "community_name": "orders-[id]-print.vue",
       "norm_label": "id"
     },
@@ -7208,7 +7208,7 @@
       "source_location": "L29",
       "_origin": "ast",
       "id": "layers_5_orders_app_pages_orders_id_print_budgetstatus",
-      "community": 80,
+      "community": 72,
       "community_name": "orders-[id]-print.vue",
       "norm_label": "budgetstatus"
     },
@@ -7220,7 +7220,7 @@
       "_origin": "ast",
       "id": "layers_5_orders_app_pages_orders_id_print_whatsappurl",
       "community": 72,
-      "community_name": "print.ts",
+      "community_name": "orders-[id]-print.vue",
       "norm_label": "whatsappurl"
     },
     {
@@ -7230,7 +7230,7 @@
       "source_location": "L43",
       "_origin": "ast",
       "id": "layers_5_orders_app_pages_orders_id_print_downloadingpdf",
-      "community": 80,
+      "community": 72,
       "community_name": "orders-[id]-print.vue",
       "norm_label": "downloadingpdf"
     },
@@ -7242,8 +7242,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "layers_5_orders_app_pages_orders_id_print_ondownloadbudgetpdf",
-      "community": 80,
-      "community_name": "orders-[id]-print.vue",
+      "community": 197,
+      "community_name": "pdf.ts",
       "norm_label": "ondownloadbudgetpdf()"
     },
     {
@@ -7254,7 +7254,7 @@
       "_callable": true,
       "_origin": "ast",
       "id": "layers_5_orders_app_pages_orders_id_print_onprintbudgetpdf",
-      "community": 80,
+      "community": 72,
       "community_name": "orders-[id]-print.vue",
       "norm_label": "onprintbudgetpdf()"
     },
@@ -7455,7 +7455,7 @@
       "_origin": "ast",
       "id": "layers_5_orders_app_pages_orders_id_budgetwhatsappurl",
       "community": 72,
-      "community_name": "print.ts",
+      "community_name": "orders-[id]-print.vue",
       "norm_label": "budgetwhatsappurl"
     },
     {
@@ -7477,8 +7477,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "layers_5_orders_app_pages_orders_id_ondownloadbudgetpdf",
-      "community": 80,
-      "community_name": "orders-[id]-print.vue",
+      "community": 197,
+      "community_name": "pdf.ts",
       "norm_label": "ondownloadbudgetpdf()"
     },
     {
@@ -7489,7 +7489,7 @@
       "_callable": true,
       "_origin": "ast",
       "id": "layers_5_orders_app_pages_orders_id_onprintbudgetpdf",
-      "community": 80,
+      "community": 72,
       "community_name": "orders-[id]-print.vue",
       "norm_label": "onprintbudgetpdf()"
     },
@@ -8427,8 +8427,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "layers_5_orders_app_utils_pdf_safefilename",
-      "community": 80,
-      "community_name": "orders-[id]-print.vue",
+      "community": 197,
+      "community_name": "pdf.ts",
       "norm_label": "safefilename()"
     },
     {
@@ -8523,8 +8523,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "layers_5_orders_app_utils_pdf_downloadbudgetpdf",
-      "community": 80,
-      "community_name": "orders-[id]-print.vue",
+      "community": 197,
+      "community_name": "pdf.ts",
       "norm_label": "downloadbudgetpdf()"
     },
     {
@@ -8535,7 +8535,7 @@
       "_callable": true,
       "_origin": "ast",
       "id": "layers_5_orders_app_utils_pdf_printbudgetpdf",
-      "community": 80,
+      "community": 72,
       "community_name": "orders-[id]-print.vue",
       "norm_label": "printbudgetpdf()"
     },
@@ -8547,7 +8547,7 @@
       "_origin": "ast",
       "id": "layers_5_orders_app_utils_print",
       "community": 72,
-      "community_name": "print.ts",
+      "community_name": "orders-[id]-print.vue",
       "norm_label": "print.ts"
     },
     {
@@ -8557,8 +8557,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "layers_5_orders_app_utils_print_workshop_name",
-      "community": 72,
-      "community_name": "print.ts",
+      "community": 231,
+      "community_name": "budget.ts",
       "norm_label": "workshop_name"
     },
     {
@@ -8570,7 +8570,7 @@
       "_origin": "ast",
       "id": "layers_5_orders_app_utils_print_normalizephoneforwhatsapp",
       "community": 72,
-      "community_name": "print.ts",
+      "community_name": "orders-[id]-print.vue",
       "norm_label": "normalizephoneforwhatsapp()"
     },
     {
@@ -8582,7 +8582,7 @@
       "_origin": "ast",
       "id": "layers_5_orders_app_utils_print_buildwhatsappurl",
       "community": 72,
-      "community_name": "print.ts",
+      "community_name": "orders-[id]-print.vue",
       "norm_label": "buildwhatsappurl()"
     },
     {
@@ -8594,7 +8594,7 @@
       "_origin": "ast",
       "id": "layers_5_orders_app_utils_print_buildbudgetwhatsappmessage",
       "community": 72,
-      "community_name": "print.ts",
+      "community_name": "orders-[id]-print.vue",
       "norm_label": "buildbudgetwhatsappmessage()"
     },
     {
@@ -8606,7 +8606,7 @@
       "_origin": "ast",
       "id": "layers_5_orders_app_utils_print_printpage",
       "community": 72,
-      "community_name": "print.ts",
+      "community_name": "orders-[id]-print.vue",
       "norm_label": "printpage()"
     },
     {
@@ -8618,7 +8618,7 @@
       "_origin": "ast",
       "id": "layers_5_orders_app_utils_print_absoluteprinturl",
       "community": 72,
-      "community_name": "print.ts",
+      "community_name": "orders-[id]-print.vue",
       "norm_label": "absoluteprinturl()"
     },
     {
@@ -24013,7 +24013,7 @@
       "author": null,
       "contributor": null,
       "community": 100,
-      "community_name": "Live Editing",
+      "community_name": "Nuxt UI Components Index",
       "norm_label": "live editing",
       "_origin": "semantic",
       "id": "_cursor_skills_nuxt_studio_references_live_editing_live_editing"
@@ -24029,7 +24029,7 @@
       "contributor": null,
       "rationale": "Converts Markdown/MDC to editable TipTap document",
       "community": 100,
-      "community_name": "Live Editing",
+      "community_name": "Nuxt UI Components Index",
       "norm_label": "visual editor (tiptap)",
       "_origin": "semantic",
       "id": "_cursor_skills_nuxt_studio_references_live_editing_visual_editor"
@@ -24044,7 +24044,7 @@
       "author": null,
       "contributor": null,
       "community": 100,
-      "community_name": "Live Editing",
+      "community_name": "Nuxt UI Components Index",
       "norm_label": "code editor",
       "_origin": "semantic",
       "id": "_cursor_skills_nuxt_studio_references_live_editing_code_editor"
@@ -24060,7 +24060,7 @@
       "contributor": null,
       "rationale": "Edit frontmatter and data files from Nuxt Content collection schema",
       "community": 100,
-      "community_name": "Live Editing",
+      "community_name": "Nuxt UI Components Index",
       "norm_label": "schema forms",
       "_origin": "semantic",
       "id": "_cursor_skills_nuxt_studio_references_live_editing_schema_forms"
@@ -24305,7 +24305,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 111,
+      "community": 100,
       "community_name": "Nuxt UI Components Index",
       "norm_label": "nuxt ui components index",
       "_origin": "semantic",
@@ -24396,7 +24396,7 @@
       "author": null,
       "contributor": null,
       "community": 55,
-      "community_name": "Dashboard Layout",
+      "community_name": "UDashboardPanel",
       "norm_label": "utable",
       "_origin": "semantic",
       "id": "_cursor_skills_nuxt_ui_references_components_utable"
@@ -24410,8 +24410,8 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 55,
-      "community_name": "Dashboard Layout",
+      "community": 100,
+      "community_name": "Nuxt UI Components Index",
       "norm_label": "udashboardgroup",
       "_origin": "semantic",
       "id": "_cursor_skills_nuxt_ui_references_components_udashboard_group"
@@ -24441,7 +24441,7 @@
       "author": null,
       "contributor": null,
       "community": 100,
-      "community_name": "Live Editing",
+      "community_name": "Nuxt UI Components Index",
       "norm_label": "ueditor",
       "_origin": "semantic",
       "id": "_cursor_skills_nuxt_ui_references_components_ueditor"
@@ -24455,7 +24455,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 111,
+      "community": 100,
       "community_name": "Nuxt UI Components Index",
       "norm_label": "uchatmessages",
       "_origin": "semantic",
@@ -24470,7 +24470,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 111,
+      "community": 100,
       "community_name": "Nuxt UI Components Index",
       "norm_label": "prose components",
       "_origin": "semantic",
@@ -24563,7 +24563,7 @@
       "author": null,
       "contributor": null,
       "rationale": "Prose components styled for Markdown contexts; Comark auto-resolves when @nuxt/ui installed",
-      "community": 111,
+      "community": 100,
       "community_name": "Nuxt UI Components Index",
       "norm_label": "prefer prose over generic ui in markdown",
       "_origin": "semantic",
@@ -24912,7 +24912,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 111,
+      "community": 100,
       "community_name": "Nuxt UI Components Index",
       "norm_label": "chat layout",
       "_origin": "semantic",
@@ -24943,7 +24943,7 @@
       "author": null,
       "contributor": null,
       "rationale": "Incrementally renders tokens and enables Nuxt UI prose components",
-      "community": 111,
+      "community": 100,
       "community_name": "Nuxt UI Components Index",
       "norm_label": "comark streaming markdown",
       "_origin": "semantic",
@@ -24974,7 +24974,7 @@
       "author": null,
       "contributor": null,
       "community": 55,
-      "community_name": "Dashboard Layout",
+      "community_name": "UDashboardPanel",
       "norm_label": "chat component tree",
       "_origin": "semantic",
       "id": "_cursor_skills_nuxt_ui_references_layouts_chat_chat_component_tree"
@@ -24988,8 +24988,8 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 55,
-      "community_name": "Dashboard Layout",
+      "community": 100,
+      "community_name": "Nuxt UI Components Index",
       "norm_label": "dashboard layout",
       "_origin": "semantic",
       "id": "_cursor_skills_nuxt_ui_references_layouts_dashboard_dashboard_layout"
@@ -25004,7 +25004,7 @@
       "author": null,
       "contributor": null,
       "community": 55,
-      "community_name": "Dashboard Layout",
+      "community_name": "UDashboardPanel",
       "norm_label": "udashboardpanel",
       "_origin": "semantic",
       "id": "_cursor_skills_nuxt_ui_references_layouts_dashboard_udashboard_panel"
@@ -25018,8 +25018,8 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 55,
-      "community_name": "Dashboard Layout",
+      "community": 100,
+      "community_name": "Nuxt UI Components Index",
       "norm_label": "udashboardsidebar",
       "_origin": "semantic",
       "id": "_cursor_skills_nuxt_ui_references_layouts_dashboard_udashboard_sidebar"
@@ -25034,7 +25034,7 @@
       "author": null,
       "contributor": null,
       "community": 55,
-      "community_name": "Dashboard Layout",
+      "community_name": "UDashboardPanel",
       "norm_label": "multi-panel list-detail",
       "_origin": "semantic",
       "id": "_cursor_skills_nuxt_ui_references_layouts_dashboard_multi_panel"
@@ -25050,7 +25050,7 @@
       "contributor": null,
       "rationale": "Putting content directly in UDashboardPanel without #body breaks scrolling",
       "community": 55,
-      "community_name": "Dashboard Layout",
+      "community_name": "UDashboardPanel",
       "norm_label": "use #body slot for scrollable content",
       "_origin": "semantic",
       "id": "_cursor_skills_nuxt_ui_references_layouts_dashboard_body_slot_rule"
@@ -25126,7 +25126,7 @@
       "author": null,
       "contributor": null,
       "community": 100,
-      "community_name": "Live Editing",
+      "community_name": "Nuxt UI Components Index",
       "norm_label": "editor layout",
       "_origin": "semantic",
       "id": "_cursor_skills_nuxt_ui_references_layouts_editor_editor_layout"
@@ -25141,7 +25141,7 @@
       "author": null,
       "contributor": null,
       "community": 100,
-      "community_name": "Live Editing",
+      "community_name": "Nuxt UI Components Index",
       "norm_label": "tiptap editor instance",
       "_origin": "semantic",
       "id": "_cursor_skills_nuxt_ui_references_layouts_editor_tiptap_instance"
@@ -25263,7 +25263,7 @@
       "author": null,
       "contributor": null,
       "community": 55,
-      "community_name": "Dashboard Layout",
+      "community_name": "UDashboardPanel",
       "norm_label": "data tables recipe",
       "_origin": "semantic",
       "id": "_cursor_skills_nuxt_ui_references_recipes_data_tables_data_tables"
@@ -25278,7 +25278,7 @@
       "author": null,
       "contributor": null,
       "community": 55,
-      "community_name": "Dashboard Layout",
+      "community_name": "UDashboardPanel",
       "norm_label": "tanstack table integration",
       "_origin": "semantic",
       "id": "_cursor_skills_nuxt_ui_references_recipes_data_tables_tanstack_table"
@@ -25293,7 +25293,7 @@
       "author": null,
       "contributor": null,
       "community": 55,
-      "community_name": "Dashboard Layout",
+      "community_name": "UDashboardPanel",
       "norm_label": "table row selection",
       "_origin": "semantic",
       "id": "_cursor_skills_nuxt_ui_references_recipes_data_tables_row_selection"
@@ -25308,7 +25308,7 @@
       "author": null,
       "contributor": null,
       "community": 55,
-      "community_name": "Dashboard Layout",
+      "community_name": "UDashboardPanel",
       "norm_label": "table pagination",
       "_origin": "semantic",
       "id": "_cursor_skills_nuxt_ui_references_recipes_data_tables_table_pagination"
@@ -25806,7 +25806,7 @@
       "author": null,
       "contributor": null,
       "community": 55,
-      "community_name": "Dashboard Layout",
+      "community_name": "UDashboardPanel",
       "norm_label": "uselazyfetch",
       "_origin": "semantic",
       "id": "_cursor_skills_nuxt_references_best_practices_data_fetching_uselazyfetch"
@@ -26381,7 +26381,7 @@
       "author": null,
       "contributor": null,
       "community": 56,
-      "community_name": "Server Routes",
+      "community_name": "Deployment",
       "norm_label": "deployment",
       "_origin": "semantic",
       "id": "_cursor_skills_nuxt_references_core_deployment_deployment"
@@ -26396,7 +26396,7 @@
       "author": null,
       "contributor": null,
       "community": 56,
-      "community_name": "Server Routes",
+      "community_name": "Deployment",
       "norm_label": "nitro",
       "_origin": "semantic",
       "id": "_cursor_skills_nuxt_references_core_deployment_nitro"
@@ -26411,7 +26411,7 @@
       "author": null,
       "contributor": null,
       "community": 56,
-      "community_name": "Server Routes",
+      "community_name": "Deployment",
       "norm_label": "node.js server deployment",
       "_origin": "semantic",
       "id": "_cursor_skills_nuxt_references_core_deployment_nodejs_server"
@@ -26426,7 +26426,7 @@
       "author": null,
       "contributor": null,
       "community": 56,
-      "community_name": "Server Routes",
+      "community_name": "Deployment",
       "norm_label": "static generation",
       "_origin": "semantic",
       "id": "_cursor_skills_nuxt_references_core_deployment_static_generation"
@@ -26440,8 +26440,8 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 103,
-      "community_name": "Deployment Platform Choice",
+      "community": 56,
+      "community_name": "Deployment",
       "norm_label": "nitro preset",
       "_origin": "semantic",
       "id": "_cursor_skills_nuxt_references_core_deployment_nitro_preset"
@@ -26455,8 +26455,8 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 103,
-      "community_name": "Deployment Platform Choice",
+      "community": 56,
+      "community_name": "Deployment",
       "norm_label": "vercel",
       "_origin": "semantic",
       "id": "_cursor_skills_nuxt_references_core_deployment_vercel"
@@ -26470,8 +26470,8 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 103,
-      "community_name": "Deployment Platform Choice",
+      "community": 56,
+      "community_name": "Deployment",
       "norm_label": "netlify",
       "_origin": "semantic",
       "id": "_cursor_skills_nuxt_references_core_deployment_netlify"
@@ -26485,8 +26485,8 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 103,
-      "community_name": "Deployment Platform Choice",
+      "community": 56,
+      "community_name": "Deployment",
       "norm_label": "cloudflare pages",
       "_origin": "semantic",
       "id": "_cursor_skills_nuxt_references_core_deployment_cloudflare_pages"
@@ -26501,8 +26501,8 @@
       "author": null,
       "contributor": null,
       "rationale": "Vercel for fastest DX; Netlify for static/forms; Cloudflare for cost/edge; GitHub Actions+VPS for full control.",
-      "community": 103,
-      "community_name": "Deployment Platform Choice",
+      "community": 56,
+      "community_name": "Deployment",
       "norm_label": "deployment platform choice",
       "_origin": "semantic",
       "id": "_cursor_skills_nuxt_references_core_deployment_platform_choice"
@@ -26546,7 +26546,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 56,
+      "community": 80,
       "community_name": "Server Routes",
       "norm_label": "server/ directory",
       "_origin": "semantic",
@@ -26682,7 +26682,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 56,
+      "community": 80,
       "community_name": "Server Routes",
       "norm_label": "addserverhandler",
       "_origin": "semantic",
@@ -27073,7 +27073,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 56,
+      "community": 80,
       "community_name": "Server Routes",
       "norm_label": "server routes",
       "_origin": "semantic",
@@ -27088,7 +27088,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 56,
+      "community": 80,
       "community_name": "Server Routes",
       "norm_label": "defineeventhandler",
       "_origin": "semantic",
@@ -27103,7 +27103,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 56,
+      "community": 80,
       "community_name": "Server Routes",
       "norm_label": "server middleware",
       "_origin": "semantic",
@@ -27134,7 +27134,7 @@
       "author": null,
       "contributor": null,
       "community": 56,
-      "community_name": "Server Routes",
+      "community_name": "Deployment",
       "norm_label": "usestorage",
       "_origin": "semantic",
       "id": "_cursor_skills_nuxt_references_features_server_use_storage"
@@ -27149,7 +27149,7 @@
       "author": null,
       "contributor": null,
       "community": 56,
-      "community_name": "Server Routes",
+      "community_name": "Deployment",
       "norm_label": "nitro server engine",
       "_origin": "semantic",
       "id": "_cursor_skills_nuxt_references_features_server_nitro_engine"
@@ -27329,8 +27329,8 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 103,
-      "community_name": "Deployment Platform Choice",
+      "community": 56,
+      "community_name": "Deployment",
       "norm_label": "edge-side rendering",
       "_origin": "semantic",
       "id": "_cursor_skills_nuxt_references_rendering_modes_edge_side_rendering"
@@ -27345,7 +27345,7 @@
       "author": null,
       "contributor": null,
       "community": 56,
-      "community_name": "Server Routes",
+      "community_name": "Deployment",
       "norm_label": "prerendering",
       "_origin": "semantic",
       "id": "_cursor_skills_nuxt_references_rendering_modes_prerendering"
@@ -28273,7 +28273,7 @@
       "author": null,
       "contributor": null,
       "community": 58,
-      "community_name": "TypeScript Library Skill",
+      "community_name": "API Design Patterns (patterns/)",
       "norm_label": "typescript library skill",
       "_origin": "semantic",
       "id": "_cursor_skills_ts_library_skill_document"
@@ -28289,7 +28289,7 @@
       "contributor": null,
       "rationale": "type:module with .mjs outputs; always support both CJS and ESM consumers",
       "community": 58,
-      "community_name": "TypeScript Library Skill",
+      "community_name": "API Design Patterns (patterns/)",
       "norm_label": "esm-first dual format principle",
       "_origin": "semantic",
       "id": "_cursor_skills_ts_library_skill_esm_first"
@@ -28304,7 +28304,7 @@
       "author": null,
       "contributor": null,
       "community": 58,
-      "community_name": "TypeScript Library Skill",
+      "community_name": "API Design Patterns (patterns/)",
       "norm_label": "tsdown build tool preference",
       "_origin": "semantic",
       "id": "_cursor_skills_ts_library_skill_tsdown"
@@ -28318,7 +28318,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 112,
+      "community": 58,
       "community_name": "API Design Patterns (patterns/)",
       "norm_label": "api design patterns (patterns/)",
       "_origin": "semantic",
@@ -28333,7 +28333,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 112,
+      "community": 58,
       "community_name": "API Design Patterns (patterns/)",
       "norm_label": "options / resolvedoptions pattern",
       "_origin": "semantic",
@@ -28348,7 +28348,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 112,
+      "community": 58,
       "community_name": "API Design Patterns (patterns/)",
       "norm_label": "factory functions pattern",
       "_origin": "semantic",
@@ -28364,7 +28364,7 @@
       "author": null,
       "contributor": null,
       "community": 112,
-      "community_name": "API Design Patterns (patterns/)",
+      "community_name": "Type Patterns Guide",
       "norm_label": "builder pattern with type accumulation",
       "_origin": "semantic",
       "id": "_cursor_skills_ts_library_patterns_api_builder"
@@ -28378,7 +28378,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 112,
+      "community": 58,
       "community_name": "API Design Patterns (patterns/)",
       "norm_label": "unplugin plugin pattern",
       "_origin": "semantic",
@@ -28393,7 +28393,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 112,
+      "community": 58,
       "community_name": "API Design Patterns (patterns/)",
       "norm_label": "lazy getters tree-shaking",
       "_origin": "semantic",
@@ -28424,7 +28424,7 @@
       "author": null,
       "contributor": null,
       "community": 112,
-      "community_name": "API Design Patterns (patterns/)",
+      "community_name": "Type Patterns Guide",
       "norm_label": "type patterns guide",
       "_origin": "semantic",
       "id": "_cursor_skills_ts_library_patterns_types_document"
@@ -28439,7 +28439,7 @@
       "author": null,
       "contributor": null,
       "community": 112,
-      "community_name": "API Design Patterns (patterns/)",
+      "community_name": "Type Patterns Guide",
       "norm_label": "utility types (awaitable, arrayable, etc.)",
       "_origin": "semantic",
       "id": "_cursor_skills_ts_library_patterns_types_utility_types"
@@ -28454,7 +28454,7 @@
       "author": null,
       "contributor": null,
       "community": 112,
-      "community_name": "API Design Patterns (patterns/)",
+      "community_name": "Type Patterns Guide",
       "norm_label": "brand types nominal typing",
       "_origin": "semantic",
       "id": "_cursor_skills_ts_library_patterns_types_brand"
@@ -28469,7 +28469,7 @@
       "author": null,
       "contributor": null,
       "community": 112,
-      "community_name": "API Design Patterns (patterns/)",
+      "community_name": "Type Patterns Guide",
       "norm_label": "type accumulation in builders",
       "_origin": "semantic",
       "id": "_cursor_skills_ts_library_patterns_types_accumulation"
@@ -28484,7 +28484,7 @@
       "author": null,
       "contributor": null,
       "community": 112,
-      "community_name": "API Design Patterns (patterns/)",
+      "community_name": "Type Patterns Guide",
       "norm_label": "module augmentation via register",
       "_origin": "semantic",
       "id": "_cursor_skills_ts_library_patterns_types_module_augmentation"
@@ -28499,7 +28499,7 @@
       "author": null,
       "contributor": null,
       "community": 58,
-      "community_name": "TypeScript Library Skill",
+      "community_name": "API Design Patterns (patterns/)",
       "norm_label": "api design patterns (references/)",
       "_origin": "semantic",
       "id": "_cursor_skills_ts_library_references_api_design_document"
@@ -28514,7 +28514,7 @@
       "author": null,
       "contributor": null,
       "community": 58,
-      "community_name": "TypeScript Library Skill",
+      "community_name": "API Design Patterns (patterns/)",
       "norm_label": "build tooling guide",
       "_origin": "semantic",
       "id": "_cursor_skills_ts_library_references_build_tooling_document"
@@ -28529,7 +28529,7 @@
       "author": null,
       "contributor": null,
       "community": 58,
-      "community_name": "TypeScript Library Skill",
+      "community_name": "API Design Patterns (patterns/)",
       "norm_label": "tsdown configuration",
       "_origin": "semantic",
       "id": "_cursor_skills_ts_library_references_build_tooling_tsdown"
@@ -28544,7 +28544,7 @@
       "author": null,
       "contributor": null,
       "community": 58,
-      "community_name": "TypeScript Library Skill",
+      "community_name": "API Design Patterns (patterns/)",
       "norm_label": "unbuild configuration",
       "_origin": "semantic",
       "id": "_cursor_skills_ts_library_references_build_tooling_unbuild"
@@ -28559,7 +28559,7 @@
       "author": null,
       "contributor": null,
       "community": 58,
-      "community_name": "TypeScript Library Skill",
+      "community_name": "API Design Patterns (patterns/)",
       "norm_label": "dual cjs/esm output",
       "_origin": "semantic",
       "id": "_cursor_skills_ts_library_references_build_tooling_dual_format"
@@ -28573,8 +28573,8 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 58,
-      "community_name": "TypeScript Library Skill",
+      "community": 103,
+      "community_name": "TS Library CI Workflows",
       "norm_label": "ts library ci workflows",
       "_origin": "semantic",
       "id": "_cursor_skills_ts_library_references_ci_workflows_document"
@@ -28589,8 +28589,8 @@
       "author": null,
       "contributor": null,
       "rationale": "Tokenless npm publish with GitHub OIDC \u2014 requires Node 24+, id-token:write, --provenance",
-      "community": 58,
-      "community_name": "TypeScript Library Skill",
+      "community": 103,
+      "community_name": "TS Library CI Workflows",
       "norm_label": "oidc provenance release",
       "_origin": "semantic",
       "id": "_cursor_skills_ts_library_references_ci_workflows_oidc_release"
@@ -28604,8 +28604,8 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 58,
-      "community_name": "TypeScript Library Skill",
+      "community": 103,
+      "community_name": "TS Library CI Workflows",
       "norm_label": "matrix testing strategy",
       "_origin": "semantic",
       "id": "_cursor_skills_ts_library_references_ci_workflows_matrix"
@@ -28619,8 +28619,8 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 58,
-      "community_name": "TypeScript Library Skill",
+      "community": 103,
+      "community_name": "TS Library CI Workflows",
       "norm_label": "pkg-pr-new pr publish",
       "_origin": "semantic",
       "id": "_cursor_skills_ts_library_references_ci_workflows_pkg_pr_new"
@@ -28634,8 +28634,8 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 58,
-      "community_name": "TypeScript Library Skill",
+      "community": 111,
+      "community_name": "@antfu/eslint-config Guide",
       "norm_label": "@antfu/eslint-config guide",
       "_origin": "semantic",
       "id": "_cursor_skills_ts_library_references_eslint_config_document"
@@ -28650,8 +28650,8 @@
       "author": null,
       "contributor": null,
       "rationale": "Handles linting and formatting \u2014 replaces Prettier",
-      "community": 58,
-      "community_name": "TypeScript Library Skill",
+      "community": 111,
+      "community_name": "@antfu/eslint-config Guide",
       "norm_label": "@antfu/eslint-config flat config",
       "_origin": "semantic",
       "id": "_cursor_skills_ts_library_references_eslint_config_antfu"
@@ -28665,8 +28665,8 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 58,
-      "community_name": "TypeScript Library Skill",
+      "community": 111,
+      "community_name": "@antfu/eslint-config Guide",
       "norm_label": "type-aware eslint rules",
       "_origin": "semantic",
       "id": "_cursor_skills_ts_library_references_eslint_config_type_aware"
@@ -32975,6 +32975,17 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "layers/1.base/app/utils/supabase-search.ts",
+      "source_location": "L14",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "layers_1_base_app_utils_supabase_search",
+      "target": "layers_1_base_app_utils_supabase_search_options_search_debounce_ms",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "layers/1.base/app/utils/supabase-search.ts",
       "source_location": "L5",
       "weight": 1.0,
       "_origin": "ast",
@@ -33002,17 +33013,6 @@
       "_origin": "ast",
       "source": "layers_1_base_app_utils_supabase_search",
       "target": "layers_1_base_app_utils_supabase_search_sanitizeiliketerm",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "layers/1.base/app/utils/supabase-search.ts",
-      "source_location": "L14",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "layers_1_base_app_utils_supabase_search",
-      "target": "layers_1_base_app_utils_supabase_search_search_debounce_ms",
       "confidence_score": 1.0
     },
     {

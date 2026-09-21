@@ -75,8 +75,8 @@
     "semantic_hash": "42554447bb20ef8861a3e8eef7b3b9a6"
   },
   "layers/1.base/app/utils/supabase-search.ts": {
-    "mtime": 1790011571.241141,
-    "ast_hash": "592408518aecf521f346e95682b12498",
+    "mtime": 1789148388.7368913,
+    "ast_hash": "34161de84b49730987b88fb9ca5dd218",
     "semantic_hash": ""
   },
   "layers/1.base/nuxt.config.ts": {
@@ -100,8 +100,8 @@
     "semantic_hash": ""
   },
   "layers/10.vehicles/app/composables/useCustomerOptions.ts": {
-    "mtime": 1790011565.5968018,
-    "ast_hash": "4f7e49f74459571809e9bd0e7ec55f9b",
+    "mtime": 1789157028.4814835,
+    "ast_hash": "9cebab99041cc6da62a2484e279c7d4e",
     "semantic_hash": ""
   },
   "layers/10.vehicles/app/composables/useVehicleDetailPage.ts": {
@@ -130,8 +130,8 @@
     "semantic_hash": ""
   },
   "layers/10.vehicles/app/composables/useVehiclesList.ts": {
-    "mtime": 1790011563.5963368,
-    "ast_hash": "35507975b5fc2db676e5a4ec0407cd8e",
+    "mtime": 1789157005.7249534,
+    "ast_hash": "c63d96643061d6116dcc2f4e2fe1e512",
     "semantic_hash": ""
   },
   "layers/10.vehicles/app/pages/vehicles-[id].vue": {
@@ -195,8 +195,8 @@
     "semantic_hash": ""
   },
   "layers/11.scheduling/app/composables/useSchedulingBoard.ts": {
-    "mtime": 1790011564.727341,
-    "ast_hash": "af50bdc12bf305b66561fcade42c18a3",
+    "mtime": 1789157007.3538198,
+    "ast_hash": "9f3d8bc35f98e4721dd2aa11b921fad9",
     "semantic_hash": ""
   },
   "layers/11.scheduling/app/composables/useSchedulingMutations.ts": {
@@ -410,8 +410,8 @@
     "semantic_hash": ""
   },
   "layers/4.customers/app/composables/useCustomersList.ts": {
-    "mtime": 1790011562.8251948,
-    "ast_hash": "2fae6ba5adf3489e855ff129a93b42ae",
+    "mtime": 1789157002.506219,
+    "ast_hash": "415f52af1d5ce69518bed002f1df8778",
     "semantic_hash": ""
   },
   "layers/4.customers/app/pages/customers-[id].vue": {
@@ -550,8 +550,8 @@
     "semantic_hash": ""
   },
   "layers/5.orders/app/composables/useOrdersList.ts": {
-    "mtime": 1790011562.1193314,
-    "ast_hash": "0745192d12d2afe9f84b97168c732d00",
+    "mtime": 1790011217.1641877,
+    "ast_hash": "9c291a1ae5bf7e5197f48c5cac2a966b",
     "semantic_hash": ""
   },
   "layers/5.orders/app/pages/orders-[id]-print.vue": {
@@ -1460,8 +1460,8 @@
     "semantic_hash": ""
   },
   "layers/6.configuration/app/composables/useCatalog.ts": {
-    "mtime": 1790011564.0733385,
-    "ast_hash": "3ef6ce86b77144486bf29a185f537792",
+    "mtime": 1789750685.368685,
+    "ast_hash": "8602ab192c58943e84a043727ea57e6a",
     "semantic_hash": ""
   },
   "layers/6.configuration/app/composables/usePricingParams.ts": {
@@ -1625,8 +1625,8 @@
     "semantic_hash": ""
   },
   "layers/10.vehicles/app/composables/useVehicleOptions.ts": {
-    "mtime": 1790011565.4790215,
-    "ast_hash": "159a98cc642e1adde91bfcd8e56bb8d9",
+    "mtime": 1789157031.5008872,
+    "ast_hash": "87b414fc1936af4df065f69db892654d",
     "semantic_hash": ""
   },
   "layers/8.management/app/composables/useFinanceWorkspace.ts": {

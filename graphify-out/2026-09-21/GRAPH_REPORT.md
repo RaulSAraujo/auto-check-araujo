@@ -1,7 +1,7 @@
 # Graph Report - auto-check-araujo  (2026-09-21)
 
 ## Corpus Check
-- 403 files · ~241,317 words
+- 403 files · ~241,314 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
@@ -70,10 +70,10 @@
 - CustomersFormFields.vue
 - API and Interface Design
 - Type Patterns Guide
-- Dashboard Layout
-- Server Routes
+- UDashboardPanel
+- Deployment
 - pnpm CLI Commands Guide
-- TypeScript Library Skill
+- API Design Patterns (patterns/)
 - Rolldown Migration (Vite 8)
 - BaseAppHeader.vue
 - Module Authoring
@@ -87,7 +87,7 @@
 - Provide / Inject
 - login.vue
 - FinanceCashFlowChart.vue
-- print.ts
+- orders-[id]-print.vue
 - pricing.vue
 - nuxt.config.ts
 - customers-[id].vue
@@ -95,7 +95,7 @@
 - Vite Plugin API
 - orders.ts
 - customer-status.ts
-- orders-[id]-print.vue
+- Server Routes
 - Testing Guide
 - TypeScript Configuration Guide
 - Oficina Domain Language
@@ -115,10 +115,10 @@
 - useCollaborators.ts
 - usePermissions.ts
 - Nuxt CLI Commands
-- Live Editing
+- Nuxt UI Components Index
 - Navigation Recipe
 - vehicles-new.vue
-- Deployment Platform Choice
+- TS Library CI Workflows
 - order-routes.ts
 - CustomersNewForm.vue
 - vehicle-form.ts
@@ -126,8 +126,8 @@
 - Araújo Auto Center Logo
 - username.ts
 - app.config.ts
-- Nuxt UI Components Index
-- API Design Patterns (patterns/)
+- @antfu/eslint-config Guide
+- Type Patterns Guide
 - Custom Directives
 - Vue Router Typing
 - vehicles-[id].vue
@@ -255,8 +255,6 @@
 10. `Frontend UI Engineering` - 13 edges
 
 ## Surprising Connections (you probably didn't know these)
-- `API Design Patterns (patterns/)` --semantically_similar_to--> `API Design Patterns (references/)`  [INFERRED] [semantically similar]
-  .cursor/skills/ts-library/patterns/api.md → .cursor/skills/ts-library/references/api-design.md
 - `Library package.json Exports Setup` --semantically_similar_to--> `package.json exports Field`  [INFERRED] [semantically similar]
   .cursor/skills/vite/references/build-and-ssr.md → .cursor/skills/ts-library/references/package-exports.md
 - `routeRules` --conceptually_related_to--> `nuxt.config.ts`  [INFERRED]
@@ -265,6 +263,8 @@
   .cursor/skills/ts-library/references/ci-workflows.md → .cursor/skills/pnpm/references/ci.md
 - `pnpm --filter Filtering` --semantically_similar_to--> `Build Changed Packages Filter`  [INFERRED] [semantically similar]
   .cursor/skills/pnpm/references/cli.md → .cursor/skills/pnpm/references/ci.md
+- `API Design Patterns (patterns/)` --semantically_similar_to--> `API Design Patterns (references/)`  [INFERRED] [semantically similar]
+  .cursor/skills/ts-library/patterns/api.md → .cursor/skills/ts-library/references/api-design.md
 
 ## Import Cycles
 - None detected.
@@ -602,21 +602,21 @@ Nodes (24): 1. Contract First, 2. Consistent Error Semantics, 3. Validate at Bou
 Cohesion: 0.20
 Nodes (12): Type-Level Testing, Brand Types (Nominal Typing), Compile-Time TypeError Messages, Conditional Type Extraction, Data Tagging with Symbols, Distributive Conditionals, Type Patterns Guide, Function Overloads (+4 more)
 
-### Community 55 - "Dashboard Layout"
-Cohesion: 0.15
-Nodes (13): useLazyFetch, UDashboardGroup, UTable, Chat Component Tree, Use #body Slot for Scrollable Content, Dashboard Layout, Multi-panel List-Detail, UDashboardPanel (+5 more)
+### Community 55 - "UDashboardPanel"
+Cohesion: 0.20
+Nodes (10): useLazyFetch, UTable, Chat Component Tree, Use #body Slot for Scrollable Content, Multi-panel List-Detail, UDashboardPanel, Data Tables Recipe, Table Row Selection (+2 more)
 
-### Community 56 - "Server Routes"
-Cohesion: 0.17
-Nodes (12): Deployment, Nitro, Node.js Server Deployment, Static Generation, server/ Directory, addServerHandler, defineEventHandler, Nitro Server Engine (+4 more)
+### Community 56 - "Deployment"
+Cohesion: 0.15
+Nodes (13): Cloudflare Pages, Deployment, Netlify, Nitro, Nitro Preset, Node.js Server Deployment, Deployment Platform Choice, Static Generation (+5 more)
 
 ### Community 57 - "pnpm CLI Commands Guide"
 Cohesion: 0.18
 Nodes (13): pnpm CLI Commands Guide, pnpm --filter Filtering, pnpm patch / patch-commit, pnpm -r Recursive Workspace Commands, Content-Addressable Store, pnpm Features Guide, pnpmfile.cjs Hooks, pnpm Overrides (+5 more)
 
-### Community 58 - "TypeScript Library Skill"
-Cohesion: 0.15
-Nodes (15): API Design Patterns (references/), Build Tooling Guide, Dual CJS/ESM Output, tsdown Configuration, unbuild Configuration, TS Library CI Workflows, Matrix Testing Strategy, OIDC Provenance Release (+7 more)
+### Community 58 - "API Design Patterns (patterns/)"
+Cohesion: 0.19
+Nodes (13): API Design Patterns (patterns/), Factory Functions Pattern, Lazy Getters Tree-shaking, Options / ResolvedOptions Pattern, unplugin Plugin Pattern, API Design Patterns (references/), Build Tooling Guide, Dual CJS/ESM Output (+5 more)
 
 ### Community 59 - "Rolldown Migration (Vite 8)"
 Cohesion: 0.14
@@ -670,9 +670,9 @@ Nodes (6): user, loading, session, { signInWithPassword }, state, AUTH_ROUTES
 Cohesion: 0.19
 Nodes (8): categories, chartData, colorMode, props, CashFlowRow, useFinanceCashFlow(), financeCashFlowCategories(), formatCashFlowMonthLabel()
 
-### Community 72 - "print.ts"
-Cohesion: 0.23
-Nodes (8): props, total, budgetWhatsappUrl, whatsappUrl, buildBudgetWhatsAppMessage(), buildWhatsAppUrl(), normalizePhoneForWhatsApp(), WORKSHOP_NAME
+### Community 72 - "orders-[id]-print.vue"
+Cohesion: 0.18
+Nodes (12): budgetWhatsappUrl, onPrintBudgetPdf(), budgetStatus, downloadingPdf, id, onPrintBudgetPdf(), route, whatsappUrl (+4 more)
 
 ### Community 73 - "pricing.vue"
 Cohesion: 0.12
@@ -718,9 +718,9 @@ Nodes (8): mobileDateFormatter, OrderLinkedAppointment, OrderListItem, ORDEM_STA
 Cohesion: 0.29
 Nodes (7): { can }, route, CUSTOMER_STATUS_FILTER_ACTIVE, CUSTOMER_STATUS_FILTER_ALL, CUSTOMER_STATUS_FILTER_INACTIVE, CUSTOMER_STATUS_FILTER_ITEMS, CustomerStatusFilter
 
-### Community 80 - "orders-[id]-print.vue"
-Cohesion: 0.20
-Nodes (11): onDownloadBudgetPdf(), onPrintBudgetPdf(), budgetStatus, downloadingPdf, id, onDownloadBudgetPdf(), onPrintBudgetPdf(), route (+3 more)
+### Community 80 - "Server Routes"
+Cohesion: 0.40
+Nodes (5): server/ Directory, addServerHandler, defineEventHandler, Server Middleware, Server Routes
 
 ### Community 81 - "Testing Guide"
 Cohesion: 0.22
@@ -794,9 +794,9 @@ Nodes (5): usePermissions(), useRequirePermission(), can(), canChangeOrderStatus
 Cohesion: 0.33
 Nodes (7): nuxi init --template layer, Nuxt CLI Commands, nuxi init, nuxt build, nuxt dev, nuxt generate, nuxt prepare
 
-### Community 100 - "Live Editing"
-Cohesion: 0.29
-Nodes (7): Code Editor, Live Editing, Schema Forms, Visual Editor (TipTap), UEditor, Editor Layout, Tiptap Editor Instance
+### Community 100 - "Nuxt UI Components Index"
+Cohesion: 0.14
+Nodes (16): Code Editor, Live Editing, Schema Forms, Visual Editor (TipTap), Nuxt UI Components Index, Prose Components, UChatMessages, UDashboardGroup (+8 more)
 
 ### Community 101 - "Navigation Recipe"
 Cohesion: 0.33
@@ -810,9 +810,9 @@ Nodes (10): allowLeave, { back }, backFallback, {
   pending: clientesPending
 }, { createVehicle }, initialState, loading, route (+2 more)
 
-### Community 103 - "Deployment Platform Choice"
-Cohesion: 0.33
-Nodes (6): Cloudflare Pages, Netlify, Nitro Preset, Deployment Platform Choice, Vercel, Edge-Side Rendering
+### Community 103 - "TS Library CI Workflows"
+Cohesion: 0.50
+Nodes (4): TS Library CI Workflows, Matrix Testing Strategy, OIDC Provenance Release, pkg-pr-new PR Publish
 
 ### Community 104 - "order-routes.ts"
 Cohesion: 0.24
@@ -842,13 +842,13 @@ Nodes (3): normalizeUsername(), USERNAME_EMAIL_DOMAIN, usernameToAuthEmail()
 Cohesion: 0.40
 Nodes (6): app.config.ts, Nuxt Configuration, runtimeConfig, runtimeConfig vs app.config, useAppConfig, useRuntimeConfig
 
-### Community 111 - "Nuxt UI Components Index"
-Cohesion: 0.40
-Nodes (6): Nuxt UI Components Index, Prose Components, UChatMessages, Prefer Prose Over Generic UI in Markdown, Chat Layout, Comark Streaming Markdown
+### Community 111 - "@antfu/eslint-config Guide"
+Cohesion: 0.67
+Nodes (3): @antfu/eslint-config Flat Config, @antfu/eslint-config Guide, Type-Aware ESLint Rules
 
-### Community 112 - "API Design Patterns (patterns/)"
-Cohesion: 0.18
-Nodes (11): Builder Pattern with Type Accumulation, API Design Patterns (patterns/), Factory Functions Pattern, Lazy Getters Tree-shaking, Options / ResolvedOptions Pattern, unplugin Plugin Pattern, Type Accumulation in Builders, Brand Types Nominal Typing (+3 more)
+### Community 112 - "Type Patterns Guide"
+Cohesion: 0.33
+Nodes (6): Builder Pattern with Type Accumulation, Type Accumulation in Builders, Brand Types Nominal Typing, Type Patterns Guide, Module Augmentation via Register, Utility Types (Awaitable, Arrayable, etc.)
 
 ### Community 113 - "Custom Directives"
 Cohesion: 0.33
@@ -930,7 +930,7 @@ Nodes (3): heightClass, isIcon, props
 
 ### Community 131 - "supabase-search.ts"
 Cohesion: 0.29
-Nodes (7): ilikePattern(), LIST_PAGE_SIZE, OPTIONS_FETCH_LIMIT, REPORT_PAGE_SIZE, REPORT_SOFT_LIMIT, sanitizeIlikeTerm(), SEARCH_DEBOUNCE_MS
+Nodes (7): ilikePattern(), LIST_PAGE_SIZE, OPTIONS_FETCH_LIMIT, OPTIONS_SEARCH_DEBOUNCE_MS, REPORT_PAGE_SIZE, REPORT_SOFT_LIMIT, sanitizeIlikeTerm()
 
 ### Community 132 - "AuthLoginForm.vue"
 Cohesion: 0.50
@@ -1018,8 +1018,8 @@ Cohesion: 0.13
 Nodes (14): Anti-patterns to Avoid, Detailed Instructions, How It Works, Idea Refine, Output, Phase 1: Understand & Expand (Divergent), Phase 2: Evaluate & Converge, Phase 3: Sharpen & Ship (+6 more)
 
 ### Community 197 - "pdf.ts"
-Cohesion: 0.47
-Nodes (8): addDocumentHeader(), addMetaBlock(), addPageFooter(), addTextSection(), BudgetPdfInput, createBudgetPdf(), ensureSpace(), formatPlacaPdf()
+Cohesion: 0.29
+Nodes (12): onDownloadBudgetPdf(), onDownloadBudgetPdf(), addDocumentHeader(), addMetaBlock(), addPageFooter(), addTextSection(), BudgetPdfInput, createBudgetPdf() (+4 more)
 
 ### Community 198 - "OrdersDetailHero.vue"
 Cohesion: 0.29
@@ -1075,8 +1075,8 @@ Cohesion: 0.24
 Nodes (7): draft, editDraft, editingId, emit, onAdd(), props, saveEdit()
 
 ### Community 231 - "budget.ts"
-Cohesion: 0.40
-Nodes (7): useOrderBudgetMutations(), useOrderBudgetPage(), calcItemsTotal(), calcItemSubtotal(), emptyOrderItemDraft(), isOrderItemDraftValid(), OrderItemDraft
+Cohesion: 0.27
+Nodes (10): props, total, useOrderBudgetMutations(), useOrderBudgetPage(), calcItemsTotal(), calcItemSubtotal(), emptyOrderItemDraft(), isOrderItemDraftValid() (+2 more)
 
 ### Community 233 - "4. DESIGN ENGINEERING DIRECTIVES (Bias Correction)"
 Cohesion: 0.17
