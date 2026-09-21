@@ -1,7 +1,13 @@
 import type { OrdemServico, Veiculo } from '~~/shared/types/database'
 
 export type OrderListItem = OrdemServico & {
-  veiculos: { id: string, placa: string, marca: string | null, modelo: string | null } | null
+  veiculos: {
+    id: string
+    placa: string
+    marca: string | null
+    modelo: string | null
+    clientes: { id: string, nome: string } | null
+  } | null
 }
 
 export type OrderLinkedAppointment = {

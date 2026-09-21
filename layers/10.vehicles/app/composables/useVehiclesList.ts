@@ -12,7 +12,7 @@ export async function useVehiclesList() {
     clearTimeout(debounceTimer)
     debounceTimer = setTimeout(() => {
       debouncedQ.value = value
-    }, 300)
+    }, SEARCH_DEBOUNCE_MS)
   })
 
   const { data, pending } = await useAsyncData(

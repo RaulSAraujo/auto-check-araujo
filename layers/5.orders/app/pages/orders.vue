@@ -48,7 +48,7 @@ const { can } = usePermissions()
           <UInput
             v-model="q"
             icon="i-lucide-search"
-            placeholder="Buscar por número, placa ou reclamação"
+            placeholder="Buscar por número, cliente, placa ou reclamação"
             class="flex-1"
           />
           <USelect

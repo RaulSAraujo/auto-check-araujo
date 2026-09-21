@@ -1,7 +1,7 @@
 import type { OrderListItem } from '../types/orders'
 import { ORDEM_STATUS_FILTER_ALL, ORDEM_STATUS_FILTER_ITEMS, type OrdemStatusFilter } from '../utils/order-select-items'
 
-const ORDER_LIST_SELECT = '*, veiculos!inner(id, placa, marca, modelo)'
+const ORDER_LIST_SELECT = '*, veiculos!inner(id, placa, marca, modelo, clientes(id, nome))'
 
 export async function useOrdersList(initialStatus: OrdemStatusFilter = ORDEM_STATUS_FILTER_ALL) {
   const supabase = useTypedSupabaseClient()
@@ -17,7 +17,7 @@ export async function useOrdersList(initialStatus: OrdemStatusFilter = ORDEM_STA
     clearTimeout(debounceTimer)
     debounceTimer = setTimeout(() => {
       debouncedQ.value = value
-    }, 300)
+    }, SEARCH_DEBOUNCE_MS)
   })
 
   const { data, pending } = await useAsyncData(
@@ -39,10 +39,28 @@ export async function useOrdersList(initialStatus: OrdemStatusFilter = ORDEM_STA
 
       if (pattern) {
         const placa = placaPattern || pattern
-        // Single round-trip: OR across OS fields + placa via !inner join
-        query = query.or(
-          `numero.ilike.${pattern},reclamacao.ilike.${pattern},veiculos.placa.ilike.${placa}`
-        )
+        // PostgREST .or() cannot reach embedded relations — resolve veiculo_id
+        // via placa and cliente.nome, then OR on the parent table.
+        const [{ data: byPlaca }, { data: matchedClientes }] = await Promise.all([
+          supabase.from('veiculos').select('id').ilike('placa', placa),
+          supabase.from('clientes').select('id').ilike('nome', pattern)
+        ])
+
+        const veiculoIds = new Set(byPlaca?.map(v => v.id) ?? [])
+        const clienteIds = matchedClientes?.map(c => c.id) ?? []
+        if (clienteIds.length > 0) {
+          const { data: byCliente } = await supabase
+            .from('veiculos')
+            .select('id')
+            .in('cliente_id', clienteIds)
+          for (const row of byCliente ?? []) veiculoIds.add(row.id)
+        }
+
+        let orFilter = `numero.ilike.${pattern},reclamacao.ilike.${pattern}`
+        if (veiculoIds.size > 0) {
+          orFilter += `,veiculo_id.in.(${[...veiculoIds].join(',')})`
+        }
+        query = query.or(orFilter)
       }
 
       const { data: rows, count, error } = await query

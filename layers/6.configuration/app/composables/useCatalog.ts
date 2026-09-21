@@ -64,7 +64,7 @@ export function useCatalogList(
     clearTimeout(debounceTimer)
     debounceTimer = setTimeout(() => {
       debouncedQ.value = value
-    }, 300)
+    }, SEARCH_DEBOUNCE_MS)
   })
 
   const { page, pageSize, rangeBounds } = useListPagination(

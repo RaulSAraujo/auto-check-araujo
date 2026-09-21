@@ -42,7 +42,7 @@ export async function useVehicleOptions(options?: {
     clearTimeout(debounceTimer)
     debounceTimer = setTimeout(() => {
       debouncedSearch.value = value
-    }, OPTIONS_SEARCH_DEBOUNCE_MS)
+    }, SEARCH_DEBOUNCE_MS)
   })
 
   onUnmounted(() => clearTimeout(debounceTimer))

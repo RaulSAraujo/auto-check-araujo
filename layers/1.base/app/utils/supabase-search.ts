@@ -10,8 +10,8 @@ export const REPORT_SOFT_LIMIT = 500
 /** Limite de opções em typeahead (veículo / cliente). */
 export const OPTIONS_FETCH_LIMIT = 40
 
-/** Debounce da busca em typeahead (ms). */
-export const OPTIONS_SEARCH_DEBOUNCE_MS = 300
+/** Debounce padrão da busca em listagens e typeahead (ms). */
+export const SEARCH_DEBOUNCE_MS = 500
 
 /** Remove caracteres que quebram filtros PostgREST (.or / ilike). */
 export function sanitizeIlikeTerm(term: string): string {

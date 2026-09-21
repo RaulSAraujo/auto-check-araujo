@@ -111,7 +111,7 @@ export async function useSchedulingBoard() {
       if (trimmed) next.q = trimmed
       else delete next.q
       router.replace({ query: next })
-    }, 300)
+    }, SEARCH_DEBOUNCE_MS)
   })
 
   onUnmounted(() => clearTimeout(searchWriteTimer))

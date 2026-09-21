@@ -64,6 +64,9 @@ function vehicleModel(order: OrderListItem) {
           </span>
           <time class="shrink-0 text-xs tabular-nums text-muted">{{ formatMobileOpenedAt(ordem.aberta_em) }}</time>
         </span>
+        <span class="mt-1 block truncate text-sm text-muted">
+          {{ ordem.veiculos?.clientes?.nome || EMPTY_VALUE }}
+        </span>
       </NuxtLink>
     </template>
 
@@ -88,6 +91,12 @@ function vehicleModel(order: OrderListItem) {
       >
         {{ row.original.numero }}
       </NuxtLink>
+    </template>
+
+    <template #cliente-cell="{ row }">
+      <span class="truncate">
+        {{ row.original.veiculos?.clientes?.nome || EMPTY_VALUE }}
+      </span>
     </template>
 
     <template #placa-cell="{ row }">
