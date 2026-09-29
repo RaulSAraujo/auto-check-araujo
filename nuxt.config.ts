@@ -12,6 +12,10 @@ export default defineNuxtConfig({
 
   runtimeConfig: {
     supabaseServiceRoleKey: process.env.SUPABASE_SERVICE_ROLE_KEY || '',
+    groqApiKey: '',
+    geminiApiKey: '',
+    groqModel: 'openai/gpt-oss-120b',
+    geminiModel: 'gemini-3.8-flash',
     public: {
       appName: 'Araujo Auto Center'
     }

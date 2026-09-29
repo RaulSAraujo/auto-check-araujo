@@ -9,7 +9,7 @@
     "postinstall": "nuxt prepare",
     "lint": "eslint .",
     "typecheck": "nuxt typecheck",
-    "test": "node --test \"shared/**/*.test.ts\" \"layers/**/*.test.ts\""
+    "test": "node --test \"shared/**/*.test.ts\" \"layers/**/*.test.ts\" \"server/**/*.test.ts\""
   },
   "dependencies": {
     "@iconify-json/lucide": "^1.2.127",
