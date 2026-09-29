@@ -98,22 +98,30 @@ onVoiceDraft('appointment.create', (draft) => {
   })
 })
 
+// Draft handlers can run outside the page's effect scope, so their watchers/timers are disposed by hand.
+const appointmentLookups = new Set<() => void>()
+onBeforeUnmount(() => appointmentLookups.forEach(dispose => dispose()))
+
 function whenAppointmentLoaded(id: string, inicio: string, action: (appointment: SchedulingAppointment) => void) {
   selectDay(new Date(inicio))
-  let done = false
+  const loaded = dayAppointments.value.find(item => item.id === id)
+  if (loaded) return action(loaded)
   const stop = watch(dayAppointments, (list) => {
     const found = list.find(item => item.id === id)
-    if (!found || done) return
-    done = true
+    if (!found) return
+    dispose()
     action(found)
-    void nextTick(() => stop())
-  }, { immediate: true })
-  setTimeout(() => {
-    if (done) return
-    done = true
-    stop()
+  })
+  const timer = setTimeout(() => {
+    dispose()
     toast.add({ title: 'Agendamento não encontrado na agenda.', color: 'warning' })
   }, 10_000)
+  const dispose = () => {
+    stop()
+    clearTimeout(timer)
+    appointmentLookups.delete(dispose)
+  }
+  appointmentLookups.add(dispose)
 }
 
 onVoiceDraft('appointment.reschedule', (draft) => {

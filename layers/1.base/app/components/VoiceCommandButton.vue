@@ -46,6 +46,9 @@ function toggleListening() {
 
 function clearText() {
   text.value = ''
+  interim.value = ''
+  // The segment still being recognized would come back on the next result; restarting drops it.
+  if (listening.value) start()
   notUnderstood.value = false
 }
 
@@ -195,7 +198,7 @@ async function submit() {
           label="Limpar"
           color="neutral"
           variant="ghost"
-          :disabled="!text.trim() || running"
+          :disabled="(!text.trim() && !interim) || running"
           @click="clearText"
         />
         <UButton
