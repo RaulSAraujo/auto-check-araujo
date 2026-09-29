@@ -14,6 +14,7 @@ withDefaults(defineProps<{
   size: 'md'
 })
 
+const toast = useToast()
 const { supported, listening, transcript, error, start, stop, onFinal } = useSpeechRecognition()
 const { run } = useVoiceCommand()
 
@@ -47,7 +48,13 @@ function toggleListening() {
   else start()
 }
 
+function pickExample(example: string) {
+  stop()
+  text.value = example
+}
+
 async function submit(value = text.value) {
+  stop()
   const command = value.trim()
   if (!command || running.value) return
   text.value = command
@@ -57,6 +64,12 @@ async function submit(value = text.value) {
     const result = await run(command)
     if (!result.ok && result.reason === 'not_understood') notUnderstood.value = true
     else open.value = false
+  } catch {
+    toast.add({
+      title: 'Não foi possível executar o comando',
+      description: 'Tente de novo.',
+      color: 'error'
+    })
   } finally {
     running.value = false
   }
@@ -83,15 +96,17 @@ async function submit(value = text.value) {
     <template #body>
       <div class="space-y-4">
         <p
-          v-if="listening"
-          class="flex items-center gap-2 text-sm font-medium text-primary"
           role="status"
+          aria-live="polite"
+          class="flex items-center gap-2 text-sm font-medium text-primary"
         >
-          <UIcon
-            name="i-lucide-audio-lines"
-            class="size-5 animate-pulse"
-          />
-          Ouvindo…
+          <template v-if="listening">
+            <UIcon
+              name="i-lucide-audio-lines"
+              class="size-5 animate-pulse"
+            />
+            Ouvindo…
+          </template>
         </p>
 
         <UTextarea
@@ -147,7 +162,8 @@ async function submit(value = text.value) {
                   variant="ghost"
                   size="sm"
                   class="w-full text-start"
-                  @click="text = example"
+                  :ui="{ label: 'whitespace-normal text-start' }"
+                  @click="pickExample(example)"
                 />
               </li>
             </ul>

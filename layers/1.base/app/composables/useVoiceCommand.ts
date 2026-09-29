@@ -60,7 +60,7 @@ export function useVoiceCommand() {
         if (payload.clienteNome) {
           const clienteId = await findUniqueIdByName('clientes', payload.clienteNome)
           if (clienteId) draft.cliente_id = clienteId
-          else warnings.push(`Cliente "${payload.clienteNome}" não encontrado.`)
+          else warnings.push(`Cliente "${payload.clienteNome}" não encontrado ou ambíguo.`)
         }
         setVoiceDraft(command.intent, draft)
         break
@@ -93,12 +93,12 @@ export function useVoiceCommand() {
         if (payload.categoriaNome) {
           const categoriaId = await findUniqueIdByName('financeiro_categorias', payload.categoriaNome)
           if (categoriaId) draft.categoria_id = categoriaId
-          else warnings.push(`Categoria "${payload.categoriaNome}" não encontrada.`)
+          else warnings.push(`Categoria "${payload.categoriaNome}" não encontrada ou ambígua.`)
         }
         if (payload.fornecedorNome) {
           const fornecedorId = await findUniqueIdByName('fornecedores', payload.fornecedorNome)
           if (fornecedorId) draft.fornecedor_id = fornecedorId
-          else warnings.push(`Fornecedor "${payload.fornecedorNome}" não encontrado.`)
+          else warnings.push(`Fornecedor "${payload.fornecedorNome}" não encontrado ou ambíguo.`)
         }
         setVoiceDraft(command.intent, draft)
         break
