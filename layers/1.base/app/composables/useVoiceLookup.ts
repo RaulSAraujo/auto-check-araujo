@@ -41,10 +41,11 @@ export function useVoiceLookup() {
 
   async function findOrderId(target: { placa?: string, numero?: string, clienteNome?: string }): Promise<string | undefined> {
     if (target.numero) {
-      const { data, error } = await supabase
-        .from('ordens_servico')
-        .select('id')
-        .like('numero', `OS-%-${target.numero.padStart(4, '0')}`)
+      const withYear = target.numero.match(/^(20\d{2})(\d{4,})$/)
+      const query = supabase.from('ordens_servico').select('id')
+      const { data, error } = await (withYear
+        ? query.eq('numero', `OS-${withYear[1]}-${withYear[2]}`)
+        : query.like('numero', `OS-%-${target.numero.padStart(4, '0')}`))
         .order('aberta_em', { ascending: false })
         .limit(1)
       return error ? undefined : data?.[0]?.id

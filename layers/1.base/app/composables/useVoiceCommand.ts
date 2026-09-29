@@ -15,7 +15,8 @@ export type VoiceRunResult
   = | { ok: true, intent: VoiceIntent }
     | { ok: false, reason: 'not_understood' | 'forbidden' | 'context' }
 
-type Destination = { path: string, query?: Record<string, string> }
+/** `opened`: an edit command without fields only navigates, no draft is stored. */
+type Destination = { path: string, query?: Record<string, string>, opened?: true }
 
 const INTENT_PERMISSION: Record<Exclude<VoiceIntent, 'navigate'>, PermissionAction> = {
   'customer.create': 'customers.write',
@@ -70,7 +71,8 @@ export function useVoiceCommand() {
     try {
       const { command } = await $fetch<{ command: VoiceCommand | null }>('/api/voice/interpret', {
         method: 'POST',
-        body: { text, context: { page, today: localDateInput(new Date()) } }
+        body: { text, context: { page, today: localDateInput(new Date()) } },
+        timeout: 30_000
       })
       return command ?? parseVoiceCommand(text)
     } catch {
@@ -149,11 +151,15 @@ export function useVoiceCommand() {
         const { target, itens, ...fields } = command.payload
         const orderId = target ? await findOrderId(target) : page === 'order-detail' ? currentId() : undefined
         if (!orderId) {
-          toast.add({
-            title: target ? 'Nenhuma OS em aberto encontrada' : 'Qual OS?',
-            description: target ? 'Confira a placa, o número ou o cliente. Para criar, diga "nova OS".' : 'Diga a placa, o número da OS ou o cliente.',
-            color: 'warning'
-          })
+          if (target?.numero) {
+            toast.add({ title: `OS ${target.numero} não encontrada.`, color: 'warning' })
+          } else {
+            toast.add({
+              title: target ? 'Nenhuma OS em aberto encontrada' : 'Qual OS?',
+              description: target ? 'Confira a placa, o número ou o cliente. Para criar, diga "nova OS".' : 'Diga a placa, o número da OS ou o cliente.',
+              color: 'warning'
+            })
+          }
           return null
         }
         const draft: VoiceDraftMap['order.edit'] = { ...fields, orderId }
@@ -163,8 +169,10 @@ export function useVoiceCommand() {
           else warnings.push('Sem permissão para adicionar itens ao orçamento.')
         }
         if ((itens?.length ?? 0) > 1) warnings.push('Só o primeiro item foi preenchido. Dite o próximo em seguida.')
+        const path = `/ordens/${orderId}`
+        if (Object.keys(draft).length === 1) return { path, opened: true }
         setVoiceDraft(command.intent, draft)
-        return { path: `/ordens/${orderId}` }
+        return { path }
       }
       case 'customer.edit': {
         const { target, ...fields } = command.payload
@@ -175,8 +183,10 @@ export function useVoiceCommand() {
           toast.add({ title: target?.nome ? `Cliente "${target.nome}" não encontrado ou ambíguo.` : 'Qual cliente? Diga o nome.', color: 'warning' })
           return null
         }
+        const path = `/clientes/${clienteId}`
+        if (!Object.keys(fields).length) return { path, opened: true }
         setVoiceDraft(command.intent, { ...fields, clienteId })
-        return { path: `/clientes/${clienteId}` }
+        return { path }
       }
       case 'vehicle.edit': {
         const { target, ...fields } = command.payload
@@ -187,8 +197,10 @@ export function useVoiceCommand() {
           toast.add({ title: target?.placa ? `Placa ${formatPlaca(target.placa)} não encontrada.` : 'Qual veículo? Diga a placa.', color: 'warning' })
           return null
         }
+        const path = `/veiculos/${veiculoId}`
+        if (!Object.keys(fields).length) return { path, opened: true }
         setVoiceDraft(command.intent, { ...fields, veiculoId })
-        return { path: `/veiculos/${veiculoId}` }
+        return { path }
       }
       case 'appointment.reschedule':
       case 'appointment.noShow': {
@@ -242,7 +254,9 @@ export function useVoiceCommand() {
       return { ok: false, reason: 'context' }
     }
 
-    if (command.intent !== 'navigate') {
+    if (destination.opened) {
+      toast.add({ title: 'Aberto por voz', color: 'info', icon: 'i-lucide-mic' })
+    } else if (command.intent !== 'navigate') {
       toast.add({ title: 'Preenchido por voz', description: 'Confira os dados e salve.', color: 'info', icon: 'i-lucide-mic' })
     }
     warnings.forEach(title => toast.add({ title, color: 'warning' }))
