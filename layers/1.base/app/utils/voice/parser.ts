@@ -85,6 +85,7 @@ const SPECS: Record<VoiceIntent, IntentSpec> = {
     }
   },
   'vehicle.create': {
+    defaultField: 'placa',
     fields: {
       placa: PLACA,
       marca: { keys: ['marca'], extract: text },
@@ -97,6 +98,7 @@ const SPECS: Record<VoiceIntent, IntentSpec> = {
     }
   },
   'order.create': {
+    defaultField: 'placa',
     fields: {
       placa: PLACA,
       km_entrada: { keys: KM_KEYS, extract: parseNumber },
@@ -106,6 +108,7 @@ const SPECS: Record<VoiceIntent, IntentSpec> = {
     }
   },
   'appointment.create': {
+    defaultField: 'placa',
     fields: {
       placa: PLACA,
       problema: { keys: ['problema', 'servico', 'motivo', 'reclamacao'], extract: text }

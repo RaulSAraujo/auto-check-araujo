@@ -140,6 +140,40 @@ test('leading filler before the trigger is ignored', () => {
   assert.deepEqual(parse('por favor novo cliente Carlos'), { intent: 'customer.create', payload: { nome: 'Carlos' } })
 })
 
+test('plate spoken right after the trigger without the placa keyword', () => {
+  assert.deepEqual(parse('agendar ABC1D23 amanhã às 14h'), {
+    intent: 'appointment.create',
+    payload: { placa: 'ABC1D23', date: '2026-09-30', startTime: '14:00' }
+  })
+  assert.deepEqual(parse('nova os ABC1D23 km 1000'), {
+    intent: 'order.create',
+    payload: { placa: 'ABC1D23', km_entrada: 1000 }
+  })
+  assert.deepEqual(parse('novo carro ABC1234 marca Fiat'), {
+    intent: 'vehicle.create',
+    payload: { placa: 'ABC1234', marca: 'Fiat' }
+  })
+  assert.deepEqual(parse('nova os para o João placa ABC1D23'), {
+    intent: 'order.create',
+    payload: { placa: 'ABC1D23' }
+  })
+})
+
+test('observacoes on vehicle, account and supplier', () => {
+  assert.deepEqual(parse('novo veículo placa ABC1D23 observação risco na porta'), {
+    intent: 'vehicle.create',
+    payload: { placa: 'ABC1D23', observacoes: 'risco na porta' }
+  })
+  assert.deepEqual(parse('nova conta aluguel valor 100 observação pagar em dinheiro'), {
+    intent: 'account.create',
+    payload: { descricao: 'aluguel', valor: 100, observacoes: 'pagar em dinheiro' }
+  })
+  assert.deepEqual(parse('novo fornecedor Silva observação entrega rápida'), {
+    intent: 'supplier.create',
+    payload: { nome: 'Silva', observacoes: 'entrega rápida' }
+  })
+})
+
 test('plate spelled letter by letter', () => {
   assert.deepEqual(parse('nova os placa a bê cê um dê dois três'), {
     intent: 'order.create',
