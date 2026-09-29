@@ -15,7 +15,8 @@ export default defineNuxtConfig({
     groqApiKey: '',
     geminiApiKey: '',
     groqModel: 'openai/gpt-oss-120b',
-    geminiModel: 'gemini-3.8-flash',
+    groqFallbackModel: 'openai/gpt-oss-20b',
+    geminiModel: 'gemini-3.5-flash-lite',
     public: {
       appName: 'Araujo Auto Center'
     }

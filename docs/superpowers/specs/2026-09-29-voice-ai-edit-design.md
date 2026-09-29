@@ -14,7 +14,7 @@ A v1 (parser por palavras-chave) foi pouco prática no uso real:
 
 | Tema | Decisão |
 |---|---|
-| Interpretação | IA em camada gratuita: **Groq** (`openai/gpt-oss-120b`) primeiro, **Gemini** (`gemini-3.8-flash`) se Groq falhar/limitar |
+| Interpretação | IA em camada gratuita: **Groq** (`openai/gpt-oss-120b`) primeiro, **Groq** (`openai/gpt-oss-20b`, cota separada por modelo) se o primeiro falhar/limitar, **Gemini** (`gemini-3.5-flash-lite`) por último. `gemini-3.8-flash` grátis (5 req/min, 503 frequente) não serve como reserva |
 | Reserva final | Parser de palavras-chave da v1 quando nenhuma IA responde ou não há chave |
 | Escopo de edição | OS, cliente, veículo, agendamento (remarcar, registrar falta), navegação |
 | Salvamento | Pré-preenche; barra "Alterações pendentes"; usuário salva. Voz nunca grava no banco |
@@ -29,7 +29,7 @@ Fora do escopo: cancelar agendamento (não existe no app), endereço de cliente 
 ```
 BaseVoiceCommandButton (modal, ditado contínuo)
   └─ useVoiceCommand.run(text)
-       ├─ POST /api/voice/interpret { text, context }  ──► Groq ─(429/5xx/timeout)─► Gemini
+       ├─ POST /api/voice/interpret { text, context }  ──► Groq 120b ─(429/5xx/timeout)─► Groq 20b ─► Gemini
        │     └─ normalizeVoiceCommand(json) → VoiceCommand | null
        ├─ 503 / erro de rede → parseVoiceCommand(text)  (v1, local)
        └─ dispatch: permissão → lookup de ids → navegação → setVoiceDraft
@@ -40,7 +40,7 @@ BaseVoiceCommandButton (modal, ditado contínuo)
 
 - Exige usuário autenticado (`serverSupabaseUser`), senão 401.
 - Corpo: `{ text: string (1–2000 chars), context: { page: VoicePage, today: 'YYYY-MM-DD' } }`; inválido → 400.
-- `runtimeConfig`: `groqApiKey`, `geminiApiKey`, `groqModel` (default `openai/gpt-oss-120b`), `geminiModel` (default `gemini-3.8-flash`). Env: `NUXT_GROQ_API_KEY`, `NUXT_GEMINI_API_KEY`, `NUXT_GROQ_MODEL`, `NUXT_GEMINI_MODEL`.
+- `runtimeConfig`: `groqApiKey`, `geminiApiKey`, `groqModel` (default `openai/gpt-oss-120b`), `groqFallbackModel` (default `openai/gpt-oss-20b`), `geminiModel` (default `gemini-3.5-flash-lite`). Env: `NUXT_GROQ_API_KEY`, `NUXT_GEMINI_API_KEY`, `NUXT_GROQ_MODEL`, `NUXT_GROQ_FALLBACK_MODEL`, `NUXT_GEMINI_MODEL`.
 - Ambos via endpoint compatível OpenAI (`/chat/completions`), `response_format: { type: 'json_object' }`, `temperature: 0`, timeout 10 s.
   - Groq: `https://api.groq.com/openai/v1/chat/completions`
   - Gemini: `https://generativelanguage.googleapis.com/v1beta/openai/chat/completions`

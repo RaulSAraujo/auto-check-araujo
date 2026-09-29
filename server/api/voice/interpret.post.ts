@@ -35,6 +35,7 @@ export default defineEventHandler(async (event) => {
   const raw = await completeWithFallback(
     [
       { name: 'groq', url: GROQ_URL, apiKey: config.groqApiKey, model: config.groqModel, extra: { reasoning_effort: 'low' } },
+      { name: 'groq-fallback', url: GROQ_URL, apiKey: config.groqApiKey, model: config.groqFallbackModel, extra: { reasoning_effort: 'low' } },
       { name: 'gemini', url: GEMINI_URL, apiKey: config.geminiApiKey, model: config.geminiModel }
     ],
     buildVoiceMessages(text, { page, today }),
