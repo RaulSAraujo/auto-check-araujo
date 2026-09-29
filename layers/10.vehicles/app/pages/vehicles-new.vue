@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { emptyVehicleForm, isVehicleFormDirty } from '../utils/vehicle-form'
+import { emptyVehicleForm, formatPlacaInput, isVehicleFormDirty } from '../utils/vehicle-form'
 import { VEHICLE_ROUTES } from '../utils/vehicle-routes'
 
 defineOptions({ name: 'VehiclesNewPage' })
@@ -19,11 +19,12 @@ const router = useRouter()
 const clienteId = (route.query.cliente_id as string) || ''
 useRequirePermission('vehicles.write')
 const { state } = useVehicleForm(undefined, clienteId)
+const preferredClienteId = ref(clienteId)
 const {
   clienteItems,
   searchTerm: clienteSearchTerm,
   pending: clientesPending
-} = useCustomerOptions('clientes-options', () => clienteId || undefined)
+} = useCustomerOptions('clientes-options', () => preferredClienteId.value || undefined)
 const { createVehicle } = useVehicleMutations()
 
 const initialState = emptyVehicleForm(clienteId)
@@ -31,6 +32,21 @@ const loading = ref(false)
 const allowLeave = ref(false)
 
 const isDirty = computed(() => isVehicleFormDirty(state, initialState))
+
+const { onVoiceDraft } = useVoiceDraft()
+onVoiceDraft('vehicle.create', (draft) => {
+  if (draft.cliente_id) {
+    preferredClienteId.value = draft.cliente_id
+    state.cliente_id = draft.cliente_id
+  }
+  if (draft.placa) state.placa = formatPlacaInput(draft.placa)
+  if (draft.marca) state.marca = draft.marca
+  if (draft.modelo) state.modelo = draft.modelo
+  if (draft.ano != null) state.ano = draft.ano
+  if (draft.cor) state.cor = draft.cor
+  if (draft.km_atual != null) state.km_atual = draft.km_atual
+  if (draft.observacoes) state.observacoes = draft.observacoes
+})
 
 const backFallback = computed(() =>
   clienteId ? `/clientes/${clienteId}` : VEHICLE_ROUTES.list
