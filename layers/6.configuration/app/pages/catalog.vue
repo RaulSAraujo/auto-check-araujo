@@ -94,6 +94,23 @@ function openCreate() {
   formOpen.value = true
 }
 
+const { onVoiceDraft } = useVoiceDraft()
+onVoiceDraft('catalogItem.create', async (draft) => {
+  openCreate()
+  await nextTick()
+  budgetDraft.tipo = draft.tipo
+  // CatalogForm's tipo watcher resets custo/estoque/horas/preco_manual; let it run before applying spoken values
+  await nextTick()
+  if (draft.nome) budgetDraft.nome = draft.nome
+  if (draft.custo != null) budgetDraft.custo = draft.custo
+  if (draft.estoque != null) budgetDraft.estoque = draft.estoque
+  if (draft.horas_estimadas != null) budgetDraft.horas_estimadas = draft.horas_estimadas
+  if (draft.valor_padrao != null) {
+    if (draft.tipo === 'servico') budgetDraft.preco_manual = true
+    budgetDraft.valor_padrao = draft.valor_padrao
+  }
+})
+
 function onBudgetEdit(payload: { id: string }) {
   const item = (budgetItems.value as CatalogItemRow[]).find(row => row.id === payload.id)
   if (!item) return

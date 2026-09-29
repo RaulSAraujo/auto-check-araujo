@@ -31,6 +31,17 @@ const deleteTarget = ref<CollaboratorRow | null>(null)
 const updatingId = ref<string | null>(null)
 const resettingPassword = ref(false)
 const deleting = ref(false)
+const voiceCollaborator = ref<{ nome?: string, username?: string, papel?: ColaboradorPapel }>()
+
+watch(createOpen, (open) => {
+  if (!open) voiceCollaborator.value = undefined
+})
+
+const { onVoiceDraft } = useVoiceDraft()
+onVoiceDraft('collaborator.create', (draft) => {
+  voiceCollaborator.value = { ...draft }
+  createOpen.value = true
+})
 
 const countLabel = computed(() => {
   const n = collaborators.value?.length ?? 0
@@ -143,7 +154,10 @@ async function onCreated() {
             :ui="{ content: 'overscroll-contain' }"
           >
             <template #body>
-              <TeamCollaboratorsCreateForm @created="onCreated" />
+              <TeamCollaboratorsCreateForm
+                :initial="voiceCollaborator"
+                @created="onCreated"
+              />
             </template>
           </USlideover>
 

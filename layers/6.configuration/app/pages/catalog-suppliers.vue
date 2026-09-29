@@ -89,6 +89,15 @@ function openCreate() {
   formOpen.value = true
 }
 
+const { onVoiceDraft } = useVoiceDraft()
+onVoiceDraft('supplier.create', (draft) => {
+  openCreate()
+  if (draft.nome) supplierDraft.nome = draft.nome
+  if (draft.telefone) supplierDraft.telefone = draft.telefone
+  if (draft.email) supplierDraft.email = draft.email
+  if (draft.observacoes) supplierDraft.observacoes = draft.observacoes
+})
+
 function onSupplierEdit(payload: { id: string }) {
   const supplier = activeSuppliers.value.find((row: Fornecedor) => row.id === payload.id)
   if (!supplier) return
