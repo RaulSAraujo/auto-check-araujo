@@ -160,7 +160,9 @@ const SPECS: Record<VoiceIntent, IntentSpec> = {
     fields: {
       nome: NOME,
       username: { keys: ['usuario', 'login', 'username'], extract: username },
-      papel: { keys: ['papel', 'cargo', 'funcao'], extract: papel }
+      papel: { keys: ['papel', 'cargo', 'funcao'], extract: papel },
+      // Senha falada nunca entra no payload; a palavra-chave só isola o trecho para descartá-lo.
+      senha: { keys: ['senha', 'password'], extract: () => undefined }
     }
   }
 }

@@ -121,7 +121,7 @@ test('collaborator.create never includes a password', () => {
   })
   assert.deepEqual(parse('novo colaborador Pedro senha 1234'), {
     intent: 'collaborator.create',
-    payload: { nome: 'Pedro senha 1234' }
+    payload: { nome: 'Pedro' }
   })
   assert.deepEqual(parse('novo colaborador Pedro usuário pedro senha 1234'), {
     intent: 'collaborator.create',
