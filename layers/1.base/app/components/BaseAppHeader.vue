@@ -145,6 +145,8 @@ function closeMobileMenu() {
         @focusin="prefetchAppRouteFromEvent"
       />
 
+      <BaseVoiceCommandButton />
+
       <USeparator
         orientation="vertical"
         class="mx-0.5 h-5 shrink-0"
@@ -232,6 +234,15 @@ function closeMobileMenu() {
       </button>
     </div>
   </nav>
+
+  <div class="fixed right-4 z-50 sm:hidden bottom-[calc(4.5rem+env(safe-area-inset-bottom))]">
+    <BaseVoiceCommandButton
+      variant="solid"
+      color="primary"
+      size="xl"
+      class="shadow-lg"
+    />
+  </div>
 
   <UDrawer
     v-model:open="mobileMenuOpen"
