@@ -41,7 +41,7 @@ BaseVoiceCommandButton (modal, ditado contínuo)
 - Exige usuário autenticado (`serverSupabaseUser`), senão 401.
 - Corpo: `{ text: string (1–2000 chars), context: { page: VoicePage, today: 'YYYY-MM-DD' } }`; inválido → 400.
 - `runtimeConfig`: `groqApiKey`, `geminiApiKey`, `groqModel` (default `openai/gpt-oss-120b`), `groqFallbackModel` (default `openai/gpt-oss-20b`), `geminiModel` (default `gemini-3.5-flash-lite`). Env: `NUXT_GROQ_API_KEY`, `NUXT_GEMINI_API_KEY`, `NUXT_GROQ_MODEL`, `NUXT_GROQ_FALLBACK_MODEL`, `NUXT_GEMINI_MODEL`.
-- Ambos via endpoint compatível OpenAI (`/chat/completions`), `response_format: { type: 'json_object' }`, `temperature: 0`, timeout 10 s.
+- Ambos via endpoint compatível OpenAI (`/chat/completions`), `response_format: { type: 'json_object' }`, `temperature: 0`, timeout 8 s por provedor (cliente espera até 30 s).
   - Groq: `https://api.groq.com/openai/v1/chat/completions`
   - Gemini: `https://generativelanguage.googleapis.com/v1beta/openai/chat/completions`
 - Fallback (`server/utils/voice-providers.ts`, função pura com `fetch` injetável): tenta provedores configurados em ordem; passa ao próximo em 429, 5xx, timeout, erro de rede ou JSON inválido. 4xx diferente de 429 (chave errada) também passa ao próximo e é logado.
@@ -86,14 +86,18 @@ Drafts entregues às páginas carregam o `id` resolvido (`orderId`, `clienteId`,
 - Navega para o detalhe e entrega o draft; página ignora draft cujo id difere do seu.
 - `navigate`: `scheduling` com `date` vai para `/agendamentos?dia=YYYY-MM-DD` (mesmo formato de `schedulingDayPath`, sem importar a layer de agendamento na base); demais usam `APP_ROUTES`.
 - `order.edit` com mais de um item: entrega só o primeiro e mostra aviso "Dite o próximo item em seguida."
+- Edição sem campos ("abre a OS do ABC1D23"): só navega, sem draft, toast "Aberto por voz". Se o registro já está aberto na tela, o modal mostra "Não entendi".
+- Fechar o modal durante a interpretação cancela o comando: nada navega nem é preenchido depois.
 
 ### Páginas consumidoras
+
+`onVoiceDraft(intent, handler, { accept?, ready? })`: o draft só é consumido quando `ready()` (registro carregado) e `accept(draft)` (id da rota confere) forem verdadeiros.
 
 - `orders-[id].vue`: `onVoiceDraft('order.edit')` → `km_entrada` substitui; textos acrescentam (`appendText`); `status` vai para `selectedStatus` (fluxo de conclusão existente); primeiro item → mesmo caminho do `budgetItem.create` (abre modal preenchido).
 - `customers-[id].vue`: telefones/emails novos são adicionados à lista (sem duplicar); documento substitui; observações acrescentam.
 - `vehicles-[id].vue`: km e cor substituem; observações acrescentam.
 - `scheduling.vue`: `reschedule` → seleciona o dia do agendamento, `openEdit` com data/hora sobrescritas; `noShow` → `requestNoShow(id)` (diálogo existente).
-- `appendText(current, addition)` pura em `utils/voice/`: junta com espaço/ponto, ignora vazio e repetição exata.
+- `appendText(current, addition)` pura em `utils/voice/`: junta com espaço/ponto, ignora vazio e frase já presente (comparação por frase inteira, sem acento/caixa).
 
 ### Ditado contínuo — `useSpeechRecognition` + modal
 
@@ -118,7 +122,7 @@ Drafts entregues às páginas carregam o `id` resolvido (`orderId`, `clienteId`,
 
 - `normalize.test.ts`: aceita comandos válidos de cada intenção; descarta campos desconhecidos, tipos errados, senha, datas/horas/placas inválidas; intenção desconhecida → null.
 - `prompt.test.ts`: mensagens contêm `today`, `page` e o texto.
-- `append.test.ts`: `appendText`.
+- `text.test.ts`: `appendText`.
 - `voice-providers.test.ts`: Groq ok; Groq 429 → Gemini; Groq timeout → Gemini; ambos falham → erro; só uma chave configurada.
 - Parser v1: testes existentes continuam passando.
 

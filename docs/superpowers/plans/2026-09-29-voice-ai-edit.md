@@ -14,7 +14,7 @@
 
 - Sem dependências novas. IA só via `fetch` para endpoints OpenAI-compatíveis.
 - A voz **nunca grava** no banco: só pré-preenche; usuário salva. Senha de colaborador nunca é preenchida.
-- Chaves só no servidor: `runtimeConfig.groqApiKey`, `geminiApiKey`, `groqModel` (`openai/gpt-oss-120b`), `geminiModel` (`gemini-3.8-flash`); env `NUXT_GROQ_API_KEY`, `NUXT_GEMINI_API_KEY`, `NUXT_GROQ_MODEL`, `NUXT_GEMINI_MODEL`.
+- Chaves só no servidor: `runtimeConfig.groqApiKey`, `geminiApiKey`, `groqModel` (`openai/gpt-oss-120b`), `groqFallbackModel` (`openai/gpt-oss-20b`), `geminiModel` (`gemini-3.5-flash-lite`); env `NUXT_GROQ_API_KEY`, `NUXT_GEMINI_API_KEY`, `NUXT_GROQ_MODEL`, `NUXT_GROQ_FALLBACK_MODEL`, `NUXT_GEMINI_MODEL`. (Os trechos de código das tasks abaixo mostram a cadeia original; a implementada está na spec.)
 - Endpoints: Groq `https://api.groq.com/openai/v1/chat/completions`; Gemini `https://generativelanguage.googleapis.com/v1beta/openai/chat/completions`.
 - Código em inglês; UI/toasts/prompt em português.
 - `layers/1.base/app/utils/voice/*.ts` e `server/utils/voice-providers.ts`: **TypeScript apagável**, **zero imports de Nuxt/Vue**, imports relativos **com extensão `.ts`** (rodam em `node --test`). Pasta `utils/voice/` não é auto-importada: importar explicitamente (em páginas de outras layers: `#layers/base/app/utils/voice/...`).
