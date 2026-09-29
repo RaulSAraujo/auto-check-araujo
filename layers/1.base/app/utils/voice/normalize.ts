@@ -14,6 +14,8 @@ const PLACA_RE = /^[A-Z]{3}\d[A-Z0-9]\d{2}$/
 const DATE_RE = /^\d{4}-\d{2}-\d{2}$/
 const TIME_RE = /^([01]\d|2[0-3]):[0-5]\d$/
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+const THOUSANDS_RE = /^\d{1,3}(\.\d{3})+(,\d+)?$/
+const TIME_WITH_SECONDS_RE = /^\d{1,2}:\d{2}:\d{2}$/
 const TIPOS: readonly VoiceItemTipo[] = ['servico', 'peca', 'kit']
 const PAPEIS: readonly VoicePapel[] = ['recepcao', 'mecanico', 'gerente']
 const STATUSES: readonly VoiceOrderStatus[] = ['aberta', 'em_andamento', 'concluida', 'cancelada']
@@ -36,8 +38,14 @@ function str(value: unknown): string | undefined {
   return trimmed ? trimmed.slice(0, 1000) : undefined
 }
 
+function parseNumeric(value: string): number | undefined {
+  const s = value.trim()
+  if (!s) return undefined
+  return Number((THOUSANDS_RE.test(s) ? s.replace(/\./g, '') : s).replace(',', '.'))
+}
+
 function num(value: unknown): number | undefined {
-  const n = typeof value === 'string' ? Number(value.replace(',', '.')) : value
+  const n = typeof value === 'string' ? parseNumeric(value) : value
   return typeof n === 'number' && Number.isFinite(n) && n >= 0 ? n : undefined
 }
 
@@ -62,7 +70,9 @@ function date(value: unknown): string | undefined {
 
 function time(value: unknown): string | undefined {
   if (typeof value !== 'string') return undefined
-  const padded = value.trim().padStart(5, '0')
+  const trimmed = value.trim()
+  const hhmm = TIME_WITH_SECONDS_RE.test(trimmed) ? trimmed.slice(0, -3) : trimmed
+  const padded = hhmm.padStart(5, '0')
   return TIME_RE.test(padded) ? padded : undefined
 }
 
@@ -98,6 +108,11 @@ function budgetItem(value: unknown): VoiceBudgetItemPayload | undefined {
     quantidade: num(value.quantidade),
     valor_unitario: num(value.valor_unitario)
   })
+}
+
+function filledBudgetItem(value: unknown): VoiceBudgetItemPayload | undefined {
+  const item = budgetItem(value)
+  return item && Object.keys(item).length > 1 ? item : undefined
 }
 
 function orderNumero(value: unknown): string | undefined {
@@ -172,7 +187,7 @@ const PICKERS: { [K in VoiceIntent]: (p: Obj) => Extract<VoiceCommand, { intent:
       diagnostico: str(p.diagnostico),
       observacoes: str(p.observacoes),
       status: oneOf(p.status, STATUSES),
-      itens: list(p.itens, budgetItem)
+      itens: list(p.itens, filledBudgetItem)
     })
   },
   'customer.edit': (p) => {
@@ -202,7 +217,7 @@ const PICKERS: { [K in VoiceIntent]: (p: Obj) => Extract<VoiceCommand, { intent:
   'appointment.noShow': p => compact({ placa: placa(p.placa) }),
   'navigate': (p) => {
     const to = oneOf(p.to, NAV_TARGETS)
-    return to ? compact({ to, date: date(p.date) }) : undefined
+    return to ? compact({ to, date: to === 'scheduling' ? date(p.date) : undefined }) : undefined
   }
 }
 
