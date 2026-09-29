@@ -41,7 +41,8 @@ export function foldText(value: string): string {
 export function appendText(current: string | null | undefined, addition: string | undefined): string {
   const base = (current ?? '').trim()
   const extra = (addition ?? '').trim()
-  if (!extra || foldText(base).includes(foldText(extra))) return current ?? ''
+  const sentence = (value: string) => foldText(value).replace(/[.!?]+$/, '').trim()
+  if (!extra || base.split(/[.!?]\s+/).map(sentence).includes(sentence(extra))) return current ?? ''
   if (!base) return extra
   return `${base}${/[.!?]$/.test(base) ? '' : '.'} ${extra}`
 }

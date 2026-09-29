@@ -13,7 +13,7 @@ import { localDateInput, voicePageFromPath } from '../utils/voice/prompt'
 
 export type VoiceRunResult
   = | { ok: true, intent: VoiceIntent }
-    | { ok: false, reason: 'not_understood' | 'forbidden' | 'context' }
+    | { ok: false, reason: 'not_understood' | 'forbidden' | 'context' | 'cancelled' }
 
 /** `opened`: an edit command without fields only navigates, no draft is stored. */
 type Destination = { path: string, query?: Record<string, string>, opened?: true }
@@ -72,6 +72,7 @@ export function useVoiceCommand() {
       const { command } = await $fetch<{ command: VoiceCommand | null }>('/api/voice/interpret', {
         method: 'POST',
         body: { text, context: { page, today: localDateInput(new Date()) } },
+        // Server worst case: 3 providers × 8 s.
         timeout: 30_000
       })
       return command ?? parseVoiceCommand(text)
@@ -226,9 +227,12 @@ export function useVoiceCommand() {
     }
   }
 
-  async function run(text: string): Promise<VoiceRunResult> {
-    const page = voicePageFromPath(currentRoute.value.path)
+  /** `isCancelled`: the AI call can take seconds; a closed modal must not navigate or prefill afterwards. */
+  async function run(text: string, isCancelled: () => boolean = () => false): Promise<VoiceRunResult> {
+    const here = currentRoute.value.path
+    const page = voicePageFromPath(here)
     const command = await interpret(text, page)
+    if (isCancelled()) return { ok: false, reason: 'cancelled' }
     if (!command) return { ok: false, reason: 'not_understood' }
 
     const permission = command.intent === 'navigate'
@@ -241,13 +245,19 @@ export function useVoiceCommand() {
 
     const warnings: string[] = []
     const destination = await resolve(command, page, warnings)
-    if (!destination) {
+    if (!destination || isCancelled()) {
       clearVoiceDraft()
-      return { ok: false, reason: 'context' }
+      return { ok: false, reason: destination ? 'cancelled' : 'context' }
     }
+    if (destination.opened && destination.path === here) return { ok: false, reason: 'not_understood' }
 
-    if (destination.path !== currentRoute.value.path || destination.query) {
-      await navigateTo({ path: destination.path, query: destination.query })
+    if (destination.path !== here || destination.query) {
+      try {
+        await navigateTo({ path: destination.path, query: destination.query })
+      } catch (error) {
+        clearVoiceDraft()
+        throw error
+      }
     }
     if (currentRoute.value.path !== destination.path) {
       clearVoiceDraft()

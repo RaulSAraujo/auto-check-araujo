@@ -144,4 +144,6 @@ test('appendText', () => {
   assert.equal(appendText('Barulho na roda', 'disco empenado'), 'Barulho na roda. disco empenado')
   assert.equal(appendText('Barulho na roda.', 'disco empenado'), 'Barulho na roda. disco empenado')
   assert.equal(appendText('Barulho na roda. Disco empenado', 'disco empenado'), 'Barulho na roda. Disco empenado')
+  assert.equal(appendText('Barulho na roda. Disco empenado.', 'Barulho na roda.'), 'Barulho na roda. Disco empenado.')
+  assert.equal(appendText('Freios dianteiros', 'freio'), 'Freios dianteiros. freio')
 })

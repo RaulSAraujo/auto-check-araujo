@@ -22,13 +22,16 @@ const open = ref(false)
 const text = ref('')
 const notUnderstood = ref(false)
 const running = ref(false)
+let runId = 0
 
 onChunk((chunk) => {
   text.value = text.value.trim() ? `${text.value.trim()} ${chunk}` : chunk
 })
 
 watch(open, (value) => {
-  if (!value) cancel()
+  if (value) return
+  cancel()
+  runId++
 })
 
 function openModal() {
@@ -64,11 +67,15 @@ async function submit() {
   text.value = command
   notUnderstood.value = false
   running.value = true
+  const id = ++runId
+  const isCancelled = () => id !== runId
   try {
-    const result = await run(command)
+    const result = await run(command, isCancelled)
+    if (isCancelled()) return
     if (!result.ok && result.reason === 'not_understood') notUnderstood.value = true
     else open.value = false
   } catch {
+    if (isCancelled()) return
     toast.add({
       title: 'Não foi possível executar o comando',
       description: 'Tente de novo.',

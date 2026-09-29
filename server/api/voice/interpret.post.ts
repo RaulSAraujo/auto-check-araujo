@@ -39,7 +39,7 @@ export default defineEventHandler(async (event) => {
       { name: 'gemini', url: GEMINI_URL, apiKey: config.geminiApiKey, model: config.geminiModel }
     ],
     buildVoiceMessages(text, { page, today }),
-    { onError: (provider, reason) => console.warn(`[voice] ${provider} failed: ${reason}`) }
+    { timeoutMs: 8_000, onError: (provider, reason) => console.warn(`[voice] ${provider} failed: ${reason}`) }
   )
 
   if (raw === null) {
