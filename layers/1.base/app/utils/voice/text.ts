@@ -118,15 +118,22 @@ function placaChars(folded: string): string | undefined {
   return undefined
 }
 
-export function parsePlaca(tokens: VoiceToken[]): string | undefined {
+/** Placa lida do início dos tokens; `consumed` é 0 quando não há placa válida. */
+export function readPlaca(tokens: VoiceToken[]): { placa: string | undefined, consumed: number } {
   let placa = ''
+  let consumed = 0
   for (const token of tokens) {
     const chars = placaChars(token.folded)
     if (!chars || placa.length + chars.length > 7) break
     placa += chars
+    consumed++
     if (placa.length === 7) break
   }
-  return PLACA_PATTERN.test(placa) ? placa : undefined
+  return PLACA_PATTERN.test(placa) ? { placa, consumed } : { placa: undefined, consumed: 0 }
+}
+
+export function parsePlaca(tokens: VoiceToken[]): string | undefined {
+  return readPlaca(tokens).placa
 }
 
 function digitsOf(folded: string): string | undefined {

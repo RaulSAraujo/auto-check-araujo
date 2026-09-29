@@ -8,6 +8,7 @@ import {
   parseNumber,
   parsePlaca,
   parseTime,
+  readPlaca,
   tokenize
 } from './text.ts'
 import type { VoiceToken } from './text.ts'
@@ -55,7 +56,7 @@ const TRIGGERS: Trigger[] = [
 const text: Extractor = tokens => joinRaw(tokens).trim() || undefined
 const digits: Extractor = tokens => parseDigits(tokens) || undefined
 const date: Extractor = (tokens, now) => parseDate(tokens, now)
-const username: Extractor = tokens => foldText(joinRaw(tokens)).replace(/[^a-z0-9._]/g, '') || undefined
+const username: Extractor = tokens => tokens[0]?.folded.replace(/[^a-z0-9._]/g, '') || undefined
 const papel: Extractor = (tokens): VoicePapel | undefined => {
   const folded = foldText(joinRaw(tokens))
   if (folded.includes('recep')) return 'recepcao'
@@ -110,7 +111,9 @@ const SPECS: Record<VoiceIntent, IntentSpec> = {
       problema: { keys: ['problema', 'servico', 'motivo', 'reclamacao'], extract: text }
     },
     extra: (segments, now) => {
-      const tokens = segments.filter(segment => segment.field !== 'problema').flatMap(segment => segment.tokens)
+      const tokens = segments
+        .filter(segment => segment.field !== 'problema')
+        .flatMap(({ field, tokens: own }) => field === 'placa' ? own.slice(readPlaca(own).consumed) : own)
       return { date: parseDate(tokens, now), startTime: parseTime(tokens) }
     }
   },
@@ -196,8 +199,8 @@ function segment(tokens: VoiceToken[], spec: IntentSpec): Segment[] {
   return segments
 }
 
-export function parseVoiceCommand(text: string, now: Date = new Date()): VoiceCommand | null {
-  const tokens = tokenize(text)
+export function parseVoiceCommand(transcript: string, now: Date = new Date()): VoiceCommand | null {
+  const tokens = tokenize(transcript)
   const found = findTrigger(tokens)
   if (!found) return null
 

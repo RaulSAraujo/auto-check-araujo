@@ -10,6 +10,7 @@ import {
   parseNumber,
   parsePlaca,
   parseTime,
+  readPlaca,
   tokenize
 } from './text.ts'
 
@@ -65,6 +66,8 @@ test('parsePlaca joins spoken plate pieces', () => {
   assert.equal(parsePlaca(t('a bê cê um dê dois três')), 'ABC1D23')
   assert.equal(parsePlaca(t('xyz')), undefined)
   assert.equal(parsePlaca(t('1234567')), undefined)
+  assert.deepEqual(readPlaca(t('abc 1 e 23 amanhã')), { placa: 'ABC1E23', consumed: 4 })
+  assert.deepEqual(readPlaca(t('amanhã às 14h')), { placa: undefined, consumed: 0 })
 })
 
 test('parseDigits collects a phone or document number', () => {

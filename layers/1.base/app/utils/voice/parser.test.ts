@@ -61,6 +61,13 @@ test('appointment.create', () => {
   })
 })
 
+test('appointment.create ignores spelled plate tokens when reading time', () => {
+  const expected = (placa: string) => ({ intent: 'appointment.create', payload: { placa, date: '2026-09-30', startTime: '14:00' } })
+  assert.deepEqual(parse('agendar placa a bê cê um e dois três amanhã às 14h'), expected('ABC1E23'))
+  assert.deepEqual(parse('agendar placa abc 1 e 23 amanhã às 14h'), expected('ABC1E23'))
+  assert.deepEqual(parse('agendar placa a b a 1 2 3 4 amanhã às 14h'), expected('ABA1234'))
+})
+
 test('budgetItem.create', () => {
   assert.deepEqual(parse('adicionar peça pastilha de freio quantidade 2 valor 150 reais'), {
     intent: 'budgetItem.create',
@@ -115,6 +122,10 @@ test('collaborator.create never includes a password', () => {
   assert.deepEqual(parse('novo colaborador Pedro senha 1234'), {
     intent: 'collaborator.create',
     payload: { nome: 'Pedro senha 1234' }
+  })
+  assert.deepEqual(parse('novo colaborador Pedro usuário pedro senha 1234'), {
+    intent: 'collaborator.create',
+    payload: { nome: 'Pedro', username: 'pedro' }
   })
 })
 
