@@ -52,7 +52,8 @@ export function joinRaw(tokens: VoiceToken[]): string {
 function numericValue(folded: string | undefined): number | undefined {
   if (folded === undefined) return undefined
   if (NUMERIC_TOKEN.test(folded)) {
-    return Number(folded.replace(/\.(?=\d{3}(?!\d))/g, '').replace(',', '.'))
+    const value = Number(folded.replace(/\.(?=\d{3}(?!\d))/g, '').replace(',', '.'))
+    return Number.isFinite(value) ? value : undefined
   }
   return NUMBER_WORDS[folded]
 }
@@ -186,7 +187,13 @@ function dateAt(tokens: VoiceToken[], i: number, today: Date): Date | undefined 
   if (weekday >= 0) return addDays((weekday - today.getDay() + 7) % 7 || 7)
 
   const slash = folded.match(/^(\d{1,2})\/(\d{1,2})(?:\/(\d{4}))?$/)
-  if (slash) return thisOrNextYear(Number(slash[2]) - 1, Number(slash[1]), slash[3] ? Number(slash[3]) : undefined)
+  if (slash) {
+    const day = Number(slash[1])
+    const month = Number(slash[2])
+    if (month < 1 || month > 12) return null
+    const date = thisOrNextYear(month - 1, day, slash[3] ? Number(slash[3]) : undefined)
+    return date ?? null
+  }
 
   const hasDia = folded === 'dia'
   const day = readNumber(tokens, hasDia ? i + 1 : i)

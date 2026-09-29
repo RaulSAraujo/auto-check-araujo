@@ -100,6 +100,17 @@ test('parseDate finds relative and absolute dates', () => {
   assert.equal(parseDate(t('sem data'), NOW), undefined)
 })
 
+test('parseDate rejects invalid slash dates and rolls year on dia N', () => {
+  assert.equal(parseDate(t('10/13'), NOW), undefined)
+  assert.equal(parseDate(t('31/02'), NOW), undefined)
+  assert.equal(parseDate(t('dia 5'), new Date(2026, 11, 20, 10, 0)), '2027-01-05')
+})
+
+test('parseNumber and parseMoney reject invalid numeric tokens', () => {
+  assert.equal(parseNumber(t('1,2,3')), undefined)
+  assert.equal(parseMoney(t('1,2,3 reais')), undefined)
+})
+
 test('parseTime finds spoken times', () => {
   assert.equal(parseTime(t('às 14h')), '14:00')
   assert.equal(parseTime(t('14h30')), '14:30')
