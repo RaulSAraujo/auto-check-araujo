@@ -15,7 +15,7 @@ withDefaults(defineProps<{
 })
 
 const toast = useToast()
-const { supported, listening, transcript, error, start, stop, onFinal } = useSpeechRecognition()
+const { supported, listening, transcript, error, start, stop, cancel, onFinal } = useSpeechRecognition()
 const { run } = useVoiceCommand()
 
 const open = ref(false)
@@ -49,12 +49,12 @@ function toggleListening() {
 }
 
 function pickExample(example: string) {
-  stop()
+  cancel()
   text.value = example
 }
 
 async function submit(value = text.value) {
-  stop()
+  cancel()
   const command = value.trim()
   if (!command || running.value) return
   text.value = command

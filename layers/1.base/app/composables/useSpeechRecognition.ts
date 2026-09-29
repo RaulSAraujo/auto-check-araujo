@@ -95,6 +95,13 @@ export function useSpeechRecognition() {
     recognition?.stop()
   }
 
+  function cancel() {
+    const r = recognition
+    recognition = null
+    r?.abort()
+    listening.value = false
+  }
+
   function onFinal(cb: (text: string) => void) {
     finalCallbacks.push(cb)
   }
@@ -104,5 +111,5 @@ export function useSpeechRecognition() {
     recognition?.abort()
   })
 
-  return { supported, listening, transcript, error, start, stop, onFinal }
+  return { supported, listening, transcript, error, start, stop, cancel, onFinal }
 }
