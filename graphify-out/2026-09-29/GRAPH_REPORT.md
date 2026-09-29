@@ -1,16 +1,16 @@
 # Graph Report - auto-check-araujo  (2026-09-29)
 
 ## Corpus Check
-- 415 files · ~254,809 words
+- 415 files · ~254,580 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 2782 nodes · 3446 edges · 271 communities (224 shown, 47 thin omitted)
+- 2782 nodes · 3446 edges · 269 communities (222 shown, 47 thin omitted)
 - Extraction: 96% EXTRACTED · 4% INFERRED · 0% AMBIGUOUS · INFERRED: 126 edges (avg confidence: 0.83)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `7c7b6861`
+- Built from commit: `1f2b96d8`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -33,7 +33,7 @@
 - Test-Driven Development
 - CI Workflows Guide
 - team.vue
-- Vite Build and SSR
+- 7. DIAL DEFINITIONS (Technical Reference)
 - scheduling.ts
 - OrdersNewForm.vue
 - Client Utilities
@@ -87,7 +87,7 @@
 - Provide / Inject
 - login.vue
 - FinanceCashFlowChart.vue
-- print.ts
+- orders-[id]-print.vue
 - pricing.vue
 - nuxt.config.ts
 - customers-[id].vue
@@ -95,7 +95,6 @@
 - Vite Plugin API
 - orders.ts
 - customer-status.ts
-- orders-[id]-print.vue
 - Testing Guide
 - TypeScript Configuration Guide
 - Oficina Domain Language
@@ -108,7 +107,7 @@
 - CustomersDetailSummary.vue
 - OrdersBudgetSection.vue
 - catalog.ts
-- Vite Configuration
+- Vite Build and SSR
 - useFetch
 - Draft and Preview Model
 - text-case.ts
@@ -153,7 +152,6 @@
 - Code Simplification
 - CI Workflow
 - Home Page UX Critique
-- 1. THE THREE DIALS (Core Configuration)
 - BaseBrandIcon.vue
 - Debugging and Error Recovery
 - tsconfig.json
@@ -298,7 +296,7 @@
 - **Favicon Brand Visual Composition** — public_favicon_chrome_sphere, public_favicon_dark_gradient_background, public_favicon_blue_specular_highlights, public_favicon_app_brand_mark [INFERRED 0.85]
 - **Logo Brand Mark Visual Elements** — public_logo_tire_graphic, public_logo_araujo_wordmark, public_logo_auto_center_wordmark [EXTRACTED 1.00]
 
-## Communities (271 total, 47 thin omitted)
+## Communities (269 total, 47 thin omitted)
 
 ### Community 0 - "useOrderPayment.ts"
 Cohesion: 0.42
@@ -382,9 +380,9 @@ Nodes (25): bumpp Version Bumping, changelogen Changelog, Conventional Commits, 
 Cohesion: 0.09
 Nodes (16): breadcrumbItems, { collaborators, pending, refresh }, countLabel, createOpen, currentUserId, deleteOpen, deleteTarget, deleting (+8 more)
 
-### Community 18 - "Vite Build and SSR"
-Cohesion: 0.17
-Nodes (12): tsdown Build Tool, DTS Generation via Build Tool, build() JavaScript API, createServer JavaScript API, Vite Build and SSR, Vite Library Mode, Library package.json Exports Setup, Multi-Page App Build (+4 more)
+### Community 18 - "7. DIAL DEFINITIONS (Technical Reference)"
+Cohesion: 0.50
+Nodes (4): 7. DIAL DEFINITIONS (Technical Reference), DESIGN_VARIANCE (Level 1-10), MOTION_INTENSITY (Level 1-10), VISUAL_DENSITY (Level 1-10)
 
 ### Community 19 - "scheduling.ts"
 Cohesion: 0.16
@@ -631,8 +629,8 @@ Cohesion: 0.19
 Nodes (13): API Design Patterns (patterns/), Factory Functions Pattern, Lazy Getters Tree-shaking, Options / ResolvedOptions Pattern, unplugin Plugin Pattern, API Design Patterns (references/), Build Tooling Guide, Dual CJS/ESM Output (+5 more)
 
 ### Community 59 - "Rolldown Migration (Vite 8)"
-Cohesion: 0.25
-Nodes (9): Vitest Test Runner, Vitest Setup, Rolldown Migration (Vite 8), Gradual Migration via rolldown-vite, Oxc Transformer, pnpm overrides for Vite 8, Rolldown Bundler, Always Use ESM (+1 more)
+Cohesion: 0.14
+Nodes (16): bumpp Version Bumping, Library npm Scripts, tsdown Build Tool, Vitest Test Runner, Vitest Setup, DTS Generation via Build Tool, Vite Library Mode, Library package.json Exports Setup (+8 more)
 
 ### Community 60 - "BaseAppHeader.vue"
 Cohesion: 0.12
@@ -667,8 +665,8 @@ Cohesion: 0.20
 Nodes (12): Corepack pnpm Version Pinning, pnpm CI/CD & Migration Guide, frozen-lockfile Flag, GitHub Actions pnpm Setup, Build Changed Packages Filter, node-linker=hoisted, Phantom Dependencies Handling, pnpm Store Caching (+4 more)
 
 ### Community 68 - "Project Setup Guide"
-Cohesion: 0.22
-Nodes (11): @antfu/eslint-config, bumpp Version Bumping, Project Setup Guide, Monorepo Structure, Library npm Scripts, pnpm Catalogs, simple-git-hooks + lint-staged, Single Package Structure (+3 more)
+Cohesion: 0.28
+Nodes (9): @antfu/eslint-config, Project Setup Guide, Monorepo Structure, pnpm Catalogs, simple-git-hooks + lint-staged, Single Package Structure, Project Setup, Monorepo Structure (+1 more)
 
 ### Community 69 - "Provide / Inject"
 Cohesion: 0.18
@@ -682,9 +680,9 @@ Nodes (6): user, loading, session, { signInWithPassword }, state, AUTH_ROUTES
 Cohesion: 0.19
 Nodes (8): categories, chartData, colorMode, props, CashFlowRow, useFinanceCashFlow(), financeCashFlowCategories(), formatCashFlowMonthLabel()
 
-### Community 72 - "print.ts"
-Cohesion: 0.23
-Nodes (8): props, total, budgetWhatsappUrl, whatsappUrl, buildBudgetWhatsAppMessage(), buildWhatsAppUrl(), normalizePhoneForWhatsApp(), WORKSHOP_NAME
+### Community 72 - "orders-[id]-print.vue"
+Cohesion: 0.18
+Nodes (12): budgetWhatsappUrl, onPrintBudgetPdf(), budgetStatus, downloadingPdf, id, onPrintBudgetPdf(), route, whatsappUrl (+4 more)
 
 ### Community 73 - "pricing.vue"
 Cohesion: 0.12
@@ -719,8 +717,8 @@ Cohesion: 0.18
 Nodes (11): UContentNavigation, Auto-registered Modules, Content After UI Module Order, Nuxt UI Conventions, defineShortcuts, extractShortcuts, Docs Layout, Nested UPage Sidebars (+3 more)
 
 ### Community 77 - "Vite Plugin API"
-Cohesion: 0.22
-Nodes (9): Testing Plugins (Dogfood), Client-Server WebSocket Communication, Conditional Plugin apply, config / configResolved Hooks, Vite Plugin API, Plugin Ordering (enforce), transformIndexHtml Hook, Virtual Modules (+1 more)
+Cohesion: 0.18
+Nodes (11): Testing Plugins (Dogfood), HMR API (import.meta.hot), Client-Server WebSocket Communication, Conditional Plugin apply, config / configResolved Hooks, Vite Plugin API, handleHotUpdate Hook, Plugin Ordering (enforce) (+3 more)
 
 ### Community 78 - "orders.ts"
 Cohesion: 0.19
@@ -729,10 +727,6 @@ Nodes (8): mobileDateFormatter, OrderLinkedAppointment, OrderListItem, ORDEM_STA
 ### Community 79 - "customer-status.ts"
 Cohesion: 0.29
 Nodes (7): { can }, route, CUSTOMER_STATUS_FILTER_ACTIVE, CUSTOMER_STATUS_FILTER_ALL, CUSTOMER_STATUS_FILTER_INACTIVE, CUSTOMER_STATUS_FILTER_ITEMS, CustomerStatusFilter
-
-### Community 80 - "orders-[id]-print.vue"
-Cohesion: 0.20
-Nodes (11): onDownloadBudgetPdf(), onPrintBudgetPdf(), budgetStatus, downloadingPdf, id, onDownloadBudgetPdf(), onPrintBudgetPdf(), route (+3 more)
 
 ### Community 81 - "Testing Guide"
 Cohesion: 0.22
@@ -782,9 +776,9 @@ Nodes (9): draftModel, emit, onAddAndClose(), onConfirmReject(), props, rejectCo
 Cohesion: 0.24
 Nodes (11): replaceKitItems(), toCatalogPayload(), useCatalogMutations(), CATALOG_TIPO_FILTER_ITEMS, CatalogItemDraft, CatalogItemRow, CatalogKitDraftLine, CatalogKitItemWithRef (+3 more)
 
-### Community 93 - "Vite Configuration"
-Cohesion: 0.12
-Nodes (19): Peer Dependencies, loadEnv, Async Config, build.target, Conditional Config (command/mode), define Global Constants, Vite Configuration, loadEnv in Config (+11 more)
+### Community 93 - "Vite Build and SSR"
+Cohesion: 0.09
+Nodes (24): Peer Dependencies, build() JavaScript API, createServer JavaScript API, Vite Build and SSR, loadEnv, Multi-Page App Build, preview() JavaScript API, SSR Externals (noExternal) (+16 more)
 
 ### Community 94 - "useFetch"
 Cohesion: 0.36
@@ -973,10 +967,6 @@ Nodes (3): CI Workflow, CI Lint Step, CI Typecheck Step
 Cohesion: 0.67
 Nodes (3): Home Page UX Critique, Design Health Score 22/40, Missing Home Error State P1
 
-### Community 138 - "1. THE THREE DIALS (Core Configuration)"
-Cohesion: 0.50
-Nodes (4): 1.A Dial Inference (design read → dial values), 1.B Use-Case Presets, 1.C How the Dials Drive Output, 1. THE THREE DIALS (Core Configuration)
-
 ### Community 140 - "Debugging and Error Recovery"
 Cohesion: 0.09
 Nodes (21): Build Failure Triage, Common Rationalizations, Debugging and Error Recovery, Error-Specific Patterns, Instrumentation Guidelines, Overview, Red Flags, Runtime Error Triage (+13 more)
@@ -1034,8 +1024,8 @@ Cohesion: 0.13
 Nodes (14): Anti-patterns to Avoid, Detailed Instructions, How It Works, Idea Refine, Output, Phase 1: Understand & Expand (Divergent), Phase 2: Evaluate & Converge, Phase 3: Sharpen & Ship (+6 more)
 
 ### Community 197 - "pdf.ts"
-Cohesion: 0.47
-Nodes (8): addDocumentHeader(), addMetaBlock(), addPageFooter(), addTextSection(), BudgetPdfInput, createBudgetPdf(), ensureSpace(), formatPlacaPdf()
+Cohesion: 0.29
+Nodes (12): onDownloadBudgetPdf(), onDownloadBudgetPdf(), addDocumentHeader(), addMetaBlock(), addPageFooter(), addTextSection(), BudgetPdfInput, createBudgetPdf() (+4 more)
 
 ### Community 209 - "OrderDetail"
 Cohesion: 0.15
@@ -1091,8 +1081,8 @@ Cohesion: 0.24
 Nodes (7): draft, editDraft, editingId, emit, onAdd(), props, saveEdit()
 
 ### Community 231 - "budget.ts"
-Cohesion: 0.40
-Nodes (7): useOrderBudgetMutations(), useOrderBudgetPage(), calcItemsTotal(), calcItemSubtotal(), emptyOrderItemDraft(), isOrderItemDraftValid(), OrderItemDraft
+Cohesion: 0.27
+Nodes (10): props, total, useOrderBudgetMutations(), useOrderBudgetPage(), calcItemsTotal(), calcItemSubtotal(), emptyOrderItemDraft(), isOrderItemDraftValid() (+2 more)
 
 ### Community 233 - "4. DESIGN ENGINEERING DIRECTIVES (Bias Correction)"
 Cohesion: 0.17
@@ -1108,7 +1098,7 @@ Nodes (10): 10. REFERENCE VOCABULARY (Pattern Names the Agent Should Know), Anim
 
 ### Community 239 - "tasteskill: Anti-Slop Frontend Skill"
 Cohesion: 0.20
-Nodes (10): 13. OUT OF SCOPE, 14. FINAL PRE-FLIGHT CHECK, 2.A When to reach for a real design system (use official packages), 2.B When the brief is an aesthetic, not a system, 2. BRIEF → DESIGN SYSTEM MAP, 7. DIAL DEFINITIONS (Technical Reference), DESIGN_VARIANCE (Level 1-10), MOTION_INTENSITY (Level 1-10) (+2 more)
+Nodes (10): 13. OUT OF SCOPE, 14. FINAL PRE-FLIGHT CHECK, 1.A Dial Inference (design read → dial values), 1.B Use-Case Presets, 1.C How the Dials Drive Output, 1. THE THREE DIALS (Core Configuration), 2.A When to reach for a real design system (use official packages), 2.B When the brief is an aesthetic, not a system (+2 more)
 
 ### Community 241 - "OrdersConfirmDialog.vue"
 Cohesion: 0.50
@@ -1184,7 +1174,7 @@ Nodes (24): DESCRICAO, digits(), EMAIL_KEYS, Extractor, FieldSpec, findTrigger()
 
 ### Community 261 - "VoiceCommandButton.vue"
 Cohesion: 0.15
-Nodes (8): notUnderstood, open, { run }, running, { supported, listening, transcript, error, start, stop, cancel, onFinal }, text, toast, VOICE_EXAMPLES
+Nodes (8): notUnderstood, open, { run }, running, { supported, listening, transcript, error, start, stop, onFinal }, text, toast, VOICE_EXAMPLES
 
 ### Community 265 - "TeamCollaboratorsTable.vue"
 Cohesion: 0.29
