@@ -41,6 +41,7 @@ const { breadcrumbItems } = useOrderBreadcrumb({
 const {
   draft,
   selectedCatalogId,
+  addModalOpen,
   adding,
   deletingId,
   updatingStatus,
@@ -301,6 +302,7 @@ onMounted(() => {
           <section class="flex min-w-0 flex-col rounded-2xl bg-default p-5 pb-6 sm:p-6 sm:pb-7 ring-1 ring-default/60">
             <OrdersBudgetSection
               v-model:draft="draft"
+              v-model:add-open="addModalOpen"
               class="flex flex-col"
               :items="budgetItems || []"
               :budget-status="budgetStatus"

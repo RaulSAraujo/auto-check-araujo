@@ -28,16 +28,12 @@ const emit = defineEmits<{
   submit: [draft: AppointmentDraft]
 }>()
 
-const preferredVeiculoId = computed(
-  () => props.appointment?.veiculo_id || undefined
-)
-
 const {
   veiculos,
   searchTerm: vehicleSearchTerm,
   pending: vehiclesPending
 } = await useVehicleOptions({
-  preferredId: preferredVeiculoId,
+  preferredId: () => props.appointment?.veiculo_id || props.prefill?.veiculo_id || undefined,
   key: 'scheduling-veiculos-options'
 })
 
@@ -84,7 +80,7 @@ watch(open, (isOpen) => {
     return
   }
   resetDraft()
-})
+}, { immediate: true })
 
 function onOpenChange(value: boolean) {
   if (value) {

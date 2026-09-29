@@ -2,6 +2,7 @@
 import type { DropdownMenuItem } from '@nuxt/ui'
 import type { SchedulingAppointment } from '../composables/useSchedulingBoard'
 import {
+  combineLocalDateTime,
   formatBoardDate,
   formatWeekHeading,
   isSameLocalDay,
@@ -75,7 +76,8 @@ const moreMenuItems = computed<DropdownMenuItem[][]>(() => [[
 
 function openCreate(prefill?: AppointmentCreatePrefill) {
   const next: AppointmentCreatePrefill = { ...prefill }
-  if (next.hour == null && isSameLocalDay(selectedDate.value, new Date())) {
+  const day = next.date ? combineLocalDateTime(next.date, '00:00') : selectedDate.value
+  if (next.hour == null && !next.startTime && isSameLocalDay(day, new Date())) {
     const hour = new Date().getHours()
     if (hour >= TIMELINE_START_HOUR && hour <= TIMELINE_END_HOUR) next.hour = hour
   }
@@ -83,6 +85,18 @@ function openCreate(prefill?: AppointmentCreatePrefill) {
   createPrefill.value = next
   formOpen.value = true
 }
+
+const { onVoiceDraft } = useVoiceDraft()
+onVoiceDraft('appointment.create', (draft) => {
+  if (!canWrite.value) return
+  if (draft.date) selectDay(combineLocalDateTime(draft.date, '00:00'))
+  openCreate({
+    veiculo_id: draft.veiculo_id,
+    date: draft.date,
+    startTime: draft.startTime,
+    problema: draft.problema
+  })
+})
 
 function openEdit(appointment: SchedulingAppointment) {
   createPrefill.value = null

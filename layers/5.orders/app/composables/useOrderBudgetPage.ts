@@ -32,6 +32,7 @@ export function useOrderBudgetPage(
 
   const draft = reactive<OrderItemDraft>(emptyOrderItemDraft())
   const selectedCatalogId = ref<string | undefined>()
+  const addModalOpen = ref(false)
   const adding = ref(false)
   const deletingId = ref<string | null>(null)
   const updatingStatus = ref(false)
@@ -88,7 +89,7 @@ export function useOrderBudgetPage(
     )
   })
 
-  watch(selectedCatalogId, (id) => {
+  function applyCatalogEntry(id: string | undefined) {
     if (!id || !catalog.value) return
     const entry = catalog.value.find(item => item.id === id)
     if (!entry) return
@@ -98,6 +99,30 @@ export function useOrderBudgetPage(
     if (!draft.quantidade || draft.quantidade < 1) {
       draft.quantidade = 1
     }
+  }
+
+  watch(selectedCatalogId, applyCatalogEntry)
+
+  const { onVoiceDraft } = useVoiceDraft()
+  onVoiceDraft('budgetItem.create', async (voice) => {
+    if (voice.orderId !== toValue(orderId)) return
+    if (!canEditItems.value) {
+      useToast().add({
+        title: 'Orçamento bloqueado',
+        description: 'Este orçamento não pode receber itens agora.',
+        color: 'warning'
+      })
+      return
+    }
+    Object.assign(draft, emptyOrderItemDraft(), { tipo: voice.tipo })
+    if (voice.descricao) draft.descricao = voice.descricao
+    selectedCatalogId.value = voice.catalogItemId
+    applyCatalogEntry(voice.catalogItemId)
+    // Spoken values must land after the selectedCatalogId watcher re-applies the catalog price.
+    await nextTick()
+    if (voice.quantidade != null) draft.quantidade = voice.quantidade
+    if (voice.valor_unitario != null) draft.valor_unitario = voice.valor_unitario
+    addModalOpen.value = true
   })
 
   async function refreshAll() {
@@ -206,6 +231,7 @@ export function useOrderBudgetPage(
   return {
     draft,
     selectedCatalogId,
+    addModalOpen,
     adding,
     deletingId,
     updatingStatus,
