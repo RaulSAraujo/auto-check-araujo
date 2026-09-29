@@ -15,7 +15,7 @@ withDefaults(defineProps<{
 })
 
 const toast = useToast()
-const { supported, listening, transcript, error, start, stop, cancel, onFinal } = useSpeechRecognition()
+const { supported, listening, interim, error, start, stop, cancel, onChunk } = useSpeechRecognition()
 const { run } = useVoiceCommand()
 
 const open = ref(false)
@@ -23,16 +23,12 @@ const text = ref('')
 const notUnderstood = ref(false)
 const running = ref(false)
 
-watch(transcript, (value) => {
-  if (listening.value) text.value = value
+onChunk((chunk) => {
+  text.value = text.value.trim() ? `${text.value.trim()} ${chunk}` : chunk
 })
 
 watch(open, (value) => {
-  if (!value) stop()
-})
-
-onFinal((value) => {
-  if (open.value) void submit(value)
+  if (!value) cancel()
 })
 
 function openModal() {
@@ -48,14 +44,19 @@ function toggleListening() {
   else start()
 }
 
+function clearText() {
+  text.value = ''
+  notUnderstood.value = false
+}
+
 function pickExample(example: string) {
   cancel()
   text.value = example
 }
 
-async function submit(value = text.value) {
+async function submit() {
+  const command = [text.value, interim.value].map(part => part.trim()).filter(Boolean).join(' ')
   cancel()
-  const command = value.trim()
   if (!command || running.value) return
   text.value = command
   notUnderstood.value = false
@@ -91,7 +92,7 @@ async function submit(value = text.value) {
   <UModal
     v-model:open="open"
     title="Comando de voz"
-    description="Diga o que quer cadastrar. O formulário abre preenchido para você conferir."
+    description="Fale à vontade, pode pausar. Toque em Enviar quando terminar e confira os dados antes de salvar."
   >
     <template #body>
       <div class="space-y-4">
@@ -112,10 +113,18 @@ async function submit(value = text.value) {
         <UTextarea
           v-model="text"
           autoresize
-          placeholder="Ex.: novo cliente João telefone 11 98888 7777"
+          placeholder="Ex.: abre a OS do ABC1D23 e coloca no diagnóstico pastilha gasta"
           aria-label="Comando"
           class="w-full"
         />
+
+        <p
+          v-if="interim"
+          class="text-sm italic text-muted"
+          aria-hidden="true"
+        >
+          {{ interim }}
+        </p>
 
         <UAlert
           v-if="!supported"
@@ -173,18 +182,26 @@ async function submit(value = text.value) {
     </template>
 
     <template #footer>
-      <div class="flex w-full justify-end gap-2">
+      <div class="flex w-full flex-wrap justify-end gap-2">
         <UButton
           v-if="supported"
           :icon="listening ? 'i-lucide-square' : 'i-lucide-mic'"
-          :label="listening ? 'Parar' : 'Ouvir de novo'"
+          :label="listening ? 'Parar' : 'Continuar ouvindo'"
           color="neutral"
           variant="outline"
           @click="toggleListening"
         />
         <UButton
-          label="Preencher"
-          :disabled="!text.trim()"
+          label="Limpar"
+          color="neutral"
+          variant="ghost"
+          :disabled="!text.trim() || running"
+          @click="clearText"
+        />
+        <UButton
+          label="Enviar"
+          icon="i-lucide-send"
+          :disabled="!text.trim() && !interim"
           :loading="running"
           @click="submit()"
         />

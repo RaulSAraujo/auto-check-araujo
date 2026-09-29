@@ -39,5 +39,53 @@ export function useVoiceLookup() {
     return data.length === 1 ? data[0]?.id : undefined
   }
 
-  return { findVehicleIdByPlaca, findUniqueIdByName }
+  async function findOrderId(target: { placa?: string, numero?: string, clienteNome?: string }): Promise<string | undefined> {
+    if (target.numero) {
+      const { data, error } = await supabase
+        .from('ordens_servico')
+        .select('id')
+        .like('numero', `OS-%-${target.numero.padStart(4, '0')}`)
+        .order('aberta_em', { ascending: false })
+        .limit(1)
+      return error ? undefined : data?.[0]?.id
+    }
+
+    let vehicleIds: string[] = []
+    if (target.placa) {
+      const id = await findVehicleIdByPlaca(target.placa)
+      if (id) vehicleIds = [id]
+    } else if (target.clienteNome) {
+      const clienteId = await findUniqueIdByName('clientes', target.clienteNome)
+      if (clienteId) {
+        const { data } = await supabase.from('veiculos').select('id').eq('cliente_id', clienteId)
+        vehicleIds = (data ?? []).map(row => row.id)
+      }
+    }
+    if (!vehicleIds.length) return undefined
+
+    const { data, error } = await supabase
+      .from('ordens_servico')
+      .select('id')
+      .in('veiculo_id', vehicleIds)
+      .in('status', ['aberta', 'em_andamento'])
+      .order('aberta_em', { ascending: false })
+      .limit(1)
+    return error ? undefined : data?.[0]?.id
+  }
+
+  async function findNextAppointment(veiculoId: string): Promise<{ id: string, inicio: string } | undefined> {
+    const startOfToday = new Date()
+    startOfToday.setHours(0, 0, 0, 0)
+    const { data, error } = await supabase
+      .from('agendamentos')
+      .select('id, inicio')
+      .eq('veiculo_id', veiculoId)
+      .in('status', ['agendado', 'confirmado'])
+      .gte('inicio', startOfToday.toISOString())
+      .order('inicio', { ascending: true })
+      .limit(1)
+    return error ? undefined : data?.[0]
+  }
+
+  return { findVehicleIdByPlaca, findUniqueIdByName, findOrderId, findNextAppointment }
 }
