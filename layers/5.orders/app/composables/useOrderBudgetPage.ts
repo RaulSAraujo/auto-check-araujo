@@ -13,6 +13,7 @@ import {
   resolveCatalogUnitPrice,
   type PricingParamsRow
 } from '#layers/configuration/app/utils/pricing'
+import type { VoiceBudgetItemDraft } from '#layers/base/app/utils/voice/types'
 
 export function useOrderBudgetPage(
   orderId: MaybeRefOrGetter<string>,
@@ -103,9 +104,7 @@ export function useOrderBudgetPage(
 
   watch(selectedCatalogId, applyCatalogEntry)
 
-  const { onVoiceDraft } = useVoiceDraft()
-  onVoiceDraft('budgetItem.create', async (voice) => {
-    if (voice.orderId !== toValue(orderId)) return
+  async function openVoiceItem(voice: VoiceBudgetItemDraft) {
     if (!canEditItems.value) {
       useToast().add({
         title: 'Orçamento bloqueado',
@@ -123,7 +122,10 @@ export function useOrderBudgetPage(
     if (voice.quantidade != null) draft.quantidade = voice.quantidade
     if (voice.valor_unitario != null) draft.valor_unitario = voice.valor_unitario
     addModalOpen.value = true
-  })
+  }
+
+  const { onVoiceDraft } = useVoiceDraft()
+  onVoiceDraft('budgetItem.create', openVoiceItem, voice => voice.orderId === toValue(orderId))
 
   async function refreshAll() {
     await Promise.all([refreshOrder(), refreshItems()])
@@ -245,6 +247,7 @@ export function useOrderBudgetPage(
     onDeleteItem,
     onSubmitForApproval,
     onApprove,
-    onReject
+    onReject,
+    openVoiceItem
   }
 }

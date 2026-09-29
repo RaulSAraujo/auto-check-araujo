@@ -98,8 +98,39 @@ onVoiceDraft('appointment.create', (draft) => {
   })
 })
 
-function openEdit(appointment: SchedulingAppointment) {
-  createPrefill.value = null
+function whenAppointmentLoaded(id: string, inicio: string, action: (appointment: SchedulingAppointment) => void) {
+  selectDay(new Date(inicio))
+  let done = false
+  const stop = watch(dayAppointments, (list) => {
+    const found = list.find(item => item.id === id)
+    if (!found || done) return
+    done = true
+    action(found)
+    void nextTick(() => stop())
+  }, { immediate: true })
+  setTimeout(() => {
+    if (done) return
+    done = true
+    stop()
+    toast.add({ title: 'Agendamento não encontrado na agenda.', color: 'warning' })
+  }, 10_000)
+}
+
+onVoiceDraft('appointment.reschedule', (draft) => {
+  if (!canWrite.value) return
+  whenAppointmentLoaded(draft.appointmentId, draft.inicio, appointment => openEdit(appointment, {
+    ...(draft.date ? { date: draft.date } : {}),
+    ...(draft.startTime ? { startTime: draft.startTime } : {})
+  }))
+})
+
+onVoiceDraft('appointment.noShow', (draft) => {
+  if (!canWrite.value) return
+  whenAppointmentLoaded(draft.appointmentId, draft.inicio, appointment => requestNoShow(appointment.id))
+})
+
+function openEdit(appointment: SchedulingAppointment, override?: Pick<AppointmentCreatePrefill, 'date' | 'startTime'>) {
+  createPrefill.value = override ?? null
   editingAppointment.value = appointment
   formOpen.value = true
 }

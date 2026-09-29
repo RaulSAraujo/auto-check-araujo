@@ -7,6 +7,7 @@ import {
 import { downloadBudgetPdf, printBudgetPdf } from '../utils/pdf'
 import { primaryPhone } from '~~/shared/utils/contact'
 import { formatTimeShort, schedulingDayPath } from '#layers/scheduling/app/utils/scheduling'
+import { appendText } from '#layers/base/app/utils/voice/text'
 
 defineOptions({ name: 'OrdersDetailPage' })
 
@@ -55,7 +56,8 @@ const {
   onDeleteItem,
   onSubmitForApproval,
   onApprove,
-  onReject
+  onReject,
+  openVoiceItem
 } = useOrderBudgetPage(id, ordem, budgetItems, refresh, refreshBudgetItems)
 
 const {
@@ -76,6 +78,24 @@ const {
   resolveConclude,
   saveStatus
 } = useOrderStatusEditor(id, ordem, refresh)
+
+const { onVoiceDraft } = useVoiceDraft()
+onVoiceDraft('order.edit', async (voice) => {
+  const hasFields = voice.km_entrada != null || !!voice.reclamacao || !!voice.diagnostico || !!voice.observacoes || !!voice.status
+  if (hasFields && !canEdit.value) {
+    useToast().add({ title: 'Esta OS não pode ser editada.', color: 'warning' })
+  } else if (hasFields) {
+    if (voice.km_entrada != null) state.km_entrada = voice.km_entrada
+    state.reclamacao = appendText(state.reclamacao, voice.reclamacao)
+    state.diagnostico = appendText(state.diagnostico, voice.diagnostico)
+    state.observacoes = appendText(state.observacoes, voice.observacoes)
+    if (voice.status) {
+      if (statusItems.value.some(item => item.value === voice.status)) selectedStatus.value = voice.status
+      else useToast().add({ title: 'Esse status não está disponível para esta OS.', color: 'warning' })
+    }
+  }
+  if (voice.item) await openVoiceItem(voice.item)
+}, voice => voice.orderId === id.value)
 
 const {
   state: paymentState,

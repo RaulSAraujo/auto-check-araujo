@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import type { BreadcrumbItem, DropdownMenuItem } from '@nuxt/ui'
 import { CUSTOMER_ROUTES } from '../utils/customer-routes'
+import { digitsOnly, formatDocumento, formatPhoneBr } from '../utils/customer-form'
+import { appendText } from '#layers/base/app/utils/voice/text'
 
 defineOptions({ name: 'CustomersDetailPage' })
 
@@ -54,6 +56,24 @@ const {
 
 const { can } = usePermissions()
 const { back } = useSmartBack(CUSTOMER_ROUTES.list)
+
+const { onVoiceDraft } = useVoiceDraft()
+onVoiceDraft('customer.edit', (voice) => {
+  if (!can('customers.write')) return
+  if (!editing.value) startEdit()
+  const phones = state.telefones.filter(Boolean)
+  for (const phone of voice.telefones ?? []) {
+    if (!phones.some(existing => digitsOnly(existing) === phone)) phones.push(formatPhoneBr(phone))
+  }
+  state.telefones = phones
+  const emails = state.emails.filter(Boolean)
+  for (const email of voice.emails ?? []) {
+    if (!emails.includes(email)) emails.push(email)
+  }
+  state.emails = emails
+  if (voice.documento) state.documento = formatDocumento(voice.documento)
+  state.observacoes = appendText(state.observacoes, voice.observacoes)
+}, voice => voice.clienteId === id.value)
 
 const breadcrumbItems = computed<BreadcrumbItem[]>(() => [
   {

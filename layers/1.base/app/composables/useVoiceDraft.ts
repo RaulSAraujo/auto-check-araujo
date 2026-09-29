@@ -15,7 +15,11 @@ export function useVoiceDraft() {
     pending.value = null
   }
 
-  function onVoiceDraft<K extends VoiceIntent>(intent: K, handler: (draft: VoiceDraftMap[K]) => void) {
+  function onVoiceDraft<K extends VoiceIntent>(
+    intent: K,
+    handler: (draft: VoiceDraftMap[K]) => void,
+    accept?: (draft: VoiceDraftMap[K]) => boolean
+  ) {
     watch(pending, (value) => {
       if (!value) return
       if (Date.now() - value.createdAt > DRAFT_TTL_MS) {
@@ -23,8 +27,11 @@ export function useVoiceDraft() {
         return
       }
       if (value.intent !== intent) return
+      const draft = value.draft as VoiceDraftMap[K]
+      // Another page instance (e.g. the previous record during navigation) must not swallow the draft.
+      if (accept && !accept(draft)) return
       pending.value = null
-      handler(value.draft as VoiceDraftMap[K])
+      handler(draft)
     }, { immediate: true })
   }
 

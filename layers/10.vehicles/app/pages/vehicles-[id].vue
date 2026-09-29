@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { BreadcrumbItem, DropdownMenuItem } from '@nuxt/ui'
 import { VEHICLE_ROUTES } from '../utils/vehicle-routes'
+import { appendText } from '#layers/base/app/utils/voice/text'
 
 defineOptions({ name: 'VehiclesDetailPage' })
 
@@ -48,6 +49,15 @@ const {
 } = useVehicleDetailPage(id, veiculo, state, refresh)
 
 const { can } = usePermissions()
+
+const { onVoiceDraft } = useVoiceDraft()
+onVoiceDraft('vehicle.edit', (voice) => {
+  if (!can('vehicles.write')) return
+  if (!editing.value) startEdit()
+  if (voice.km_atual != null) state.km_atual = voice.km_atual
+  if (voice.cor) state.cor = voice.cor
+  state.observacoes = appendText(state.observacoes, voice.observacoes)
+}, voice => voice.veiculoId === id.value)
 
 const backFallback = computed(() => {
   const owner = veiculo.value?.clientes

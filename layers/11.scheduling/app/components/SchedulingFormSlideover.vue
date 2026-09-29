@@ -69,11 +69,16 @@ const openOrderHref = computed(() => {
 })
 
 function resetDraft() {
-  if (props.appointment) Object.assign(draft, appointmentToDraft(props.appointment))
-  else Object.assign(draft, emptyAppointmentDraft(props.day, props.prefill ?? undefined))
-  snapshot.value = JSON.stringify(props.appointment
-    ? { ...draft }
-    : emptyAppointmentDraft(props.day, { hour: props.prefill?.hour }))
+  if (props.appointment) {
+    Object.assign(draft, appointmentToDraft(props.appointment))
+    snapshot.value = JSON.stringify({ ...draft })
+    // Voice reschedule: the new date/time land after the snapshot so the change is dirty.
+    if (props.prefill?.date) draft.date = props.prefill.date
+    if (props.prefill?.startTime) draft.startTime = props.prefill.startTime
+    return
+  }
+  Object.assign(draft, emptyAppointmentDraft(props.day, props.prefill ?? undefined))
+  snapshot.value = JSON.stringify(emptyAppointmentDraft(props.day, { hour: props.prefill?.hour }))
 }
 
 watch(open, (isOpen) => {
