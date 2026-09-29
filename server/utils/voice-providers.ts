@@ -47,6 +47,7 @@ export async function completeWithFallback(
         signal: AbortSignal.timeout(options.timeoutMs ?? 10_000)
       })
       if (!response.ok) {
+        await response.body?.cancel()
         options.onError?.(provider.name, `HTTP ${response.status}`)
         continue
       }
@@ -56,7 +57,12 @@ export async function completeWithFallback(
         options.onError?.(provider.name, 'empty response')
         continue
       }
-      return parseContent(content)
+      const parsed = parseContent(content)
+      if (!parsed || typeof parsed !== 'object' || Array.isArray(parsed)) {
+        options.onError?.(provider.name, 'non-object JSON')
+        continue
+      }
+      return parsed
     } catch (error) {
       options.onError?.(provider.name, error instanceof Error ? error.message : String(error))
     }
