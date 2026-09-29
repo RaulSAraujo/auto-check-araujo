@@ -73,7 +73,7 @@ onVoiceDraft('customer.edit', (voice) => {
   state.emails = emails
   if (voice.documento) state.documento = formatDocumento(voice.documento)
   state.observacoes = appendText(state.observacoes, voice.observacoes)
-}, voice => voice.clienteId === id.value)
+}, { accept: voice => voice.clienteId === id.value, ready: () => !!cliente.value })
 
 const breadcrumbItems = computed<BreadcrumbItem[]>(() => [
   {

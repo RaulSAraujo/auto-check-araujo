@@ -57,7 +57,7 @@ onVoiceDraft('vehicle.edit', (voice) => {
   if (voice.km_atual != null) state.km_atual = voice.km_atual
   if (voice.cor) state.cor = voice.cor
   state.observacoes = appendText(state.observacoes, voice.observacoes)
-}, voice => voice.veiculoId === id.value)
+}, { accept: voice => voice.veiculoId === id.value, ready: () => !!veiculo.value })
 
 const backFallback = computed(() => {
   const owner = veiculo.value?.clientes

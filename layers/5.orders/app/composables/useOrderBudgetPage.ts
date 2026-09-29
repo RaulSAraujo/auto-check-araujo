@@ -125,7 +125,10 @@ export function useOrderBudgetPage(
   }
 
   const { onVoiceDraft } = useVoiceDraft()
-  onVoiceDraft('budgetItem.create', openVoiceItem, voice => voice.orderId === toValue(orderId))
+  onVoiceDraft('budgetItem.create', openVoiceItem, {
+    accept: voice => voice.orderId === toValue(orderId),
+    ready: () => !!ordem.value
+  })
 
   async function refreshAll() {
     await Promise.all([refreshOrder(), refreshItems()])

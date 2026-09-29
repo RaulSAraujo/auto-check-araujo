@@ -18,9 +18,9 @@ export function useVoiceDraft() {
   function onVoiceDraft<K extends VoiceIntent>(
     intent: K,
     handler: (draft: VoiceDraftMap[K]) => void,
-    accept?: (draft: VoiceDraftMap[K]) => boolean
+    options?: { accept?: (draft: VoiceDraftMap[K]) => boolean, ready?: () => boolean }
   ) {
-    watch(pending, (value) => {
+    watch([pending, () => options?.ready?.() ?? true], ([value, ready]) => {
       if (!value) return
       if (Date.now() - value.createdAt > DRAFT_TTL_MS) {
         pending.value = null
@@ -29,7 +29,9 @@ export function useVoiceDraft() {
       if (value.intent !== intent) return
       const draft = value.draft as VoiceDraftMap[K]
       // Another page instance (e.g. the previous record during navigation) must not swallow the draft.
-      if (accept && !accept(draft)) return
+      if (options?.accept && !options.accept(draft)) return
+      // Lazy queries: wait for the record so form-sync watchers (registered earlier) run first.
+      if (!ready) return
       pending.value = null
       handler(draft)
     }, { immediate: true })

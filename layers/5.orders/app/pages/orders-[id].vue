@@ -95,7 +95,7 @@ onVoiceDraft('order.edit', async (voice) => {
     }
   }
   if (voice.item) await openVoiceItem(voice.item)
-}, voice => voice.orderId === id.value)
+}, { accept: voice => voice.orderId === id.value, ready: () => !!ordem.value })
 
 const {
   state: paymentState,
