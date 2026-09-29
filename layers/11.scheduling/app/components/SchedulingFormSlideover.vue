@@ -71,7 +71,9 @@ const openOrderHref = computed(() => {
 function resetDraft() {
   if (props.appointment) Object.assign(draft, appointmentToDraft(props.appointment))
   else Object.assign(draft, emptyAppointmentDraft(props.day, props.prefill ?? undefined))
-  snapshot.value = JSON.stringify({ ...draft })
+  snapshot.value = JSON.stringify(props.appointment
+    ? { ...draft }
+    : emptyAppointmentDraft(props.day, { hour: props.prefill?.hour }))
 }
 
 watch(open, (isOpen) => {
