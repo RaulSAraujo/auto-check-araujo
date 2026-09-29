@@ -73,7 +73,7 @@ const KM_KEYS = ['km', 'quilometragem', 'quilometros']
 const EMAIL_KEYS = ['email', 'e-mail', 'e mail']
 const PHONE_KEYS = ['telefone', 'celular', 'whatsapp', 'fone']
 
-const SPECS: Record<VoiceIntent, IntentSpec> = {
+const SPECS: Partial<Record<VoiceIntent, IntentSpec>> = {
   'customer.create': {
     defaultField: 'nome',
     fields: {
@@ -211,6 +211,7 @@ export function parseVoiceCommand(transcript: string, now: Date = new Date()): V
 
   const { intent, tipo } = found.trigger
   const spec = SPECS[intent]
+  if (!spec) return null
   const segments = segment(tokens.slice(found.end), spec)
   const payload: Record<string, Value | Value[]> = tipo ? { tipo } : {}
 

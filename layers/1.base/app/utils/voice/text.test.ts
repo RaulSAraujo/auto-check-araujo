@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict'
 import test from 'node:test'
 import {
+  appendText,
   foldText,
   joinRaw,
   parseDate,
@@ -128,4 +129,14 @@ test('parseTime finds spoken times', () => {
   assert.equal(parseTime(t('às duas e quinze da tarde')), '14:15')
   assert.equal(parseTime(t('dia 5 de outubro às 9 e meia')), '09:30')
   assert.equal(parseTime(t('dia 10')), undefined)
+})
+
+test('appendText', () => {
+  assert.equal(appendText('', 'pastilha gasta'), 'pastilha gasta')
+  assert.equal(appendText(null, 'pastilha gasta'), 'pastilha gasta')
+  assert.equal(appendText('Barulho na roda', undefined), 'Barulho na roda')
+  assert.equal(appendText('Barulho na roda', '  '), 'Barulho na roda')
+  assert.equal(appendText('Barulho na roda', 'disco empenado'), 'Barulho na roda. disco empenado')
+  assert.equal(appendText('Barulho na roda.', 'disco empenado'), 'Barulho na roda. disco empenado')
+  assert.equal(appendText('Barulho na roda. Disco empenado', 'disco empenado'), 'Barulho na roda. Disco empenado')
 })

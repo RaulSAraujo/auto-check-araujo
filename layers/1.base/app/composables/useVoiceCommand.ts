@@ -15,7 +15,13 @@ const VOICE_INTENT_CONFIG: Record<VoiceIntent, { permission: PermissionAction, p
   'account.create': { permission: 'finance.view', path: APP_ROUTES.finance },
   'catalogItem.create': { permission: 'catalog.manage', path: APP_ROUTES.catalog },
   'supplier.create': { permission: 'catalog.manage', path: APP_ROUTES.catalogSuppliers },
-  'collaborator.create': { permission: 'collaborators.manage', path: APP_ROUTES.team }
+  'collaborator.create': { permission: 'collaborators.manage', path: APP_ROUTES.team },
+  'order.edit': { permission: 'orders.edit', path: null },
+  'customer.edit': { permission: 'customers.write', path: null },
+  'vehicle.edit': { permission: 'vehicles.write', path: null },
+  'appointment.reschedule': { permission: 'scheduling.write', path: null },
+  'appointment.noShow': { permission: 'scheduling.write', path: null },
+  'navigate': { permission: 'orders.edit', path: null }
 }
 
 const ORDER_DETAIL_PATH = /^\/ordens\/(?!novo$)[^/]+$/
@@ -103,6 +109,13 @@ export function useVoiceCommand() {
         setVoiceDraft(command.intent, draft)
         break
       }
+      case 'order.edit':
+      case 'customer.edit':
+      case 'vehicle.edit':
+      case 'appointment.reschedule':
+      case 'appointment.noShow':
+      case 'navigate':
+        return { ok: false, reason: 'not_understood' }
       default:
         setVoiceDraft(command.intent, command.payload)
     }

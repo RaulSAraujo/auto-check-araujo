@@ -8,9 +8,25 @@ export type VoiceIntent
     | 'catalogItem.create'
     | 'supplier.create'
     | 'collaborator.create'
+    | 'order.edit'
+    | 'customer.edit'
+    | 'vehicle.edit'
+    | 'appointment.reschedule'
+    | 'appointment.noShow'
+    | 'navigate'
 
 export type VoiceItemTipo = 'servico' | 'peca' | 'kit'
 export type VoicePapel = 'recepcao' | 'mecanico' | 'gerente'
+export type VoiceOrderStatus = 'aberta' | 'em_andamento' | 'concluida' | 'cancelada'
+export type VoicePage = 'order-detail' | 'customer-detail' | 'vehicle-detail' | 'scheduling' | 'other'
+export type VoiceNavTarget
+  = | 'home' | 'orders' | 'scheduling' | 'customers' | 'vehicles'
+    | 'finance' | 'team' | 'catalog' | 'suppliers' | 'pricing' | 'settings'
+
+export interface VoiceContext {
+  page: VoicePage
+  today: string
+}
 
 export interface VoiceCustomerPayload {
   nome?: string
@@ -84,6 +100,48 @@ export interface VoiceCollaboratorPayload {
   papel?: VoicePapel
 }
 
+export interface VoiceOrderEditPayload {
+  target?: { placa?: string, numero?: string, clienteNome?: string }
+  km_entrada?: number
+  reclamacao?: string
+  diagnostico?: string
+  observacoes?: string
+  status?: VoiceOrderStatus
+  itens?: VoiceBudgetItemPayload[]
+}
+
+export interface VoiceCustomerEditPayload {
+  target?: { nome?: string }
+  telefones?: string[]
+  emails?: string[]
+  documento?: string
+  observacoes?: string
+}
+
+export interface VoiceVehicleEditPayload {
+  target?: { placa?: string }
+  km_atual?: number
+  cor?: string
+  observacoes?: string
+}
+
+export interface VoiceAppointmentReschedulePayload {
+  placa?: string
+  date?: string
+  startTime?: string
+}
+
+export interface VoiceAppointmentNoShowPayload {
+  placa?: string
+}
+
+export interface VoiceNavigatePayload {
+  to: VoiceNavTarget
+  date?: string
+}
+
+export type VoiceBudgetItemDraft = VoiceBudgetItemPayload & { catalogItemId?: string }
+
 export interface VoicePayloadMap {
   'customer.create': VoiceCustomerPayload
   'vehicle.create': VoiceVehiclePayload
@@ -94,6 +152,12 @@ export interface VoicePayloadMap {
   'catalogItem.create': VoiceCatalogItemPayload
   'supplier.create': VoiceSupplierPayload
   'collaborator.create': VoiceCollaboratorPayload
+  'order.edit': VoiceOrderEditPayload
+  'customer.edit': VoiceCustomerEditPayload
+  'vehicle.edit': VoiceVehicleEditPayload
+  'appointment.reschedule': VoiceAppointmentReschedulePayload
+  'appointment.noShow': VoiceAppointmentNoShowPayload
+  'navigate': VoiceNavigatePayload
 }
 
 export type VoiceCommand = {
@@ -106,21 +170,30 @@ export interface VoiceDraftMap {
   'vehicle.create': VoiceVehiclePayload & { cliente_id?: string }
   'order.create': VoiceOrderPayload & { veiculo_id?: string }
   'appointment.create': VoiceAppointmentPayload & { veiculo_id?: string }
-  'budgetItem.create': VoiceBudgetItemPayload & { orderId: string, catalogItemId?: string }
+  'budgetItem.create': VoiceBudgetItemDraft & { orderId: string }
   'account.create': VoiceAccountPayload & { categoria_id?: string, fornecedor_id?: string }
   'catalogItem.create': VoiceCatalogItemPayload
   'supplier.create': VoiceSupplierPayload
   'collaborator.create': VoiceCollaboratorPayload
+  'order.edit': Omit<VoiceOrderEditPayload, 'target' | 'itens'> & { orderId: string, item?: VoiceBudgetItemDraft }
+  'customer.edit': Omit<VoiceCustomerEditPayload, 'target'> & { clienteId: string }
+  'vehicle.edit': Omit<VoiceVehicleEditPayload, 'target'> & { veiculoId: string }
+  'appointment.reschedule': { appointmentId: string, inicio: string, date?: string, startTime?: string }
+  'appointment.noShow': { appointmentId: string, inicio: string }
+  'navigate': VoiceNavigatePayload
 }
 
 export const VOICE_EXAMPLES: readonly string[] = [
-  'novo cliente João da Silva telefone 11 98888 7777',
-  'novo veículo placa ABC1D23 marca Fiat modelo Uno ano 2015 cor prata cliente João',
-  'nova OS placa ABC1D23 km 45000 reclamação barulho no freio',
-  'agendar placa ABC1D23 amanhã às 14h problema revisão',
-  'adicionar peça pastilha de freio quantidade 2 valor 150 reais',
-  'nova conta energia valor 350 reais vencimento dia 10 categoria luz',
-  'novo serviço alinhamento valor 80 reais',
-  'novo fornecedor Auto Peças Silva telefone 11 3333 4444',
-  'novo colaborador Pedro usuário pedro papel mecânico'
+  'Abre a OS do ABC1D23 e coloca no diagnóstico pastilha de freio gasta',
+  'Cliente reclama de barulho na roda dianteira, km 45 mil (com a OS aberta)',
+  'Adiciona duas pastilhas de freio a 150 reais cada',
+  'Muda o status da OS para em andamento',
+  'Nova OS para o ABC1D23, carro falhando na partida',
+  'Novo cliente João da Silva, telefone 11 98888 7777',
+  'Cadastra o veículo ABC1D23, Fiat Uno 2015 prata, do cliente João',
+  'Atualiza o km do ABC1D23 para 52 mil',
+  'Agenda o ABC1D23 amanhã às 14h para revisão',
+  'Remarca o ABC1D23 para sexta às 10h',
+  'Abre a agenda de amanhã',
+  'Conta de energia de 350 reais vence dia 10'
 ]
