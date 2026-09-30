@@ -19,6 +19,7 @@ export function useOrderPhotos(
 
   const photos = ref<OrderPhotoWithUrl[]>([])
   const pending = ref(false)
+  const loaded = ref(false)
   const uploading = ref(false)
   const deletingId = ref<string | null>(null)
 
@@ -66,6 +67,7 @@ export function useOrderPhotos(
       photos.value = []
     } finally {
       pending.value = false
+      loaded.value = true
     }
   }
 
@@ -194,6 +196,7 @@ export function useOrderPhotos(
   return {
     photos,
     pending,
+    loaded,
     uploading,
     deletingId,
     refresh,

@@ -17,6 +17,7 @@ const inputRef = ref<HTMLInputElement | null>(null)
 const {
   photos,
   pending,
+  loaded,
   uploading,
   deletingId,
   uploadFiles,
@@ -37,20 +38,27 @@ function photoAt(draft: VoiceDraft) {
   return Number.isInteger(n) && n >= 1 ? photos.value[n - 1] : undefined
 }
 
+function spokenCaption(draft: VoiceDraft) {
+  return typeof draft.args?.legenda === 'string' ? draft.args.legenda.trim() : ''
+}
+
 useVoiceForm('order', {
   accept: draft => draft.id === props.ordemId,
+  ready: () => loaded.value && !pending.value,
   unavailable: (action, draft) => {
     if (!props.canEdit) return 'As fotos desta OS não podem ser alteradas.'
     if (action === 'adicionarFoto' && !canAdd.value) return `Limite de ${ORDER_PHOTOS_MAX_COUNT} fotos atingido.`
     if (action !== 'adicionarFoto' && !photoAt(draft)) return `Foto ${draft.args?.numero ?? ''} não encontrada.`
-    if (action === 'legendarFoto' && typeof draft.args?.legenda !== 'string') return 'Diga a legenda da foto.'
+    if (action === 'legendarFoto' && !spokenCaption(draft)) return 'Diga a legenda da foto.'
     return undefined
   },
   actions: {
     legendarFoto: async (draft) => {
       const photo = photoAt(draft)
-      if (!photo || typeof draft.args?.legenda !== 'string') return { unavailable: 'Foto não encontrada.' }
-      await updateCaption(photo.id, draft.args.legenda)
+      const legenda = spokenCaption(draft)
+      if (!photo) return { unavailable: 'Foto não encontrada.' }
+      if (!legenda) return { unavailable: 'Diga a legenda da foto.' }
+      await updateCaption(photo.id, legenda)
     },
     removerFoto: async (draft) => {
       const photo = photoAt(draft)

@@ -102,9 +102,31 @@ const { confirmVoice } = useVoiceConfirm()
 const ORDER_FORM_FIELDS = ['km_entrada', 'reclamacao', 'diagnostico', 'observacoes'] as const
 const PAYMENT_FIELDS = ['pago', 'forma_pagamento', 'parcelas', 'valor_cobrado'] as const
 
-function voiceItemMatches(draft: VoiceDraft) {
-  const spoken = typeof draft.args?.descricao === 'string' ? foldText(draft.args.descricao) : ''
-  return spoken ? (budgetItems.value ?? []).filter(item => foldText(item.descricao).includes(spoken)) : []
+const PAYMENT_DETAIL_FIELDS = ['forma_pagamento', 'parcelas', 'valor_cobrado'] as const
+const UNPAID_MESSAGE = 'Marque a OS como paga antes.'
+
+function voiceItemToRemove(draft: VoiceDraft): { item?: NonNullable<typeof budgetItems.value>[number], error?: string } {
+  const spoken = typeof draft.args?.descricao === 'string' ? foldText(draft.args.descricao).trim() : ''
+  const items = spoken ? (budgetItems.value ?? []) : []
+  const exact = items.filter(item => foldText(item.descricao).trim() === spoken)
+  const matches = exact.length ? exact : items.filter(item => foldText(item.descricao).includes(spoken))
+  if (matches.length === 1) return { item: matches[0] }
+  return { error: matches.length ? 'Mais de um item com esse nome. Diga o nome completo.' : 'Item não encontrado no orçamento.' }
+}
+
+function applyVoicePayment(fields: VoiceDraft['fields']) {
+  if (!PAYMENT_FIELDS.some(key => key in fields)) return
+  if (!canEditPayment.value || !showPaymentSection.value) {
+    useToast().add({ title: 'O pagamento desta OS não pode ser editado agora.', color: 'warning' })
+    return
+  }
+  const paid = fields.pago === true || (!('pago' in fields) && paymentState.pago)
+  const hasDetails = PAYMENT_DETAIL_FIELDS.some(key => key in fields)
+  if (hasDetails && !paid) useToast().add({ title: UNPAID_MESSAGE, color: 'warning' })
+  const written = applyVoiceFields(paymentState, fields, VOICE_CATALOG.order, { only: paid ? PAYMENT_FIELDS : ['pago'] })
+  // A spoken charge must survive the forma/parcelas watchers that recompute the suggestion.
+  if (written.includes('valor_cobrado')) markChargeTouched()
+  if (written.includes('forma_pagamento') && fields.forma_pagamento !== 'cartao_credito') paymentState.parcelas = null
 }
 
 useVoiceForm('order', {
@@ -114,23 +136,14 @@ useVoiceForm('order', {
     const hasForm = ORDER_FORM_FIELDS.some(key => key in rest)
     if ((hasForm || status) && !canEdit.value) {
       useToast().add({ title: 'Esta OS não pode ser editada.', color: 'warning' })
-      return
-    }
-    applyVoiceFields(state, rest, VOICE_CATALOG.order, { only: ORDER_FORM_FIELDS })
-    if (PAYMENT_FIELDS.some(key => key in rest)) {
-      if (!canEditPayment.value || !showPaymentSection.value) {
-        useToast().add({ title: 'O pagamento desta OS não pode ser editado agora.', color: 'warning' })
-      } else {
-        // A spoken charge must survive the forma/parcelas watchers that recompute the suggestion.
-        if ('valor_cobrado' in rest) markChargeTouched()
-        applyVoiceFields(paymentState, rest, VOICE_CATALOG.order, { only: PAYMENT_FIELDS })
-        if (rest.forma_pagamento && rest.forma_pagamento !== 'cartao_credito') paymentState.parcelas = null
+    } else {
+      applyVoiceFields(state, rest, VOICE_CATALOG.order, { only: ORDER_FORM_FIELDS })
+      if (typeof status === 'string') {
+        if (statusItems.value.some(item => item.value === status)) selectedStatus.value = status
+        else useToast().add({ title: 'Esse status não está disponível para esta OS.', color: 'warning' })
       }
     }
-    if (typeof status === 'string') {
-      if (statusItems.value.some(item => item.value === status)) selectedStatus.value = status
-      else useToast().add({ title: 'Esse status não está disponível para esta OS.', color: 'warning' })
-    }
+    applyVoicePayment(rest)
   },
   onItems: async (items) => {
     const voice = items.map(voiceBudgetItem)
@@ -142,29 +155,30 @@ useVoiceForm('order', {
     const lines = voice.map(item => `${item.quantidade ?? 1}× ${item.descricao ?? 'item'}${item.valor_unitario != null ? ` — ${formatMoney(item.valor_unitario)}` : ''}`)
     const ok = await confirmVoice({ title: `Adicionar ${voice.length} itens ao orçamento?`, description: lines.join('\n') })
     if (!ok) return
-    const { added } = await addVoiceItems(voice)
-    if (added < voice.length) useToast().add({ title: `${added} de ${voice.length} itens adicionados.`, color: 'warning' })
+    const { added, skipped } = await addVoiceItems(voice)
+    if (added < voice.length) {
+      const reason = skipped ? ` (${skipped} sem descrição ou valor)` : ''
+      useToast().add({ title: `${added} de ${voice.length} itens adicionados${reason}.`, color: 'warning' })
+    }
   },
   unavailable: (action, draft) => {
     if (['enviarAprovacao', 'removerItem'].includes(action) && !canEditItems.value) return 'Este orçamento não pode ser alterado agora.'
     if (action === 'enviarAprovacao' && budgetStatus.value === 'aguardando_aprovacao') return 'O orçamento já está aguardando aprovação.'
     if (action === 'enviarAprovacao' && !budgetItems.value?.length) return 'Adicione ao menos um item antes de enviar o orçamento.'
     if (['aprovar', 'rejeitar'].includes(action) && budgetStatus.value !== 'aguardando_aprovacao') return 'O orçamento não está aguardando aprovação.'
-    if (action === 'removerItem') {
-      const count = voiceItemMatches(draft).length
-      if (count !== 1) return count ? 'Mais de um item com esse nome. Diga o nome completo.' : 'Item não encontrado no orçamento.'
-    }
+    if (action === 'removerItem') return voiceItemToRemove(draft).error
     if (action === 'usarSugestao' && (!canEditPayment.value || !showPaymentSection.value)) return 'O pagamento desta OS não pode ser editado agora.'
+    if (action === 'usarSugestao' && !paymentState.pago) return UNPAID_MESSAGE
     return undefined
   },
   actions: {
-    enviarAprovacao: () => onSubmitForApproval().then(() => undefined),
-    aprovar: () => onApprove().then(() => undefined),
-    rejeitar: () => onReject().then(() => undefined),
+    enviarAprovacao: () => onSubmitForApproval(),
+    aprovar: () => onApprove(),
+    rejeitar: () => onReject(),
     removerItem: async (draft) => {
-      const [match, ...rest] = voiceItemMatches(draft)
-      if (!match || rest.length) return { unavailable: 'Item não encontrado no orçamento.' }
-      await onDeleteItem(match.id)
+      const { item, error } = voiceItemToRemove(draft)
+      if (!item) return { unavailable: error }
+      await onDeleteItem(item.id)
     },
     usarSugestao: () => {
       applySuggestedCharge()
