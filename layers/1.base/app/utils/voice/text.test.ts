@@ -4,6 +4,7 @@ import {
   appendText,
   foldText,
   joinRaw,
+  mergeFinalResults,
   parseDate,
   parseDigits,
   parseEmail,
@@ -129,6 +130,15 @@ test('parseTime finds spoken times', () => {
   assert.equal(parseTime(t('às duas e quinze da tarde')), '14:15')
   assert.equal(parseTime(t('dia 5 de outubro às 9 e meia')), '09:30')
   assert.equal(parseTime(t('dia 10')), undefined)
+})
+
+test('mergeFinalResults', () => {
+  assert.equal(mergeFinalResults(['abrir', 'abrir a', 'abrir a tela de', 'abrir a tela de agenda']), 'abrir a tela de agenda')
+  assert.equal(mergeFinalResults(['abrir a tela', ' de agenda']), 'abrir a tela de agenda')
+  assert.equal(mergeFinalResults(['abre a OS', 'abre a OS do ABC1D23', 'diagnóstico', 'diagnóstico pastilha gasta']), 'abre a OS do ABC1D23 diagnóstico pastilha gasta')
+  assert.equal(mergeFinalResults(['Abrir a tela', 'abrir a tela']), 'abrir a tela')
+  assert.equal(mergeFinalResults(['abrir a tela de agenda', 'abrir a tela']), 'abrir a tela de agenda')
+  assert.equal(mergeFinalResults(['', '  ']), '')
 })
 
 test('appendText', () => {

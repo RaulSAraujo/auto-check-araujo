@@ -1,3 +1,5 @@
+import { mergeFinalResults } from '../utils/voice/text'
+
 interface SpeechRecognitionResultLike {
   isFinal: boolean
   0?: { transcript: string }
@@ -52,18 +54,33 @@ export function useSpeechRecognition() {
   const chunkCallbacks: Array<(text: string) => void> = []
   let recognition: SpeechRecognitionLike | null = null
   let keepListening = false
-  let lastChunk = ''
+  /** Final text of the current session already handed to `onChunk`. */
+  let emitted = ''
 
   onMounted(() => {
     supported.value = 'SpeechRecognition' in window || 'webkitSpeechRecognition' in window
   })
 
-  function emitChunk(text: string) {
-    const chunk = text.trim()
-    // Android Chrome may repeat the previous final result in continuous mode.
-    if (!chunk || chunk === lastChunk) return
-    lastChunk = chunk
-    chunkCallbacks.forEach(cb => cb(chunk))
+  function withoutPrefix(text: string, prefix: string): string | undefined {
+    return prefix && text.toLowerCase().startsWith(prefix.toLowerCase()) ? text.slice(prefix.length).trim() : undefined
+  }
+
+  function handleResults(results: ArrayLike<SpeechRecognitionResultLike>) {
+    const finals: string[] = []
+    let pending = ''
+    for (let i = 0; i < results.length; i++) {
+      const result = results[i]
+      const text = result?.[0]?.transcript ?? ''
+      if (result?.isFinal) finals.push(text)
+      else pending += text
+    }
+    const merged = mergeFinalResults(finals)
+    // A rewrite of text already emitted is dropped: re-sending it would duplicate words in the modal.
+    const chunk = emitted ? withoutPrefix(merged, emitted) ?? '' : merged
+    emitted = merged
+    if (chunk) chunkCallbacks.forEach(cb => cb(chunk))
+    const trimmed = pending.trim()
+    interim.value = withoutPrefix(trimmed, merged) ?? trimmed
   }
 
   function start() {
@@ -73,7 +90,7 @@ export function useSpeechRecognition() {
     recognition?.abort()
     interim.value = ''
     error.value = null
-    lastChunk = ''
+    emitted = ''
     keepListening = true
 
     const instance = new Recognition()
@@ -83,15 +100,7 @@ export function useSpeechRecognition() {
     instance.maxAlternatives = 1
 
     instance.onresult = (event) => {
-      if (recognition !== instance) return
-      let pending = ''
-      for (let i = event.resultIndex; i < event.results.length; i++) {
-        const result = event.results[i]
-        const text = result?.[0]?.transcript ?? ''
-        if (result?.isFinal) emitChunk(text)
-        else pending += text
-      }
-      interim.value = pending.trim()
+      if (recognition === instance) handleResults(event.results)
     }
     instance.onerror = (event) => {
       if (recognition !== instance) return
@@ -105,6 +114,7 @@ export function useSpeechRecognition() {
       // Browsers end continuous sessions on silence/timeouts; resume until the user stops.
       if (keepListening) {
         try {
+          emitted = ''
           instance.start()
           return
         } catch {

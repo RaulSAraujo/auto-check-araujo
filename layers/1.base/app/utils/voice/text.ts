@@ -47,6 +47,24 @@ export function appendText(current: string | null | undefined, addition: string 
   return `${base}${/[.!?]$/.test(base) ? '' : '.'} ${extra}`
 }
 
+/**
+ * Joins the final speech results of one session. Android Chrome repeats the whole phrase so far
+ * in each result ("abrir", "abrir a", "abrir a tela"), so a result that extends the previous one replaces it.
+ * ponytail: prefix heuristic; a spoken repetition ("não, não") in separate results collapses into one.
+ */
+export function mergeFinalResults(results: string[]): string {
+  const merged: string[] = []
+  for (const raw of results) {
+    const text = raw.trim()
+    if (!text) continue
+    const last = merged.at(-1)?.toLowerCase()
+    const next = text.toLowerCase()
+    if (last !== undefined && next.startsWith(last)) merged[merged.length - 1] = text
+    else if (last === undefined || !last.startsWith(next)) merged.push(text)
+  }
+  return merged.join(' ')
+}
+
 export function tokenize(text: string): VoiceToken[] {
   return text
     .split(/\s+/)
