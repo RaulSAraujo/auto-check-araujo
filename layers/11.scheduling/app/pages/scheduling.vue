@@ -113,10 +113,13 @@ function whenAppointmentLoaded(id: string, inicio: string, action: (appointment:
   appointmentLookups.add(dispose)
 }
 
+// editingAppointment isn't cleared when the slideover closes by v-model.
+const openAppointment = computed(() => (formOpen.value ? editingAppointment.value : null))
+
 function withVoiceAppointment(draft: { id?: string, inicio?: string }, action: (appointment: SchedulingAppointment) => void) {
   if (draft.id && draft.inicio) return whenAppointmentLoaded(draft.id, draft.inicio, action)
   // No plate spoken (no `inicio`): the runtime used the appointment open in the slideover.
-  if (draft.id && editingAppointment.value?.id === draft.id) return action(editingAppointment.value)
+  if (draft.id && openAppointment.value?.id === draft.id) return action(openAppointment.value)
   toast.add({ title: 'Não encontrei o agendamento.', color: 'warning' })
 }
 
@@ -143,10 +146,10 @@ useVoiceForm('appointment', {
     withVoiceAppointment(draft, appointment => openEdit(appointment, override))
   },
   unavailable: (action, draft) => {
-    const open = editingAppointment.value
-    if (action === 'desfazerFalta' && !draft.inicio && open?.id === draft.id && open?.status !== 'nao_compareceu') {
-      return 'Este agendamento não está marcado como falta.'
-    }
+    if (action !== 'desfazerFalta' || draft.inicio) return undefined
+    const open = openAppointment.value
+    if (!open || open.id !== draft.id) return 'Não encontrei o agendamento.'
+    if (open.status !== 'nao_compareceu') return 'Este agendamento não está marcado como falta.'
     return undefined
   },
   actions: {
@@ -155,14 +158,10 @@ useVoiceForm('appointment', {
       withVoiceAppointment(draft, appointment => requestNoShow(appointment.id))
     },
     desfazerFalta: (draft) => {
-      if (!canWrite.value) return
-      // By id: the board filters may hide no-shows, so don't wait for it to show up in the day list.
-      if (draft.id && draft.inicio) {
-        selectDay(new Date(draft.inicio))
-        void onUndoNoShow(draft.id)
-        return
-      }
-      withVoiceAppointment(draft, appointment => void onUndoNoShow(appointment.id))
+      if (!canWrite.value || !draft.id) return
+      // By id: the board filters may hide no-shows, and `unavailable` already checked the no-plate case.
+      if (draft.inicio) selectDay(new Date(draft.inicio))
+      return onUndoNoShow(draft.id)
     },
     abrirOS: (draft) => {
       withVoiceAppointment(draft, (appointment) => {
@@ -171,12 +170,13 @@ useVoiceForm('appointment', {
       })
     }
   },
-  currentId: () => (formOpen.value ? editingAppointment.value?.id : undefined),
-  label: () => (editingAppointment.value?.veiculos?.placa ? formatPlaca(editingAppointment.value.veiculos.placa) : undefined)
+  currentId: () => openAppointment.value?.id,
+  label: () => (openAppointment.value?.veiculos?.placa ? formatPlaca(openAppointment.value.veiculos.placa) : undefined)
 })
 
 function openEdit(appointment: SchedulingAppointment, override?: Omit<AppointmentCreatePrefill, 'hour'>) {
-  createPrefill.value = override ?? null
+  // A new object each time: the open slideover watches the prefill reference.
+  createPrefill.value = override ? { ...override } : null
   editingAppointment.value = appointment
   formOpen.value = true
 }

@@ -73,8 +73,8 @@ useVoiceForm('customer', {
     return undefined
   },
   actions: {
-    desativar: () => { void toggleAtivo() },
-    reativar: () => { void toggleAtivo() },
+    desativar: () => toggleAtivo(),
+    reativar: () => toggleAtivo(),
     excluir: () => {
       deleteOpen.value = true
     }

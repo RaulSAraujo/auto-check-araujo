@@ -69,27 +69,35 @@ const openOrderHref = computed(() => {
   return ORDER_ROUTES.newFromAppointment(props.appointment.veiculo_id, props.appointment.id)
 })
 
+function applyEditPrefill(prefill: AppointmentCreatePrefill) {
+  if (prefill.date) draft.date = prefill.date
+  if (prefill.startTime) draft.startTime = prefill.startTime
+  if (prefill.veiculo_id) draft.veiculo_id = prefill.veiculo_id
+  if (prefill.problema) draft.problema = appendText(draft.problema, prefill.problema)
+}
+
 function resetDraft() {
   if (props.appointment) {
     Object.assign(draft, appointmentToDraft(props.appointment))
     snapshot.value = JSON.stringify({ ...draft })
     // Voice edit: the prefill lands after the snapshot so the change is dirty.
-    if (props.prefill?.date) draft.date = props.prefill.date
-    if (props.prefill?.startTime) draft.startTime = props.prefill.startTime
-    if (props.prefill?.veiculo_id) draft.veiculo_id = props.prefill.veiculo_id
-    if (props.prefill?.problema) draft.problema = appendText(draft.problema, props.prefill.problema)
+    if (props.prefill) applyEditPrefill(props.prefill)
     return
   }
   Object.assign(draft, emptyAppointmentDraft(props.day, props.prefill ?? undefined))
   snapshot.value = JSON.stringify(emptyAppointmentDraft(props.day, { hour: props.prefill?.hour }))
 }
 
-watch(open, (isOpen) => {
+// One watcher: open, appointment and prefill can change in the same tick, and the prefill must land once.
+watch([open, () => props.appointment?.id, () => props.prefill], ([isOpen, id, prefill], previous) => {
   if (!isOpen) {
     discardOpen.value = false
     return
   }
-  resetDraft()
+  const [wasOpen, previousId] = previous ?? []
+  if (!wasOpen || id !== previousId) resetDraft()
+  // Voice edit on the appointment already open: keep the manual edits, apply only what was spoken.
+  else if (props.appointment && prefill) applyEditPrefill(prefill)
 }, { immediate: true })
 
 function onOpenChange(value: boolean) {
