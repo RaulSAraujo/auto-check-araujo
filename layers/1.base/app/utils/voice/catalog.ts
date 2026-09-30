@@ -87,7 +87,10 @@ export const VOICE_CATALOG: Record<VoiceEntityKey, VoiceEntity> = {
       usarSugestao: { kind: 'direct', permission: 'orders.edit', hint: 'valor cobrado sugerido' },
       legendarFoto: { kind: 'confirm', permission: 'orders.edit', confirm: 'Salvar a legenda "{legenda}" na foto {numero}?', args: { numero: { type: 'number', min: 1 }, legenda: text } },
       removerFoto: { kind: 'confirm', permission: 'orders.edit', confirm: 'Remover a foto {numero} da {label}?', args: { numero: { type: 'number', min: 1 } } },
-      adicionarFoto: { kind: 'direct', permission: 'orders.edit' }
+      adicionarFoto: { kind: 'direct', permission: 'orders.edit' },
+      imprimir: { kind: 'direct', hint: 'imprimir o orçamento' },
+      baixarPdf: { kind: 'direct', hint: 'baixar o PDF do orçamento' },
+      enviarWhatsApp: { kind: 'direct', hint: 'mandar o orçamento no WhatsApp do cliente' }
     }
   },
   customer: {

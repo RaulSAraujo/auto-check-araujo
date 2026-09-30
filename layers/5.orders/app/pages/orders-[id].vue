@@ -162,6 +162,8 @@ useVoiceForm('order', {
     }
   },
   unavailable: (action, draft) => {
+    if (['imprimir', 'baixarPdf', 'enviarWhatsApp'].includes(action) && !budgetItems.value?.length) return 'Adicione itens ao orçamento antes.'
+    if (action === 'enviarWhatsApp' && !budgetWhatsappUrl.value) return 'Cliente sem telefone cadastrado.'
     if (['enviarAprovacao', 'removerItem'].includes(action) && !canEditItems.value) return 'Este orçamento não pode ser alterado agora.'
     if (action === 'enviarAprovacao' && budgetStatus.value === 'aguardando_aprovacao') return 'O orçamento já está aguardando aprovação.'
     if (action === 'enviarAprovacao' && !budgetItems.value?.length) return 'Adicione ao menos um item antes de enviar o orçamento.'
@@ -188,12 +190,32 @@ useVoiceForm('order', {
     usarSugestao: () => {
       applySuggestedCharge()
       return { message: 'Valor sugerido aplicado. Confira e salve.' }
+    },
+    baixarPdf: () => onDownloadBudgetPdf(),
+    // window.open outside a tap is blocked; the toast button supplies the gesture.
+    imprimir: () => {
+      useToast().add({
+        title: 'Orçamento pronto para imprimir',
+        color: 'info',
+        icon: 'i-lucide-mic',
+        duration: 15000,
+        actions: [{ label: 'Imprimir', icon: 'i-lucide-printer', onClick: onPrintBudgetPdf }]
+      })
+    },
+    enviarWhatsApp: () => {
+      useToast().add({
+        title: 'Orçamento pronto para o WhatsApp',
+        color: 'info',
+        icon: 'i-lucide-mic',
+        duration: 15000,
+        actions: [{ label: 'Abrir WhatsApp', icon: 'i-simple-icons-whatsapp', to: budgetWhatsappUrl.value!, target: '_blank' }]
+      })
     }
   },
   currentId: () => id.value,
   label: () => ordem.value?.numero,
   accept: draft => draft.id === id.value,
-  ready: () => !!ordem.value
+  ready: () => !!ordem.value && !!budgetItems.value
 })
 
 const isDirty = computed(() =>
