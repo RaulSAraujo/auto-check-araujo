@@ -1238,8 +1238,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "layers_1_base_app_composables_usevoicecommand_usevoicecommand",
-      "community": 276,
-      "community_name": "useVoiceCommand",
+      "community": 65,
+      "community_name": "prompt.ts",
       "norm_label": "usevoicecommand()"
     },
     {
@@ -1293,7 +1293,7 @@
       "label": "PendingVoiceDraft",
       "file_type": "code",
       "source_file": "layers/1.base/app/composables/useVoiceDraft.ts",
-      "source_location": "L3",
+      "source_location": "L6",
       "_callable": true,
       "_callable_class": true,
       "_origin": "ast",
@@ -1303,28 +1303,15 @@
       "norm_label": "pendingvoicedraft"
     },
     {
-      "label": "VoiceCurrent",
-      "file_type": "code",
-      "source_file": "layers/1.base/app/composables/useVoiceDraft.ts",
-      "source_location": "L4",
-      "_callable": true,
-      "_callable_class": true,
-      "_origin": "ast",
-      "id": "layers_1_base_app_composables_usevoicedraft_voicecurrent",
-      "community": 260,
-      "community_name": "useVoiceCommand.ts",
-      "norm_label": "voicecurrent"
-    },
-    {
       "label": "useVoiceDraft()",
       "file_type": "code",
       "source_file": "layers/1.base/app/composables/useVoiceDraft.ts",
-      "source_location": "L8",
+      "source_location": "L10",
       "_callable": true,
       "_origin": "ast",
       "id": "layers_1_base_app_composables_usevoicedraft_usevoicedraft",
-      "community": 260,
-      "community_name": "useVoiceCommand.ts",
+      "community": 65,
+      "community_name": "prompt.ts",
       "norm_label": "usevoicedraft()"
     },
     {
@@ -1342,7 +1329,7 @@
       "label": "MaybePromise",
       "file_type": "code",
       "source_file": "layers/1.base/app/composables/useVoiceForm.ts",
-      "source_location": "L5",
+      "source_location": "L6",
       "_callable": true,
       "_callable_class": true,
       "_origin": "ast",
@@ -1355,7 +1342,7 @@
       "label": "VoiceActionResult",
       "file_type": "code",
       "source_file": "layers/1.base/app/composables/useVoiceForm.ts",
-      "source_location": "L6",
+      "source_location": "L7",
       "_callable": true,
       "_callable_class": true,
       "_origin": "ast",
@@ -1368,7 +1355,7 @@
       "label": "VoiceFormOptions",
       "file_type": "code",
       "source_file": "layers/1.base/app/composables/useVoiceForm.ts",
-      "source_location": "L8",
+      "source_location": "L9",
       "_callable": true,
       "_callable_class": true,
       "_origin": "ast",
@@ -1381,7 +1368,7 @@
       "label": "useVoiceForm()",
       "file_type": "code",
       "source_file": "layers/1.base/app/composables/useVoiceForm.ts",
-      "source_location": "L28",
+      "source_location": "L29",
       "_callable": true,
       "_origin": "ast",
       "id": "layers_1_base_app_composables_usevoiceform_usevoiceform",
@@ -1397,7 +1384,7 @@
       "_origin": "ast",
       "id": "layers_1_base_app_composables_usevoicelookup",
       "community": 104,
-      "community_name": "useVoiceLookup.ts",
+      "community_name": "foldText",
       "norm_label": "usevoicelookup.ts"
     },
     {
@@ -1410,7 +1397,7 @@
       "_origin": "ast",
       "id": "layers_1_base_app_composables_usevoicelookup_voicefound",
       "community": 104,
-      "community_name": "useVoiceLookup.ts",
+      "community_name": "foldText",
       "norm_label": "voicefound"
     },
     {
@@ -1423,7 +1410,7 @@
       "_origin": "ast",
       "id": "layers_1_base_app_composables_usevoicelookup_namedkind",
       "community": 104,
-      "community_name": "useVoiceLookup.ts",
+      "community_name": "foldText",
       "norm_label": "namedkind"
     },
     {
@@ -1434,7 +1421,7 @@
       "_origin": "ast",
       "id": "layers_1_base_app_composables_usevoicelookup_named_table",
       "community": 104,
-      "community_name": "useVoiceLookup.ts",
+      "community_name": "foldText",
       "norm_label": "named_table"
     },
     {
@@ -1446,7 +1433,7 @@
       "_origin": "ast",
       "id": "layers_1_base_app_composables_usevoicelookup_pickbyname",
       "community": 104,
-      "community_name": "useVoiceLookup.ts",
+      "community_name": "foldText",
       "norm_label": "pickbyname()"
     },
     {
@@ -1458,7 +1445,7 @@
       "_origin": "ast",
       "id": "layers_1_base_app_composables_usevoicelookup_daymonth",
       "community": 104,
-      "community_name": "useVoiceLookup.ts",
+      "community_name": "foldText",
       "norm_label": "daymonth()"
     },
     {
@@ -1470,7 +1457,7 @@
       "_origin": "ast",
       "id": "layers_1_base_app_composables_usevoicelookup_usevoicelookup",
       "community": 104,
-      "community_name": "useVoiceLookup.ts",
+      "community_name": "foldText",
       "norm_label": "usevoicelookup()"
     },
     {
@@ -1838,8 +1825,8 @@
       "_callable_class": true,
       "_origin": "ast",
       "id": "layers_1_base_app_utils_voice_catalog_voicefield",
-      "community": 251,
-      "community_name": "voice/catalog.ts",
+      "community": 65,
+      "community_name": "prompt.ts",
       "norm_label": "voicefield"
     },
     {
@@ -2011,6 +1998,100 @@
       "community": 277,
       "community_name": "apply.ts",
       "norm_label": "voiceconfirmtext()"
+    },
+    {
+      "label": "current.test.ts",
+      "file_type": "code",
+      "source_file": "layers/1.base/app/utils/voice/current.test.ts",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "layers_1_base_app_utils_voice_current_test",
+      "community": 260,
+      "community_name": "useVoiceCommand.ts",
+      "norm_label": "current.test.ts"
+    },
+    {
+      "label": "{ effectScope, nextTick, ref, watch }",
+      "file_type": "code",
+      "source_file": "layers/1.base/app/utils/voice/current.test.ts",
+      "source_location": "L7",
+      "_origin": "ast",
+      "id": "layers_1_base_app_utils_voice_current_test_effectscope_nexttick_ref_watch",
+      "community": 260,
+      "community_name": "useVoiceCommand.ts",
+      "norm_label": "{ effectscope, nexttick, ref, watch }"
+    },
+    {
+      "label": "flush()",
+      "file_type": "code",
+      "source_file": "layers/1.base/app/utils/voice/current.test.ts",
+      "source_location": "L9",
+      "_callable": true,
+      "_origin": "ast",
+      "id": "layers_1_base_app_utils_voice_current_test_flush",
+      "community": 260,
+      "community_name": "useVoiceCommand.ts",
+      "norm_label": "flush()"
+    },
+    {
+      "label": "vue",
+      "file_type": "code",
+      "source_file": "vue",
+      "confidence": "EXTRACTED",
+      "_origin": "ast",
+      "id": "vue",
+      "community": 260,
+      "community_name": "useVoiceCommand.ts",
+      "norm_label": "vue"
+    },
+    {
+      "label": "current.ts",
+      "file_type": "code",
+      "source_file": "layers/1.base/app/utils/voice/current.ts",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "layers_1_base_app_utils_voice_current",
+      "community": 260,
+      "community_name": "useVoiceCommand.ts",
+      "norm_label": "current.ts"
+    },
+    {
+      "label": "VoiceCurrent",
+      "file_type": "code",
+      "source_file": "layers/1.base/app/utils/voice/current.ts",
+      "source_location": "L4",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "id": "layers_1_base_app_utils_voice_current_voicecurrent",
+      "community": 260,
+      "community_name": "useVoiceCommand.ts",
+      "norm_label": "voicecurrent"
+    },
+    {
+      "label": "VoiceCurrentMap",
+      "file_type": "code",
+      "source_file": "layers/1.base/app/utils/voice/current.ts",
+      "source_location": "L5",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "id": "layers_1_base_app_utils_voice_current_voicecurrentmap",
+      "community": 260,
+      "community_name": "useVoiceCommand.ts",
+      "norm_label": "voicecurrentmap"
+    },
+    {
+      "label": "trackVoiceCurrent()",
+      "file_type": "code",
+      "source_file": "layers/1.base/app/utils/voice/current.ts",
+      "source_location": "L12",
+      "_callable": true,
+      "_origin": "ast",
+      "id": "layers_1_base_app_utils_voice_current_trackvoicecurrent",
+      "community": 277,
+      "community_name": "apply.ts",
+      "norm_label": "trackvoicecurrent()"
     },
     {
       "label": "legacy-types.ts",
@@ -2186,8 +2267,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "layers_1_base_app_utils_voice_legacy_test",
-      "community": 276,
-      "community_name": "useVoiceCommand",
+      "community": 0,
+      "community_name": "normalize.ts",
       "norm_label": "legacy.test.ts"
     },
     {
@@ -2198,8 +2279,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "layers_1_base_app_utils_voice_legacy_test_run",
-      "community": 276,
-      "community_name": "useVoiceCommand",
+      "community": 0,
+      "community_name": "normalize.ts",
       "norm_label": "run()"
     },
     {
@@ -2209,8 +2290,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "layers_1_base_app_utils_voice_legacy",
-      "community": 244,
-      "community_name": "legacy-types.ts",
+      "community": 0,
+      "community_name": "normalize.ts",
       "norm_label": "legacy.ts"
     },
     {
@@ -2221,8 +2302,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "layers_1_base_app_utils_voice_legacy_legacytocommand",
-      "community": 276,
-      "community_name": "useVoiceCommand",
+      "community": 0,
+      "community_name": "normalize.ts",
       "norm_label": "legacytocommand()"
     },
     {
@@ -2459,7 +2540,7 @@
       "_origin": "ast",
       "id": "layers_1_base_app_utils_voice_parser_test",
       "community": 276,
-      "community_name": "useVoiceCommand",
+      "community_name": "parseVoiceCommand",
       "norm_label": "parser.test.ts"
     },
     {
@@ -2470,7 +2551,7 @@
       "_origin": "ast",
       "id": "layers_1_base_app_utils_voice_parser_test_now",
       "community": 276,
-      "community_name": "useVoiceCommand",
+      "community_name": "parseVoiceCommand",
       "norm_label": "now"
     },
     {
@@ -2482,7 +2563,7 @@
       "_origin": "ast",
       "id": "layers_1_base_app_utils_voice_parser_test_parse",
       "community": 276,
-      "community_name": "useVoiceCommand",
+      "community_name": "parseVoiceCommand",
       "norm_label": "parse()"
     },
     {
@@ -2640,8 +2721,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "layers_1_base_app_utils_voice_parser_digits",
-      "community": 280,
-      "community_name": "parseDigits",
+      "community": 264,
+      "community_name": "text.test.ts",
       "norm_label": "digits()"
     },
     {
@@ -2801,7 +2882,7 @@
       "_origin": "ast",
       "id": "layers_1_base_app_utils_voice_parser_parsevoicecommand",
       "community": 276,
-      "community_name": "useVoiceCommand",
+      "community_name": "parseVoiceCommand",
       "norm_label": "parsevoicecommand()"
     },
     {
@@ -3145,8 +3226,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "layers_1_base_app_utils_voice_text_foldtext",
-      "community": 277,
-      "community_name": "apply.ts",
+      "community": 104,
+      "community_name": "foldText",
       "norm_label": "foldtext()"
     },
     {
@@ -3301,8 +3382,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "layers_1_base_app_utils_voice_text_digitsof",
-      "community": 280,
-      "community_name": "parseDigits",
+      "community": 264,
+      "community_name": "text.test.ts",
       "norm_label": "digitsof()"
     },
     {
@@ -3313,8 +3394,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "layers_1_base_app_utils_voice_text_parsedigits",
-      "community": 280,
-      "community_name": "parseDigits",
+      "community": 264,
+      "community_name": "text.test.ts",
       "norm_label": "parsedigits()"
     },
     {
@@ -3625,8 +3706,8 @@
       "_callable_class": true,
       "_origin": "ast",
       "id": "layers_1_base_app_utils_voice_types_voicedraft",
-      "community": 277,
-      "community_name": "apply.ts",
+      "community": 260,
+      "community_name": "useVoiceCommand.ts",
       "norm_label": "voicedraft"
     },
     {
@@ -4426,7 +4507,7 @@
       "label": "{ can }",
       "file_type": "code",
       "source_file": "layers/10.vehicles/app/pages/vehicles-[id].vue",
-      "source_location": "L52",
+      "source_location": "L56",
       "_origin": "ast",
       "id": "layers_10_vehicles_app_pages_vehicles_id_can",
       "community": 115,
@@ -4437,7 +4518,7 @@
       "label": "backFallback",
       "file_type": "code",
       "source_file": "layers/10.vehicles/app/pages/vehicles-[id].vue",
-      "source_location": "L68",
+      "source_location": "L72",
       "_origin": "ast",
       "id": "layers_10_vehicles_app_pages_vehicles_id_backfallback",
       "community": 115,
@@ -4448,7 +4529,7 @@
       "label": "{ back }",
       "file_type": "code",
       "source_file": "layers/10.vehicles/app/pages/vehicles-[id].vue",
-      "source_location": "L75",
+      "source_location": "L79",
       "_origin": "ast",
       "id": "layers_10_vehicles_app_pages_vehicles_id_back",
       "community": 115,
@@ -4459,7 +4540,7 @@
       "label": "breadcrumbItems",
       "file_type": "code",
       "source_file": "layers/10.vehicles/app/pages/vehicles-[id].vue",
-      "source_location": "L77",
+      "source_location": "L81",
       "_origin": "ast",
       "id": "layers_10_vehicles_app_pages_vehicles_id_breadcrumbitems",
       "community": 115,
@@ -4470,7 +4551,7 @@
       "label": "moreMenuItems",
       "file_type": "code",
       "source_file": "layers/10.vehicles/app/pages/vehicles-[id].vue",
-      "source_location": "L88",
+      "source_location": "L92",
       "_origin": "ast",
       "id": "layers_10_vehicles_app_pages_vehicles_id_moremenuitems",
       "community": 115,
@@ -4481,7 +4562,7 @@
       "label": "showMoreMenu",
       "file_type": "code",
       "source_file": "layers/10.vehicles/app/pages/vehicles-[id].vue",
-      "source_location": "L111",
+      "source_location": "L115",
       "_origin": "ast",
       "id": "layers_10_vehicles_app_pages_vehicles_id_showmoremenu",
       "community": 115,
@@ -5801,7 +5882,7 @@
       "label": "openEdit()",
       "file_type": "code",
       "source_file": "layers/11.scheduling/app/pages/scheduling.vue",
-      "source_location": "L149",
+      "source_location": "L154",
       "_callable": true,
       "_origin": "ast",
       "id": "layers_11_scheduling_app_pages_scheduling_openedit",
@@ -5813,7 +5894,7 @@
       "label": "clearFilters()",
       "file_type": "code",
       "source_file": "layers/11.scheduling/app/pages/scheduling.vue",
-      "source_location": "L155",
+      "source_location": "L160",
       "_callable": true,
       "_origin": "ast",
       "id": "layers_11_scheduling_app_pages_scheduling_clearfilters",
@@ -5825,7 +5906,7 @@
       "label": "onSave()",
       "file_type": "code",
       "source_file": "layers/11.scheduling/app/pages/scheduling.vue",
-      "source_location": "L160",
+      "source_location": "L165",
       "_callable": true,
       "_origin": "ast",
       "id": "layers_11_scheduling_app_pages_scheduling_onsave",
@@ -5837,7 +5918,7 @@
       "label": "requestNoShow()",
       "file_type": "code",
       "source_file": "layers/11.scheduling/app/pages/scheduling.vue",
-      "source_location": "L178",
+      "source_location": "L183",
       "_callable": true,
       "_origin": "ast",
       "id": "layers_11_scheduling_app_pages_scheduling_requestnoshow",
@@ -5849,7 +5930,7 @@
       "label": "onConfirmNoShow()",
       "file_type": "code",
       "source_file": "layers/11.scheduling/app/pages/scheduling.vue",
-      "source_location": "L185",
+      "source_location": "L190",
       "_callable": true,
       "_origin": "ast",
       "id": "layers_11_scheduling_app_pages_scheduling_onconfirmnoshow",
@@ -5861,7 +5942,7 @@
       "label": "onUndoNoShow()",
       "file_type": "code",
       "source_file": "layers/11.scheduling/app/pages/scheduling.vue",
-      "source_location": "L221",
+      "source_location": "L226",
       "_callable": true,
       "_origin": "ast",
       "id": "layers_11_scheduling_app_pages_scheduling_onundonoshow",
@@ -5873,7 +5954,7 @@
       "label": "onShiftPrev()",
       "file_type": "code",
       "source_file": "layers/11.scheduling/app/pages/scheduling.vue",
-      "source_location": "L231",
+      "source_location": "L236",
       "_callable": true,
       "_origin": "ast",
       "id": "layers_11_scheduling_app_pages_scheduling_onshiftprev",
@@ -5885,7 +5966,7 @@
       "label": "onShiftNext()",
       "file_type": "code",
       "source_file": "layers/11.scheduling/app/pages/scheduling.vue",
-      "source_location": "L236",
+      "source_location": "L241",
       "_callable": true,
       "_origin": "ast",
       "id": "layers_11_scheduling_app_pages_scheduling_onshiftnext",
@@ -8611,7 +8692,7 @@
       "_origin": "ast",
       "id": "layers_5_orders_app_components_ordersbudgetprintdocument",
       "community": 231,
-      "community_name": "budget.ts",
+      "community_name": "OrdersBudgetSection.vue",
       "norm_label": "ordersbudgetprintdocument.vue"
     },
     {
@@ -8622,7 +8703,7 @@
       "_origin": "ast",
       "id": "layers_5_orders_app_components_ordersbudgetprintdocument_props",
       "community": 231,
-      "community_name": "budget.ts",
+      "community_name": "OrdersBudgetSection.vue",
       "norm_label": "props"
     },
     {
@@ -8633,7 +8714,7 @@
       "_origin": "ast",
       "id": "layers_5_orders_app_components_ordersbudgetprintdocument_total",
       "community": 231,
-      "community_name": "budget.ts",
+      "community_name": "OrdersBudgetSection.vue",
       "norm_label": "total"
     },
     {
@@ -8643,7 +8724,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "layers_5_orders_app_components_ordersbudgetsection",
-      "community": 91,
+      "community": 231,
       "community_name": "OrdersBudgetSection.vue",
       "norm_label": "ordersbudgetsection.vue"
     },
@@ -8654,7 +8735,7 @@
       "source_location": "L12",
       "_origin": "ast",
       "id": "layers_5_orders_app_components_ordersbudgetsection_props",
-      "community": 91,
+      "community": 231,
       "community_name": "OrdersBudgetSection.vue",
       "norm_label": "props"
     },
@@ -8665,7 +8746,7 @@
       "source_location": "L29",
       "_origin": "ast",
       "id": "layers_5_orders_app_components_ordersbudgetsection_emit",
-      "community": 91,
+      "community": 231,
       "community_name": "OrdersBudgetSection.vue",
       "norm_label": "emit"
     },
@@ -8676,7 +8757,7 @@
       "source_location": "L40",
       "_origin": "ast",
       "id": "layers_5_orders_app_components_ordersbudgetsection_draftmodel",
-      "community": 91,
+      "community": 231,
       "community_name": "OrdersBudgetSection.vue",
       "norm_label": "draftmodel"
     },
@@ -8687,7 +8768,7 @@
       "source_location": "L42",
       "_origin": "ast",
       "id": "layers_5_orders_app_components_ordersbudgetsection_showaddmodal",
-      "community": 91,
+      "community": 231,
       "community_name": "OrdersBudgetSection.vue",
       "norm_label": "showaddmodal"
     },
@@ -8698,7 +8779,7 @@
       "source_location": "L43",
       "_origin": "ast",
       "id": "layers_5_orders_app_components_ordersbudgetsection_rejectconfirmopen",
-      "community": 91,
+      "community": 231,
       "community_name": "OrdersBudgetSection.vue",
       "norm_label": "rejectconfirmopen"
     },
@@ -8709,7 +8790,7 @@
       "source_location": "L45",
       "_origin": "ast",
       "id": "layers_5_orders_app_components_ordersbudgetsection_showsharemenu",
-      "community": 91,
+      "community": 231,
       "community_name": "OrdersBudgetSection.vue",
       "norm_label": "showsharemenu"
     },
@@ -8721,7 +8802,7 @@
       "_callable": true,
       "_origin": "ast",
       "id": "layers_5_orders_app_components_ordersbudgetsection_onaddandclose",
-      "community": 91,
+      "community": 231,
       "community_name": "OrdersBudgetSection.vue",
       "norm_label": "onaddandclose()"
     },
@@ -8733,7 +8814,7 @@
       "_callable": true,
       "_origin": "ast",
       "id": "layers_5_orders_app_components_ordersbudgetsection_onconfirmreject",
-      "community": 91,
+      "community": 231,
       "community_name": "OrdersBudgetSection.vue",
       "norm_label": "onconfirmreject()"
     },
@@ -8788,8 +8869,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "layers_5_orders_app_components_ordersdetailhero",
-      "community": 273,
-      "community_name": "OrdersDetailHero.vue",
+      "community": 209,
+      "community_name": "OrderDetail",
       "norm_label": "ordersdetailhero.vue"
     },
     {
@@ -8799,8 +8880,8 @@
       "source_location": "L8",
       "_origin": "ast",
       "id": "layers_5_orders_app_components_ordersdetailhero_props",
-      "community": 273,
-      "community_name": "OrdersDetailHero.vue",
+      "community": 209,
+      "community_name": "OrderDetail",
       "norm_label": "props"
     },
     {
@@ -8810,8 +8891,8 @@
       "source_location": "L16",
       "_origin": "ast",
       "id": "layers_5_orders_app_components_ordersdetailhero_emit",
-      "community": 273,
-      "community_name": "OrdersDetailHero.vue",
+      "community": 209,
+      "community_name": "OrderDetail",
       "norm_label": "emit"
     },
     {
@@ -8821,8 +8902,8 @@
       "source_location": "L20",
       "_origin": "ast",
       "id": "layers_5_orders_app_components_ordersdetailhero_status",
-      "community": 273,
-      "community_name": "OrdersDetailHero.vue",
+      "community": 209,
+      "community_name": "OrderDetail",
       "norm_label": "status"
     },
     {
@@ -8832,8 +8913,8 @@
       "source_location": "L21",
       "_origin": "ast",
       "id": "layers_5_orders_app_components_ordersdetailhero_vehicle",
-      "community": 273,
-      "community_name": "OrdersDetailHero.vue",
+      "community": 209,
+      "community_name": "OrderDetail",
       "norm_label": "vehicle"
     },
     {
@@ -8843,8 +8924,8 @@
       "source_location": "L22",
       "_origin": "ast",
       "id": "layers_5_orders_app_components_ordersdetailhero_vehiclelabel",
-      "community": 273,
-      "community_name": "OrdersDetailHero.vue",
+      "community": 209,
+      "community_name": "OrderDetail",
       "norm_label": "vehiclelabel"
     },
     {
@@ -8854,8 +8935,8 @@
       "source_location": "L26",
       "_origin": "ast",
       "id": "layers_5_orders_app_components_ordersdetailhero_statuschanged",
-      "community": 273,
-      "community_name": "OrdersDetailHero.vue",
+      "community": 209,
+      "community_name": "OrderDetail",
       "norm_label": "statuschanged"
     },
     {
@@ -9393,8 +9474,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "layers_5_orders_app_composables_useorderbreadcrumb",
-      "community": 72,
-      "community_name": "orders-[id]-print.vue",
+      "community": 78,
+      "community_name": "orders.ts",
       "norm_label": "useorderbreadcrumb.ts"
     },
     {
@@ -9406,8 +9487,8 @@
       "_callable_class": true,
       "_origin": "ast",
       "id": "layers_5_orders_app_composables_useorderbreadcrumb_orderbreadcrumborigin",
-      "community": 72,
-      "community_name": "orders-[id]-print.vue",
+      "community": 78,
+      "community_name": "orders.ts",
       "norm_label": "orderbreadcrumborigin"
     },
     {
@@ -9418,8 +9499,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "layers_5_orders_app_composables_useorderbreadcrumb_gethistorybackpath",
-      "community": 72,
-      "community_name": "orders-[id]-print.vue",
+      "community": 78,
+      "community_name": "orders.ts",
       "norm_label": "gethistorybackpath()"
     },
     {
@@ -9430,8 +9511,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "layers_5_orders_app_composables_useorderbreadcrumb_resolveorderbreadcrumborigin",
-      "community": 72,
-      "community_name": "orders-[id]-print.vue",
+      "community": 78,
+      "community_name": "orders.ts",
       "norm_label": "resolveorderbreadcrumborigin()"
     },
     {
@@ -9442,8 +9523,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "layers_5_orders_app_composables_useorderbreadcrumb_useorderbreadcrumb",
-      "community": 72,
-      "community_name": "orders-[id]-print.vue",
+      "community": 78,
+      "community_name": "orders.ts",
       "norm_label": "useorderbreadcrumb()"
     },
     {
@@ -9454,7 +9535,7 @@
       "_origin": "ast",
       "id": "layers_5_orders_app_composables_useorderbudgetmutations",
       "community": 231,
-      "community_name": "budget.ts",
+      "community_name": "OrdersBudgetSection.vue",
       "norm_label": "useorderbudgetmutations.ts"
     },
     {
@@ -9466,7 +9547,7 @@
       "_origin": "ast",
       "id": "layers_5_orders_app_composables_useorderbudgetmutations_useorderbudgetmutations",
       "community": 231,
-      "community_name": "budget.ts",
+      "community_name": "OrdersBudgetSection.vue",
       "norm_label": "useorderbudgetmutations()"
     },
     {
@@ -9477,7 +9558,7 @@
       "_origin": "ast",
       "id": "layers_5_orders_app_composables_useorderbudgetpage",
       "community": 231,
-      "community_name": "budget.ts",
+      "community_name": "OrdersBudgetSection.vue",
       "norm_label": "useorderbudgetpage.ts"
     },
     {
@@ -9489,7 +9570,7 @@
       "_origin": "ast",
       "id": "layers_5_orders_app_composables_useorderbudgetpage_useorderbudgetpage",
       "community": 231,
-      "community_name": "budget.ts",
+      "community_name": "OrdersBudgetSection.vue",
       "norm_label": "useorderbudgetpage()"
     },
     {
@@ -9591,8 +9672,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "layers_5_orders_app_composables_useorderpayment",
-      "community": 262,
-      "community_name": "useOrderPayment.ts",
+      "community": 49,
+      "community_name": "OrdersPaymentEditor.vue",
       "norm_label": "useorderpayment.ts"
     },
     {
@@ -9603,8 +9684,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "layers_5_orders_app_composables_useorderpayment_useorderpayment",
-      "community": 262,
-      "community_name": "useOrderPayment.ts",
+      "community": 49,
+      "community_name": "OrdersPaymentEditor.vue",
       "norm_label": "useorderpayment()"
     },
     {
@@ -9685,8 +9766,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "layers_5_orders_app_composables_useorderstatuseditor_useorderstatuseditor",
-      "community": 262,
-      "community_name": "useOrderPayment.ts",
+      "community": 49,
+      "community_name": "OrdersPaymentEditor.vue",
       "norm_label": "useorderstatuseditor()"
     },
     {
@@ -9791,8 +9872,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "layers_5_orders_app_pages_orders_id_print",
-      "community": 72,
-      "community_name": "orders-[id]-print.vue",
+      "community": 197,
+      "community_name": "pdf.ts",
       "norm_label": "orders-[id]-print.vue"
     },
     {
@@ -9802,8 +9883,8 @@
       "source_location": "L18",
       "_origin": "ast",
       "id": "layers_5_orders_app_pages_orders_id_print_route",
-      "community": 72,
-      "community_name": "orders-[id]-print.vue",
+      "community": 197,
+      "community_name": "pdf.ts",
       "norm_label": "route"
     },
     {
@@ -9813,8 +9894,8 @@
       "source_location": "L19",
       "_origin": "ast",
       "id": "layers_5_orders_app_pages_orders_id_print_id",
-      "community": 72,
-      "community_name": "orders-[id]-print.vue",
+      "community": 197,
+      "community_name": "pdf.ts",
       "norm_label": "id"
     },
     {
@@ -9824,8 +9905,8 @@
       "source_location": "L29",
       "_origin": "ast",
       "id": "layers_5_orders_app_pages_orders_id_print_budgetstatus",
-      "community": 72,
-      "community_name": "orders-[id]-print.vue",
+      "community": 197,
+      "community_name": "pdf.ts",
       "norm_label": "budgetstatus"
     },
     {
@@ -9835,8 +9916,8 @@
       "source_location": "L33",
       "_origin": "ast",
       "id": "layers_5_orders_app_pages_orders_id_print_whatsappurl",
-      "community": 98,
-      "community_name": "print.ts",
+      "community": 29,
+      "community_name": "orders-[id].vue",
       "norm_label": "whatsappurl"
     },
     {
@@ -9846,8 +9927,8 @@
       "source_location": "L43",
       "_origin": "ast",
       "id": "layers_5_orders_app_pages_orders_id_print_downloadingpdf",
-      "community": 72,
-      "community_name": "orders-[id]-print.vue",
+      "community": 197,
+      "community_name": "pdf.ts",
       "norm_label": "downloadingpdf"
     },
     {
@@ -9858,8 +9939,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "layers_5_orders_app_pages_orders_id_print_ondownloadbudgetpdf",
-      "community": 72,
-      "community_name": "orders-[id]-print.vue",
+      "community": 197,
+      "community_name": "pdf.ts",
       "norm_label": "ondownloadbudgetpdf()"
     },
     {
@@ -9870,8 +9951,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "layers_5_orders_app_pages_orders_id_print_onprintbudgetpdf",
-      "community": 72,
-      "community_name": "orders-[id]-print.vue",
+      "community": 197,
+      "community_name": "pdf.ts",
       "norm_label": "onprintbudgetpdf()"
     },
     {
@@ -10058,8 +10139,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "layers_5_orders_app_pages_orders_id_discard",
-      "community": 262,
-      "community_name": "useOrderPayment.ts",
+      "community": 49,
+      "community_name": "OrdersPaymentEditor.vue",
       "norm_label": "discard()"
     },
     {
@@ -10081,8 +10162,8 @@
       "source_location": "L153",
       "_origin": "ast",
       "id": "layers_5_orders_app_pages_orders_id_budgetwhatsappurl",
-      "community": 98,
-      "community_name": "print.ts",
+      "community": 29,
+      "community_name": "orders-[id].vue",
       "norm_label": "budgetwhatsappurl"
     },
     {
@@ -10104,8 +10185,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "layers_5_orders_app_pages_orders_id_ondownloadbudgetpdf",
-      "community": 29,
-      "community_name": "orders-[id].vue",
+      "community": 197,
+      "community_name": "pdf.ts",
       "norm_label": "ondownloadbudgetpdf()"
     },
     {
@@ -10116,8 +10197,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "layers_5_orders_app_pages_orders_id_onprintbudgetpdf",
-      "community": 72,
-      "community_name": "orders-[id]-print.vue",
+      "community": 197,
+      "community_name": "pdf.ts",
       "norm_label": "onprintbudgetpdf()"
     },
     {
@@ -10383,8 +10464,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "layers_5_orders_app_pages_orders",
-      "community": 72,
-      "community_name": "orders-[id]-print.vue",
+      "community": 78,
+      "community_name": "orders.ts",
       "norm_label": "orders.vue"
     },
     {
@@ -10394,8 +10475,8 @@
       "source_location": "L12",
       "_origin": "ast",
       "id": "layers_5_orders_app_pages_orders_route",
-      "community": 72,
-      "community_name": "orders-[id]-print.vue",
+      "community": 78,
+      "community_name": "orders.ts",
       "norm_label": "route"
     },
     {
@@ -10405,8 +10486,8 @@
       "source_location": "L25",
       "_origin": "ast",
       "id": "layers_5_orders_app_pages_orders_can",
-      "community": 72,
-      "community_name": "orders-[id]-print.vue",
+      "community": 78,
+      "community_name": "orders.ts",
       "norm_label": "{ can }"
     },
     {
@@ -10479,7 +10560,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "layers_5_orders_app_utils_budget_select_items",
-      "community": 91,
+      "community": 231,
       "community_name": "OrdersBudgetSection.vue",
       "norm_label": "budget-select-items.ts"
     },
@@ -10490,7 +10571,7 @@
       "source_location": "L3",
       "_origin": "ast",
       "id": "layers_5_orders_app_utils_budget_select_items_ordem_item_tipo_select_items",
-      "community": 91,
+      "community": 231,
       "community_name": "OrdersBudgetSection.vue",
       "norm_label": "ordem_item_tipo_select_items"
     },
@@ -10502,7 +10583,7 @@
       "_origin": "ast",
       "id": "layers_5_orders_app_utils_budget",
       "community": 231,
-      "community_name": "budget.ts",
+      "community_name": "OrdersBudgetSection.vue",
       "norm_label": "budget.ts"
     },
     {
@@ -10514,7 +10595,7 @@
       "_origin": "ast",
       "id": "layers_5_orders_app_utils_budget_calcitemsubtotal",
       "community": 231,
-      "community_name": "budget.ts",
+      "community_name": "OrdersBudgetSection.vue",
       "norm_label": "calcitemsubtotal()"
     },
     {
@@ -10526,7 +10607,7 @@
       "_origin": "ast",
       "id": "layers_5_orders_app_utils_budget_calcitemstotal",
       "community": 231,
-      "community_name": "budget.ts",
+      "community_name": "OrdersBudgetSection.vue",
       "norm_label": "calcitemstotal()"
     },
     {
@@ -10539,7 +10620,7 @@
       "_origin": "ast",
       "id": "layers_5_orders_app_utils_budget_orderitemdraft",
       "community": 231,
-      "community_name": "budget.ts",
+      "community_name": "OrdersBudgetSection.vue",
       "norm_label": "orderitemdraft"
     },
     {
@@ -10551,7 +10632,7 @@
       "_origin": "ast",
       "id": "layers_5_orders_app_utils_budget_emptyorderitemdraft",
       "community": 231,
-      "community_name": "budget.ts",
+      "community_name": "OrdersBudgetSection.vue",
       "norm_label": "emptyorderitemdraft()"
     },
     {
@@ -10563,7 +10644,7 @@
       "_origin": "ast",
       "id": "layers_5_orders_app_utils_budget_isorderitemdraftvalid",
       "community": 231,
-      "community_name": "budget.ts",
+      "community_name": "OrdersBudgetSection.vue",
       "norm_label": "isorderitemdraftvalid()"
     },
     {
@@ -10846,8 +10927,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "layers_5_orders_app_utils_order_routes",
-      "community": 72,
-      "community_name": "orders-[id]-print.vue",
+      "community": 78,
+      "community_name": "orders.ts",
       "norm_label": "order-routes.ts"
     },
     {
@@ -10857,8 +10938,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "layers_5_orders_app_utils_order_routes_order_routes",
-      "community": 72,
-      "community_name": "orders-[id]-print.vue",
+      "community": 78,
+      "community_name": "orders.ts",
       "norm_label": "order_routes"
     },
     {
@@ -10980,8 +11061,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "layers_5_orders_app_utils_payment",
-      "community": 262,
-      "community_name": "useOrderPayment.ts",
+      "community": 49,
+      "community_name": "OrdersPaymentEditor.vue",
       "norm_label": "payment.ts"
     },
     {
@@ -10993,8 +11074,8 @@
       "_callable_class": true,
       "_origin": "ast",
       "id": "layers_5_orders_app_utils_payment_paymentformstate",
-      "community": 262,
-      "community_name": "useOrderPayment.ts",
+      "community": 49,
+      "community_name": "OrdersPaymentEditor.vue",
       "norm_label": "paymentformstate"
     },
     {
@@ -11005,8 +11086,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "layers_5_orders_app_utils_payment_emptypaymentform",
-      "community": 262,
-      "community_name": "useOrderPayment.ts",
+      "community": 49,
+      "community_name": "OrdersPaymentEditor.vue",
       "norm_label": "emptypaymentform()"
     },
     {
@@ -11017,8 +11098,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "layers_5_orders_app_utils_payment_paymentformfromorder",
-      "community": 262,
-      "community_name": "useOrderPayment.ts",
+      "community": 49,
+      "community_name": "OrdersPaymentEditor.vue",
       "norm_label": "paymentformfromorder()"
     },
     {
@@ -11029,8 +11110,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "layers_5_orders_app_utils_payment_defaultchargeforforma",
-      "community": 262,
-      "community_name": "useOrderPayment.ts",
+      "community": 49,
+      "community_name": "OrdersPaymentEditor.vue",
       "norm_label": "defaultchargeforforma()"
     },
     {
@@ -11173,8 +11254,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "layers_5_orders_app_utils_pdf_printbudgetpdf",
-      "community": 72,
-      "community_name": "orders-[id]-print.vue",
+      "community": 197,
+      "community_name": "pdf.ts",
       "norm_label": "printbudgetpdf()"
     },
     {
@@ -11184,8 +11265,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "layers_5_orders_app_utils_print",
-      "community": 98,
-      "community_name": "print.ts",
+      "community": 29,
+      "community_name": "orders-[id].vue",
       "norm_label": "print.ts"
     },
     {
@@ -11195,8 +11276,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "layers_5_orders_app_utils_print_workshop_name",
-      "community": 231,
-      "community_name": "budget.ts",
+      "community": 29,
+      "community_name": "orders-[id].vue",
       "norm_label": "workshop_name"
     },
     {
@@ -11207,8 +11288,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "layers_5_orders_app_utils_print_normalizephoneforwhatsapp",
-      "community": 98,
-      "community_name": "print.ts",
+      "community": 29,
+      "community_name": "orders-[id].vue",
       "norm_label": "normalizephoneforwhatsapp()"
     },
     {
@@ -11219,8 +11300,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "layers_5_orders_app_utils_print_buildwhatsappurl",
-      "community": 98,
-      "community_name": "print.ts",
+      "community": 29,
+      "community_name": "orders-[id].vue",
       "norm_label": "buildwhatsappurl()"
     },
     {
@@ -11231,8 +11312,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "layers_5_orders_app_utils_print_buildbudgetwhatsappmessage",
-      "community": 98,
-      "community_name": "print.ts",
+      "community": 29,
+      "community_name": "orders-[id].vue",
       "norm_label": "buildbudgetwhatsappmessage()"
     },
     {
@@ -11243,8 +11324,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "layers_5_orders_app_utils_print_printpage",
-      "community": 98,
-      "community_name": "print.ts",
+      "community": 29,
+      "community_name": "orders-[id].vue",
       "norm_label": "printpage()"
     },
     {
@@ -11255,8 +11336,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "layers_5_orders_app_utils_print_absoluteprinturl",
-      "community": 98,
-      "community_name": "print.ts",
+      "community": 29,
+      "community_name": "orders-[id].vue",
       "norm_label": "absoluteprinturl()"
     },
     {
@@ -19752,8 +19833,8 @@
       "source_location": "L43",
       "_origin": "ast",
       "id": "cursor_skills_design_taste_frontend_skill_1_the_three_dials_core_configuration",
-      "community": 239,
-      "community_name": "tasteskill: Anti-Slop Frontend Skill",
+      "community": 1,
+      "community_name": "1. THE THREE DIALS (Core Configuration)",
       "norm_label": "1. the three dials (core configuration)"
     },
     {
@@ -19763,8 +19844,8 @@
       "source_location": "L53",
       "_origin": "ast",
       "id": "cursor_skills_design_taste_frontend_skill_1_a_dial_inference_design_read_dial_values",
-      "community": 239,
-      "community_name": "tasteskill: Anti-Slop Frontend Skill",
+      "community": 1,
+      "community_name": "1. THE THREE DIALS (Core Configuration)",
       "norm_label": "1.a dial inference (design read \u2192 dial values)"
     },
     {
@@ -19774,8 +19855,8 @@
       "source_location": "L64",
       "_origin": "ast",
       "id": "cursor_skills_design_taste_frontend_skill_1_b_use_case_presets",
-      "community": 239,
-      "community_name": "tasteskill: Anti-Slop Frontend Skill",
+      "community": 1,
+      "community_name": "1. THE THREE DIALS (Core Configuration)",
       "norm_label": "1.b use-case presets"
     },
     {
@@ -19785,8 +19866,8 @@
       "source_location": "L77",
       "_origin": "ast",
       "id": "cursor_skills_design_taste_frontend_skill_1_c_how_the_dials_drive_output",
-      "community": 239,
-      "community_name": "tasteskill: Anti-Slop Frontend Skill",
+      "community": 1,
+      "community_name": "1. THE THREE DIALS (Core Configuration)",
       "norm_label": "1.c how the dials drive output"
     },
     {
@@ -27665,7 +27746,7 @@
       "author": null,
       "contributor": null,
       "community": 100,
-      "community_name": "Dashboard Layout",
+      "community_name": "Live Editing",
       "norm_label": "live editing",
       "_origin": "semantic",
       "id": "_cursor_skills_nuxt_studio_references_live_editing_live_editing"
@@ -27681,7 +27762,7 @@
       "contributor": null,
       "rationale": "Converts Markdown/MDC to editable TipTap document",
       "community": 100,
-      "community_name": "Dashboard Layout",
+      "community_name": "Live Editing",
       "norm_label": "visual editor (tiptap)",
       "_origin": "semantic",
       "id": "_cursor_skills_nuxt_studio_references_live_editing_visual_editor"
@@ -27696,7 +27777,7 @@
       "author": null,
       "contributor": null,
       "community": 100,
-      "community_name": "Dashboard Layout",
+      "community_name": "Live Editing",
       "norm_label": "code editor",
       "_origin": "semantic",
       "id": "_cursor_skills_nuxt_studio_references_live_editing_code_editor"
@@ -27712,7 +27793,7 @@
       "contributor": null,
       "rationale": "Edit frontmatter and data files from Nuxt Content collection schema",
       "community": 100,
-      "community_name": "Dashboard Layout",
+      "community_name": "Live Editing",
       "norm_label": "schema forms",
       "_origin": "semantic",
       "id": "_cursor_skills_nuxt_studio_references_live_editing_schema_forms"
@@ -27880,8 +27961,8 @@
       "author": null,
       "contributor": null,
       "rationale": "Required for toasts, tooltips, and programmatic overlays",
-      "community": 1,
-      "community_name": "Component Selection Guidelines",
+      "community": 64,
+      "community_name": "Forms Guidelines",
       "norm_label": "uapp root wrapper",
       "_origin": "semantic",
       "id": "_cursor_skills_nuxt_ui_skill_uapp"
@@ -27972,8 +28053,8 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 64,
-      "community_name": "Forms Guidelines",
+      "community": 257,
+      "community_name": "UModal",
       "norm_label": "uform",
       "_origin": "semantic",
       "id": "_cursor_skills_nuxt_ui_references_components_uform"
@@ -28017,8 +28098,8 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 1,
-      "community_name": "Component Selection Guidelines",
+      "community": 257,
+      "community_name": "UModal",
       "norm_label": "uslideover",
       "_origin": "semantic",
       "id": "_cursor_skills_nuxt_ui_references_components_uslideover"
@@ -28032,8 +28113,8 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 1,
-      "community_name": "Component Selection Guidelines",
+      "community": 257,
+      "community_name": "UModal",
       "norm_label": "udrawer",
       "_origin": "semantic",
       "id": "_cursor_skills_nuxt_ui_references_components_udrawer"
@@ -28047,8 +28128,8 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 111,
-      "community_name": "Nuxt UI Components Index",
+      "community": 55,
+      "community_name": "Dashboard Layout",
       "norm_label": "utable",
       "_origin": "semantic",
       "id": "_cursor_skills_nuxt_ui_references_components_utable"
@@ -28062,7 +28143,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 100,
+      "community": 55,
       "community_name": "Dashboard Layout",
       "norm_label": "udashboardgroup",
       "_origin": "semantic",
@@ -28093,7 +28174,7 @@
       "author": null,
       "contributor": null,
       "community": 100,
-      "community_name": "Dashboard Layout",
+      "community_name": "Live Editing",
       "norm_label": "ueditor",
       "_origin": "semantic",
       "id": "_cursor_skills_nuxt_ui_references_components_ueditor"
@@ -28152,8 +28233,8 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 1,
-      "community_name": "Component Selection Guidelines",
+      "community": 64,
+      "community_name": "Forms Guidelines",
       "norm_label": "component selection guidelines",
       "_origin": "semantic",
       "id": "_cursor_skills_nuxt_ui_references_guidelines_component_selection_component_selection"
@@ -28168,8 +28249,8 @@
       "author": null,
       "contributor": null,
       "rationale": "Modal for focused/destructive; Slideover for details; Drawer for mobile; Popover contextual; Tooltip non-interactive",
-      "community": 1,
-      "community_name": "Component Selection Guidelines",
+      "community": 257,
+      "community_name": "UModal",
       "norm_label": "overlay selection matrix",
       "_origin": "semantic",
       "id": "_cursor_skills_nuxt_ui_references_guidelines_component_selection_overlay_selection"
@@ -28183,8 +28264,8 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 1,
-      "community_name": "Component Selection Guidelines",
+      "community": 64,
+      "community_name": "Forms Guidelines",
       "norm_label": "input selection matrix",
       "_origin": "semantic",
       "id": "_cursor_skills_nuxt_ui_references_guidelines_component_selection_input_selection"
@@ -28199,8 +28280,8 @@
       "author": null,
       "contributor": null,
       "rationale": "Toast for ephemeral action feedback; Alert for persistent inline; never toast for actionable info",
-      "community": 1,
-      "community_name": "Component Selection Guidelines",
+      "community": 64,
+      "community_name": "Forms Guidelines",
       "norm_label": "feedback selection matrix",
       "_origin": "semantic",
       "id": "_cursor_skills_nuxt_ui_references_guidelines_component_selection_feedback_selection"
@@ -28292,8 +28373,8 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 1,
-      "community_name": "Component Selection Guidelines",
+      "community": 64,
+      "community_name": "Forms Guidelines",
       "norm_label": "usetoast",
       "_origin": "semantic",
       "id": "_cursor_skills_nuxt_ui_references_guidelines_conventions_usetost"
@@ -28549,8 +28630,8 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 64,
-      "community_name": "Forms Guidelines",
+      "community": 257,
+      "community_name": "UModal",
       "norm_label": "form in modal pattern",
       "_origin": "semantic",
       "id": "_cursor_skills_nuxt_ui_references_guidelines_forms_form_in_modal"
@@ -28626,7 +28707,7 @@
       "author": null,
       "contributor": null,
       "community": 55,
-      "community_name": "UDashboardPanel",
+      "community_name": "Dashboard Layout",
       "norm_label": "chat component tree",
       "_origin": "semantic",
       "id": "_cursor_skills_nuxt_ui_references_layouts_chat_chat_component_tree"
@@ -28640,7 +28721,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 100,
+      "community": 55,
       "community_name": "Dashboard Layout",
       "norm_label": "dashboard layout",
       "_origin": "semantic",
@@ -28656,7 +28737,7 @@
       "author": null,
       "contributor": null,
       "community": 55,
-      "community_name": "UDashboardPanel",
+      "community_name": "Dashboard Layout",
       "norm_label": "udashboardpanel",
       "_origin": "semantic",
       "id": "_cursor_skills_nuxt_ui_references_layouts_dashboard_udashboard_panel"
@@ -28670,7 +28751,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 100,
+      "community": 55,
       "community_name": "Dashboard Layout",
       "norm_label": "udashboardsidebar",
       "_origin": "semantic",
@@ -28686,7 +28767,7 @@
       "author": null,
       "contributor": null,
       "community": 55,
-      "community_name": "UDashboardPanel",
+      "community_name": "Dashboard Layout",
       "norm_label": "multi-panel list-detail",
       "_origin": "semantic",
       "id": "_cursor_skills_nuxt_ui_references_layouts_dashboard_multi_panel"
@@ -28702,7 +28783,7 @@
       "contributor": null,
       "rationale": "Putting content directly in UDashboardPanel without #body breaks scrolling",
       "community": 55,
-      "community_name": "UDashboardPanel",
+      "community_name": "Dashboard Layout",
       "norm_label": "use #body slot for scrollable content",
       "_origin": "semantic",
       "id": "_cursor_skills_nuxt_ui_references_layouts_dashboard_body_slot_rule"
@@ -28778,7 +28859,7 @@
       "author": null,
       "contributor": null,
       "community": 100,
-      "community_name": "Dashboard Layout",
+      "community_name": "Live Editing",
       "norm_label": "editor layout",
       "_origin": "semantic",
       "id": "_cursor_skills_nuxt_ui_references_layouts_editor_editor_layout"
@@ -28793,7 +28874,7 @@
       "author": null,
       "contributor": null,
       "community": 100,
-      "community_name": "Dashboard Layout",
+      "community_name": "Live Editing",
       "norm_label": "tiptap editor instance",
       "_origin": "semantic",
       "id": "_cursor_skills_nuxt_ui_references_layouts_editor_tiptap_instance"
@@ -28915,7 +28996,7 @@
       "author": null,
       "contributor": null,
       "community": 55,
-      "community_name": "UDashboardPanel",
+      "community_name": "Dashboard Layout",
       "norm_label": "data tables recipe",
       "_origin": "semantic",
       "id": "_cursor_skills_nuxt_ui_references_recipes_data_tables_data_tables"
@@ -28930,7 +29011,7 @@
       "author": null,
       "contributor": null,
       "community": 55,
-      "community_name": "UDashboardPanel",
+      "community_name": "Dashboard Layout",
       "norm_label": "tanstack table integration",
       "_origin": "semantic",
       "id": "_cursor_skills_nuxt_ui_references_recipes_data_tables_tanstack_table"
@@ -28944,8 +29025,8 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 111,
-      "community_name": "Nuxt UI Components Index",
+      "community": 55,
+      "community_name": "Dashboard Layout",
       "norm_label": "table row selection",
       "_origin": "semantic",
       "id": "_cursor_skills_nuxt_ui_references_recipes_data_tables_row_selection"
@@ -28959,8 +29040,8 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 111,
-      "community_name": "Nuxt UI Components Index",
+      "community": 55,
+      "community_name": "Dashboard Layout",
       "norm_label": "table pagination",
       "_origin": "semantic",
       "id": "_cursor_skills_nuxt_ui_references_recipes_data_tables_table_pagination"
@@ -29094,8 +29175,8 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 1,
-      "community_name": "Component Selection Guidelines",
+      "community": 257,
+      "community_name": "UModal",
       "norm_label": "form in slideover",
       "_origin": "semantic",
       "id": "_cursor_skills_nuxt_ui_references_recipes_overlays_form_in_slideover"
@@ -29458,7 +29539,7 @@
       "author": null,
       "contributor": null,
       "community": 55,
-      "community_name": "UDashboardPanel",
+      "community_name": "Dashboard Layout",
       "norm_label": "uselazyfetch",
       "_origin": "semantic",
       "id": "_cursor_skills_nuxt_references_best_practices_data_fetching_uselazyfetch"
@@ -36940,18 +37021,6 @@
       "confidence_score": 1.0
     },
     {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "layers/1.base/app/composables/useVoiceCommand.ts",
-      "source_location": "L8",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "layers_1_base_app_composables_usevoicecommand",
-      "target": "layers_1_base_app_composables_usevoicedraft_voicecurrent",
-      "confidence_score": 1.0
-    },
-    {
       "relation": "imports_from",
       "context": "import",
       "confidence": "EXTRACTED",
@@ -37009,6 +37078,18 @@
       "_origin": "ast",
       "source": "layers_1_base_app_composables_usevoicecommand",
       "target": "layers_1_base_app_utils_voice_catalog_voicerefkind",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "layers/1.base/app/composables/useVoiceCommand.ts",
+      "source_location": "L8",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "layers_1_base_app_composables_usevoicecommand",
+      "target": "layers_1_base_app_utils_voice_current_voicecurrent",
       "confidence_score": 1.0
     },
     {
@@ -37245,7 +37326,7 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "layers/1.base/app/composables/useVoiceCommand.ts",
-      "source_location": "L276",
+      "source_location": "L280",
       "weight": 1.0,
       "_origin": "ast",
       "source": "layers_1_base_app_composables_usevoicecommand_usevoicecommand",
@@ -37337,7 +37418,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "layers/1.base/app/composables/useVoiceDraft.ts",
-      "source_location": "L3",
+      "source_location": "L6",
       "weight": 1.0,
       "_origin": "ast",
       "source": "layers_1_base_app_composables_usevoicedraft",
@@ -37348,7 +37429,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "layers/1.base/app/composables/useVoiceDraft.ts",
-      "source_location": "L8",
+      "source_location": "L10",
       "weight": 1.0,
       "_origin": "ast",
       "source": "layers_1_base_app_composables_usevoicedraft",
@@ -37356,14 +37437,39 @@
       "confidence_score": 1.0
     },
     {
-      "relation": "contains",
+      "relation": "re_exports",
+      "context": "export",
       "confidence": "EXTRACTED",
       "source_file": "layers/1.base/app/composables/useVoiceDraft.ts",
       "source_location": "L4",
       "weight": 1.0,
       "_origin": "ast",
       "source": "layers_1_base_app_composables_usevoicedraft",
-      "target": "layers_1_base_app_composables_usevoicedraft_voicecurrent",
+      "target": "layers_1_base_app_utils_voice_current",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "re_exports",
+      "context": "re-export",
+      "confidence": "EXTRACTED",
+      "source_file": "layers/1.base/app/composables/useVoiceDraft.ts",
+      "source_location": "L4",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "layers_1_base_app_composables_usevoicedraft",
+      "target": "layers_1_base_app_utils_voice_current_voicecurrent",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "layers/1.base/app/composables/useVoiceDraft.ts",
+      "source_location": "L1",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "layers_1_base_app_composables_usevoicedraft",
+      "target": "layers_1_base_app_utils_voice_current_voicecurrentmap",
       "confidence_score": 1.0
     },
     {
@@ -37371,7 +37477,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "layers/1.base/app/composables/useVoiceDraft.ts",
-      "source_location": "L1",
+      "source_location": "L2",
       "weight": 1.0,
       "_origin": "ast",
       "source": "layers_1_base_app_composables_usevoicedraft",
@@ -37383,45 +37489,11 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "layers/1.base/app/composables/useVoiceDraft.ts",
-      "source_location": "L1",
+      "source_location": "L2",
       "weight": 1.0,
       "_origin": "ast",
       "source": "layers_1_base_app_composables_usevoicedraft",
       "target": "layers_1_base_app_utils_voice_types_voicedraft",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "layers/1.base/app/composables/useVoiceDraft.ts",
-      "source_location": "L1",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "layers_1_base_app_composables_usevoicedraft",
-      "target": "layers_1_base_app_utils_voice_types_voiceentitykey",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "layers/1.base/app/composables/useVoiceForm.ts",
-      "source_location": "L5",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "layers_1_base_app_composables_usevoiceform",
-      "target": "layers_1_base_app_composables_usevoiceform_maybepromise",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "layers/1.base/app/composables/useVoiceForm.ts",
-      "source_location": "L28",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "layers_1_base_app_composables_usevoiceform",
-      "target": "layers_1_base_app_composables_usevoiceform_usevoiceform",
       "confidence_score": 1.0
     },
     {
@@ -37432,6 +37504,28 @@
       "weight": 1.0,
       "_origin": "ast",
       "source": "layers_1_base_app_composables_usevoiceform",
+      "target": "layers_1_base_app_composables_usevoiceform_maybepromise",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "layers/1.base/app/composables/useVoiceForm.ts",
+      "source_location": "L29",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "layers_1_base_app_composables_usevoiceform",
+      "target": "layers_1_base_app_composables_usevoiceform_usevoiceform",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "layers/1.base/app/composables/useVoiceForm.ts",
+      "source_location": "L7",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "layers_1_base_app_composables_usevoiceform",
       "target": "layers_1_base_app_composables_usevoiceform_voiceactionresult",
       "confidence_score": 1.0
     },
@@ -37439,7 +37533,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "layers/1.base/app/composables/useVoiceForm.ts",
-      "source_location": "L8",
+      "source_location": "L9",
       "weight": 1.0,
       "_origin": "ast",
       "source": "layers_1_base_app_composables_usevoiceform",
@@ -37515,7 +37609,7 @@
       "weight": 1.0,
       "_origin": "ast",
       "source": "layers_1_base_app_composables_usevoiceform",
-      "target": "layers_1_base_app_utils_voice_types",
+      "target": "layers_1_base_app_utils_voice_current",
       "confidence_score": 1.0
     },
     {
@@ -37527,6 +37621,30 @@
       "weight": 1.0,
       "_origin": "ast",
       "source": "layers_1_base_app_composables_usevoiceform",
+      "target": "layers_1_base_app_utils_voice_current_trackvoicecurrent",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "layers/1.base/app/composables/useVoiceForm.ts",
+      "source_location": "L4",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "layers_1_base_app_composables_usevoiceform",
+      "target": "layers_1_base_app_utils_voice_types",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "layers/1.base/app/composables/useVoiceForm.ts",
+      "source_location": "L4",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "layers_1_base_app_composables_usevoiceform",
       "target": "layers_1_base_app_utils_voice_types_voicedraft",
       "confidence_score": 1.0
     },
@@ -37535,7 +37653,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "layers/1.base/app/composables/useVoiceForm.ts",
-      "source_location": "L3",
+      "source_location": "L4",
       "weight": 1.0,
       "_origin": "ast",
       "source": "layers_1_base_app_composables_usevoiceform",
@@ -37547,7 +37665,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "layers/1.base/app/composables/useVoiceForm.ts",
-      "source_location": "L3",
+      "source_location": "L4",
       "weight": 1.0,
       "_origin": "ast",
       "source": "layers_1_base_app_composables_usevoiceform",
@@ -37559,7 +37677,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "layers/1.base/app/composables/useVoiceForm.ts",
-      "source_location": "L3",
+      "source_location": "L4",
       "weight": 1.0,
       "_origin": "ast",
       "source": "layers_1_base_app_composables_usevoiceform",
@@ -37571,7 +37689,7 @@
       "context": "generic_arg",
       "confidence": "EXTRACTED",
       "source_file": "layers/1.base/app/composables/useVoiceForm.ts",
-      "source_location": "L19",
+      "source_location": "L20",
       "weight": 1.0,
       "_origin": "ast",
       "source": "layers_1_base_app_composables_usevoiceform_voiceformoptions",
@@ -37583,7 +37701,7 @@
       "context": "field",
       "confidence": "EXTRACTED",
       "source_file": "layers/1.base/app/composables/useVoiceForm.ts",
-      "source_location": "L18",
+      "source_location": "L19",
       "weight": 1.0,
       "_origin": "ast",
       "source": "layers_1_base_app_composables_usevoiceform_voiceformoptions",
@@ -37595,7 +37713,7 @@
       "context": "generic_arg",
       "confidence": "EXTRACTED",
       "source_file": "layers/1.base/app/composables/useVoiceForm.ts",
-      "source_location": "L13",
+      "source_location": "L14",
       "weight": 1.0,
       "_origin": "ast",
       "source": "layers_1_base_app_composables_usevoiceform_voiceformoptions",
@@ -37608,7 +37726,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "layers/1.base/app/composables/useVoiceForm.ts",
-      "source_location": "L81",
+      "source_location": "L72",
       "weight": 1.0,
       "_origin": "ast",
       "source": "layers_1_base_app_composables_usevoiceform_usevoiceform",
@@ -37620,11 +37738,23 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "layers/1.base/app/composables/useVoiceForm.ts",
-      "source_location": "L67",
+      "source_location": "L58",
       "weight": 1.0,
       "_origin": "ast",
       "source": "layers_1_base_app_composables_usevoiceform_usevoiceform",
       "target": "layers_1_base_app_utils_voice_catalog_voiceconfirmtext"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "layers/1.base/app/composables/useVoiceForm.ts",
+      "source_location": "L37",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "layers_1_base_app_composables_usevoiceform_usevoiceform",
+      "target": "layers_1_base_app_utils_voice_current_trackvoicecurrent"
     },
     {
       "relation": "contains",
@@ -38648,6 +38778,130 @@
       "_origin": "ast",
       "source": "layers_1_base_app_utils_voice_prompt",
       "target": "layers_1_base_app_utils_voice_catalog_voice_catalog",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "layers/1.base/app/utils/voice/current.test.ts",
+      "source_location": "L4",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "layers_1_base_app_utils_voice_current_test",
+      "target": "layers_1_base_app_utils_voice_current",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "layers/1.base/app/utils/voice/current.test.ts",
+      "source_location": "L7",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "layers_1_base_app_utils_voice_current_test",
+      "target": "layers_1_base_app_utils_voice_current_test_effectscope_nexttick_ref_watch",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "layers/1.base/app/utils/voice/current.test.ts",
+      "source_location": "L9",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "layers_1_base_app_utils_voice_current_test",
+      "target": "layers_1_base_app_utils_voice_current_test_flush",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "layers/1.base/app/utils/voice/current.test.ts",
+      "source_location": "L4",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "layers_1_base_app_utils_voice_current_test",
+      "target": "layers_1_base_app_utils_voice_current_trackvoicecurrent",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "layers/1.base/app/utils/voice/current.test.ts",
+      "source_location": "L4",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "layers_1_base_app_utils_voice_current_test",
+      "target": "layers_1_base_app_utils_voice_current_voicecurrentmap",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "dynamic_import",
+      "confidence": "EXTRACTED",
+      "source_file": "layers/1.base/app/utils/voice/current.test.ts",
+      "_origin": "ast",
+      "source": "layers_1_base_app_utils_voice_current_test",
+      "target": "vue",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "layers/1.base/app/utils/voice/current.ts",
+      "source_location": "L12",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "layers_1_base_app_utils_voice_current",
+      "target": "layers_1_base_app_utils_voice_current_trackvoicecurrent",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "layers/1.base/app/utils/voice/current.ts",
+      "source_location": "L4",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "layers_1_base_app_utils_voice_current",
+      "target": "layers_1_base_app_utils_voice_current_voicecurrent",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "layers/1.base/app/utils/voice/current.ts",
+      "source_location": "L5",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "layers_1_base_app_utils_voice_current",
+      "target": "layers_1_base_app_utils_voice_current_voicecurrentmap",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "layers/1.base/app/utils/voice/current.ts",
+      "source_location": "L2",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "layers_1_base_app_utils_voice_current",
+      "target": "layers_1_base_app_utils_voice_types",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "layers/1.base/app/utils/voice/current.ts",
+      "source_location": "L2",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "layers_1_base_app_utils_voice_current",
+      "target": "layers_1_base_app_utils_voice_types_voiceentitykey",
       "confidence_score": 1.0
     },
     {
@@ -42775,7 +43029,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "layers/10.vehicles/app/pages/vehicles-[id].vue",
-      "source_location": "L75",
+      "source_location": "L79",
       "weight": 1.0,
       "_origin": "ast",
       "source": "layers_10_vehicles_app_pages_vehicles_id",
@@ -42786,7 +43040,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "layers/10.vehicles/app/pages/vehicles-[id].vue",
-      "source_location": "L68",
+      "source_location": "L72",
       "weight": 1.0,
       "_origin": "ast",
       "source": "layers_10_vehicles_app_pages_vehicles_id",
@@ -42797,7 +43051,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "layers/10.vehicles/app/pages/vehicles-[id].vue",
-      "source_location": "L77",
+      "source_location": "L81",
       "weight": 1.0,
       "_origin": "ast",
       "source": "layers_10_vehicles_app_pages_vehicles_id",
@@ -42808,7 +43062,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "layers/10.vehicles/app/pages/vehicles-[id].vue",
-      "source_location": "L52",
+      "source_location": "L56",
       "weight": 1.0,
       "_origin": "ast",
       "source": "layers_10_vehicles_app_pages_vehicles_id",
@@ -42852,7 +43106,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "layers/10.vehicles/app/pages/vehicles-[id].vue",
-      "source_location": "L88",
+      "source_location": "L92",
       "weight": 1.0,
       "_origin": "ast",
       "source": "layers_10_vehicles_app_pages_vehicles_id",
@@ -42885,7 +43139,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "layers/10.vehicles/app/pages/vehicles-[id].vue",
-      "source_location": "L111",
+      "source_location": "L115",
       "weight": 1.0,
       "_origin": "ast",
       "source": "layers_10_vehicles_app_pages_vehicles_id",
@@ -44909,7 +45163,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "layers/11.scheduling/app/pages/scheduling.vue",
-      "source_location": "L155",
+      "source_location": "L160",
       "weight": 1.0,
       "_origin": "ast",
       "source": "layers_11_scheduling_app_pages_scheduling",
@@ -45030,7 +45284,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "layers/11.scheduling/app/pages/scheduling.vue",
-      "source_location": "L185",
+      "source_location": "L190",
       "weight": 1.0,
       "_origin": "ast",
       "source": "layers_11_scheduling_app_pages_scheduling",
@@ -45041,7 +45295,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "layers/11.scheduling/app/pages/scheduling.vue",
-      "source_location": "L160",
+      "source_location": "L165",
       "weight": 1.0,
       "_origin": "ast",
       "source": "layers_11_scheduling_app_pages_scheduling",
@@ -45052,7 +45306,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "layers/11.scheduling/app/pages/scheduling.vue",
-      "source_location": "L236",
+      "source_location": "L241",
       "weight": 1.0,
       "_origin": "ast",
       "source": "layers_11_scheduling_app_pages_scheduling",
@@ -45063,7 +45317,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "layers/11.scheduling/app/pages/scheduling.vue",
-      "source_location": "L231",
+      "source_location": "L236",
       "weight": 1.0,
       "_origin": "ast",
       "source": "layers_11_scheduling_app_pages_scheduling",
@@ -45074,7 +45328,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "layers/11.scheduling/app/pages/scheduling.vue",
-      "source_location": "L221",
+      "source_location": "L226",
       "weight": 1.0,
       "_origin": "ast",
       "source": "layers_11_scheduling_app_pages_scheduling",
@@ -45096,7 +45350,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "layers/11.scheduling/app/pages/scheduling.vue",
-      "source_location": "L149",
+      "source_location": "L154",
       "weight": 1.0,
       "_origin": "ast",
       "source": "layers_11_scheduling_app_pages_scheduling",
@@ -45129,7 +45383,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "layers/11.scheduling/app/pages/scheduling.vue",
-      "source_location": "L178",
+      "source_location": "L183",
       "weight": 1.0,
       "_origin": "ast",
       "source": "layers_11_scheduling_app_pages_scheduling",
@@ -50793,7 +51047,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "layers/5.orders/app/composables/useOrderBudgetPage.ts",
-      "source_location": "L138",
+      "source_location": "L140",
       "weight": 1.0,
       "_origin": "ast",
       "source": "layers_5_orders_app_composables_useorderbudgetpage_useorderbudgetpage",
@@ -78556,5 +78810,5 @@
       "source_file": "public/logo.png"
     }
   ],
-  "built_at_commit": "f77c2fba5ed87e03fc7f4cc9f202071b3d9c75af"
+  "built_at_commit": "4317ad717a8faa42a659dbb40e1bf62fdeddef12"
 }
