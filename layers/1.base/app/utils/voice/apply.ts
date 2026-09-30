@@ -1,11 +1,12 @@
-import type { VoiceEntity } from './catalog.ts'
+import type { VoiceEntity, VoiceFieldType } from './catalog.ts'
 import { appendText, foldText } from './text.ts'
 import type { VoiceBudgetItemDraft, VoiceItemTipo, VoiceRecord, VoiceValue } from './types.ts'
 
 type Format = (value: VoiceValue) => unknown
 
-function listKey(value: unknown): string {
-  return foldText(String(value)).replace(/[\s().-]/g, '')
+function listKey(value: unknown, type: VoiceFieldType): string {
+  const folded = foldText(String(value))
+  return type === 'digits' ? folded.replace(/[\s().-]/g, '') : folded.trim()
 }
 
 /**
@@ -30,9 +31,9 @@ export function applyVoiceFields(
       state[stateKey] = appendText(state[stateKey] as string | null | undefined, value)
     } else if (merge === 'add' && Array.isArray(value)) {
       const current = (Array.isArray(state[stateKey]) ? state[stateKey] as unknown[] : []).filter(v => String(v ?? '').trim())
-      const seen = new Set(current.map(listKey))
+      const seen = new Set(current.map(v => listKey(v, field.type)))
       const added = value.filter((v) => {
-        const k = listKey(v)
+        const k = listKey(v, field.type)
         if (seen.has(k)) return false
         seen.add(k)
         return true

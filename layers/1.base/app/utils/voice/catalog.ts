@@ -251,6 +251,7 @@ export function voiceConfirmText(template: string, values: Record<string, unknow
     const value = values[key]
     if (value === undefined || value === '') return '…'
     const s = String(value)
-    return FORMA_LABEL[s] ?? PAPEL_LABEL[s] ?? s
+    if (Object.hasOwn(FORMA_LABEL, s)) return FORMA_LABEL[s]!
+    return Object.hasOwn(PAPEL_LABEL, s) ? PAPEL_LABEL[s]! : s
   })
 }

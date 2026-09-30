@@ -41,4 +41,5 @@ test('voiceConfirmText fills label and args with Portuguese labels', () => {
   assert.equal(voiceConfirmText('Marcar a conta {label} como paga ({forma})?', { label: 'Energia', forma: 'pix' }), 'Marcar a conta Energia como paga (Pix)?')
   assert.equal(voiceConfirmText('Mudar o papel de {label} para {papel}?', { label: 'Pedro', papel: 'mecanico' }), 'Mudar o papel de Pedro para mecânico?')
   assert.equal(voiceConfirmText('Remover "{descricao}"?', {}), 'Remover "…"?')
+  assert.equal(voiceConfirmText('Desativar {label}?', { label: 'constructor' }), 'Desativar constructor?')
 })

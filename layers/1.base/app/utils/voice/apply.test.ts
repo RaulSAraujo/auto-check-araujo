@@ -11,12 +11,12 @@ test('append, replace and ref stateKey', () => {
 })
 
 test('lists add without duplicates (compared before formatting), ignoring blanks', () => {
-  const state: Record<string, unknown> = { telefones: ['(11) 98888-7777', ''], emails: [] }
-  applyVoiceFields(state, { telefones: ['11988887777', '11977776666', '11977776666'], emails: ['a@b.com'] }, VOICE_CATALOG.customer, {
+  const state: Record<string, unknown> = { telefones: ['(11) 98888-7777', ''], emails: ['joao.silva@x.com'] }
+  applyVoiceFields(state, { telefones: ['11988887777', '11977776666', '11977776666'], emails: ['a@b.com', 'joaosilva@x.com', 'JOAO.SILVA@x.com'] }, VOICE_CATALOG.customer, {
     format: { telefones: v => `fmt:${String(v)}` }
   })
   assert.deepEqual(state.telefones, ['(11) 98888-7777', 'fmt:11977776666'])
-  assert.deepEqual(state.emails, ['a@b.com'])
+  assert.deepEqual(state.emails, ['joao.silva@x.com', 'a@b.com', 'joaosilva@x.com'])
 })
 
 test('only restricts fields; unknown fields are ignored', () => {
