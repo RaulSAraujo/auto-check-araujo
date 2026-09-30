@@ -89,18 +89,21 @@ useVoiceForm('account', {
     return undefined
   },
   actions: {
-    pagar: async (draft) => {
+    pagar: (draft) => {
       tab.value = 'contas'
-      await onMarkPaid({ id: draft.id!, forma_pagamento: draft.args!.forma as FormaPagamento })
+      return onMarkPaid({ id: draft.id!, forma_pagamento: draft.args!.forma as FormaPagamento })
     },
-    cancelar: async (draft) => {
-      await onCancelAccount(draft.id!)
+    cancelar: (draft) => {
+      tab.value = 'contas'
+      return onCancelAccount(draft.id!)
     },
-    reabrir: async (draft) => {
-      await onReopenAccount(draft.id!)
+    reabrir: (draft) => {
+      tab.value = 'contas'
+      return onReopenAccount(draft.id!)
     },
-    excluir: async (draft) => {
-      await onRemoveAccount(draft.id!)
+    excluir: (draft) => {
+      tab.value = 'contas'
+      return onRemoveAccount(draft.id!)
     }
   }
 })
@@ -121,12 +124,8 @@ useVoiceForm('category', {
     else if (draft.id) await onSaveCategory({ id: draft.id, draft: { nome } })
   },
   actions: {
-    ativar: async (draft) => {
-      await onToggleCategory({ id: draft.id!, ativo: true })
-    },
-    desativar: async (draft) => {
-      await onToggleCategory({ id: draft.id!, ativo: false })
-    }
+    ativar: draft => onToggleCategory({ id: draft.id!, ativo: true }),
+    desativar: draft => onToggleCategory({ id: draft.id!, ativo: false })
   }
 })
 

@@ -57,9 +57,10 @@ useVoiceForm('collaborator', {
       createOpen.value = true
       return
     }
-    const papel = draft.fields.papel
+    const { papel, ...others } = draft.fields
+    const onlyRoleToast = () => useToast().add({ title: 'Por voz, só dá para mudar o papel de um colaborador.', color: 'warning' })
     if (typeof papel !== 'string') {
-      useToast().add({ title: 'Por voz, só dá para mudar o papel de um colaborador.', color: 'warning' })
+      onlyRoleToast()
       return
     }
     if (draft.id === currentUserId.value) {
@@ -73,16 +74,16 @@ useVoiceForm('collaborator', {
     if (await confirmVoice({ title: voiceConfirmText(VOICE_CATALOG.collaborator.actions.trocarPapel!.confirm!, { label: draft.label, papel }) })) {
       await changeRoleByVoice(draft.id, papel)
     }
+    if (Object.keys(others).length) onlyRoleToast()
   },
   unavailable: (action, draft) => {
     if (action !== 'redefinirSenha' && draft.id === currentUserId.value) return 'Você não pode fazer isso com o próprio usuário.'
+    if (action === 'trocarPapel' && typeof draft.args?.papel !== 'string') return 'Diga o novo papel.'
     if (!collaboratorRow(draft.id)) return 'Colaborador não encontrado na lista.'
     return undefined
   },
   actions: {
-    trocarPapel: async (draft) => {
-      await changeRoleByVoice(draft.id, draft.args?.papel)
-    },
+    trocarPapel: draft => changeRoleByVoice(draft.id, draft.args?.papel),
     redefinirSenha: (draft) => {
       const row = collaboratorRow(draft.id)
       if (row) onResetPassword(row)

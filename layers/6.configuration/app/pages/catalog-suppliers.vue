@@ -91,28 +91,33 @@ function openCreate() {
   formOpen.value = true
 }
 
+function openEditId() {
+  return formOpen.value && formMode.value === 'edit' ? editingId.value ?? undefined : undefined
+}
+
 useVoiceForm('supplier', {
   apply: (draft) => {
+    const editingThis = draft.op === 'edit' && !!draft.id && openEditId() === draft.id
+    if (formOpen.value && !editingThis) {
+      useToast().add({ title: 'Feche o formulário aberto antes.', color: 'warning' })
+      return
+    }
     if (draft.op === 'create') {
       openCreate()
-    } else if (!(formOpen.value && formMode.value === 'edit' && editingId.value === draft.id) && !onSupplierEdit({ id: draft.id! })) {
+    } else if (!editingThis && !onSupplierEdit({ id: draft.id! })) {
       useToast().add({ title: 'Fornecedor não encontrado na lista.', color: 'warning' })
       return
     }
     applyVoiceFields(supplierDraft, draft.fields, VOICE_CATALOG.supplier)
   },
   actions: {
-    desativar: async (draft) => {
-      await onSupplierToggleAtivo({ id: draft.id!, ativo: false })
-    },
-    reativar: async (draft) => {
-      await onSupplierToggleAtivo({ id: draft.id!, ativo: true })
-    },
+    desativar: draft => onSupplierToggleAtivo({ id: draft.id!, ativo: false }),
+    reativar: draft => onSupplierToggleAtivo({ id: draft.id!, ativo: true }),
     excluir: (draft) => {
       onSupplierRequestDelete({ id: draft.id! })
     }
   },
-  currentId: () => (formOpen.value && formMode.value === 'edit' ? editingId.value ?? undefined : undefined),
+  currentId: openEditId,
   label: () => supplierDraft.nome
 })
 

@@ -22,7 +22,7 @@ useSeoMeta({
 useRequirePermission('catalog.manage')
 
 const breadcrumbItems = settingsHubBreadcrumb('Precificação')
-const { draftDefaults, pending, error, refresh } = usePricingParams()
+const { params, draftDefaults, pending, error, refresh } = usePricingParams()
 const { savePricingParams } = usePricingMutations()
 
 const draft = ref<PricingParamsDraft>(emptyPricingDraft())
@@ -49,7 +49,7 @@ useVoiceForm('pricing', {
     applyVoiceFields(next, voice.fields, VOICE_CATALOG.pricing)
     draft.value = next as unknown as PricingParamsDraft
   },
-  ready: () => !!draftDefaults.value
+  ready: () => !pending.value && !!params.value
 })
 
 async function onSave() {

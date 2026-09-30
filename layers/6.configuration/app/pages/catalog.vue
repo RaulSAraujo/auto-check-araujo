@@ -111,48 +111,60 @@ async function applyCatalogVoice(fields: VoiceRecord) {
   if (typeof usar_preco_sugerido === 'boolean') budgetDraft.preco_manual = !usar_preco_sugerido
 }
 
-function isEditing(id?: string) {
-  return formOpen.value && formMode.value === 'edit' && editingId.value === id
+function applyKitItems(items: VoiceRecord[]) {
+  const toast = useToast()
+  if (budgetDraft.tipo !== 'kit') {
+    toast.add({ title: 'Itens só podem ser incluídos em kits.', color: 'warning' })
+    return
+  }
+  for (const item of items) {
+    const id = typeof item.item === 'string' ? item.item : undefined
+    if (!id) continue
+    if (id === editingId.value) {
+      toast.add({ title: 'Um kit não pode conter ele mesmo.', color: 'warning' })
+      continue
+    }
+    if (activeCatalogItems.value?.find(row => row.id === id)?.tipo === 'kit') {
+      toast.add({ title: 'Kits não podem conter outros kits.', color: 'warning' })
+      continue
+    }
+    const quantidade = typeof item.quantidade === 'number' ? item.quantidade : 1
+    const existing = budgetDraft.kit_itens.find(row => row.item_id === id)
+    if (existing) existing.quantidade = quantidade
+    else budgetDraft.kit_itens.push({ item_id: id, quantidade })
+  }
+}
+
+function openEditId() {
+  return formOpen.value && formMode.value === 'edit' ? editingId.value ?? undefined : undefined
 }
 
 useVoiceForm('catalogItem', {
+  // Kit items are handled here, not in `onItems`, so they share the open-form guards.
   apply: async (draft) => {
+    const editingThis = draft.op === 'edit' && !!draft.id && openEditId() === draft.id
+    if (formOpen.value && !editingThis) {
+      useToast().add({ title: 'Feche o formulário aberto antes.', color: 'warning' })
+      return
+    }
     if (draft.op === 'create') {
       openCreate()
-    } else if (!isEditing(draft.id) && !onBudgetEdit({ id: draft.id! })) {
+    } else if (!editingThis && !onBudgetEdit({ id: draft.id! })) {
       useToast().add({ title: 'Item fora da lista atual. Limpe a busca e os filtros e tente de novo.', color: 'warning' })
       return
     }
     await nextTick()
     await applyCatalogVoice(draft.fields)
-  },
-  onItems: (items, draft) => {
-    if (draft.op === 'edit' && !isEditing(draft.id)) return
-    if (budgetDraft.tipo !== 'kit') {
-      useToast().add({ title: 'Itens só podem ser incluídos em kits.', color: 'warning' })
-      return
-    }
-    for (const item of items) {
-      const id = typeof item.item === 'string' ? item.item : undefined
-      if (!id || id === editingId.value) continue
-      const quantidade = typeof item.quantidade === 'number' ? item.quantidade : 1
-      const existing = budgetDraft.kit_itens.find(row => row.item_id === id)
-      if (existing) existing.quantidade = quantidade
-      else budgetDraft.kit_itens.push({ item_id: id, quantidade })
-    }
+    if (draft.items?.length) applyKitItems(draft.items)
   },
   actions: {
-    desativar: async (draft) => {
-      await onBudgetToggleAtivo({ id: draft.id!, ativo: false })
-    },
-    reativar: async (draft) => {
-      await onBudgetToggleAtivo({ id: draft.id!, ativo: true })
-    },
+    desativar: draft => onBudgetToggleAtivo({ id: draft.id!, ativo: false }),
+    reativar: draft => onBudgetToggleAtivo({ id: draft.id!, ativo: true }),
     excluir: (draft) => {
       onBudgetRequestDelete({ id: draft.id! })
     }
   },
-  currentId: () => (formOpen.value && formMode.value === 'edit' ? editingId.value ?? undefined : undefined),
+  currentId: openEditId,
   label: () => budgetDraft.nome
 })
 
