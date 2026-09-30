@@ -1,14 +1,9 @@
 <script setup lang="ts">
-import type { CustomerStatusFilter } from '../utils/customer-status'
-import { CUSTOMER_STATUS_FILTER_ACTIVE } from '../utils/customer-status'
-
 defineOptions({ name: 'CustomersIndexPage' })
 
 definePageMeta({
   path: '/clientes'
 })
-
-const route = useRoute()
 
 const {
   q,
@@ -19,9 +14,7 @@ const {
   statusItems,
   clientes,
   pending
-} = await useCustomersList(
-  (route.query.status as CustomerStatusFilter | undefined) ?? CUSTOMER_STATUS_FILTER_ACTIVE
-)
+} = await useCustomersList()
 
 const { can } = usePermissions()
 </script>

@@ -3,13 +3,12 @@ import { ORDEM_STATUS_FILTER_ALL, ORDEM_STATUS_FILTER_ITEMS, type OrdemStatusFil
 
 const ORDER_LIST_SELECT = '*, veiculos!inner(id, placa, marca, modelo, clientes(id, nome))'
 
-export async function useOrdersList(initialStatus: OrdemStatusFilter = ORDEM_STATUS_FILTER_ALL) {
+export async function useOrdersList() {
   const supabase = useTypedSupabaseClient()
-  const router = useRouter()
 
-  const statusFilter = ref<OrdemStatusFilter>(initialStatus)
-  const q = ref('')
-  const debouncedQ = ref('')
+  const statusFilter = useRouteQueryState<OrdemStatusFilter>('status', ORDEM_STATUS_FILTER_ALL, ORDEM_STATUS_FILTER_ITEMS.map(item => item.value))
+  const q = useRouteQueryState('q', '')
+  const debouncedQ = ref(q.value)
   const { page, pageSize, rangeBounds } = useListPagination([debouncedQ, statusFilter])
 
   let debounceTimer: ReturnType<typeof setTimeout> | undefined
@@ -73,10 +72,6 @@ export async function useOrdersList(initialStatus: OrdemStatusFilter = ORDEM_STA
     },
     { watch: [statusFilter, debouncedQ, page], lazy: true }
   )
-
-  watch(statusFilter, (value) => {
-    router.replace({ query: value !== ORDEM_STATUS_FILTER_ALL ? { status: value } : {} })
-  })
 
   const ordens = computed(() => data.value?.items ?? [])
   const total = computed(() => data.value?.total ?? 0)

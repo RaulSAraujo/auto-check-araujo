@@ -1,15 +1,11 @@
 <script setup lang="ts">
-import type { OrdemStatus } from '~~/shared/types/oficina'
 import { ORDER_ROUTES } from '../utils/order-routes'
-import { ORDEM_STATUS_FILTER_ALL } from '../utils/order-select-items'
 
 defineOptions({ name: 'OrdersIndexPage' })
 
 definePageMeta({
   path: '/ordens'
 })
-
-const route = useRoute()
 
 const {
   q,
@@ -20,7 +16,7 @@ const {
   statusItems,
   ordens,
   pending
-} = await useOrdersList((route.query.status as OrdemStatus | undefined) ?? ORDEM_STATUS_FILTER_ALL)
+} = await useOrdersList()
 
 const { can } = usePermissions()
 </script>

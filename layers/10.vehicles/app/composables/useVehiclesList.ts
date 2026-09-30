@@ -3,8 +3,8 @@ import type { VeiculoComCliente } from '../utils/vehicle-types'
 export async function useVehiclesList() {
   const supabase = useTypedSupabaseClient()
 
-  const q = ref('')
-  const debouncedQ = ref('')
+  const q = useRouteQueryState('q', '')
+  const debouncedQ = ref(q.value)
   const { page, pageSize, rangeBounds } = useListPagination([debouncedQ])
 
   let debounceTimer: ReturnType<typeof setTimeout> | undefined
