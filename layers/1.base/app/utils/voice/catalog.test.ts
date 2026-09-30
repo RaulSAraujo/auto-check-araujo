@@ -12,7 +12,7 @@ test('every entity has pages, valid permissions and confirm texts', () => {
     assert.ok(entity.pages.length, `${key}: pages`)
     for (const permission of Object.values(entity.permission)) assert.ok(PERMISSIONS.includes(permission!), `${key}: ${permission}`)
     for (const [name, action] of Object.entries(entity.actions)) {
-      assert.ok(PERMISSIONS.includes(action.permission), `${key}.${name}: permission`)
+      if (action.permission) assert.ok(PERMISSIONS.includes(action.permission), `${key}.${name}: permission`)
       if (action.kind === 'confirm') assert.ok(action.confirm, `${key}.${name}: confirm text`)
     }
   }

@@ -1,5 +1,6 @@
 import { VOICE_CATALOG, type VoiceEntity, type VoiceField } from './catalog.ts'
 import type { VoiceContext, VoiceEntityKey, VoicePage } from './types.ts'
+import { VOICE_VIEWS } from './views.ts'
 
 export interface VoiceChatMessage {
   role: 'system' | 'user'
@@ -45,7 +46,7 @@ const DETAIL_PAGES: [RegExp, VoicePage][] = [
 ]
 
 const TYPE_HINT: Partial<Record<VoiceField['type'], string>> = {
-  number: 'número', money: 'reais', date: 'YYYY-MM-DD', time: 'HH:MM', bool: 'true/false', placa: 'placa', digits: 'só dígitos', email: 'e-mail'
+  number: 'número', money: 'reais', date: 'YYYY-MM-DD', month: 'YYYY-MM', time: 'HH:MM', bool: 'true/false', placa: 'placa', digits: 'só dígitos', email: 'e-mail'
 }
 
 export function voicePageFromPath(path: string): VoicePage {
@@ -111,20 +112,25 @@ export function buildVoiceMessages(text: string, context: VoiceContext): VoiceCh
   const all = Object.keys(VOICE_CATALOG) as VoiceEntityKey[]
   const detailed = here.map(key => describeDetailed(key, VOICE_CATALOG[key])).join('\n')
   const compact = all.filter(key => !here.includes(key)).map(key => describeCompact(key, VOICE_CATALOG[key])).join('\n')
+  const views = Object.entries(VOICE_VIEWS).map(([to, spec]) => `- ${to}: ${describeFields(spec)}`).join('\n')
 
   const system = `Você converte comandos falados de uma oficina mecânica brasileira em JSON.
 Responda SOMENTE com um objeto JSON, em um destes formatos:
 {"op":"create"|"edit","entity":"...","target":{...},"fields":{...},"items":[{...}]}
 {"op":"action","entity":"...","target":{...},"action":"...","args":{...}}
-{"op":"navigate","to":"home"|"orders"|"scheduling"|"customers"|"vehicles"|"finance"|"team"|"catalog"|"suppliers"|"pricing"|"settings","date":"YYYY-MM-DD só para a agenda"}
+{"op":"navigate","to":"home"|"orders"|"scheduling"|"customers"|"vehicles"|"finance"|"team"|"catalog"|"suppliers"|"pricing"|"settings","query":{...}}
 {"op":null} se não for um comando reconhecível.
 Hoje é ${context.today} (${weekday(context.today)}). Tela atual: ${PAGE_LABEL[context.page]}.
 ${detailed ? `\nEntidades desta tela:\n${detailed}\n` : ''}
 Outras entidades:
 ${compact}
 
+Filtros de lista (query do navigate):
+${views}
+
 Regras:
 - create = cadastrar/criar/"nova OS"/"novo cliente". edit = abrir ou alterar registro existente ("abre a OS do…", "muda o km…"). action = executar uma ação da lista ("aprova", "paga", "remove", "desativa", "exclui", "faltou").
+- navigate = abrir uma tela. Para mostrar/buscar/filtrar uma lista ("mostra as OS abertas do João", "contas vencidas", "agenda da semana"), use navigate com query só com o que foi dito. Mês "YYYY-MM".
 - target identifica o registro existente; omita target quando a frase se refere ao registro aberto na tela atual.
 - Use só os nomes de fields/items/actions/args listados. Omita o que não foi dito; nunca invente valores. Nunca inclua senha.
 - Vários itens na mesma frase: um objeto por item em "items".

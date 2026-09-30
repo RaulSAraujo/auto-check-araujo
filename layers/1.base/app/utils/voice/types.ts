@@ -34,7 +34,8 @@ export interface VoiceCommand {
   action?: string
   args?: VoiceRecord
   to?: VoiceNavTarget
-  date?: string
+  /** navigate: list controls declared in VOICE_VIEWS. */
+  query?: Record<string, string>
 }
 
 export interface VoiceBudgetItemDraft {
@@ -71,5 +72,8 @@ export const VOICE_EXAMPLES: readonly string[] = [
   'Remarca o ABC1D23 para sexta às 10h',
   'A conta de energia foi paga no Pix',
   'Desativa o fornecedor Auto Peças Silva',
-  'O custo da hora é 120 reais'
+  'O custo da hora é 120 reais',
+  'Mostra as OS abertas do João',
+  'Contas vencidas do financeiro',
+  'Manda o orçamento no WhatsApp (com a OS aberta)'
 ]

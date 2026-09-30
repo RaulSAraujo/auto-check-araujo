@@ -1,10 +1,12 @@
 import { VOICE_CATALOG, type VoiceField } from './catalog.ts'
 import type { VoiceCommand, VoiceEntityKey, VoiceNavTarget, VoiceRecord, VoiceValue } from './types.ts'
+import { VOICE_VIEWS } from './views.ts'
 
 type Obj = Record<string, unknown>
 
 const PLACA_RE = /^[A-Z]{3}\d[A-Z0-9]\d{2}$/
 const DATE_RE = /^\d{4}-\d{2}-\d{2}$/
+const MONTH_RE = /^\d{4}-(0[1-9]|1[0-2])$/
 const TIME_RE = /^([01]\d|2[0-3]):[0-5]\d$/
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 const THOUSANDS_RE = /^\d{1,3}(\.\d{3})+(,\d+)?$/
@@ -56,6 +58,10 @@ function date(value: unknown): string | undefined {
   return parsed.getFullYear() === y && parsed.getMonth() === m - 1 && parsed.getDate() === d ? value : undefined
 }
 
+function month(value: unknown): string | undefined {
+  return typeof value === 'string' && MONTH_RE.test(value) ? value : undefined
+}
+
 function time(value: unknown): string | undefined {
   if (typeof value !== 'string') return undefined
   const trimmed = value.trim()
@@ -82,7 +88,11 @@ function bool(value: unknown): boolean | undefined {
 
 function scalar(field: VoiceField, value: unknown): string | number | boolean | undefined {
   switch (field.type) {
-    case 'text': return str(value)
+    case 'text': {
+      const s = str(value)
+      return field.max ? s?.slice(0, field.max) : s
+    }
+    case 'month': return month(value)
     case 'date': return date(value)
     case 'time': return time(value)
     case 'bool': return bool(value)
@@ -127,8 +137,8 @@ export function normalizeVoiceCommand(raw: unknown): VoiceCommand | null {
   if (raw.op === 'navigate') {
     const to = oneOf(raw.to, NAV_TARGETS)
     if (!to) return null
-    const day = to === 'scheduling' ? date(raw.date) : undefined
-    return day ? { op: 'navigate', to, date: day } : { op: 'navigate', to }
+    const query = pick(VOICE_VIEWS[to] ?? {}, raw.query) as Record<string, string> | undefined
+    return query ? { op: 'navigate', to, query } : { op: 'navigate', to }
   }
 
   const op = oneOf(raw.op, ['create', 'edit', 'action'] as const)

@@ -1,7 +1,7 @@
 import type { PermissionAction } from '../../../../2.auth/app/utils/permissions.ts'
 import type { VoiceEntityKey, VoicePage } from './types.ts'
 
-export type VoiceFieldType = 'text' | 'number' | 'money' | 'date' | 'time' | 'bool' | 'enum' | 'placa' | 'digits' | 'email'
+export type VoiceFieldType = 'text' | 'number' | 'money' | 'date' | 'month' | 'time' | 'bool' | 'enum' | 'placa' | 'digits' | 'email'
 export type VoiceMerge = 'append' | 'replace' | 'add'
 export type VoiceRefKind = 'vehicle' | 'customer' | 'supplier' | 'category' | 'catalogItem'
 
@@ -16,6 +16,7 @@ export interface VoiceField {
   /** Key in the screen state. Default: the field name. */
   stateKey?: string
   min?: number
+  /** number/money: max value; text: max length. */
   max?: number
   ops?: readonly ('create' | 'edit')[]
   /** Short hint for the AI prompt. */
@@ -23,7 +24,8 @@ export interface VoiceField {
 }
 
 export interface VoiceAction {
-  permission: PermissionAction
+  /** Absent: anyone who can open the screen (print, share). */
+  permission?: PermissionAction
   /** `confirm`: one-tap confirmation, then runs. `direct`: runs at once (opens an existing dialog, local change, guidance). */
   kind: 'confirm' | 'direct'
   /** Confirmation title; `{label}` and `{<arg>}` are interpolated. */

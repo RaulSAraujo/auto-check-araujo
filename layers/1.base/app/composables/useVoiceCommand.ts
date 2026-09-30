@@ -245,21 +245,27 @@ export function useVoiceCommand() {
     if (command.op === 'navigate') {
       const nav = NAV[command.to!]
       if (nav.permission && !can(nav.permission)) return forbidden()
-      const query = command.to === 'scheduling' && command.date ? { dia: command.date } : undefined
-      return go({ path: nav.path, query }, here, isCancelled, false)
+      if (command.query && nav.path === here) {
+        await navigateTo({ path: here, query: { ...currentRoute.value.query, ...command.query } }, { replace: true })
+        toast.add({ title: 'Filtro aplicado por voz', color: 'info', icon: 'i-lucide-mic' })
+        return { ok: true }
+      }
+      return go(command.query ? { path: nav.path, query: command.query, opened: true } : { path: nav.path }, here, isCancelled, false)
     }
 
     const entityKey = command.entity!
     const entity = VOICE_CATALOG[entityKey]
-    const permission = command.op === 'action'
+    const isAction = command.op === 'action'
+    const permission = isAction
       ? entity.actions[command.action!]!.permission
       : entity.permission[command.op as 'create' | 'edit']
     if (!permission) {
       const screen = Object.values(NAV).find(nav => nav.path === SCREEN_PATH[entityKey])?.permission
       if (screen && !can(screen)) return forbidden()
-      return go({ path: SCREEN_PATH[entityKey], opened: true }, here, isCancelled, false)
+      if (!isAction) return go({ path: SCREEN_PATH[entityKey], opened: true }, here, isCancelled, false)
+    } else if (!can(permission)) {
+      return forbidden()
     }
-    if (!can(permission)) return forbidden()
 
     const warnings: string[] = []
     const draft = await buildDraft(entityKey, command, page, warnings)

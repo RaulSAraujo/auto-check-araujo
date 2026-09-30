@@ -32,6 +32,9 @@ test('prompt has date, page, text, detailed current entity and compact others', 
   assert.match(system!.content, /forma_pagamento \(dinheiro\|pix\|cartao_credito\|cartao_debito\)/)
   assert.match(system!.content, /- account \(conta a pagar\); target \{descricao\}; fields: descricao, valor/)
   assert.match(system!.content, /Nunca inclua senha/)
+  assert.match(system!.content, /- orders: q \(busca\), status \(all\|aberta\|em_andamento\|concluida\|cancelada\)/)
+  assert.match(system!.content, /mes \(YYYY-MM\)/)
+  assert.match(system!.content, /"query":\{/)
 })
 
 test('prompt stays under the token budget on every page', () => {

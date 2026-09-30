@@ -66,10 +66,16 @@ test('edit with nothing valid is a plain open', () => {
     { op: 'edit', entity: 'customer', target: { nome: 'João' } })
 })
 
-test('navigate keeps date only for the agenda', () => {
-  assert.deepEqual(n({ op: 'navigate', to: 'scheduling', date: '2026-10-02' }), { op: 'navigate', to: 'scheduling', date: '2026-10-02' })
-  assert.deepEqual(n({ op: 'navigate', to: 'finance', date: '2026-10-02' }), { op: 'navigate', to: 'finance' })
-  assert.deepEqual(n({ op: 'navigate', to: 'scheduling', date: '2026-02-30' }), { op: 'navigate', to: 'scheduling' })
+test('navigate keeps only the query params the screen declares', () => {
+  assert.deepEqual(n({ op: 'navigate', to: 'orders', query: { q: ' João ', status: 'aberta' } }), { op: 'navigate', to: 'orders', query: { q: 'João', status: 'aberta' } })
+  assert.deepEqual(n({ op: 'navigate', to: 'orders', query: { status: 'perdida', page: '2' } }), { op: 'navigate', to: 'orders' })
+  assert.deepEqual(n({ op: 'navigate', to: 'scheduling', query: { dia: '2026-10-02', vista: 'week' } }), { op: 'navigate', to: 'scheduling', query: { dia: '2026-10-02', vista: 'week' } })
+  assert.deepEqual(n({ op: 'navigate', to: 'scheduling', query: { dia: '2026-02-30' } }), { op: 'navigate', to: 'scheduling' })
+  assert.deepEqual(n({ op: 'navigate', to: 'finance', query: { mes: '2026-08', aba: 'contas' } }), { op: 'navigate', to: 'finance', query: { aba: 'contas', mes: '2026-08' } })
+  assert.deepEqual(n({ op: 'navigate', to: 'finance', query: { mes: '2026-13' } }), { op: 'navigate', to: 'finance' })
+  assert.equal(n({ op: 'navigate', to: 'orders', query: { q: 'x'.repeat(300) } })?.query?.q?.length, 100)
+  assert.deepEqual(n({ op: 'navigate', to: 'team', query: { q: 'Pedro' } }), { op: 'navigate', to: 'team' })
+  assert.deepEqual(n({ op: 'navigate', to: 'scheduling', date: '2026-10-02' }), { op: 'navigate', to: 'scheduling' })
   assert.equal(n({ op: 'navigate', to: 'moon' }), null)
 })
 
