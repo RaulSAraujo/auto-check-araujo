@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { DropdownMenuItem } from '@nuxt/ui'
 import type { SchedulingAppointment } from '../composables/useSchedulingBoard'
+import { ORDER_ROUTES } from '#layers/orders/app/utils/order-routes'
 import {
   combineLocalDateTime,
   formatBoardDate,
@@ -112,6 +113,13 @@ function whenAppointmentLoaded(id: string, inicio: string, action: (appointment:
   appointmentLookups.add(dispose)
 }
 
+function withVoiceAppointment(draft: { id?: string, inicio?: string }, action: (appointment: SchedulingAppointment) => void) {
+  if (draft.id && draft.inicio) return whenAppointmentLoaded(draft.id, draft.inicio, action)
+  // No plate spoken (no `inicio`): the runtime used the appointment open in the slideover.
+  if (draft.id && editingAppointment.value?.id === draft.id) return action(editingAppointment.value)
+  toast.add({ title: 'Não encontrei o agendamento.', color: 'warning' })
+}
+
 useVoiceForm('appointment', {
   apply: (draft) => {
     if (!canWrite.value) return
@@ -128,30 +136,46 @@ useVoiceForm('appointment', {
     }
     const override = {
       ...(typeof date === 'string' ? { date } : {}),
-      ...(typeof startTime === 'string' ? { startTime } : {})
+      ...(typeof startTime === 'string' ? { startTime } : {}),
+      ...(typeof veiculo === 'string' ? { veiculo_id: veiculo } : {}),
+      ...(typeof problema === 'string' ? { problema } : {})
     }
-    if (!draft.id) return
-    // No plate spoken (no `inicio`): the runtime used the appointment open in the slideover.
-    if (!draft.inicio) {
-      if (editingAppointment.value?.id === draft.id) openEdit(editingAppointment.value, override)
-      return
+    withVoiceAppointment(draft, appointment => openEdit(appointment, override))
+  },
+  unavailable: (action, draft) => {
+    const open = editingAppointment.value
+    if (action === 'desfazerFalta' && !draft.inicio && open?.id === draft.id && open?.status !== 'nao_compareceu') {
+      return 'Este agendamento não está marcado como falta.'
     }
-    whenAppointmentLoaded(draft.id, draft.inicio, appointment => openEdit(appointment, override))
+    return undefined
   },
   actions: {
     faltou: (draft) => {
-      if (!canWrite.value || !draft.id) return
-      if (!draft.inicio) {
-        if (editingAppointment.value?.id === draft.id) requestNoShow(draft.id)
+      if (!canWrite.value) return
+      withVoiceAppointment(draft, appointment => requestNoShow(appointment.id))
+    },
+    desfazerFalta: (draft) => {
+      if (!canWrite.value) return
+      // By id: the board filters may hide no-shows, so don't wait for it to show up in the day list.
+      if (draft.id && draft.inicio) {
+        selectDay(new Date(draft.inicio))
+        void onUndoNoShow(draft.id)
         return
       }
-      whenAppointmentLoaded(draft.id, draft.inicio, appointment => requestNoShow(appointment.id))
+      withVoiceAppointment(draft, appointment => void onUndoNoShow(appointment.id))
+    },
+    abrirOS: (draft) => {
+      withVoiceAppointment(draft, (appointment) => {
+        if (appointment.ordem_servico_id) navigateTo(ORDER_ROUTES.detail(appointment.ordem_servico_id))
+        else navigateTo(ORDER_ROUTES.newFromAppointment(appointment.veiculo_id, appointment.id))
+      })
     }
   },
-  currentId: () => (formOpen.value ? editingAppointment.value?.id : undefined)
+  currentId: () => (formOpen.value ? editingAppointment.value?.id : undefined),
+  label: () => (editingAppointment.value?.veiculos?.placa ? formatPlaca(editingAppointment.value.veiculos.placa) : undefined)
 })
 
-function openEdit(appointment: SchedulingAppointment, override?: Pick<AppointmentCreatePrefill, 'date' | 'startTime'>) {
+function openEdit(appointment: SchedulingAppointment, override?: Omit<AppointmentCreatePrefill, 'hour'>) {
   createPrefill.value = override ?? null
   editingAppointment.value = appointment
   formOpen.value = true

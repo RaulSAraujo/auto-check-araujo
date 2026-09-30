@@ -61,12 +61,28 @@ useVoiceForm('customer', {
   state,
   format: { telefones: v => formatPhoneBr(String(v)), documento: v => formatDocumento(String(v)) },
   open: () => {
+    if (!can('customers.write')) return
     if (!editing.value) startEdit()
+  },
+  unavailable: (action) => {
+    if (action !== 'desativar' && action !== 'reativar') return undefined
+    // toggleAtivo refreshes the row, which overwrites the edit form state.
+    if (editing.value) return 'Salve ou cancele a edição antes.'
+    if (action === 'desativar' && cliente.value && !cliente.value.ativo) return 'Este cliente já está inativo.'
+    if (action === 'reativar' && cliente.value?.ativo) return 'Este cliente já está ativo.'
+    return undefined
+  },
+  actions: {
+    desativar: () => { void toggleAtivo() },
+    reativar: () => { void toggleAtivo() },
+    excluir: () => {
+      deleteOpen.value = true
+    }
   },
   currentId: () => id.value,
   label: () => cliente.value?.nome,
   accept: draft => draft.id === id.value,
-  ready: () => !!cliente.value && can('customers.write')
+  ready: () => !!cliente.value
 })
 
 const breadcrumbItems = computed<BreadcrumbItem[]>(() => [

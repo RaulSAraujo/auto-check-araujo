@@ -60,13 +60,19 @@ useVoiceForm('vehicle', {
   state,
   format: { placa: v => formatPlacaInput(String(v)) },
   open: (draft) => {
+    if (!can('vehicles.write')) return
     if (!editing.value) startEdit()
     if (typeof draft.fields.dono === 'string') voiceClienteId.value = draft.fields.dono
+  },
+  actions: {
+    excluir: () => {
+      deleteOpen.value = true
+    }
   },
   currentId: () => id.value,
   label: () => (veiculo.value ? formatPlaca(veiculo.value.placa) : undefined),
   accept: draft => draft.id === id.value,
-  ready: () => !!veiculo.value && can('vehicles.write')
+  ready: () => !!veiculo.value
 })
 
 const backFallback = computed(() => {

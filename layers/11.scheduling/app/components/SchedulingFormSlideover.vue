@@ -2,6 +2,7 @@
 import type { FormError, FormSubmitEvent } from '@nuxt/ui'
 import type { SchedulingAppointment } from '../composables/useSchedulingBoard'
 import { ORDER_ROUTES } from '#layers/orders/app/utils/order-routes'
+import { appendText } from '#layers/base/app/utils/voice/text'
 import { useVehicleOptions } from '#layers/vehicles/app/composables/useVehicleOptions'
 import {
   appointmentToDraft,
@@ -72,9 +73,11 @@ function resetDraft() {
   if (props.appointment) {
     Object.assign(draft, appointmentToDraft(props.appointment))
     snapshot.value = JSON.stringify({ ...draft })
-    // Voice reschedule: the new date/time land after the snapshot so the change is dirty.
+    // Voice edit: the prefill lands after the snapshot so the change is dirty.
     if (props.prefill?.date) draft.date = props.prefill.date
     if (props.prefill?.startTime) draft.startTime = props.prefill.startTime
+    if (props.prefill?.veiculo_id) draft.veiculo_id = props.prefill.veiculo_id
+    if (props.prefill?.problema) draft.problema = appendText(draft.problema, props.prefill.problema)
     return
   }
   Object.assign(draft, emptyAppointmentDraft(props.day, props.prefill ?? undefined))
