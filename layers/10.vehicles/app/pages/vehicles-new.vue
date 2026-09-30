@@ -33,19 +33,13 @@ const allowLeave = ref(false)
 
 const isDirty = computed(() => isVehicleFormDirty(state, initialState))
 
-const { onVoiceDraft } = useVoiceDraft()
-onVoiceDraft('vehicle.create', (draft) => {
-  if (draft.cliente_id) {
-    preferredClienteId.value = draft.cliente_id
-    state.cliente_id = draft.cliente_id
+useVoiceForm('vehicle', {
+  ops: ['create'],
+  state,
+  format: { placa: v => formatPlacaInput(String(v)) },
+  open: (draft) => {
+    if (typeof draft.fields.dono === 'string') preferredClienteId.value = draft.fields.dono
   }
-  if (draft.placa) state.placa = formatPlacaInput(draft.placa)
-  if (draft.marca) state.marca = draft.marca
-  if (draft.modelo) state.modelo = draft.modelo
-  if (draft.ano != null) state.ano = draft.ano
-  if (draft.cor) state.cor = draft.cor
-  if (draft.km_atual != null) state.km_atual = draft.km_atual
-  if (draft.observacoes) state.observacoes = draft.observacoes
 })
 
 const backFallback = computed(() =>

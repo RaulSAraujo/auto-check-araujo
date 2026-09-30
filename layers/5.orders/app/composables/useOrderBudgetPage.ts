@@ -5,6 +5,7 @@ import { isBudgetEditable, ORDEM_ITEM_TIPO_LABEL } from '~~/shared/types/oficina
 import {
   calcItemsTotal,
   emptyOrderItemDraft,
+  isOrderItemDraftValid,
   type OrderItemDraft
 } from '../utils/budget'
 import {
@@ -104,14 +105,15 @@ export function useOrderBudgetPage(
 
   watch(selectedCatalogId, applyCatalogEntry)
 
-  async function openVoiceItem(voice: VoiceBudgetItemDraft) {
+  /** Fills the add-item draft from voice (catalog entry first, spoken values on top). */
+  async function fillVoiceItem(voice: VoiceBudgetItemDraft): Promise<boolean> {
     if (!canEditItems.value) {
       useToast().add({
         title: 'Orçamento bloqueado',
         description: 'Este orçamento não pode receber itens agora.',
         color: 'warning'
       })
-      return
+      return false
     }
     Object.assign(draft, emptyOrderItemDraft(), { tipo: voice.tipo })
     if (voice.descricao) draft.descricao = voice.descricao
@@ -121,14 +123,27 @@ export function useOrderBudgetPage(
     await nextTick()
     if (voice.quantidade != null) draft.quantidade = voice.quantidade
     if (voice.valor_unitario != null) draft.valor_unitario = voice.valor_unitario
-    addModalOpen.value = true
+    return true
   }
 
-  const { onVoiceDraft } = useVoiceDraft()
-  onVoiceDraft('budgetItem.create', openVoiceItem, {
-    accept: voice => voice.orderId === toValue(orderId),
-    ready: () => !!ordem.value
-  })
+  async function openVoiceItem(voice: VoiceBudgetItemDraft) {
+    if (await fillVoiceItem(voice)) addModalOpen.value = true
+  }
+
+  /** Several spoken items: the page confirms the list first, then each one is inserted like the add modal does. */
+  async function addVoiceItems(voice: VoiceBudgetItemDraft[]) {
+    let nextOrdem = items.value?.length || 0
+    for (const item of voice) {
+      if (!await fillVoiceItem(item)) return
+      if (!isOrderItemDraftValid(draft)) continue
+      const { error } = await addOrderItem(toValue(orderId), { ...draft }, nextOrdem, { silent: true })
+      if (error) break
+      nextOrdem++
+    }
+    Object.assign(draft, emptyOrderItemDraft())
+    selectedCatalogId.value = undefined
+    await refreshItems()
+  }
 
   async function refreshAll() {
     await Promise.all([refreshOrder(), refreshItems()])
@@ -251,6 +266,8 @@ export function useOrderBudgetPage(
     onSubmitForApproval,
     onApprove,
     onReject,
-    openVoiceItem
+    fillVoiceItem,
+    openVoiceItem,
+    addVoiceItems
   }
 }

@@ -89,13 +89,10 @@ function openCreate() {
   formOpen.value = true
 }
 
-const { onVoiceDraft } = useVoiceDraft()
-onVoiceDraft('supplier.create', (draft) => {
-  openCreate()
-  if (draft.nome) supplierDraft.nome = draft.nome
-  if (draft.telefone) supplierDraft.telefone = draft.telefone
-  if (draft.email) supplierDraft.email = draft.email
-  if (draft.observacoes) supplierDraft.observacoes = draft.observacoes
+useVoiceForm('supplier', {
+  ops: ['create'],
+  state: supplierDraft,
+  open: () => openCreate()
 })
 
 function onSupplierEdit(payload: { id: string }) {

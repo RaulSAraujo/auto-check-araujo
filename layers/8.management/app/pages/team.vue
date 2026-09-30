@@ -37,10 +37,12 @@ watch(createOpen, (open) => {
   if (!open) voiceCollaborator.value = undefined
 })
 
-const { onVoiceDraft } = useVoiceDraft()
-onVoiceDraft('collaborator.create', (draft) => {
-  voiceCollaborator.value = { ...draft }
-  createOpen.value = true
+useVoiceForm('collaborator', {
+  ops: ['create'],
+  apply: (draft) => {
+    voiceCollaborator.value = { ...draft.fields } as typeof voiceCollaborator.value
+    createOpen.value = true
+  }
 })
 
 const countLabel = computed(() => {

@@ -1,24 +1,28 @@
-import type { VoiceDraftMap, VoiceIntent } from '../utils/voice/types'
+import type { VoiceDraft, VoiceEntityKey } from '../utils/voice/types'
 
-type PendingVoiceDraft = { intent: VoiceIntent, draft: VoiceDraftMap[VoiceIntent], createdAt: number }
+type PendingVoiceDraft = { draft: VoiceDraft, createdAt: number }
+export interface VoiceCurrent { id: string, label?: string }
 
 const DRAFT_TTL_MS = 15_000
 
 export function useVoiceDraft() {
   const pending = useState<PendingVoiceDraft | null>('voice-draft', () => null)
+  /** Record open on screen per entity (detail page or edit slideover), used when a command has no target. */
+  const current = useState<Partial<Record<VoiceEntityKey, VoiceCurrent>>>('voice-current', () => ({}))
 
-  function setVoiceDraft<K extends VoiceIntent>(intent: K, draft: VoiceDraftMap[K]) {
-    pending.value = { intent, draft, createdAt: Date.now() }
+  function setVoiceDraft(draft: VoiceDraft) {
+    pending.value = { draft, createdAt: Date.now() }
   }
 
   function clearVoiceDraft() {
     pending.value = null
   }
 
-  function onVoiceDraft<K extends VoiceIntent>(
-    intent: K,
-    handler: (draft: VoiceDraftMap[K]) => void,
-    options?: { accept?: (draft: VoiceDraftMap[K]) => boolean, ready?: () => boolean }
+  /** `handles` lets several registrations share an entity (e.g. the order page and its photos section). */
+  function onVoiceDraft(
+    handles: (draft: VoiceDraft) => boolean,
+    handler: (draft: VoiceDraft) => void,
+    options?: { ready?: () => boolean }
   ) {
     watch([pending, () => options?.ready?.() ?? true], ([value, ready]) => {
       if (!value) return
@@ -26,16 +30,13 @@ export function useVoiceDraft() {
         pending.value = null
         return
       }
-      if (value.intent !== intent) return
-      const draft = value.draft as VoiceDraftMap[K]
-      // Another page instance (e.g. the previous record during navigation) must not swallow the draft.
-      if (options?.accept && !options.accept(draft)) return
+      if (!handles(value.draft)) return
       // Lazy queries: wait for the record so form-sync watchers (registered earlier) run first.
       if (!ready) return
       pending.value = null
-      handler(draft)
+      handler(value.draft)
     }, { immediate: true })
   }
 
-  return { setVoiceDraft, clearVoiceDraft, onVoiceDraft }
+  return { setVoiceDraft, clearVoiceDraft, onVoiceDraft, current }
 }

@@ -86,18 +86,6 @@ function openCreate(prefill?: AppointmentCreatePrefill) {
   formOpen.value = true
 }
 
-const { onVoiceDraft } = useVoiceDraft()
-onVoiceDraft('appointment.create', (draft) => {
-  if (!canWrite.value) return
-  if (draft.date) selectDay(combineLocalDateTime(draft.date, '00:00'))
-  openCreate({
-    veiculo_id: draft.veiculo_id,
-    date: draft.date,
-    startTime: draft.startTime,
-    problema: draft.problema
-  })
-})
-
 // Draft handlers can run outside the page's effect scope, so their watchers/timers are disposed by hand.
 const appointmentLookups = new Set<() => void>()
 onBeforeUnmount(() => appointmentLookups.forEach(dispose => dispose()))
@@ -124,17 +112,38 @@ function whenAppointmentLoaded(id: string, inicio: string, action: (appointment:
   appointmentLookups.add(dispose)
 }
 
-onVoiceDraft('appointment.reschedule', (draft) => {
-  if (!canWrite.value) return
-  whenAppointmentLoaded(draft.appointmentId, draft.inicio, appointment => openEdit(appointment, {
-    ...(draft.date ? { date: draft.date } : {}),
-    ...(draft.startTime ? { startTime: draft.startTime } : {})
-  }))
-})
-
-onVoiceDraft('appointment.noShow', (draft) => {
-  if (!canWrite.value) return
-  whenAppointmentLoaded(draft.appointmentId, draft.inicio, appointment => requestNoShow(appointment.id))
+useVoiceForm('appointment', {
+  apply: (draft) => {
+    if (!canWrite.value) return
+    const { veiculo, date, startTime, problema } = draft.fields
+    if (draft.op === 'create') {
+      if (typeof date === 'string') selectDay(combineLocalDateTime(date, '00:00'))
+      openCreate({
+        veiculo_id: typeof veiculo === 'string' ? veiculo : undefined,
+        date: typeof date === 'string' ? date : undefined,
+        startTime: typeof startTime === 'string' ? startTime : undefined,
+        problema: typeof problema === 'string' ? problema : undefined
+      })
+      return
+    }
+    const override = {
+      ...(typeof date === 'string' ? { date } : {}),
+      ...(typeof startTime === 'string' ? { startTime } : {})
+    }
+    // No plate spoken: the runtime used the appointment open in the slideover (no `inicio`).
+    if (editingAppointment.value && draft.id === editingAppointment.value.id) return openEdit(editingAppointment.value, override)
+    if (!draft.id || !draft.inicio) return
+    whenAppointmentLoaded(draft.id, draft.inicio, appointment => openEdit(appointment, override))
+  },
+  actions: {
+    faltou: (draft) => {
+      if (!canWrite.value || !draft.id) return
+      if (editingAppointment.value && draft.id === editingAppointment.value.id) return requestNoShow(draft.id)
+      if (!draft.inicio) return
+      whenAppointmentLoaded(draft.id, draft.inicio, appointment => requestNoShow(appointment.id))
+    }
+  },
+  currentId: () => (formOpen.value ? editingAppointment.value?.id : undefined)
 })
 
 function openEdit(appointment: SchedulingAppointment, override?: Pick<AppointmentCreatePrefill, 'date' | 'startTime'>) {

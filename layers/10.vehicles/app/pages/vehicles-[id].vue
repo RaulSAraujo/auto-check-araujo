@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { BreadcrumbItem, DropdownMenuItem } from '@nuxt/ui'
 import { VEHICLE_ROUTES } from '../utils/vehicle-routes'
-import { appendText } from '#layers/base/app/utils/voice/text'
+import { formatPlacaInput } from '../utils/vehicle-form'
 
 defineOptions({ name: 'VehiclesDetailPage' })
 
@@ -19,7 +19,8 @@ const [
   useVehicleQuery(id),
   useVehicleOrders(id)
 ])
-const preferredClienteId = computed(() => veiculo.value?.cliente_id || undefined)
+const voiceClienteId = ref('')
+const preferredClienteId = computed(() => voiceClienteId.value || veiculo.value?.cliente_id || undefined)
 const {
   clienteItems,
   searchTerm: clienteSearchTerm,
@@ -50,14 +51,19 @@ const {
 
 const { can } = usePermissions()
 
-const { onVoiceDraft } = useVoiceDraft()
-onVoiceDraft('vehicle.edit', (voice) => {
-  if (!can('vehicles.write')) return
-  if (!editing.value) startEdit()
-  if (voice.km_atual != null) state.km_atual = voice.km_atual
-  if (voice.cor) state.cor = voice.cor
-  state.observacoes = appendText(state.observacoes, voice.observacoes)
-}, { accept: voice => voice.veiculoId === id.value, ready: () => !!veiculo.value })
+useVoiceForm('vehicle', {
+  ops: ['edit'],
+  state,
+  format: { placa: v => formatPlacaInput(String(v)) },
+  open: (draft) => {
+    if (!editing.value) startEdit()
+    if (typeof draft.fields.dono === 'string') voiceClienteId.value = draft.fields.dono
+  },
+  currentId: () => id.value,
+  label: () => (veiculo.value ? formatPlaca(veiculo.value.placa) : undefined),
+  accept: draft => draft.id === id.value,
+  ready: () => !!veiculo.value && can('vehicles.write')
+})
 
 const backFallback = computed(() => {
   const owner = veiculo.value?.clientes

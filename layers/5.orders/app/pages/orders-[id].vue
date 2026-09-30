@@ -7,7 +7,8 @@ import {
 import { downloadBudgetPdf, printBudgetPdf } from '../utils/pdf'
 import { primaryPhone } from '~~/shared/utils/contact'
 import { formatTimeShort, schedulingDayPath } from '#layers/scheduling/app/utils/scheduling'
-import { appendText } from '#layers/base/app/utils/voice/text'
+import { applyVoiceFields, voiceBudgetItem } from '#layers/base/app/utils/voice/apply'
+import { VOICE_CATALOG } from '#layers/base/app/utils/voice/catalog'
 
 defineOptions({ name: 'OrdersDetailPage' })
 
@@ -79,23 +80,32 @@ const {
   saveStatus
 } = useOrderStatusEditor(id, ordem, refresh)
 
-const { onVoiceDraft } = useVoiceDraft()
-onVoiceDraft('order.edit', async (voice) => {
-  const hasFields = voice.km_entrada != null || !!voice.reclamacao || !!voice.diagnostico || !!voice.observacoes || !!voice.status
-  if (hasFields && !canEdit.value) {
-    useToast().add({ title: 'Esta OS não pode ser editada.', color: 'warning' })
-  } else if (hasFields) {
-    if (voice.km_entrada != null) state.km_entrada = voice.km_entrada
-    state.reclamacao = appendText(state.reclamacao, voice.reclamacao)
-    state.diagnostico = appendText(state.diagnostico, voice.diagnostico)
-    state.observacoes = appendText(state.observacoes, voice.observacoes)
-    if (voice.status) {
-      if (statusItems.value.some(item => item.value === voice.status)) selectedStatus.value = voice.status
+const ORDER_FORM_FIELDS = ['km_entrada', 'reclamacao', 'diagnostico', 'observacoes'] as const
+
+useVoiceForm('order', {
+  ops: ['edit'],
+  apply: (draft) => {
+    const { status, ...rest } = draft.fields
+    const hasForm = ORDER_FORM_FIELDS.some(key => key in rest)
+    if ((hasForm || status) && !canEdit.value) {
+      useToast().add({ title: 'Esta OS não pode ser editada.', color: 'warning' })
+      return
+    }
+    applyVoiceFields(state, rest, VOICE_CATALOG.order, { only: ORDER_FORM_FIELDS })
+    if (typeof status === 'string') {
+      if (statusItems.value.some(item => item.value === status)) selectedStatus.value = status
       else useToast().add({ title: 'Esse status não está disponível para esta OS.', color: 'warning' })
     }
-  }
-  if (voice.item) await openVoiceItem(voice.item)
-}, { accept: voice => voice.orderId === id.value, ready: () => !!ordem.value })
+  },
+  onItems: async (items) => {
+    await openVoiceItem(voiceBudgetItem(items[0]!))
+    if (items.length > 1) useToast().add({ title: 'Só o primeiro item foi preenchido. Dite o próximo em seguida.', color: 'warning' })
+  },
+  currentId: () => id.value,
+  label: () => ordem.value?.numero,
+  accept: draft => draft.id === id.value,
+  ready: () => !!ordem.value
+})
 
 const {
   state: paymentState,

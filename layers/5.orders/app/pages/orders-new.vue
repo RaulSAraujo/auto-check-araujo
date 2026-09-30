@@ -71,16 +71,12 @@ const allowLeave = ref(false)
 const selectedVehicle = computed(() => findVehicle(state.veiculo_id))
 const isDirty = computed(() => isOrderFormDirty(state, initialState))
 
-const { onVoiceDraft } = useVoiceDraft()
-onVoiceDraft('order.create', (draft) => {
-  if (draft.veiculo_id) {
-    voiceVeiculoId.value = draft.veiculo_id
-    state.veiculo_id = draft.veiculo_id
+useVoiceForm('order', {
+  ops: ['create'],
+  state,
+  open: (draft) => {
+    if (typeof draft.fields.veiculo === 'string') voiceVeiculoId.value = draft.fields.veiculo
   }
-  if (draft.km_entrada != null) state.km_entrada = draft.km_entrada
-  if (draft.reclamacao) state.reclamacao = draft.reclamacao
-  if (draft.diagnostico) state.diagnostico = draft.diagnostico
-  if (draft.observacoes) state.observacoes = draft.observacoes
 })
 
 const backFallback = computed(() => {

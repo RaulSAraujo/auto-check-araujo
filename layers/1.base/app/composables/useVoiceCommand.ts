@@ -1,50 +1,19 @@
 import type { PermissionAction } from '#layers/auth/app/utils/permissions'
-import type {
-  VoiceBudgetItemDraft,
-  VoiceBudgetItemPayload,
-  VoiceCommand,
-  VoiceDraftMap,
-  VoiceIntent,
-  VoiceNavTarget,
-  VoicePage
-} from '../utils/voice/types'
+import { VOICE_CATALOG, type VoiceRefKind } from '../utils/voice/catalog'
+import { legacyToCommand } from '../utils/voice/legacy'
+import { normalizeVoiceCommand } from '../utils/voice/normalize'
 import { parseVoiceCommand } from '../utils/voice/parser'
 import { localDateInput, voicePageFromPath } from '../utils/voice/prompt'
+import type { VoiceCommand, VoiceDraft, VoiceEntityKey, VoiceNavTarget, VoicePage, VoiceRecord } from '../utils/voice/types'
+import type { VoiceCurrent } from './useVoiceDraft'
+import type { VoiceFound } from './useVoiceLookup'
 
 export type VoiceRunResult
-  = | { ok: true, intent: VoiceIntent }
+  = | { ok: true }
     | { ok: false, reason: 'not_understood' | 'forbidden' | 'context' | 'cancelled' }
 
-/** `opened`: an edit command without fields only navigates, no draft is stored. */
+/** `opened`: only navigates, no draft is stored. */
 type Destination = { path: string, query?: Record<string, string>, opened?: true }
-
-const INTENT_PERMISSION: Record<Exclude<VoiceIntent, 'navigate'>, PermissionAction> = {
-  'customer.create': 'customers.write',
-  'vehicle.create': 'vehicles.write',
-  'order.create': 'orders.create',
-  'appointment.create': 'scheduling.write',
-  'budgetItem.create': 'budget.edit',
-  'account.create': 'finance.view',
-  'catalogItem.create': 'catalog.manage',
-  'supplier.create': 'catalog.manage',
-  'collaborator.create': 'collaborators.manage',
-  'order.edit': 'orders.edit',
-  'customer.edit': 'customers.write',
-  'vehicle.edit': 'vehicles.write',
-  'appointment.reschedule': 'scheduling.write',
-  'appointment.noShow': 'scheduling.write'
-}
-
-const CREATE_PATH: Partial<Record<VoiceIntent, string>> = {
-  'customer.create': APP_ROUTES.customersNew,
-  'vehicle.create': APP_ROUTES.vehiclesNew,
-  'order.create': APP_ROUTES.ordersNew,
-  'appointment.create': APP_ROUTES.scheduling,
-  'account.create': APP_ROUTES.finance,
-  'catalogItem.create': APP_ROUTES.catalog,
-  'supplier.create': APP_ROUTES.catalogSuppliers,
-  'collaborator.create': APP_ROUTES.team
-}
 
 const NAV: Record<VoiceNavTarget, { path: string, permission?: PermissionAction }> = {
   home: { path: APP_ROUTES.home },
@@ -60,14 +29,48 @@ const NAV: Record<VoiceNavTarget, { path: string, permission?: PermissionAction 
   settings: { path: APP_ROUTES.settings }
 }
 
+const RECORD_PATH: Partial<Record<VoiceEntityKey, (id: string) => string>> = {
+  order: id => `/ordens/${id}`,
+  customer: id => `/clientes/${id}`,
+  vehicle: id => `/veiculos/${id}`
+}
+
+const CREATE_PATH: Partial<Record<VoiceEntityKey, string>> = {
+  order: APP_ROUTES.ordersNew,
+  customer: APP_ROUTES.customersNew,
+  vehicle: APP_ROUTES.vehiclesNew
+}
+
+const SCREEN_PATH: Record<VoiceEntityKey, string> = {
+  order: APP_ROUTES.orders,
+  customer: APP_ROUTES.customers,
+  vehicle: APP_ROUTES.vehicles,
+  appointment: APP_ROUTES.scheduling,
+  account: APP_ROUTES.finance,
+  category: APP_ROUTES.finance,
+  catalogItem: APP_ROUTES.catalog,
+  supplier: APP_ROUTES.catalogSuppliers,
+  collaborator: APP_ROUTES.team,
+  pricing: APP_ROUTES.pricing
+}
+
+const REF_LABEL: Record<VoiceRefKind, string> = {
+  vehicle: 'Placa',
+  customer: 'Cliente',
+  supplier: 'Fornecedor',
+  category: 'Categoria',
+  catalogItem: 'Item do catálogo'
+}
+
 export function useVoiceCommand() {
   const { currentRoute } = useRouter()
   const toast = useToast()
   const { can } = usePermissions()
-  const { setVoiceDraft, clearVoiceDraft } = useVoiceDraft()
-  const { findVehicleIdByPlaca, findUniqueIdByName, findOrderId, findNextAppointment } = useVoiceLookup()
+  const { setVoiceDraft, clearVoiceDraft, current } = useVoiceDraft()
+  const lookup = useVoiceLookup()
 
   async function interpret(text: string, page: VoicePage): Promise<VoiceCommand | null> {
+    const local = () => normalizeVoiceCommand(legacyToCommand(parseVoiceCommand(text)))
     try {
       const { command } = await $fetch<{ command: VoiceCommand | null }>('/api/voice/interpret', {
         method: 'POST',
@@ -75,182 +78,139 @@ export function useVoiceCommand() {
         // Server worst case: 3 providers × 8 s.
         timeout: 30_000
       })
-      return command ?? parseVoiceCommand(text)
+      return command ?? local()
     } catch {
-      return parseVoiceCommand(text)
+      return local()
     }
   }
 
-  function currentId(): string {
-    return String(currentRoute.value.params.id)
+  function warn(title: string, description?: string) {
+    toast.add({ title, description, color: 'warning' })
   }
 
-  async function budgetItemDraft(item: VoiceBudgetItemPayload): Promise<VoiceBudgetItemDraft> {
-    const draft: VoiceBudgetItemDraft = { ...item }
-    if (item.descricao) {
-      const catalogItemId = await findUniqueIdByName('servicos_catalogo', item.descricao, { tipo: item.tipo })
-      if (catalogItemId) draft.catalogItemId = catalogItemId
+  function findRef(kind: VoiceRefKind, value: string, tipo?: string): Promise<VoiceFound | undefined> {
+    return kind === 'vehicle' ? lookup.findVehicle(value) : lookup.findNamed(kind, value, { tipo })
+  }
+
+  async function findTarget(entityKey: VoiceEntityKey, command: VoiceCommand): Promise<VoiceFound | undefined> {
+    const t = command.target ?? {}
+    switch (entityKey) {
+      case 'order':
+        return lookup.findOrder(t)
+      case 'vehicle':
+        return t.placa ? lookup.findVehicle(t.placa) : undefined
+      case 'appointment': {
+        const vehicle = t.placa ? await lookup.findVehicle(t.placa) : undefined
+        const found = vehicle && await lookup.findAppointment(vehicle.id, { noShow: command.action === 'desfazerFalta' })
+        return found && vehicle ? { id: found.id, inicio: found.inicio, label: vehicle.label } : undefined
+      }
+      case 'account':
+        return t.descricao ? lookup.findAccount(t.descricao, { reopen: command.action === 'reabrir' }) : undefined
+      case 'collaborator':
+        return t.nome ? lookup.findCollaborator(t.nome) : undefined
+      case 'customer':
+      case 'supplier':
+      case 'category':
+      case 'catalogItem':
+        return t.nome
+          ? lookup.findNamed(entityKey, t.nome, { includeInactive: command.action === 'reativar' || command.action === 'ativar' })
+          : undefined
+      default:
+        return undefined
     }
+  }
+
+  async function resolveRefs(entityKey: VoiceEntityKey, fields: VoiceRecord | undefined, warnings: string[]): Promise<VoiceRecord> {
+    const out: VoiceRecord = {}
+    const spec = VOICE_CATALOG[entityKey].fields
+    for (const [key, value] of Object.entries(fields ?? {})) {
+      const ref = spec[key]?.ref
+      if (!ref || typeof value !== 'string') {
+        out[key] = value
+        continue
+      }
+      const found = await findRef(ref, value)
+      if (found) out[key] = found.id
+      else warnings.push(`${REF_LABEL[ref]} "${ref === 'vehicle' ? formatPlaca(value) : value}" não encontrado ou ambíguo.`)
+    }
+    return out
+  }
+
+  async function resolveItems(entityKey: VoiceEntityKey, items: VoiceRecord[] | undefined, warnings: string[]): Promise<VoiceRecord[] | undefined> {
+    if (!items?.length) return undefined
+    const spec = VOICE_CATALOG[entityKey].items ?? {}
+    const resolved = await Promise.all(items.map(async (item) => {
+      const out: VoiceRecord = { ...item }
+      for (const [key, value] of Object.entries(item)) {
+        const ref = spec[key]?.ref
+        if (!ref || typeof value !== 'string') continue
+        const found = await findRef(ref, value)
+        if (!found) {
+          warnings.push(`${REF_LABEL[ref]} "${value}" não encontrado ou ambíguo.`)
+          return null
+        }
+        out[key] = found.id
+      }
+      if (entityKey === 'order' && typeof item.descricao === 'string') {
+        const found = await findRef('catalogItem', item.descricao, typeof item.tipo === 'string' ? item.tipo : undefined)
+        if (found) out.catalogItemId = found.id
+      }
+      return out
+    }))
+    const kept = resolved.filter((item): item is VoiceRecord => !!item)
+    return kept.length ? kept : undefined
+  }
+
+  async function buildDraft(entityKey: VoiceEntityKey, command: VoiceCommand, page: VoicePage, warnings: string[]): Promise<VoiceDraft | null> {
+    const entity = VOICE_CATALOG[entityKey]
+    const op = command.op as VoiceDraft['op']
+    const draft: VoiceDraft = { entity: entityKey, op, fields: {} }
+
+    if (op !== 'create' && Object.keys(entity.target).length) {
+      const onScreen = entity.pages.includes(page) ? current.value[entityKey] : undefined
+      const found: (VoiceCurrent & { inicio?: string }) | undefined = command.target ? await findTarget(entityKey, command) : onScreen
+      if (!found) {
+        const said = Object.values(command.target ?? {})[0]
+        if (said) warn(`Não encontrei ${entity.label} "${said}".`, 'Confira o nome, a placa ou o número.')
+        else warn(`Qual ${entity.label}?`, 'Diga o nome, a placa ou o número.')
+        return null
+      }
+      draft.id = found.id
+      draft.label = found.label
+      if (found.inicio) draft.inicio = found.inicio
+    }
+
+    draft.fields = await resolveRefs(entityKey, command.fields, warnings)
+    if (entityKey === 'order' && command.items?.length && !can('budget.edit')) {
+      warnings.push('Sem permissão para adicionar itens ao orçamento.')
+    } else {
+      const items = await resolveItems(entityKey, command.items, warnings)
+      if (items) draft.items = items
+    }
+    if (command.action) draft.action = command.action
+    if (command.args) draft.args = command.args
     return draft
   }
 
-  async function resolve(command: VoiceCommand, page: VoicePage, warnings: string[]): Promise<Destination | null> {
-    switch (command.intent) {
-      case 'navigate': {
-        const { to, date } = command.payload
-        if (to === 'scheduling' && date) return { path: APP_ROUTES.scheduling, query: { dia: date } }
-        return { path: NAV[to].path }
-      }
-      case 'vehicle.create': {
-        const { payload } = command
-        const draft: VoiceDraftMap['vehicle.create'] = { ...payload }
-        if (payload.clienteNome) {
-          const clienteId = await findUniqueIdByName('clientes', payload.clienteNome)
-          if (clienteId) draft.cliente_id = clienteId
-          else warnings.push(`Cliente "${payload.clienteNome}" não encontrado ou ambíguo.`)
-        }
-        setVoiceDraft(command.intent, draft)
-        return { path: APP_ROUTES.vehiclesNew }
-      }
-      case 'order.create':
-      case 'appointment.create': {
-        const { payload } = command
-        const draft: VoiceDraftMap['order.create' | 'appointment.create'] = { ...payload }
-        if (payload.placa) {
-          const veiculoId = await findVehicleIdByPlaca(payload.placa)
-          if (veiculoId) draft.veiculo_id = veiculoId
-          else warnings.push(`Placa ${formatPlaca(payload.placa)} não encontrada.`)
-        }
-        setVoiceDraft(command.intent, draft)
-        return { path: CREATE_PATH[command.intent]! }
-      }
-      case 'budgetItem.create': {
-        if (page !== 'order-detail') {
-          toast.add({ title: 'Abra uma OS', description: 'Para adicionar itens por voz, abra a ordem de serviço primeiro.', color: 'warning' })
-          return null
-        }
-        setVoiceDraft(command.intent, { ...(await budgetItemDraft(command.payload)), orderId: currentId() })
-        return { path: currentRoute.value.path }
-      }
-      case 'account.create': {
-        const { payload } = command
-        const draft: VoiceDraftMap['account.create'] = { ...payload }
-        if (payload.categoriaNome) {
-          const categoriaId = await findUniqueIdByName('financeiro_categorias', payload.categoriaNome)
-          if (categoriaId) draft.categoria_id = categoriaId
-          else warnings.push(`Categoria "${payload.categoriaNome}" não encontrada ou ambígua.`)
-        }
-        if (payload.fornecedorNome) {
-          const fornecedorId = await findUniqueIdByName('fornecedores', payload.fornecedorNome)
-          if (fornecedorId) draft.fornecedor_id = fornecedorId
-          else warnings.push(`Fornecedor "${payload.fornecedorNome}" não encontrado ou ambíguo.`)
-        }
-        setVoiceDraft(command.intent, draft)
-        return { path: APP_ROUTES.finance }
-      }
-      case 'order.edit': {
-        const { target, itens, ...fields } = command.payload
-        const orderId = target ? await findOrderId(target) : page === 'order-detail' ? currentId() : undefined
-        if (!orderId) {
-          if (target?.numero) {
-            toast.add({ title: `OS ${target.numero} não encontrada.`, color: 'warning' })
-          } else {
-            toast.add({
-              title: target ? 'Nenhuma OS em aberto encontrada' : 'Qual OS?',
-              description: target ? 'Confira a placa, o número ou o cliente. Para criar, diga "nova OS".' : 'Diga a placa, o número da OS ou o cliente.',
-              color: 'warning'
-            })
-          }
-          return null
-        }
-        const draft: VoiceDraftMap['order.edit'] = { ...fields, orderId }
-        const [first] = itens ?? []
-        if (first) {
-          if (can('budget.edit')) draft.item = await budgetItemDraft(first)
-          else warnings.push('Sem permissão para adicionar itens ao orçamento.')
-        }
-        if ((itens?.length ?? 0) > 1) warnings.push('Só o primeiro item foi preenchido. Dite o próximo em seguida.')
-        const path = `/ordens/${orderId}`
-        if (Object.keys(draft).length === 1) return { path, opened: true }
-        setVoiceDraft(command.intent, draft)
-        return { path }
-      }
-      case 'customer.edit': {
-        const { target, ...fields } = command.payload
-        const clienteId = target?.nome
-          ? await findUniqueIdByName('clientes', target.nome)
-          : page === 'customer-detail' ? currentId() : undefined
-        if (!clienteId) {
-          toast.add({ title: target?.nome ? `Cliente "${target.nome}" não encontrado ou ambíguo.` : 'Qual cliente? Diga o nome.', color: 'warning' })
-          return null
-        }
-        const path = `/clientes/${clienteId}`
-        if (!Object.keys(fields).length) return { path, opened: true }
-        setVoiceDraft(command.intent, { ...fields, clienteId })
-        return { path }
-      }
-      case 'vehicle.edit': {
-        const { target, ...fields } = command.payload
-        const veiculoId = target?.placa
-          ? await findVehicleIdByPlaca(target.placa)
-          : page === 'vehicle-detail' ? currentId() : undefined
-        if (!veiculoId) {
-          toast.add({ title: target?.placa ? `Placa ${formatPlaca(target.placa)} não encontrada.` : 'Qual veículo? Diga a placa.', color: 'warning' })
-          return null
-        }
-        const path = `/veiculos/${veiculoId}`
-        if (!Object.keys(fields).length) return { path, opened: true }
-        setVoiceDraft(command.intent, { ...fields, veiculoId })
-        return { path }
-      }
-      case 'appointment.reschedule':
-      case 'appointment.noShow': {
-        const { placa } = command.payload
-        const veiculoId = placa ? await findVehicleIdByPlaca(placa) : undefined
-        const appointment = veiculoId ? await findNextAppointment(veiculoId) : undefined
-        if (!appointment) {
-          toast.add({ title: placa ? `Nenhum agendamento futuro para ${formatPlaca(placa)}.` : 'Diga a placa do agendamento.', color: 'warning' })
-          return null
-        }
-        const base = { appointmentId: appointment.id, inicio: appointment.inicio }
-        if (command.intent === 'appointment.reschedule') {
-          const { date, startTime } = command.payload
-          setVoiceDraft(command.intent, { ...base, ...(date ? { date } : {}), ...(startTime ? { startTime } : {}) })
-        } else {
-          setVoiceDraft(command.intent, base)
-        }
-        return { path: APP_ROUTES.scheduling, query: { dia: localDateInput(new Date(appointment.inicio)) } }
-      }
-      default:
-        setVoiceDraft(command.intent, command.payload)
-        return { path: CREATE_PATH[command.intent]! }
+  function destinationFor(draft: VoiceDraft): Destination {
+    const record = draft.id ? RECORD_PATH[draft.entity] : undefined
+    if (draft.op === 'create') {
+      const path = CREATE_PATH[draft.entity] ?? SCREEN_PATH[draft.entity]
+      const day = draft.entity === 'appointment' && typeof draft.fields.date === 'string' ? draft.fields.date : undefined
+      return day ? { path, query: { dia: day } } : { path }
     }
+    if (record) return { path: record(draft.id!) }
+    if (draft.entity === 'appointment' && draft.inicio) {
+      return { path: SCREEN_PATH.appointment, query: { dia: localDateInput(new Date(draft.inicio)) } }
+    }
+    return { path: SCREEN_PATH[draft.entity] }
   }
 
-  /** `isCancelled`: the AI call can take seconds; a closed modal must not navigate or prefill afterwards. */
-  async function run(text: string, isCancelled: () => boolean = () => false): Promise<VoiceRunResult> {
-    const here = currentRoute.value.path
-    const page = voicePageFromPath(here)
-    const command = await interpret(text, page)
-    if (isCancelled()) return { ok: false, reason: 'cancelled' }
-    if (!command) return { ok: false, reason: 'not_understood' }
-
-    const permission = command.intent === 'navigate'
-      ? NAV[command.payload.to].permission
-      : INTENT_PERMISSION[command.intent]
-    if (permission && !can(permission)) {
-      toast.add({ title: 'Sem permissão', description: 'Seu perfil não pode fazer isso.', color: 'warning' })
-      return { ok: false, reason: 'forbidden' }
-    }
-
-    const warnings: string[] = []
-    const destination = await resolve(command, page, warnings)
-    if (!destination || isCancelled()) {
+  async function go(destination: Destination, here: string, isCancelled: () => boolean, filled: boolean, warnings: string[] = []): Promise<VoiceRunResult> {
+    if (isCancelled()) {
       clearVoiceDraft()
-      return { ok: false, reason: destination ? 'cancelled' : 'context' }
+      return { ok: false, reason: 'cancelled' }
     }
-    if (destination.opened && destination.path === here) return { ok: false, reason: 'not_understood' }
-
     if (destination.path !== here || destination.query) {
       try {
         await navigateTo({ path: destination.path, query: destination.query })
@@ -263,14 +223,54 @@ export function useVoiceCommand() {
       clearVoiceDraft()
       return { ok: false, reason: 'context' }
     }
+    if (destination.opened) toast.add({ title: 'Aberto por voz', color: 'info', icon: 'i-lucide-mic' })
+    else if (filled) toast.add({ title: 'Preenchido por voz', description: 'Confira os dados e salve.', color: 'info', icon: 'i-lucide-mic' })
+    warnings.forEach(title => warn(title))
+    return { ok: true }
+  }
 
-    if (destination.opened) {
-      toast.add({ title: 'Aberto por voz', color: 'info', icon: 'i-lucide-mic' })
-    } else if (command.intent !== 'navigate') {
-      toast.add({ title: 'Preenchido por voz', description: 'Confira os dados e salve.', color: 'info', icon: 'i-lucide-mic' })
+  function forbidden(): VoiceRunResult {
+    warn('Sem permissão', 'Seu perfil não pode fazer isso.')
+    return { ok: false, reason: 'forbidden' }
+  }
+
+  /** `isCancelled`: the AI call can take seconds; a closed modal must not navigate or prefill afterwards. */
+  async function run(text: string, isCancelled: () => boolean = () => false): Promise<VoiceRunResult> {
+    const here = currentRoute.value.path
+    const page = voicePageFromPath(here)
+    const command = await interpret(text, page)
+    if (isCancelled()) return { ok: false, reason: 'cancelled' }
+    if (!command) return { ok: false, reason: 'not_understood' }
+
+    if (command.op === 'navigate') {
+      const nav = NAV[command.to!]
+      if (nav.permission && !can(nav.permission)) return forbidden()
+      const query = command.to === 'scheduling' && command.date ? { dia: command.date } : undefined
+      return go({ path: nav.path, query }, here, isCancelled, false)
     }
-    warnings.forEach(title => toast.add({ title, color: 'warning' }))
-    return { ok: true, intent: command.intent }
+
+    const entityKey = command.entity!
+    const entity = VOICE_CATALOG[entityKey]
+    const permission = command.op === 'action'
+      ? entity.actions[command.action!]!.permission
+      : entity.permission[command.op as 'create' | 'edit']
+    if (!permission) return go({ path: SCREEN_PATH[entityKey], opened: true }, here, isCancelled, false)
+    if (!can(permission)) return forbidden()
+
+    const warnings: string[] = []
+    const draft = await buildDraft(entityKey, command, page, warnings)
+    if (isCancelled()) return { ok: false, reason: 'cancelled' }
+    if (!draft) return { ok: false, reason: 'context' }
+
+    const destination = destinationFor(draft)
+    const opened = draft.op === 'edit' && !!RECORD_PATH[entityKey] && !Object.keys(draft.fields).length && !draft.items?.length
+    if (opened) {
+      if (destination.path === here) return { ok: false, reason: 'not_understood' }
+      destination.opened = true
+    } else {
+      setVoiceDraft(draft)
+    }
+    return go(destination, here, isCancelled, !opened && draft.op !== 'action', warnings)
   }
 
   return { run }

@@ -6,7 +6,6 @@ import {
   isCustomerFormDirty
 } from '../utils/customer-form'
 import { CUSTOMER_ROUTES } from '../utils/customer-routes'
-import { normalizeContactList } from '~~/shared/utils/contact'
 
 defineOptions({ name: 'CustomersNewPage' })
 
@@ -30,13 +29,10 @@ const allowLeave = ref(false)
 
 const isDirty = computed(() => isCustomerFormDirty(state, initialState))
 
-const { onVoiceDraft } = useVoiceDraft()
-onVoiceDraft('customer.create', (draft) => {
-  if (draft.nome) state.nome = draft.nome
-  if (draft.telefones?.length) state.telefones = normalizeContactList(draft.telefones.map(formatPhoneBr))
-  if (draft.emails?.length) state.emails = normalizeContactList(draft.emails)
-  if (draft.documento) state.documento = formatDocumento(draft.documento)
-  if (draft.observacoes) state.observacoes = draft.observacoes
+useVoiceForm('customer', {
+  ops: ['create'],
+  state,
+  format: { telefones: v => formatPhoneBr(String(v)), documento: v => formatDocumento(String(v)) }
 })
 
 async function onSubmit() {

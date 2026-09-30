@@ -74,17 +74,14 @@ watch(accountCreateOpen, (open) => {
   if (!open) Object.assign(accountDraft, emptyFinanceAccountDraft())
 })
 
-const { onVoiceDraft } = useVoiceDraft()
-onVoiceDraft('account.create', (draft) => {
-  tab.value = 'contas'
-  Object.assign(accountDraft, emptyFinanceAccountDraft())
-  if (draft.descricao) accountDraft.descricao = draft.descricao
-  if (draft.valor != null) accountDraft.valor = draft.valor
-  if (draft.vencimento) accountDraft.vencimento = draft.vencimento
-  if (draft.categoria_id) accountDraft.categoria_id = draft.categoria_id
-  if (draft.fornecedor_id) accountDraft.fornecedor_id = draft.fornecedor_id
-  if (draft.observacoes) accountDraft.observacoes = draft.observacoes
-  accountCreateOpen.value = true
+useVoiceForm('account', {
+  ops: ['create'],
+  state: accountDraft,
+  open: () => {
+    tab.value = 'contas'
+    Object.assign(accountDraft, emptyFinanceAccountDraft())
+    accountCreateOpen.value = true
+  }
 })
 
 async function handleAddAccount() {
