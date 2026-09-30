@@ -1,22 +1,22 @@
 # Graph Report - auto-check-araujo  (2026-09-30)
 
 ## Corpus Check
-- 433 files · ~284,339 words
+- 436 files · ~285,476 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 2940 nodes · 3703 edges · 281 communities (233 shown, 48 thin omitted)
-- Extraction: 96% EXTRACTED · 4% INFERRED · 0% AMBIGUOUS · INFERRED: 130 edges (avg confidence: 0.83)
+- 2949 nodes · 3751 edges · 284 communities (235 shown, 49 thin omitted)
+- Extraction: 97% EXTRACTED · 3% INFERRED · 0% AMBIGUOUS · INFERRED: 129 edges (avg confidence: 0.83)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `ff8753f4`
+- Built from commit: `f77c2fba`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
 ## Community Hubs (Navigation)
 - normalize.ts
-- useSchedulingMutations.ts
+- Component Selection Guidelines
 - useDashboardStats.ts
 - dependencies
 - Nuxt SEO Skill
@@ -70,7 +70,7 @@
 - CustomersFormFields.vue
 - API and Interface Design
 - Type Patterns Guide
-- Dashboard Layout
+- UDashboardPanel
 - Server Routes
 - pnpm CLI Commands Guide
 - API Design Patterns (patterns/)
@@ -100,7 +100,7 @@
 - TypeScript Configuration Guide
 - Oficina Domain Language
 - SchedulingAppointmentBlock.vue
-- useVehicleDetailPage.ts
+- vehicle-form.ts
 - Browser Testing with DevTools
 - Performance Optimization
 - CI/CD and Automation
@@ -108,20 +108,20 @@
 - formatPhoneBr
 - OrdersBudgetSection.vue
 - utils/catalog.ts
-- Vite Configuration
+- Vite Build and SSR
 - useFetch
 - Draft and Preview Model
 - text-case.ts
 - useCollaborators.ts
-- permissions.ts
+- print.ts
 - Nuxt CLI Commands
-- Live Editing
+- Dashboard Layout
 - Navigation Recipe
 - vehicles-new.vue
 - text.ts
-- order-routes.ts
+- useVoiceLookup.ts
 - CustomersNewForm.vue
-- vehicle-form.ts
+- useVehicleMutations.ts
 - Favicon SVG (1024x1024)
 - Araújo Auto Center Logo
 - username.ts
@@ -202,7 +202,7 @@
 - Fluent API Validation Pattern
 - Props Are Read-Only
 - pdf.ts
-- Vite Build and SSR
+- useCustomerDetailPage.ts
 - CatalogDeleteModal.vue
 - OrderDetail
 - FinanceAccountForm.vue
@@ -245,7 +245,7 @@
 - @antfu/eslint-config Guide
 - UModal
 - idea-refine.sh
-- types.ts
+- useVoiceCommand.ts
 - VoiceCommandButton.vue
 - useOrderPayment.ts
 - Emil Kowalski Motion Standards in Prototypes
@@ -255,13 +255,16 @@
 - useSpeechRecognition.ts
 - SSR Middleware Mode
 - Arquitetura
-- useOrdersList.ts
+- OrdersDetailHero.vue
 - File Map
-- parseVoiceCommand
+- useVoiceCommand
 - apply.ts
 - APPENDICES - Real Source-Backed Reference Material
 - Deployment Platform Choice
 - parseDigits
+- SchedulingDailyTimeline.vue
+- VoiceConfirm.vue
+- useVoiceConfirm.ts
 
 ## God Nodes (most connected - your core abstractions)
 1. `Nuxt UI v4` - 21 edges
@@ -278,10 +281,10 @@
 ## Surprising Connections (you probably didn't know these)
 - `useSpeechRecognition()` --indirect_call--> `cancel()`  [INFERRED]
   layers/1.base/app/composables/useSpeechRecognition.ts → server/utils/voice-providers.test.ts
-- `Library package.json Exports Setup` --semantically_similar_to--> `package.json exports Field`  [INFERRED] [semantically similar]
-  .cursor/skills/vite/references/build-and-ssr.md → .cursor/skills/ts-library/references/package-exports.md
 - `useVoiceCommand()` --indirect_call--> `title()`  [INFERRED]
   layers/1.base/app/composables/useVoiceCommand.ts → layers/3.home/app/components/HomeTodaySchedule.vue
+- `Form in Slideover` --semantically_similar_to--> `Form in Modal Pattern`  [INFERRED] [semantically similar]
+  .cursor/skills/nuxt-ui/references/recipes/overlays.md → .cursor/skills/nuxt-ui/references/guidelines/forms.md
 - `routeRules` --conceptually_related_to--> `nuxt.config.ts`  [INFERRED]
   .cursor/skills/nuxt/references/rendering-modes.md → .cursor/skills/nuxt/references/core-config.md
 - `TS Library CI Workflows` --semantically_similar_to--> `GitHub Actions pnpm Setup`  [INFERRED] [semantically similar]
@@ -308,15 +311,15 @@
 - **Favicon Brand Visual Composition** — public_favicon_chrome_sphere, public_favicon_dark_gradient_background, public_favicon_blue_specular_highlights, public_favicon_app_brand_mark [INFERRED 0.85]
 - **Logo Brand Mark Visual Elements** — public_logo_tire_graphic, public_logo_araujo_wordmark, public_logo_auto_center_wordmark [EXTRACTED 1.00]
 
-## Communities (281 total, 48 thin omitted)
+## Communities (284 total, 49 thin omitted)
 
 ### Community 0 - "normalize.ts"
-Cohesion: 0.17
-Nodes (17): VoiceField, date(), digits(), email(), fieldValue(), isObj(), NAV_TARGETS, normalizeVoiceCommand() (+9 more)
+Cohesion: 0.20
+Nodes (15): date(), digits(), email(), fieldValue(), isObj(), NAV_TARGETS, normalizeVoiceCommand(), num() (+7 more)
 
-### Community 1 - "useSchedulingMutations.ts"
-Cohesion: 0.33
-Nodes (6): ConflictRow, useSchedulingMutations(), openCreate(), ACTIVE_SCHEDULING_STATUSES, AppointmentDraft, combineLocalDateTime()
+### Community 1 - "Component Selection Guidelines"
+Cohesion: 0.22
+Nodes (9): UDrawer, USlideover, Component Selection Guidelines, Feedback Selection Matrix, Input Selection Matrix, Overlay Selection Matrix, useToast, Form in Slideover (+1 more)
 
 ### Community 2 - "useDashboardStats.ts"
 Cohesion: 0.06
@@ -340,12 +343,12 @@ Nodes (31): Agendamento, AgendamentoInsert, AgendamentoUpdate, CatalogoKitItem, 
 
 ### Community 7 - "catalog-suppliers.vue"
 Cohesion: 0.08
-Nodes (21): activeSuppliers, breadcrumbItems, countLabel, {
+Nodes (20): activeSuppliers, breadcrumbItems, countLabel, {
   createSupplier,
   updateSupplier,
   setSupplierAtivo,
   deleteSupplier
-}, deleteOpen, deleteTargetId, deleting, editingId (+13 more)
+}, deleteOpen, deleteTargetId, deleting, editingId (+12 more)
 
 ### Community 8 - "VehiclesDetailSummary.vue"
 Cohesion: 0.17
@@ -356,8 +359,8 @@ Cohesion: 0.06
 Nodes (31): Always Do (No Exceptions), Ask First (Requires Human Approval), Broken Access Control, Broken Authentication, Common Rationalizations, Cross-Site Scripting (XSS), Data Privacy & Compliance, Destructive Operations on Derived Paths (+23 more)
 
 ### Community 10 - "pricing.ts"
-Cohesion: 0.14
-Nodes (25): hourlyRate, suggestedPrice, creditCharge, creditNet, debitCharge, debitNet, draft, emit (+17 more)
+Cohesion: 0.16
+Nodes (23): suggestedPrice, creditCharge, creditNet, debitCharge, debitNet, draft, emit, suggestedHourly (+15 more)
 
 ### Community 11 - "oficina.ts"
 Cohesion: 0.09
@@ -369,12 +372,12 @@ Nodes (11): columns, useFinanceHistory(), EMPTY_SUMMARY, normalizeSummary(), use
 
 ### Community 13 - "scheduling.vue"
 Cohesion: 0.07
-Nodes (20): appointmentLookups, boardDate, { can }, canCreateOrder, canWrite, confirmLoading, confirmOpen, {
+Nodes (23): appointmentLookups, boardDate, { can }, canCreateOrder, canWrite, confirmLoading, confirmOpen, {
   createAppointment,
   updateAppointment,
   markNoShow,
   undoNoShow
-} (+12 more)
+} (+15 more)
 
 ### Community 14 - "Code Review and Quality"
 Cohesion: 0.07
@@ -385,20 +388,20 @@ Cohesion: 0.07
 Nodes (29): Browser Testing with DevTools, Common Rationalizations, DAMP Over DRY in Tests, Decision Guide, Discover the Stack First, Name Tests Descriptively, One Assertion Per Concept, Overview (+21 more)
 
 ### Community 16 - "CI Workflows Guide"
-Cohesion: 0.11
-Nodes (24): bumpp Version Bumping, changelogen Changelog, Conventional Commits, Release Workflow Guide, Monorepo Publishing, npm OIDC Publishing, npm Provenance, npm Token-based Publishing (+16 more)
+Cohesion: 0.10
+Nodes (25): bumpp Version Bumping, changelogen Changelog, Conventional Commits, Release Workflow Guide, Monorepo Publishing, npm OIDC Publishing, npm Provenance, npm Token-based Publishing (+17 more)
 
 ### Community 17 - "team.vue"
 Cohesion: 0.09
-Nodes (16): breadcrumbItems, { collaborators, pending, refresh }, countLabel, createOpen, currentUserId, deleteOpen, deleteTarget, deleting (+8 more)
+Nodes (15): breadcrumbItems, { collaborators, pending, refresh }, countLabel, createOpen, currentUserId, deleteOpen, deleteTarget, deleting (+7 more)
 
 ### Community 18 - "Arquitetura"
 Cohesion: 0.14
 Nodes (13): Arquitetura, Decisões (confirmadas com o usuário), Ditado contínuo — `useSpeechRecognition` + modal, Erros, Normalização — `layers/1.base/app/utils/voice/normalize.ts`, Problema, Prompt — `layers/1.base/app/utils/voice/prompt.ts`, Páginas consumidoras (+5 more)
 
 ### Community 19 - "scheduling.ts"
-Cohesion: 0.26
-Nodes (11): resetDraft(), AppointmentFormError, appointmentToDraft(), emptyAppointmentDraft(), SCHEDULING_STATUS_FILTER_ITEMS, SCHEDULING_VIEW_ITEMS, schedulingDayPath(), TIMELINE_END_HOUR (+3 more)
+Cohesion: 0.16
+Nodes (17): resetDraft(), ConflictRow, useSchedulingMutations(), ACTIVE_SCHEDULING_STATUSES, AppointmentDraft, AppointmentFormError, appointmentToDraft(), combineLocalDateTime() (+9 more)
 
 ### Community 20 - "OrdersNewForm.vue"
 Cohesion: 0.13
@@ -413,8 +416,8 @@ Cohesion: 0.40
 Nodes (5): Agenda da Oficina Design System, Appointment Block with Status Bar, Scheduling Masthead, Patio Map 4x2, Workshop Ledger Theme
 
 ### Community 23 - "Package Exports Guide"
-Cohesion: 0.20
-Nodes (14): Are The Types Wrong (attw), Export Condition Order, Package Exports Guide, Environment-Aware Exports, package.json exports Field, Multiple Entry Points, Plugin Entry Pattern (unplugin-*), publint Package Validation (+6 more)
+Cohesion: 0.12
+Nodes (21): Are The Types Wrong (attw), Export Condition Order, Package Exports Guide, Environment-Aware Exports, package.json exports Field, Multiple Entry Points, Peer Dependencies, Plugin Entry Pattern (unplugin-*) (+13 more)
 
 ### Community 24 - "Vue Components Patterns"
 Cohesion: 0.12
@@ -429,8 +432,8 @@ Cohesion: 0.25
 Nodes (4): display, focused, model, props
 
 ### Community 27 - "SchedulingFormSlideover.vue"
-Cohesion: 0.09
-Nodes (22): emit, props, sortedAppointments, discardOpen, draft, emit, isDirty, isEdit (+14 more)
+Cohesion: 0.12
+Nodes (17): discardOpen, draft, emit, isDirty, isEdit, onOpenChange(), onSubmit(), open (+9 more)
 
 ### Community 28 - "Git Workflow and Versioning"
 Cohesion: 0.07
@@ -438,7 +441,7 @@ Nodes (26): 1. Commit Early, Commit Often, 2. Atomic Commits, 3. Descriptive Mes
 
 ### Community 29 - "orders-[id].vue"
 Cohesion: 0.09
-Nodes (20): allowLeave, appointmentAgendaHref, { back }, { breadcrumbItems }, breadcrumbOrigin, downloadingPdf, {
+Nodes (21): allowLeave, appointmentAgendaHref, { back }, { breadcrumbItems }, breadcrumbOrigin, downloadingPdf, {
   draft,
   selectedCatalogId,
   addModalOpen,
@@ -457,14 +460,14 @@ Nodes (20): allowLeave, appointmentAgendaHref, { back }, { breadcrumbItems }, br
   onApprove,
   onReject,
   openVoiceItem
-}, id (+12 more)
+}, id (+13 more)
 
 ### Community 30 - "useSchedulingBoard.ts"
-Cohesion: 0.24
-Nodes (15): dateQueryValue(), matchesSearch(), matchesStatusFilter(), QueryRow, useSchedulingBoard(), isToday, addDays(), buildWeekDays() (+7 more)
+Cohesion: 0.38
+Nodes (11): dateQueryValue(), matchesSearch(), matchesStatusFilter(), QueryRow, useSchedulingBoard(), addDays(), endOfLocalDay(), endOfWeek() (+3 more)
 
 ### Community 31 - "customer-table-columns.ts"
-Cohesion: 0.20
+Cohesion: 0.21
 Nodes (8): page, { can }, CUSTOMER_ORDERS_PAGE_SIZE, CUSTOMER_ROUTES, CUSTOMER_LIST_COLUMNS, CUSTOMER_ORDER_COLUMNS, CUSTOMER_VEHICLE_COLUMNS, CustomerOrderItem
 
 ### Community 32 - "Vue Reactivity System"
@@ -481,19 +484,19 @@ Nodes (17): Skill Feedback Issue Template, Debugging Workflows Feature, Declarat
 
 ### Community 35 - "customers-new.vue"
 Cohesion: 0.20
-Nodes (8): allowLeave, { createCustomer }, initialState, isDirty, loading, { onVoiceDraft }, router, { state }
+Nodes (9): allowLeave, { createCustomer }, initialState, isDirty, loading, router, { state }, isCustomerFormDirty() (+1 more)
 
 ### Community 37 - "CatalogSuppliersForm.vue"
 Cohesion: 0.22
 Nodes (10): draftModel, emit, isEdit, onSubmit(), props, showNotes, trimOrNull(), useSupplierMutations() (+2 more)
 
 ### Community 38 - "SchedulingCalendar.vue"
-Cohesion: 0.24
+Cohesion: 0.23
 Nodes (11): countFor(), dayKey(), dayLabel(), days, emit, focusedKey, onDayKeydown(), props (+3 more)
 
 ### Community 39 - "customer-form.ts"
-Cohesion: 0.21
-Nodes (17): useCustomerDetailPage(), useCustomerMutations(), CustomerFormFieldError, CustomerFormFieldName, customerFormToInsert(), customerFormToUpdate(), digitsOnly(), isCustomerFormDirty() (+9 more)
+Cohesion: 0.29
+Nodes (13): useCustomerMutations(), CustomerFormFieldError, CustomerFormFieldName, customerFormToInsert(), customerFormToUpdate(), digitsOnly(), isCustomerFormValid(), isFilledPhone() (+5 more)
 
 ### Community 40 - "OrdersPhotosSection.vue"
 Cohesion: 0.15
@@ -508,21 +511,21 @@ Nodes (13): canAdd, inputRef, {
 }, props, OrderPhotoWithUrl, useOrderPhotos(), isAllowedOrderPhoto(), ORDER_PHOTOS_ACCEPT (+5 more)
 
 ### Community 41 - "VehiclesFormFields.vue"
-Cohesion: 0.25
-Nodes (8): plate, {
+Cohesion: 0.29
+Nodes (7): plate, {
   clienteItems,
   clientesPending = false,
   disabled = false,
   bare = false
-}, clienteSearchTerm, setPlaca(), showNotes, state, formatPlacaInput(), VehicleFormState
+}, clienteSearchTerm, setPlaca(), showNotes, state, formatPlacaInput()
 
 ### Community 42 - "orders-new.vue"
-Cohesion: 0.10
-Nodes (18): agendamentoId, allowLeave, { back }, backFallback, { createOrder }, initialState, isDirty, loading (+10 more)
+Cohesion: 0.11
+Nodes (17): agendamentoId, allowLeave, { back }, backFallback, { createOrder }, initialState, isDirty, loading (+9 more)
 
 ### Community 43 - "accounts-payable.ts"
-Cohesion: 0.16
-Nodes (16): refreshFinanceRelated(), useAccountsPayableList(), useAccountsPayableMutations(), useFinanceDueList(), accountCreateOpen, { onVoiceDraft }, {
+Cohesion: 0.17
+Nodes (15): refreshFinanceRelated(), useAccountsPayableList(), useAccountsPayableMutations(), useFinanceDueList(), accountCreateOpen, {
   tab,
   tabItems,
   accountsFilter,
@@ -574,15 +577,15 @@ Nodes (16): refreshFinanceRelated(), useAccountsPayableList(), useAccountsPayabl
   onAddSupplier,
   onSaveSupplier,
   onToggleSupplier
-}, ACCOUNTS_FILTER_ITEMS (+8 more)
+}, ACCOUNTS_FILTER_ITEMS, addDaysToDateValue() (+7 more)
 
 ### Community 44 - "useFetch"
 Cohesion: 0.14
 Nodes (15): Avoid Double Fetching with $fetch in Setup, callOnce for Side Effects, createUseFetch Factory, Data Fetching Best Practices, $fetch, Explicit Cache Keys, useAsyncData, useFetch (+7 more)
 
 ### Community 45 - "CatalogForm.vue"
-Cohesion: 0.11
-Nodes (19): draftModel, emit, isEdit, kitComponentOptions, onSubmit(), onUseSuggestedPrice(), onValorPadraoUpdate(), { params } (+11 more)
+Cohesion: 0.10
+Nodes (20): draftModel, emit, hourlyRate, isEdit, kitComponentOptions, onSubmit(), onUseSuggestedPrice(), onValorPadraoUpdate() (+12 more)
 
 ### Community 46 - "FinanceCategoriesPanel.vue"
 Cohesion: 0.17
@@ -590,16 +593,16 @@ Nodes (11): draft, editDraft, editingId, emit, onAdd(), props, saveEdit(), useFi
 
 ### Community 47 - "catalog.vue"
 Cohesion: 0.07
-Nodes (26): activeSuppliers, breadcrumbItems, budgetDraft, budgetTogglingId, countLabel, {
+Nodes (25): activeSuppliers, breadcrumbItems, budgetDraft, budgetTogglingId, countLabel, {
   createCatalogItem,
   updateCatalogItem,
   setCatalogItemAtivo,
   deleteCatalogItem
-}, { data: activeCatalogItems }, deleteOpen (+18 more)
+}, { data: activeCatalogItems }, deleteOpen (+17 more)
 
 ### Community 48 - "CatalogTable.vue"
-Cohesion: 0.19
-Nodes (12): pricingDraft, displayPrice(), emit, { params }, pricingDraft, rowMenuItems(), PRICING_PARAMS_KEY, usePricingParams() (+4 more)
+Cohesion: 0.18
+Nodes (13): pricingDraft, displayPrice(), emit, { params }, pricingDraft, rowMenuItems(), PRICING_PARAMS_KEY, usePricingParams() (+5 more)
 
 ### Community 49 - "OrdersPaymentEditor.vue"
 Cohesion: 0.20
@@ -610,8 +613,8 @@ Cohesion: 0.25
 Nodes (8): canSubmit, emit, onConfirm(), open, password, passwordInputId, props, showPassword
 
 ### Community 51 - "order-form.ts"
-Cohesion: 0.19
-Nodes (17): emit, state, validate(), useOrderDetailEditor(), useOrderEditForm(), useOrderMutations(), emptyOrderEditForm(), isOrderEditDirty() (+9 more)
+Cohesion: 0.17
+Nodes (18): emit, state, validate(), useOrderDetailEditor(), useOrderEditForm(), useOrderMutations(), save(), emptyOrderEditForm() (+10 more)
 
 ### Community 52 - "CustomersFormFields.vue"
 Cohesion: 0.19
@@ -625,9 +628,9 @@ Nodes (24): 1. Contract First, 2. Consistent Error Semantics, 3. Validate at Bou
 Cohesion: 0.20
 Nodes (12): Type-Level Testing, Brand Types (Nominal Typing), Compile-Time TypeError Messages, Conditional Type Extraction, Data Tagging with Symbols, Distributive Conditionals, Type Patterns Guide, Function Overloads (+4 more)
 
-### Community 55 - "Dashboard Layout"
-Cohesion: 0.15
-Nodes (13): useLazyFetch, UDashboardGroup, UTable, Chat Component Tree, Use #body Slot for Scrollable Content, Dashboard Layout, Multi-panel List-Detail, UDashboardPanel (+5 more)
+### Community 55 - "UDashboardPanel"
+Cohesion: 0.29
+Nodes (7): useLazyFetch, Chat Component Tree, Use #body Slot for Scrollable Content, Multi-panel List-Detail, UDashboardPanel, Data Tables Recipe, TanStack Table Integration
 
 ### Community 56 - "Server Routes"
 Cohesion: 0.17
@@ -662,12 +665,12 @@ Cohesion: 0.17
 Nodes (12): Client/Server Components, componentIslands, Built-in Components, ClientOnly, NuxtIsland, NuxtLayout, NuxtPage, Client-Side Rendering (CSR) (+4 more)
 
 ### Community 64 - "Forms Guidelines"
-Cohesion: 0.17
-Nodes (12): UAuthForm, UFormField, Component Selection Guidelines, Feedback Selection Matrix, Input Selection Matrix, useToast, UFormField name Must Match Schema, Forms Guidelines (+4 more)
+Cohesion: 0.25
+Nodes (9): UAuthForm, UForm, UFormField, UFormField name Must Match Schema, Form in Modal Pattern, Forms Guidelines, Standard Schema Validation, Auth Forms Recipe (+1 more)
 
 ### Community 65 - "prompt.ts"
 Cohesion: 0.18
-Nodes (17): useVoiceCommand(), buildVoiceMessages(), describeCompact(), describeDetailed(), describeField(), describeFields(), DETAIL_PAGES, localDateInput() (+9 more)
+Nodes (16): buildVoiceMessages(), describeCompact(), describeDetailed(), describeField(), describeFields(), DETAIL_PAGES, localDateInput(), PAGE_BY_PATH (+8 more)
 
 ### Community 66 - "Nuxt UI v4"
 Cohesion: 0.18
@@ -694,8 +697,8 @@ Cohesion: 0.19
 Nodes (8): categories, chartData, colorMode, props, CashFlowRow, useFinanceCashFlow(), financeCashFlowCategories(), formatCashFlowMonthLabel()
 
 ### Community 72 - "orders-[id]-print.vue"
-Cohesion: 0.18
-Nodes (12): budgetWhatsappUrl, onPrintBudgetPdf(), budgetStatus, downloadingPdf, id, onPrintBudgetPdf(), route, whatsappUrl (+4 more)
+Cohesion: 0.13
+Nodes (12): OrderBreadcrumbOrigin, { can }, onPrintBudgetPdf(), budgetStatus, downloadingPdf, id, onDownloadBudgetPdf(), onPrintBudgetPdf() (+4 more)
 
 ### Community 73 - "pricing.vue"
 Cohesion: 0.12
@@ -706,8 +709,8 @@ Cohesion: 0.20
 Nodes (11): Environment Overrides, nuxt.config.ts, Nuxt 4 Path Aliases, app/ as srcDir, Directory Structure, layers/ Directory, Nuxt 4 Default Layout, shared/ Directory (+3 more)
 
 ### Community 75 - "customers-[id].vue"
-Cohesion: 0.18
-Nodes (10): { back }, breadcrumbItems, { can }, {
+Cohesion: 0.20
+Nodes (9): { back }, breadcrumbItems, { can }, {
   editing,
   saving,
   togglingAtivo,
@@ -723,19 +726,19 @@ Nodes (10): { back }, breadcrumbItems, { can }, {
   save,
   toggleAtivo,
   removeCustomer
-}, id, moreMenuItems, { onVoiceDraft }, route (+2 more)
+}, id, moreMenuItems, route, showMoreMenu (+1 more)
 
 ### Community 76 - "Nuxt UI Conventions"
 Cohesion: 0.18
 Nodes (11): UContentNavigation, Auto-registered Modules, Content After UI Module Order, Nuxt UI Conventions, defineShortcuts, extractShortcuts, Docs Layout, Nested UPage Sidebars (+3 more)
 
 ### Community 77 - "Vite Plugin API"
-Cohesion: 0.22
-Nodes (9): Testing Plugins (Dogfood), Client-Server WebSocket Communication, Conditional Plugin apply, config / configResolved Hooks, Vite Plugin API, Plugin Ordering (enforce), transformIndexHtml Hook, Virtual Modules (+1 more)
+Cohesion: 0.18
+Nodes (11): Testing Plugins (Dogfood), HMR API (import.meta.hot), Client-Server WebSocket Communication, Conditional Plugin apply, config / configResolved Hooks, Vite Plugin API, handleHotUpdate Hook, Plugin Ordering (enforce) (+3 more)
 
 ### Community 78 - "orders.ts"
-Cohesion: 0.33
-Nodes (4): mobileDateFormatter, OrderLinkedAppointment, OrderListItem, ORDER_LIST_COLUMNS
+Cohesion: 0.19
+Nodes (8): mobileDateFormatter, OrderLinkedAppointment, OrderListItem, ORDEM_STATUS_FILTER_ALL, ORDEM_STATUS_FILTER_ITEMS, ORDEM_STATUS_SELECT_ITEMS, OrdemStatusFilter, ORDER_LIST_COLUMNS
 
 ### Community 79 - "customer-status.ts"
 Cohesion: 0.29
@@ -746,12 +749,12 @@ Cohesion: 0.22
 Nodes (8): File Structure, Global Constraints, Task 1: Tipos + funções puras (normalize, prompt, appendText), Task 2: Servidor — provedores com fallback + rota `/api/voice/interpret`, Task 3: Cliente — ditado contínuo, modal acumulativo, runtime com IA e novas intenções, Task 4: Páginas — consumir drafts de edição, Task 5: Verificação final, revisão e graph, Voz v2 (IA + edição + ditado contínuo) — Implementation Plan
 
 ### Community 81 - "Testing Guide"
-Cohesion: 0.18
-Nodes (12): Vitest Coverage (v8), Testing Guide, Fixture-Based Testing, Idempotency Testing, Vitest Mocking (vi.mock), Multi-TS Version Testing, Vitest Workspace Projects, Matrix Testing (OS/Node) (+4 more)
+Cohesion: 0.22
+Nodes (10): Vitest Coverage (v8), Testing Guide, Fixture-Based Testing, Idempotency Testing, Vitest Mocking (vi.mock), Vitest Workspace Projects, Testing Workflow, Type-Level Testing (+2 more)
 
 ### Community 82 - "TypeScript Configuration Guide"
-Cohesion: 0.21
-Nodes (12): moduleResolution Bundler, TypeScript Configuration Guide, isolatedDeclarations, Library Base tsconfig, Monorepo tsconfig References, moduleResolution Node16/NodeNext, Path Aliases, verbatimModuleSyntax (+4 more)
+Cohesion: 0.27
+Nodes (10): moduleResolution Bundler, TypeScript Configuration Guide, isolatedDeclarations, Library Base tsconfig, Monorepo tsconfig References, moduleResolution Node16/NodeNext, verbatimModuleSyntax, moduleResolution Bundler (+2 more)
 
 ### Community 83 - "Oficina Domain Language"
 Cohesion: 0.20
@@ -761,9 +764,9 @@ Nodes (10): Checklist, Cliente, Colaborador, Item de Checklist, Oficina Domain L
 Cohesion: 0.18
 Nodes (13): clientName, detail, emit, onEdit(), openOrderHref, orderHref, props, showMarkNoShow (+5 more)
 
-### Community 85 - "useVehicleDetailPage.ts"
-Cohesion: 0.39
-Nodes (6): useVehicleDetailPage(), useVehicleForm(), isDirty, emptyVehicleForm(), isVehicleFormDirty(), vehicleFormFromRow()
+### Community 85 - "vehicle-form.ts"
+Cohesion: 0.33
+Nodes (9): useVehicleDetailPage(), useVehicleForm(), emptyVehicleForm(), isVehicleFormDirty(), normalizedPlaca(), VehicleFormFieldError, VehicleFormFieldName, vehicleFormFromRow() (+1 more)
 
 ### Community 86 - "Browser Testing with DevTools"
 Cohesion: 0.08
@@ -782,8 +785,8 @@ Cohesion: 0.11
 Nodes (17): Anti-padrões, API Nuxt (resumo), Bundle condicional, Equivalência Vercel → Nuxt, Mapeamento Nuxt + API deste repo, Padrões já no core, Prefetch no intent, Prefs em paralelo + pesquisa adiada (+9 more)
 
 ### Community 90 - "formatPhoneBr"
-Cohesion: 0.27
-Nodes (9): { cliente }, documento, hasNotes, phones, useCustomerForm(), customerFormFromRow(), emptyCustomerForm(), formatDocumento() (+1 more)
+Cohesion: 0.32
+Nodes (7): { cliente }, documento, emails, hasNotes, phones, formatDocumento(), formatPhoneBr()
 
 ### Community 91 - "OrdersBudgetSection.vue"
 Cohesion: 0.24
@@ -793,9 +796,9 @@ Nodes (9): draftModel, emit, onAddAndClose(), onConfirmReject(), props, rejectCo
 Cohesion: 0.27
 Nodes (10): replaceKitItems(), toCatalogPayload(), useCatalogMutations(), CatalogItemDraft, CatalogItemRow, CatalogKitDraftLine, CatalogKitItemWithRef, CatalogTipoFilter (+2 more)
 
-### Community 93 - "Vite Configuration"
-Cohesion: 0.12
-Nodes (19): Peer Dependencies, loadEnv, Async Config, build.target, Conditional Config (command/mode), define Global Constants, Vite Configuration, loadEnv in Config (+11 more)
+### Community 93 - "Vite Build and SSR"
+Cohesion: 0.10
+Nodes (23): Path Aliases, build() JavaScript API, createServer JavaScript API, Vite Build and SSR, loadEnv, Multi-Page App Build, preview() JavaScript API, SSR Externals (noExternal) (+15 more)
 
 ### Community 94 - "useFetch"
 Cohesion: 0.36
@@ -809,17 +812,17 @@ Nodes (8): Draft and Preview Model, IndexedDB Drafts, Media Library (public/), N
 Cohesion: 0.47
 Nodes (7): capitalizeWord(), collapseSpaces(), sentenceCaseOrNull(), TITLE_PARTICLES, titleCaseOrNull(), toSentenceCase(), toTitleCasePt()
 
-### Community 98 - "permissions.ts"
-Cohesion: 0.42
-Nodes (6): VoiceAction, usePermissions(), useRequirePermission(), can(), canChangeOrderStatus(), PermissionAction
+### Community 98 - "print.ts"
+Cohesion: 0.36
+Nodes (5): budgetWhatsappUrl, whatsappUrl, buildBudgetWhatsAppMessage(), buildWhatsAppUrl(), normalizePhoneForWhatsApp()
 
 ### Community 99 - "Nuxt CLI Commands"
 Cohesion: 0.33
 Nodes (7): nuxi init --template layer, Nuxt CLI Commands, nuxi init, nuxt build, nuxt dev, nuxt generate, nuxt prepare
 
-### Community 100 - "Live Editing"
-Cohesion: 0.29
-Nodes (7): Code Editor, Live Editing, Schema Forms, Visual Editor (TipTap), UEditor, Editor Layout, Tiptap Editor Instance
+### Community 100 - "Dashboard Layout"
+Cohesion: 0.20
+Nodes (10): Code Editor, Live Editing, Schema Forms, Visual Editor (TipTap), UDashboardGroup, UEditor, Dashboard Layout, UDashboardSidebar (+2 more)
 
 ### Community 101 - "Navigation Recipe"
 Cohesion: 0.33
@@ -831,19 +834,23 @@ Nodes (12): allowLeave, { back }, backFallback, {
   clienteItems,
   searchTerm: clienteSearchTerm,
   pending: clientesPending
-}, { createVehicle }, initialState, loading, { onVoiceDraft } (+4 more)
+}, { createVehicle }, initialState, isDirty, loading (+4 more)
 
 ### Community 103 - "text.ts"
 Cohesion: 0.15
 Nodes (22): date(), dateAt(), DIGIT_WORDS, EMAIL_WORDS, findNumber(), formatDate(), formatTime(), LETTER_NAMES (+14 more)
 
+### Community 104 - "useVoiceLookup.ts"
+Cohesion: 0.38
+Nodes (6): dayMonth(), NAMED_TABLE, NamedKind, pickByName(), useVoiceLookup(), VoiceFound
+
 ### Community 105 - "CustomersNewForm.vue"
 Cohesion: 0.33
 Nodes (5): emit, { loading }, onSubmit(), state, validate()
 
-### Community 106 - "vehicle-form.ts"
-Cohesion: 0.26
-Nodes (13): validate(), validate(), useVehicleMutations(), vehicleSaveErrorMessage(), isFilledNumber(), isVehicleFormValid(), maxVehicleYear(), normalizedPlaca() (+5 more)
+### Community 106 - "useVehicleMutations.ts"
+Cohesion: 0.67
+Nodes (5): useVehicleMutations(), vehicleSaveErrorMessage(), isVehicleFormValid(), vehicleFormToInsert(), vehicleFormToUpdate()
 
 ### Community 107 - "Favicon SVG (1024x1024)"
 Cohesion: 0.43
@@ -862,8 +869,8 @@ Cohesion: 0.40
 Nodes (6): app.config.ts, Nuxt Configuration, runtimeConfig, runtimeConfig vs app.config, useAppConfig, useRuntimeConfig
 
 ### Community 111 - "Nuxt UI Components Index"
-Cohesion: 0.40
-Nodes (6): Nuxt UI Components Index, Prose Components, UChatMessages, Prefer Prose Over Generic UI in Markdown, Chat Layout, Comark Streaming Markdown
+Cohesion: 0.25
+Nodes (9): Nuxt UI Components Index, Prose Components, UChatMessages, UTable, Prefer Prose Over Generic UI in Markdown, Chat Layout, Comark Streaming Markdown, Table Row Selection (+1 more)
 
 ### Community 112 - "Type Patterns Guide"
 Cohesion: 0.33
@@ -916,8 +923,8 @@ Cohesion: 0.08
 Nodes (22): Adapting it, Contract, Floor guard: reference implementation, Reference (Node, ~stack-agnostic patterns), Common Rationalizations, Constraint-Driven Development, Escalation Path, Loading Constraints (+14 more)
 
 ### Community 121 - "CustomersEditForm.vue"
-Cohesion: 0.29
-Nodes (6): emit, { loading, dirty = false }, onSubmit(), state, validate(), CustomerFormState
+Cohesion: 0.33
+Nodes (5): emit, { loading, dirty = false }, onSubmit(), state, validate()
 
 ### Community 122 - "brand.ts"
 Cohesion: 0.40
@@ -960,13 +967,13 @@ Cohesion: 0.50
 Nodes (3): github>nuxt/renovate-config-nuxt, extends, $schema
 
 ### Community 134 - "VehiclesEditForm.vue"
-Cohesion: 0.33
-Nodes (5): {
+Cohesion: 0.20
+Nodes (10): {
   clienteItems,
   loading,
   clientesPending = false,
   dirty = false
-}, clienteSearchTerm, emit, onSubmit(), state
+}, clienteSearchTerm, emit, onSubmit(), state, validate(), validate(), isFilledNumber() (+2 more)
 
 ### Community 135 - "Code Simplification"
 Cohesion: 0.09
@@ -1041,19 +1048,19 @@ Cohesion: 0.13
 Nodes (14): Anti-patterns to Avoid, Detailed Instructions, How It Works, Idea Refine, Output, Phase 1: Understand & Expand (Divergent), Phase 2: Evaluate & Converge, Phase 3: Sharpen & Ship (+6 more)
 
 ### Community 197 - "pdf.ts"
-Cohesion: 0.27
-Nodes (13): onDownloadBudgetPdf(), onDownloadBudgetPdf(), calcItemSubtotal(), addDocumentHeader(), addMetaBlock(), addPageFooter(), addTextSection(), BudgetPdfInput (+5 more)
+Cohesion: 0.38
+Nodes (10): addDocumentHeader(), addMetaBlock(), addPageFooter(), addTextSection(), BudgetPdfInput, createBudgetPdf(), downloadBudgetPdf(), ensureSpace() (+2 more)
 
-### Community 198 - "Vite Build and SSR"
-Cohesion: 0.20
-Nodes (10): build() JavaScript API, createServer JavaScript API, Vite Build and SSR, Vite Library Mode, Library package.json Exports Setup, Multi-Page App Build, preview() JavaScript API, SSR Externals (noExternal) (+2 more)
+### Community 198 - "useCustomerDetailPage.ts"
+Cohesion: 0.48
+Nodes (5): useCustomerDetailPage(), useCustomerForm(), customerFormFromRow(), CustomerFormState, emptyCustomerForm()
 
 ### Community 209 - "OrderDetail"
-Cohesion: 0.15
-Nodes (9): emit, props, status, statusChanged, vehicle, vehicleLabel, OrderDetail, ORDER_DETAIL_SELECT (+1 more)
+Cohesion: 0.32
+Nodes (3): OrderDetail, ORDER_DETAIL_SELECT, ORDER_ITEM_SELECT
 
 ### Community 217 - "FinanceAccountForm.vue"
-Cohesion: 0.18
+Cohesion: 0.20
 Nodes (11): activeCategories, activeSuppliers, categoryItems, draftModel, emit, onSubmit(), props, showNotes (+3 more)
 
 ### Community 218 - "FinanceAccountsTable.vue"
@@ -1102,8 +1109,8 @@ Cohesion: 0.24
 Nodes (7): draft, editDraft, editingId, emit, onAdd(), props, saveEdit()
 
 ### Community 231 - "budget.ts"
-Cohesion: 0.28
-Nodes (9): props, total, useOrderBudgetMutations(), useOrderBudgetPage(), calcItemsTotal(), emptyOrderItemDraft(), isOrderItemDraftValid(), OrderItemDraft (+1 more)
+Cohesion: 0.30
+Nodes (10): props, total, useOrderBudgetMutations(), useOrderBudgetPage(), calcItemsTotal(), calcItemSubtotal(), emptyOrderItemDraft(), isOrderItemDraftValid() (+2 more)
 
 ### Community 233 - "4. DESIGN ENGINEERING DIRECTIVES (Bias Correction)"
 Cohesion: 0.17
@@ -1134,8 +1141,8 @@ Cohesion: 0.40
 Nodes (5): FINANCE_TAB_ITEMS, FinanceTab, useFinanceWorkspace(), AccountsFilter, currentMonthValue()
 
 ### Community 244 - "legacy-types.ts"
-Cohesion: 0.17
-Nodes (14): LegacyVoiceIntent, LegacyVoicePayloadMap, VoiceAccountPayload, VoiceAppointmentPayload, VoiceBudgetItemPayload, VoiceCatalogItemPayload, VoiceCollaboratorPayload, VoiceCustomerPayload (+6 more)
+Cohesion: 0.15
+Nodes (15): LegacyVoiceCommand, LegacyVoiceIntent, LegacyVoicePayloadMap, VoiceAccountPayload, VoiceAppointmentPayload, VoiceBudgetItemPayload, VoiceCatalogItemPayload, VoiceCollaboratorPayload (+7 more)
 
 ### Community 245 - "9. AI TELLS (Forbidden Patterns)"
 Cohesion: 0.25
@@ -1162,8 +1169,8 @@ Cohesion: 0.18
 Nodes (10): Arquitetura, Arquivos (todos em `layers/1.base/app/`), Comandos por voz — Design, Decisões, Fluxo de dados e erros, Fora de escopo, Gramática (palavras-chave, sem acento/caixa), Intents, permissões e destino (+2 more)
 
 ### Community 251 - "voice/catalog.ts"
-Cohesion: 0.11
-Nodes (19): FORMA_LABEL, FORMAS, longText, money, nome, number, PAPEIS, PAPEL_LABEL (+11 more)
+Cohesion: 0.12
+Nodes (21): FORMA_LABEL, FORMAS, longText, money, nome, number, PAPEIS, PAPEL_LABEL (+13 more)
 
 ### Community 252 - "12. THE BLOCK LIBRARY (Contract - Implementations Land Here Iteratively)"
 Cohesion: 0.40
@@ -1186,12 +1193,12 @@ Cohesion: 0.67
 Nodes (3): @antfu/eslint-config Flat Config, @antfu/eslint-config Guide, Type-Aware ESLint Rules
 
 ### Community 257 - "UModal"
-Cohesion: 0.20
-Nodes (12): UDrawer, UForm, UModal, USlideover, Overlay Selection Matrix, useOverlay Programmatic Overlays, useOverlay, Form in Modal Pattern (+4 more)
+Cohesion: 0.40
+Nodes (6): UModal, useOverlay Programmatic Overlays, useOverlay, Confirmation Dialog Pattern, Overlays Recipe, Programmatic Confirmation via useOverlay
 
-### Community 260 - "types.ts"
-Cohesion: 0.13
-Nodes (14): CREATE_PATH, Destination, INTENT_PERMISSION, NAV, VoiceRunResult, PendingVoiceDraft, VoiceBudgetItemDraft, VoiceCommand (+6 more)
+### Community 260 - "useVoiceCommand.ts"
+Cohesion: 0.12
+Nodes (18): CREATE_PATH, Destination, NAV, RECORD_PATH, REF_LABEL, SCREEN_PATH, VoiceRunResult, PendingVoiceDraft (+10 more)
 
 ### Community 261 - "VoiceCommandButton.vue"
 Cohesion: 0.14
@@ -1202,8 +1209,8 @@ Cohesion: 0.42
 Nodes (7): useOrderPayment(), useOrderStatusEditor(), discard(), defaultChargeForForma(), emptyPaymentForm(), paymentFormFromOrder(), PaymentFormState
 
 ### Community 264 - "text.test.ts"
-Cohesion: 0.22
-Nodes (11): useVoiceLookup(), VoiceLookupTable, appendText(), foldText(), parseEmail(), parsePlaca(), placaChars(), readPlaca() (+3 more)
+Cohesion: 0.32
+Nodes (7): parseEmail(), parsePlaca(), placaChars(), readPlaca(), NOW, t(), tokenize()
 
 ### Community 265 - "TeamCollaboratorsTable.vue"
 Cohesion: 0.29
@@ -1225,21 +1232,21 @@ Nodes (8): ssrLoadModule, SSR Middleware Mode, configureServer Hook, SSR Backwar
 Cohesion: 0.11
 Nodes (17): Ajustes definidos no protótipo (prevalecem sobre o texto acima), Arquitetura, Catálogo — `layers/1.base/app/utils/voice/catalog.ts`, Comando — `types.ts`, Contexto, Decisões, Entidades, Entrega (+9 more)
 
-### Community 273 - "useOrdersList.ts"
-Cohesion: 0.27
-Nodes (6): { can }, route, ORDEM_STATUS_FILTER_ALL, ORDEM_STATUS_FILTER_ITEMS, ORDEM_STATUS_SELECT_ITEMS, OrdemStatusFilter
+### Community 273 - "OrdersDetailHero.vue"
+Cohesion: 0.29
+Nodes (6): emit, props, status, statusChanged, vehicle, vehicleLabel
 
 ### Community 275 - "File Map"
 Cohesion: 0.20
 Nodes (9): File Map, Global Constraints, Task 1: Pure voice core (catalog, types, normalize, prompt, apply, legacy), Task 2: Runtime (draft, lookup, confirm, form binding, command) + migrate current consumers, Task 3: Orders — payment, budget actions, several items, photos, diagnosis on new OS, Task 4: Customers, vehicles and agenda — remaining fields and actions, Task 5: Finance, catalog, suppliers, team and pricing, Task 6: Final verification, live AI check, docs (+1 more)
 
-### Community 276 - "parseVoiceCommand"
-Cohesion: 0.33
-Nodes (6): legacyToCommand(), run(), LegacyVoiceCommand, parseVoiceCommand(), NOW, parse()
+### Community 276 - "useVoiceCommand"
+Cohesion: 0.43
+Nodes (6): useVoiceCommand(), legacyToCommand(), run(), parseVoiceCommand(), NOW, parse()
 
 ### Community 277 - "apply.ts"
-Cohesion: 0.36
-Nodes (6): applyVoiceFields(), Format, listKey(), voiceBudgetItem(), VoiceRecord, VoiceValue
+Cohesion: 0.17
+Nodes (17): MaybePromise, useVoiceForm(), VoiceActionResult, VoiceFormOptions, applyVoiceFields(), Format, listKey(), voiceBudgetItem() (+9 more)
 
 ### Community 278 - "APPENDICES - Real Source-Backed Reference Material"
 Cohesion: 0.29
@@ -1253,22 +1260,26 @@ Nodes (6): Cloudflare Pages, Netlify, Nitro Preset, Deployment Platform Choice, 
 Cohesion: 0.67
 Nodes (3): digits(), digitsOf(), parseDigits()
 
+### Community 281 - "SchedulingDailyTimeline.vue"
+Cohesion: 0.33
+Nodes (5): emit, props, sortedAppointments, SchedulingAppointment, AppointmentCreatePrefill
+
 ## Knowledge Gaps
-- **1506 isolated node(s):** `idea-refine.sh script`, `route`, `colorMode`, `{ signOut }`, `{ nome: profileNome }` (+1501 more)
+- **1502 isolated node(s):** `idea-refine.sh script`, `route`, `colorMode`, `{ signOut }`, `{ nome: profileNome }` (+1497 more)
   These have ≤1 connection - possible missing edges or undocumented components.
-- **48 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
+- **49 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `save()` connect `customer-form.ts` to `orders-[id].vue`, `order-form.ts`, `useVehicleDetailPage.ts`?**
-  _High betweenness centrality (0.032) - this node is a cross-community bridge._
-- **Why does `useCustomerDetailPage()` connect `customer-form.ts` to `formatPhoneBr`, `customer-table-columns.ts`?**
-  _High betweenness centrality (0.025) - this node is a cross-community bridge._
-- **Why does `emails` connect `normalize.ts` to `formatPhoneBr`?**
-  _High betweenness centrality (0.024) - this node is a cross-community bridge._
+- **Why does `save()` connect `order-form.ts` to `orders-[id].vue`, `vehicle-form.ts`, `useCustomerDetailPage.ts`?**
+  _High betweenness centrality (0.037) - this node is a cross-community bridge._
+- **Why does `useCustomerDetailPage()` connect `useCustomerDetailPage.ts` to `order-form.ts`, `customers-new.vue`?**
+  _High betweenness centrality (0.031) - this node is a cross-community bridge._
+- **Why does `emails` connect `formatPhoneBr` to `normalize.ts`?**
+  _High betweenness centrality (0.029) - this node is a cross-community bridge._
 - **What connects `idea-refine.sh script`, `route`, `colorMode` to the rest of the system?**
-  _1506 weakly-connected nodes found - possible documentation gaps or missing edges._
+  _1502 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `useDashboardStats.ts` be split into smaller, more focused modules?**
   _Cohesion score 0.06475485661424607 - nodes in this community are weakly interconnected._
 - **Should `dependencies` be split into smaller, more focused modules?**
