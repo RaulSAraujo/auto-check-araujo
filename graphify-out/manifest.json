@@ -205,8 +205,8 @@
     "semantic_hash": ""
   },
   "layers/11.scheduling/app/pages/scheduling.vue": {
-    "mtime": 1790777702.3924782,
-    "ast_hash": "cc67519e6c367b073a5636fe7ce2927c",
+    "mtime": 1790778510.4025893,
+    "ast_hash": "e781417c88cd4da45df9f0d3335a74a7",
     "semantic_hash": ""
   },
   "layers/11.scheduling/app/utils/scheduling.ts": {
@@ -505,8 +505,8 @@
     "semantic_hash": ""
   },
   "layers/5.orders/app/composables/useOrderBudgetPage.ts": {
-    "mtime": 1790776413.983702,
-    "ast_hash": "0e758e13cb4cef467b290148e788cd03",
+    "mtime": 1790778547.2541885,
+    "ast_hash": "dabedae22f87192844c6644c2c774e76",
     "semantic_hash": ""
   },
   "layers/5.orders/app/composables/useOrderDetailEditor.ts": {
@@ -560,8 +560,8 @@
     "semantic_hash": ""
   },
   "layers/5.orders/app/pages/orders-[id].vue": {
-    "mtime": 1790777666.6224382,
-    "ast_hash": "6858095e1f8e0e9af528cded00ce18f7",
+    "mtime": 1790778514.4206724,
+    "ast_hash": "0c3f373a2e718daec97fbfc07a0210fc",
     "semantic_hash": ""
   },
   "layers/5.orders/app/pages/orders-new.vue": {
@@ -1460,8 +1460,8 @@
     "semantic_hash": ""
   },
   "layers/6.configuration/app/composables/useCatalog.ts": {
-    "mtime": 1790011564.0733385,
-    "ast_hash": "3ef6ce86b77144486bf29a185f537792",
+    "mtime": 1790778489.1056738,
+    "ast_hash": "40cfb59fdd158a8922493f468e49a29f",
     "semantic_hash": ""
   },
   "layers/6.configuration/app/composables/usePricingParams.ts": {
@@ -1480,18 +1480,18 @@
     "semantic_hash": ""
   },
   "layers/6.configuration/app/pages/catalog-suppliers.vue": {
-    "mtime": 1790777715.675997,
-    "ast_hash": "aea6e1b3304b59a603112f1eca6260ff",
+    "mtime": 1790778485.3200705,
+    "ast_hash": "b6fe8bcad6d623499939f36c2931477a",
     "semantic_hash": ""
   },
   "layers/6.configuration/app/pages/catalog.vue": {
-    "mtime": 1790777713.0267823,
-    "ast_hash": "3acb8d677c37db37ad120a98dd677245",
+    "mtime": 1790778500.9783947,
+    "ast_hash": "df67e1ae43462cf8c0a765bfca914572",
     "semantic_hash": ""
   },
   "layers/6.configuration/app/pages/pricing.vue": {
-    "mtime": 1790777663.940359,
-    "ast_hash": "663077a02054b1ec3cdbc78ac427dfe6",
+    "mtime": 1790778506.832789,
+    "ast_hash": "5eaf98972d5ac723a0ca262b5a5490bd",
     "semantic_hash": ""
   },
   "layers/6.configuration/app/utils/catalog.ts": {
@@ -1600,8 +1600,8 @@
     "semantic_hash": ""
   },
   "layers/8.management/app/pages/team.vue": {
-    "mtime": 1790777675.7027047,
-    "ast_hash": "700f9b21d8b9719b8456fb84576b80ce",
+    "mtime": 1790778475.3508635,
+    "ast_hash": "bdc34bb1057206e47c38d71d89bb4089",
     "semantic_hash": ""
   },
   "layers/8.management/app/utils/accounts-payable.ts": {
@@ -1920,8 +1920,8 @@
     "semantic_hash": ""
   },
   "layers/1.base/app/utils/voice/types.ts": {
-    "mtime": 1790774458.7702916,
-    "ast_hash": "6d25eafe320c7fa448c1d7913ae912ed",
+    "mtime": 1790778547.2123463,
+    "ast_hash": "30ef6adf4dc795b6c4c741f8b76826ac",
     "semantic_hash": ""
   },
   "docs/superpowers/plans/2026-09-29-voice-commands.md": {
@@ -1945,8 +1945,8 @@
     "semantic_hash": ""
   },
   "layers/1.base/app/composables/useVoiceCommand.ts": {
-    "mtime": 1790776389.0726187,
-    "ast_hash": "aa69aab2578447502b0cb0e9dbe81154",
+    "mtime": 1790778514.273665,
+    "ast_hash": "c9bc5576508759a198dfde7f566fc0fb",
     "semantic_hash": ""
   },
   "layers/1.base/app/composables/useVoiceDraft.ts": {
@@ -1970,8 +1970,8 @@
     "semantic_hash": ""
   },
   "layers/1.base/app/utils/voice/normalize.test.ts": {
-    "mtime": 1790774499.887729,
-    "ast_hash": "da55c3950a2a8eff752000414fee93d4",
+    "mtime": 1790778521.2858138,
+    "ast_hash": "432d872d9a0ab4545966dd415a662a8e",
     "semantic_hash": ""
   },
   "layers/1.base/app/utils/voice/normalize.ts": {
@@ -2005,8 +2005,8 @@
     "semantic_hash": ""
   },
   "server/utils/voice-providers.test.ts": {
-    "mtime": 1790715526.0606167,
-    "ast_hash": "dc96319db39c4289cec4eadb414e9ca8",
+    "mtime": 1790778539.1538131,
+    "ast_hash": "86e68f4b1ddde7ba2ddd3c5330699e39",
     "semantic_hash": ""
   },
   "server/utils/voice-providers.ts": {
@@ -2060,8 +2060,8 @@
     "semantic_hash": ""
   },
   "layers/1.base/app/components/VoiceConfirm.vue": {
-    "mtime": 1790775557.669312,
-    "ast_hash": "a2e0f6114a7ce7e5eba94c2a53ecb3a0",
+    "mtime": 1790778514.7256787,
+    "ast_hash": "36120f209e296166c4626e7391c19916",
     "semantic_hash": ""
   },
   "layers/1.base/app/composables/useVoiceConfirm.ts": {
