@@ -78,6 +78,18 @@ Default de `merge`: `text` → `append`, listas → `add`, demais → `replace`.
 
 Permissões por ação seguem as dos botões atuais (ex.: `aprovar` → `budget.approve`, `pagar` → `finance.view`, `trocarPapel` → `collaborators.manage`). Mecânico mantém a regra `canChangeOrderStatus`.
 
+#### Ajustes definidos no protótipo (prevalecem sobre o texto acima)
+
+- `kind` só tem `confirm` (confirmação de um toque e executa) e `direct` (executa na hora: abre diálogo existente, altera estado local ou orienta). `dialog`/`local`/`guide` viram `direct`.
+- Merge padrão: listas → `add`; todo o resto → `replace`. `append` só explícito nos textos longos (`reclamacao`, `diagnostico`, `observacoes`, `problema`) — nome, marca etc. são substituídos.
+- `category`: `permission { create, edit: 'finance.view' }`, campo `nome`; criar/renomear são confirmados pela tela financeira (`BaseVoiceConfirm`) antes de gravar; ações `ativar`/`desativar`.
+- `collaborator`: `permission.edit = 'collaborators.manage'`; edit só troca o `papel` (mesma confirmação de `trocarPapel`); nome/usuário por voz → toast explicando.
+- `account`: sem formulário de edição; edit só abre o financeiro. `pagar` sem forma dita usa Pix (padrão da tabela).
+- Itens: order `{tipo, descricao, quantidade, valor_unitario}` (o id do catálogo é resolvido pelo runtime a partir da descrição); kit `{item (ref catalogItem), quantidade}`.
+- `pricing` não tem alvo (singleton): pula a resolução de alvo.
+- `BaseVoiceConfirm` é um `UModal` montado no layout `default` e controlado por `useVoiceConfirm()` (promise), sem `useOverlay`.
+- `useVoiceForm` aceita `unavailable(action, draft)` — checado antes da confirmação — e `apply(draft)` para telas com formulário especial. Várias chamadas para a mesma entidade na mesma tela (página da OS + seção de fotos) são roteadas por quais ações/ops cada uma trata.
+
 ### Comando — `types.ts`
 
 ```ts
