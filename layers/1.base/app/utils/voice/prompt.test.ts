@@ -1,28 +1,46 @@
 import assert from 'node:assert/strict'
 import test from 'node:test'
-import { buildVoiceMessages, localDateInput, voicePageFromPath } from './prompt.ts'
+import { buildVoiceMessages, localDateInput, VOICE_PAGES, voiceEntitiesForPage, voicePageFromPath } from './prompt.ts'
 
-test('buildVoiceMessages embeds date, weekday, page and speech', () => {
-  const messages = buildVoiceMessages('diagnóstico pastilha gasta', { page: 'order-detail', today: '2026-09-29' })
-  assert.equal(messages.length, 2)
-  assert.equal(messages[0]?.role, 'system')
-  assert.match(messages[0]!.content, /2026-09-29/)
-  assert.match(messages[0]!.content, /terça-feira/)
-  assert.match(messages[0]!.content, /OS aberta/)
-  assert.match(messages[0]!.content, /NUNCA inclua senha/)
-  assert.deepEqual(messages[1], { role: 'user', content: 'diagnóstico pastilha gasta' })
-})
-
-test('voicePageFromPath', () => {
-  assert.equal(voicePageFromPath('/ordens/abc-123'), 'order-detail')
-  assert.equal(voicePageFromPath('/ordens/novo'), 'other')
-  assert.equal(voicePageFromPath('/ordens'), 'other')
-  assert.equal(voicePageFromPath('/clientes/xyz'), 'customer-detail')
-  assert.equal(voicePageFromPath('/veiculos/xyz'), 'vehicle-detail')
-  assert.equal(voicePageFromPath('/veiculos/novo'), 'other')
+test('voicePageFromPath maps every screen', () => {
+  assert.equal(voicePageFromPath('/ordens/novo'), 'order-new')
+  assert.equal(voicePageFromPath('/ordens/abc'), 'order-detail')
+  assert.equal(voicePageFromPath('/ordens/abc/impressao'), 'other')
+  assert.equal(voicePageFromPath('/clientes/novo'), 'customer-new')
+  assert.equal(voicePageFromPath('/clientes/abc'), 'customer-detail')
+  assert.equal(voicePageFromPath('/veiculos/novo'), 'vehicle-new')
+  assert.equal(voicePageFromPath('/veiculos/abc'), 'vehicle-detail')
   assert.equal(voicePageFromPath('/agendamentos'), 'scheduling')
+  assert.equal(voicePageFromPath('/gestao/financeiro'), 'finance')
+  assert.equal(voicePageFromPath('/configuracao/catalogo'), 'catalog')
+  assert.equal(voicePageFromPath('/configuracao/fornecedores'), 'suppliers')
+  assert.equal(voicePageFromPath('/gestao/equipe'), 'team')
+  assert.equal(voicePageFromPath('/configuracao/precificacao'), 'pricing')
+  assert.equal(voicePageFromPath('/'), 'other')
 })
 
-test('localDateInput uses local calendar date', () => {
-  assert.equal(localDateInput(new Date(2026, 0, 5, 23, 59)), '2026-01-05')
+test('every entity belongs to a page', () => {
+  assert.deepEqual(voiceEntitiesForPage('finance'), ['account', 'category'])
+  assert.deepEqual(voiceEntitiesForPage('other'), [])
+})
+
+test('prompt has date, page, text, detailed current entity and compact others', () => {
+  const [system, user] = buildVoiceMessages('paga no pix', { page: 'order-detail', today: '2026-09-30' })
+  assert.equal(user?.content, 'paga no pix')
+  assert.match(system!.content, /2026-09-30 \(quarta-feira\)/)
+  assert.match(system!.content, /Tela atual: OS aberta/)
+  assert.match(system!.content, /forma_pagamento \(dinheiro\|pix\|cartao_credito\|cartao_debito\)/)
+  assert.match(system!.content, /- account \(conta a pagar\); target \{descricao\}; fields: descricao, valor/)
+  assert.match(system!.content, /Nunca inclua senha/)
+})
+
+test('prompt stays under the token budget on every page', () => {
+  for (const page of VOICE_PAGES) {
+    const [system] = buildVoiceMessages('x', { page, today: '2026-09-30' })
+    assert.ok(system!.content.length <= 6000, `${page}: ${system!.content.length}`)
+  }
+})
+
+test('localDateInput', () => {
+  assert.equal(localDateInput(new Date(2026, 0, 5)), '2026-01-05')
 })

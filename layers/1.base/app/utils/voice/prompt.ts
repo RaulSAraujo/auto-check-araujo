@@ -1,4 +1,5 @@
-import type { VoiceContext, VoicePage } from './types.ts'
+import { VOICE_CATALOG, type VoiceEntity, type VoiceField } from './catalog.ts'
+import type { VoiceContext, VoiceEntityKey, VoicePage } from './types.ts'
 
 export interface VoiceChatMessage {
   role: 'system' | 'user'
@@ -9,20 +10,50 @@ const WEEKDAYS = ['domingo', 'segunda-feira', 'terça-feira', 'quarta-feira', 'q
 
 const PAGE_LABEL: Record<VoicePage, string> = {
   'order-detail': 'OS aberta',
+  'order-new': 'nova OS',
   'customer-detail': 'cliente aberto',
+  'customer-new': 'novo cliente',
   'vehicle-detail': 'veículo aberto',
+  'vehicle-new': 'novo veículo',
   'scheduling': 'agenda',
+  'finance': 'financeiro',
+  'catalog': 'catálogo',
+  'suppliers': 'fornecedores',
+  'team': 'equipe',
+  'pricing': 'precificação',
   'other': 'outra tela'
 }
 
-const DETAIL_RE = (prefix: string) => new RegExp(`^/${prefix}/(?!novo$)[^/]+$`)
+export const VOICE_PAGES = Object.keys(PAGE_LABEL) as VoicePage[]
+
+const PAGE_BY_PATH: Record<string, VoicePage> = {
+  '/ordens/novo': 'order-new',
+  '/clientes/novo': 'customer-new',
+  '/veiculos/novo': 'vehicle-new',
+  '/agendamentos': 'scheduling',
+  '/gestao/financeiro': 'finance',
+  '/configuracao/catalogo': 'catalog',
+  '/configuracao/fornecedores': 'suppliers',
+  '/gestao/equipe': 'team',
+  '/configuracao/precificacao': 'pricing'
+}
+
+const DETAIL_PAGES: [RegExp, VoicePage][] = [
+  [/^\/ordens\/[^/]+$/, 'order-detail'],
+  [/^\/clientes\/[^/]+$/, 'customer-detail'],
+  [/^\/veiculos\/[^/]+$/, 'vehicle-detail']
+]
+
+const TYPE_HINT: Partial<Record<VoiceField['type'], string>> = {
+  number: 'número', money: 'reais', date: 'YYYY-MM-DD', time: 'HH:MM', bool: 'true/false', placa: 'placa', digits: 'só dígitos', email: 'e-mail'
+}
 
 export function voicePageFromPath(path: string): VoicePage {
-  if (DETAIL_RE('ordens').test(path)) return 'order-detail'
-  if (DETAIL_RE('clientes').test(path)) return 'customer-detail'
-  if (DETAIL_RE('veiculos').test(path)) return 'vehicle-detail'
-  if (path === '/agendamentos') return 'scheduling'
-  return 'other'
+  return PAGE_BY_PATH[path] ?? DETAIL_PAGES.find(([re]) => re.test(path))?.[1] ?? 'other'
+}
+
+export function voiceEntitiesForPage(page: VoicePage): VoiceEntityKey[] {
+  return (Object.keys(VOICE_CATALOG) as VoiceEntityKey[]).filter(key => VOICE_CATALOG[key].pages.includes(page))
 }
 
 export function localDateInput(date: Date): string {
@@ -35,35 +66,72 @@ function weekday(today: string): string {
   return WEEKDAYS[new Date(y, m - 1, d).getDay()] ?? ''
 }
 
-export function buildVoiceMessages(text: string, context: VoiceContext): VoiceChatMessage[] {
-  const system = `Você converte comandos falados de uma oficina mecânica brasileira em JSON.
-Responda SOMENTE com um objeto JSON: {"intent": <intenção ou null>, "payload": {...}}.
-Hoje é ${context.today} (${weekday(context.today)}). Tela atual do usuário: ${PAGE_LABEL[context.page]}.
+function describeField(key: string, field: VoiceField): string {
+  const hints = [
+    field.values ? field.values.join('|') : TYPE_HINT[field.type],
+    field.list ? 'lista' : undefined,
+    field.hint
+  ].filter(Boolean)
+  return hints.length ? `${key} (${hints.join(', ')})` : key
+}
 
-Intenções e campos do payload (omita campos não ditos; nunca invente valores):
-- "customer.create": nome, telefones (lista, só dígitos com DDD), emails (lista), documento (CPF/CNPJ só dígitos), observacoes
-- "vehicle.create": placa, marca, modelo, ano (número), cor, km_atual (número), observacoes, clienteNome
-- "order.create": criar NOVA OS. placa, km_entrada, reclamacao (o que o cliente relata), diagnostico (o que o mecânico constatou), observacoes
-- "order.edit": abrir ou alterar OS EXISTENTE. target {placa | numero (só dígitos) | clienteNome} (omita target quando a frase se refere à OS aberta na tela), km_entrada, reclamacao, diagnostico, observacoes, status ("aberta"|"em_andamento"|"concluida"|"cancelada"), itens (lista de {tipo: "servico"|"peca"|"kit", descricao, quantidade, valor_unitario})
-- "customer.edit": abrir ou alterar cliente EXISTENTE. target {nome} (omita se for o cliente aberto na tela), telefones, emails, documento, observacoes
-- "vehicle.edit": abrir ou alterar veículo EXISTENTE. target {placa} (omita se for o veículo aberto na tela), km_atual, cor, observacoes
-- "appointment.create": placa, date, startTime, problema
-- "appointment.reschedule": remarcar agendamento. placa, date, startTime
-- "appointment.noShow": cliente faltou / não compareceu. placa
-- "account.create": conta a pagar. descricao, valor, vencimento (data), categoriaNome, fornecedorNome, observacoes
-- "catalogItem.create": item do catálogo. tipo ("servico"|"peca"|"kit"), nome, valor_padrao, custo, estoque, horas_estimadas
-- "supplier.create": fornecedor. nome, telefone, email, observacoes
-- "collaborator.create": nome, username, papel ("recepcao"|"mecanico"|"gerente"). NUNCA inclua senha.
-- "navigate": ir para uma tela. to ("home"|"orders"|"scheduling"|"customers"|"vehicles"|"finance"|"team"|"catalog"|"suppliers"|"pricing"|"settings"), date (só para a agenda)
+function describeFields(spec: Record<string, VoiceField>): string {
+  return Object.entries(spec).map(([key, field]) => describeField(key, field)).join(', ')
+}
+
+function describeDetailed(key: VoiceEntityKey, entity: VoiceEntity): string {
+  const parts = [`- ${key} (${entity.label})`]
+  const target = Object.keys(entity.target)
+  if (target.length) parts.push(`target {${target.join(' | ')}}`)
+  const fields = describeFields(entity.fields)
+  if (fields) parts.push(`fields: ${fields}`)
+  if (entity.items) parts.push(`items: [{${describeFields(entity.items)}}]`)
+  const actions = Object.entries(entity.actions).map(([name, action]) => {
+    const args = action.args ? `{${describeFields(action.args)}}` : ''
+    return `${name}${args}${action.hint ? ` (${action.hint})` : ''}`
+  })
+  if (actions.length) parts.push(`actions: ${actions.join(', ')}`)
+  return parts.join('; ')
+}
+
+function describeCompact(key: VoiceEntityKey, entity: VoiceEntity): string {
+  const parts = [`- ${key} (${entity.label})`]
+  const target = Object.keys(entity.target)
+  if (target.length) parts.push(`target {${target.join(' | ')}}`)
+  const fields = Object.keys(entity.fields)
+  if (fields.length) parts.push(`fields: ${fields.join(', ')}`)
+  if (entity.items) parts.push(`items: [{${Object.keys(entity.items).join(', ')}}]`)
+  const actions = Object.entries(entity.actions).map(([name, action]) => action.args ? `${name}{${Object.keys(action.args).join(', ')}}` : name)
+  if (actions.length) parts.push(`actions: ${actions.join(', ')}`)
+  return parts.join('; ')
+}
+
+export function buildVoiceMessages(text: string, context: VoiceContext): VoiceChatMessage[] {
+  const here = voiceEntitiesForPage(context.page)
+  const all = Object.keys(VOICE_CATALOG) as VoiceEntityKey[]
+  const detailed = here.map(key => describeDetailed(key, VOICE_CATALOG[key])).join('\n')
+  const compact = all.filter(key => !here.includes(key)).map(key => describeCompact(key, VOICE_CATALOG[key])).join('\n')
+
+  const system = `Você converte comandos falados de uma oficina mecânica brasileira em JSON.
+Responda SOMENTE com um objeto JSON, em um destes formatos:
+{"op":"create"|"edit","entity":"...","target":{...},"fields":{...},"items":[{...}]}
+{"op":"action","entity":"...","target":{...},"action":"...","args":{...}}
+{"op":"navigate","to":"home"|"orders"|"scheduling"|"customers"|"vehicles"|"finance"|"team"|"catalog"|"suppliers"|"pricing"|"settings","date":"YYYY-MM-DD só para a agenda"}
+{"op":null} se não for um comando reconhecível.
+Hoje é ${context.today} (${weekday(context.today)}). Tela atual: ${PAGE_LABEL[context.page]}.
+${detailed ? `\nEntidades desta tela:\n${detailed}\n` : ''}
+Outras entidades:
+${compact}
 
 Regras:
-- "nova OS", "abrir uma OS", "criar OS" = order.create. "abre a OS do/da…", "vai na OS…" ou qualquer alteração de OS existente = order.edit.
-- Na tela "OS aberta", frases como "diagnóstico…", "cliente reclama…", "km…", "adiciona…", "muda o status…" são order.edit sem target. Nas telas "cliente aberto" e "veículo aberto", o mesmo vale para customer.edit e vehicle.edit.
-- Datas no formato "YYYY-MM-DD" calculadas a partir de hoje ("amanhã", "sexta", "dia 10"), sempre a data futura mais próxima. Horas "HH:MM" em 24h ("2 da tarde" = "14:00").
-- Placa: 7 caracteres maiúsculos sem hífen (ex.: ABC1D23); converta letras e números soletrados.
-- Valores em reais como número decimal (150.5). "45 mil" = 45000.
-- Textos (reclamacao, diagnostico, observacoes, problema): português correto, frase curta, sem repetir o nome do campo.
-- Se não for um comando reconhecível: {"intent": null, "payload": {}}.`
+- create = cadastrar/criar/"nova OS"/"novo cliente". edit = abrir ou alterar registro existente ("abre a OS do…", "muda o km…"). action = executar uma ação da lista ("aprova", "paga", "remove", "desativa", "exclui", "faltou").
+- target identifica o registro existente; omita target quando a frase se refere ao registro aberto na tela atual.
+- Use só os nomes de fields/items/actions/args listados. Omita o que não foi dito; nunca invente valores. Nunca inclua senha.
+- Vários itens na mesma frase: um objeto por item em "items".
+- Datas "YYYY-MM-DD" a partir de hoje ("amanhã", "sexta", "dia 10"), sempre a data futura mais próxima. Horas "HH:MM" em 24h ("2 da tarde" = "14:00").
+- Placa: 7 caracteres maiúsculos sem hífen (ABC1D23); converta letras e números soletrados.
+- Valores em reais como número (150.5). "45 mil" = 45000. Porcentagem como número (10 = 10%).
+- Textos: português correto, frase curta, sem repetir o nome do campo.`
 
   return [
     { role: 'system', content: system },

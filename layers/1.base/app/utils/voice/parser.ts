@@ -12,7 +12,8 @@ import {
   tokenize
 } from './text.ts'
 import type { VoiceToken } from './text.ts'
-import type { VoiceCommand, VoiceIntent, VoiceItemTipo, VoicePapel } from './types.ts'
+import type { VoiceItemTipo, VoicePapel } from './types.ts'
+import type { LegacyVoiceCommand as VoiceCommand, LegacyVoiceIntent as VoiceIntent } from './legacy-types.ts'
 
 type Value = string | number | undefined
 type Extractor = (tokens: VoiceToken[], now: Date) => Value
