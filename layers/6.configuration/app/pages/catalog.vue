@@ -4,8 +4,7 @@ import {
   catalogDraftFromRow,
   emptyCatalogItemDraft,
   type CatalogItemDraft,
-  type CatalogItemRow,
-  type CatalogTipoFilter
+  type CatalogItemRow
 } from '../utils/catalog'
 import { settingsHubBreadcrumb } from '../utils/settings-hub'
 import { applyVoiceFields } from '#layers/base/app/utils/voice/apply'
@@ -26,11 +25,6 @@ useSeoMeta({
 useRequirePermission('catalog.manage')
 
 const breadcrumbItems = settingsHubBreadcrumb('Catálogo')
-const route = useRoute()
-
-const initialTipo = (['servico', 'kit', 'peca'].includes(String(route.query.tipo))
-  ? route.query.tipo as CatalogTipoFilter
-  : 'all')
 
 const {
   q: budgetQ,
@@ -43,7 +37,7 @@ const {
   tipoFilter,
   refresh: refreshBudget,
   fetchItem: fetchCatalogItem
-} = useCatalogList(initialTipo)
+} = useCatalogList()
 const { data: activeCatalogItems, status: activeCatalogStatus } = useServiceCatalog()
 const { suppliers } = useSuppliersList()
 const {

@@ -32,10 +32,9 @@ function normalizeSummary(raw: unknown): FinanceSummary {
   }
 }
 
-export function useFinanceReport(initialMonth = currentMonthValue(), options?: { enabled?: Ref<boolean> }) {
+export function useFinanceReport(selectedMonth: Ref<string> = ref(currentMonthValue()), options?: { enabled?: Ref<boolean> }) {
   const supabase = useTypedSupabaseClient()
   const enabled = options?.enabled ?? ref(true)
-  const selectedMonth = ref(initialMonth)
   const { page, pageSize, rangeBounds } = useListPagination(
     [selectedMonth],
     REPORT_PAGE_SIZE

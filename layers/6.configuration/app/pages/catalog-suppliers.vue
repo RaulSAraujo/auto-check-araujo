@@ -43,7 +43,7 @@ const deleteOpen = ref(false)
 const deleteTargetId = ref<string | null>(null)
 const deleteTargetName = ref<string>()
 const deleting = ref(false)
-const supplierQ = ref('')
+const supplierQ = useRouteQueryState('q', '')
 
 const activeSuppliers = computed(() => suppliers.value || [])
 

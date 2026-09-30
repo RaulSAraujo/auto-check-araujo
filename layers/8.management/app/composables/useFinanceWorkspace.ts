@@ -1,5 +1,6 @@
 import type { FormaPagamento } from '~~/shared/types/oficina'
 import {
+  ACCOUNTS_FILTER_ITEMS,
   emptyFinanceAccountDraft,
   type AccountsFilter,
   type FinanceCategoryDraft
@@ -19,9 +20,12 @@ export const FINANCE_TAB_ITEMS = [
   { label: 'Recebíveis', value: 'recebiveis' as const, icon: 'i-lucide-wallet' }
 ]
 
+const MONTH_RE = /^\d{4}-(0[1-9]|1[0-2])$/
+
 export function useFinanceWorkspace() {
-  const tab = ref<FinanceTab>('resumo')
-  const accountsFilter = ref<AccountsFilter>('a_pagar')
+  const tab = useRouteQueryState<FinanceTab>('aba', 'resumo', FINANCE_TAB_ITEMS.map(item => item.value))
+  const accountsFilter = useRouteQueryState<AccountsFilter>('contas', 'a_pagar', ACCOUNTS_FILTER_ITEMS.map(item => item.value))
+  const month = useRouteQueryState('mes', currentMonthValue(), value => MONTH_RE.test(value))
   const categoriesOpen = ref(false)
   const suppliersOpen = ref(false)
 
@@ -45,7 +49,7 @@ export function useFinanceWorkspace() {
     total: ordersTotal,
     pending: pendingReport,
     refresh: refreshReport
-  } = useFinanceReport(currentMonthValue(), {
+  } = useFinanceReport(month, {
     enabled: computed(() => tab.value === 'resumo' || tab.value === 'recebiveis')
   })
 

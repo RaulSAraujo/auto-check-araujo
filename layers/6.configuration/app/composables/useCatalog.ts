@@ -1,5 +1,5 @@
 import type { CatalogItemDraft, CatalogItemRow, CatalogKitDraftLine, CatalogTipoFilter } from '../utils/catalog'
-import { stockForTipo } from '../utils/catalog'
+import { CATALOG_TIPO_FILTER_ITEMS, stockForTipo } from '../utils/catalog'
 import { toTitleCasePt } from '~~/shared/utils/text-case'
 
 const CATALOG_LIST_KEY = 'catalog-list'
@@ -48,16 +48,12 @@ function toCatalogPayload(draft: CatalogItemDraft) {
   }
 }
 
-export function useCatalogList(
-  initialTipo: CatalogTipoFilter = 'all'
-) {
+export function useCatalogList() {
   const supabase = useTypedSupabaseClient()
-  const router = useRouter()
-  const route = useRoute()
 
-  const q = ref('')
-  const debouncedQ = ref('')
-  const tipoFilter = ref<CatalogTipoFilter>(initialTipo)
+  const q = useRouteQueryState('q', '')
+  const debouncedQ = ref(q.value)
+  const tipoFilter = useRouteQueryState<CatalogTipoFilter>('tipo', 'all', CATALOG_TIPO_FILTER_ITEMS.map(item => item.value))
 
   let debounceTimer: ReturnType<typeof setTimeout> | undefined
   watch(q, (value) => {
@@ -103,13 +99,6 @@ export function useCatalogList(
     },
     { watch: [tipoFilter, debouncedQ, page], lazy: true }
   )
-
-  watch(tipoFilter, (value) => {
-    const nextQuery = { ...route.query } as Record<string, string | undefined>
-    if (value === 'all') delete nextQuery.tipo
-    else nextQuery.tipo = value
-    router.replace({ query: nextQuery })
-  })
 
   /** A row outside the current page/filters (voice edit by id). */
   async function fetchItem(id: string) {
