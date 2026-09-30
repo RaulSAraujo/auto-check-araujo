@@ -1,7 +1,7 @@
 # Graph Report - auto-check-araujo  (2026-09-30)
 
 ## Corpus Check
-- 438 files · ~288,241 words
+- 438 files · ~288,294 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
@@ -10,7 +10,7 @@
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `6c4c62d2`
+- Built from commit: `bc685211`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -71,7 +71,7 @@
 - API and Interface Design
 - Type Patterns Guide
 - Dashboard Layout
-- Deployment
+- Server Routes
 - pnpm CLI Commands Guide
 - API Design Patterns (patterns/)
 - Rolldown Migration (Vite 8)
@@ -255,10 +255,10 @@
 - useSpeechRecognition.ts
 - SSR Middleware Mode
 - Arquitetura
-- useOrdersList.ts
+- useOrderPayment.ts
 - File Map
 - useVoiceCommand.ts
-- Server Routes
+- Deployment Platform Choice
 - APPENDICES - Real Source-Backed Reference Material
 - useSchedulingMutations.ts
 - SchedulingDailyTimeline.vue
@@ -284,10 +284,10 @@
   .cursor/skills/vite/references/build-and-ssr.md → .cursor/skills/ts-library/references/package-exports.md
 - `useVoiceCommand()` --indirect_call--> `title()`  [INFERRED]
   layers/1.base/app/composables/useVoiceCommand.ts → layers/3.home/app/components/HomeTodaySchedule.vue
+- `Studio AI Assistance` --semantically_similar_to--> `Vercel AI SDK Integration`  [INFERRED] [semantically similar]
+  .cursor/skills/nuxt-studio/references/live-editing.md → .cursor/skills/nuxt-ui/references/layouts/chat.md
 - `routeRules` --conceptually_related_to--> `nuxt.config.ts`  [INFERRED]
   .cursor/skills/nuxt/references/rendering-modes.md → .cursor/skills/nuxt/references/core-config.md
-- `TS Library CI Workflows` --semantically_similar_to--> `GitHub Actions pnpm Setup`  [INFERRED] [semantically similar]
-  .cursor/skills/ts-library/references/ci-workflows.md → .cursor/skills/pnpm/references/ci.md
 
 ## Import Cycles
 - None detected.
@@ -403,8 +403,8 @@ Cohesion: 0.19
 Nodes (14): applyEditPrefill(), resetDraft(), AppointmentFormError, appointmentToDraft(), emptyAppointmentDraft(), SCHEDULING_STATUS_FILTER_ITEMS, SCHEDULING_VIEW_ITEMS, schedulingDayPath() (+6 more)
 
 ### Community 20 - "OrdersNewForm.vue"
-Cohesion: 0.16
-Nodes (12): { back: cancel }, emit, isDesktop, onSubmit(), showDiagnosis, showNotes, state, validate() (+4 more)
+Cohesion: 0.12
+Nodes (18): { back: cancel }, emit, isDesktop, onSubmit(), showDiagnosis, showNotes, state, validate() (+10 more)
 
 ### Community 21 - "Client Utilities"
 Cohesion: 0.18
@@ -526,7 +526,7 @@ Nodes (17): agendamentoId, allowLeave, { back }, backFallback, { createOrder }, 
 
 ### Community 43 - "accounts-payable.ts"
 Cohesion: 0.16
-Nodes (15): refreshFinanceRelated(), useAccountsPayableList(), useAccountsPayableMutations(), useFinanceDueList(), accountCreateOpen, { confirmVoice }, {
+Nodes (16): refreshFinanceRelated(), useAccountsPayableList(), useAccountsPayableMutations(), useFinanceDueList(), accountCreateOpen, { confirmVoice }, {
   tab,
   tabItems,
   accountsFilter,
@@ -578,7 +578,7 @@ Nodes (15): refreshFinanceRelated(), useAccountsPayableList(), useAccountsPayabl
   onAddSupplier,
   onSaveSupplier,
   onToggleSupplier
-}, ACCOUNTS_FILTER_ITEMS (+7 more)
+}, ACCOUNTS_FILTER_ITEMS (+8 more)
 
 ### Community 44 - "useFetch"
 Cohesion: 0.14
@@ -606,8 +606,8 @@ Cohesion: 0.24
 Nodes (10): pricingDraft, displayPrice(), emit, { params }, pricingDraft, rowMenuItems(), usePricingParams(), CATALOG_TIPO_COLOR (+2 more)
 
 ### Community 49 - "OrdersPaymentEditor.vue"
-Cohesion: 0.17
-Nodes (15): budgetTotal, chargeDiffers, emit, formaLabel, formattedSuggestedFee, installmentItems, onChargeInput(), props (+7 more)
+Cohesion: 0.20
+Nodes (10): budgetTotal, chargeDiffers, emit, formaLabel, formattedSuggestedFee, installmentItems, onChargeInput(), props (+2 more)
 
 ### Community 50 - "TeamCollaboratorsPasswordModal.vue"
 Cohesion: 0.25
@@ -633,9 +633,9 @@ Nodes (12): Type-Level Testing, Brand Types (Nominal Typing), Compile-Time TypeE
 Cohesion: 0.15
 Nodes (13): useLazyFetch, UDashboardGroup, UTable, Chat Component Tree, Use #body Slot for Scrollable Content, Dashboard Layout, Multi-panel List-Detail, UDashboardPanel (+5 more)
 
-### Community 56 - "Deployment"
-Cohesion: 0.15
-Nodes (13): Cloudflare Pages, Deployment, Netlify, Nitro, Nitro Preset, Node.js Server Deployment, Deployment Platform Choice, Static Generation (+5 more)
+### Community 56 - "Server Routes"
+Cohesion: 0.17
+Nodes (12): Deployment, Nitro, Node.js Server Deployment, Static Generation, server/ Directory, addServerHandler, defineEventHandler, Nitro Server Engine (+4 more)
 
 ### Community 57 - "pnpm CLI Commands Guide"
 Cohesion: 0.18
@@ -791,7 +791,7 @@ Nodes (7): parseEmail(), parsePlaca(), placaChars(), readPlaca(), NOW, t(), toke
 
 ### Community 91 - "orders.ts"
 Cohesion: 0.19
-Nodes (10): mobileDateFormatter, OrderVehicleSelectItem, toOrderVehicleOption(), toSelectItem(), useOrderVehicleOptions(), vehicleDescription(), OrderLinkedAppointment, OrderListItem (+2 more)
+Nodes (8): mobileDateFormatter, OrderLinkedAppointment, OrderListItem, ORDEM_STATUS_FILTER_ALL, ORDEM_STATUS_FILTER_ITEMS, ORDEM_STATUS_SELECT_ITEMS, OrdemStatusFilter, ORDER_LIST_COLUMNS
 
 ### Community 92 - "utils/catalog.ts"
 Cohesion: 0.24
@@ -806,8 +806,8 @@ Cohesion: 0.36
 Nodes (8): Avoid Double-Fetching, createUseAsyncData, createUseFetch, Data Fetching, $fetch, useAsyncData, useFetch, useNuxtData
 
 ### Community 95 - "Draft and Preview Model"
-Cohesion: 0.25
-Nodes (8): Draft and Preview Model, IndexedDB Drafts, Media Library (public/), NuxtHub Blob External Media, SQLite WASM Content Dump, Studio AI Assistance, useChat (@ai-sdk/vue), Vercel AI SDK Integration
+Cohesion: 0.33
+Nodes (6): Draft and Preview Model, IndexedDB Drafts, Media Library (public/), NuxtHub Blob External Media, SQLite WASM Content Dump, Studio AI Assistance
 
 ### Community 96 - "text-case.ts"
 Cohesion: 0.47
@@ -870,8 +870,8 @@ Cohesion: 0.40
 Nodes (6): app.config.ts, Nuxt Configuration, runtimeConfig, runtimeConfig vs app.config, useAppConfig, useRuntimeConfig
 
 ### Community 111 - "Nuxt UI Components Index"
-Cohesion: 0.40
-Nodes (6): Nuxt UI Components Index, Prose Components, UChatMessages, Prefer Prose Over Generic UI in Markdown, Chat Layout, Comark Streaming Markdown
+Cohesion: 0.29
+Nodes (8): Nuxt UI Components Index, Prose Components, UChatMessages, Prefer Prose Over Generic UI in Markdown, Chat Layout, Comark Streaming Markdown, useChat (@ai-sdk/vue), Vercel AI SDK Integration
 
 ### Community 112 - "Type Patterns Guide"
 Cohesion: 0.33
@@ -1062,7 +1062,7 @@ Nodes (9): emit, props, status, statusChanged, vehicle, vehicleLabel, OrderDetai
 
 ### Community 217 - "FinanceAccountForm.vue"
 Cohesion: 0.18
-Nodes (12): activeCategories, activeSuppliers, categoryItems, draftModel, emit, onSubmit(), props, showNotes (+4 more)
+Nodes (11): activeCategories, activeSuppliers, categoryItems, draftModel, emit, onSubmit(), props, showNotes (+3 more)
 
 ### Community 218 - "FinanceAccountsTable.vue"
 Cohesion: 0.11
@@ -1233,9 +1233,9 @@ Nodes (8): ssrLoadModule, SSR Middleware Mode, configureServer Hook, SSR Backwar
 Cohesion: 0.11
 Nodes (17): Ajustes definidos no protótipo (prevalecem sobre o texto acima), Arquitetura, Catálogo — `layers/1.base/app/utils/voice/catalog.ts`, Comando — `types.ts`, Contexto, Decisões, Entidades, Entrega (+9 more)
 
-### Community 273 - "useOrdersList.ts"
-Cohesion: 0.29
-Nodes (6): useOrderStatusEditor(), discard(), ORDEM_STATUS_FILTER_ALL, ORDEM_STATUS_FILTER_ITEMS, ORDEM_STATUS_SELECT_ITEMS, OrdemStatusFilter
+### Community 273 - "useOrderPayment.ts"
+Cohesion: 0.42
+Nodes (7): useOrderPayment(), useOrderStatusEditor(), discard(), defaultChargeForForma(), emptyPaymentForm(), paymentFormFromOrder(), PaymentFormState
 
 ### Community 275 - "File Map"
 Cohesion: 0.20
@@ -1245,9 +1245,9 @@ Nodes (9): File Map, Global Constraints, Task 1: Pure voice core (catalog, types
 Cohesion: 0.15
 Nodes (16): CREATE_PATH, Destination, NAV, RECORD_PATH, REF_LABEL, SCREEN_PATH, useVoiceCommand(), VoiceRunResult (+8 more)
 
-### Community 277 - "Server Routes"
-Cohesion: 0.40
-Nodes (5): server/ Directory, addServerHandler, defineEventHandler, Server Middleware, Server Routes
+### Community 277 - "Deployment Platform Choice"
+Cohesion: 0.33
+Nodes (6): Cloudflare Pages, Netlify, Nitro Preset, Deployment Platform Choice, Vercel, Edge-Side Rendering
 
 ### Community 278 - "APPENDICES - Real Source-Backed Reference Material"
 Cohesion: 0.29
@@ -1263,7 +1263,7 @@ Nodes (5): emit, props, sortedAppointments, SchedulingAppointment, AppointmentCr
 
 ### Community 282 - "VoiceConfirm.vue"
 Cohesion: 0.50
-Nodes (3): open, { request, settle }, route
+Nodes (3): open, { request, settle }, router
 
 ## Knowledge Gaps
 - **1515 isolated node(s):** `idea-refine.sh script`, `route`, `colorMode`, `{ signOut }`, `{ nome: profileNome }` (+1510 more)
