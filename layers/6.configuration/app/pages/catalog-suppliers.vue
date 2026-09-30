@@ -23,6 +23,7 @@ const breadcrumbItems = settingsHubBreadcrumb('Fornecedores')
 const {
   suppliers,
   pending: suppliersPending,
+  error: suppliersError,
   refresh: refreshSuppliers
 } = useSuppliersList()
 const {
@@ -40,6 +41,7 @@ const formSaving = ref(false)
 const supplierTogglingId = ref<string | null>(null)
 const deleteOpen = ref(false)
 const deleteTargetId = ref<string | null>(null)
+const deleteTargetName = ref<string>()
 const deleting = ref(false)
 const supplierQ = ref('')
 
@@ -65,6 +67,10 @@ const countLabel = computed(() => {
   }
   return n === 1 ? '1 fornecedor' : `${n} fornecedores`
 })
+
+const deleteTitle = computed(() =>
+  deleteTargetName.value ? `Excluir o fornecedor "${deleteTargetName.value}"?` : 'Excluir fornecedor?'
+)
 
 const formTitle = computed(() =>
   formMode.value === 'edit' ? 'Editar fornecedor' : 'Novo fornecedor'
@@ -105,7 +111,8 @@ useVoiceForm('supplier', {
     if (draft.op === 'create') {
       openCreate()
     } else if (!editingThis && !onSupplierEdit({ id: draft.id! })) {
-      useToast().add({ title: 'Fornecedor não encontrado na lista.', color: 'warning' })
+      const title = suppliersError.value ? 'Não foi possível carregar os fornecedores.' : 'Fornecedor não encontrado na lista.'
+      useToast().add({ title, color: 'warning' })
       return
     }
     applyVoiceFields(supplierDraft, draft.fields, VOICE_CATALOG.supplier)
@@ -114,11 +121,12 @@ useVoiceForm('supplier', {
     desativar: draft => onSupplierToggleAtivo({ id: draft.id!, ativo: false }),
     reativar: draft => onSupplierToggleAtivo({ id: draft.id!, ativo: true }),
     excluir: (draft) => {
-      onSupplierRequestDelete({ id: draft.id! })
+      onSupplierRequestDelete({ id: draft.id!, name: draft.label })
     }
   },
   currentId: openEditId,
-  label: () => supplierDraft.nome
+  label: () => supplierDraft.nome,
+  ready: () => !suppliersPending.value && (!!suppliers.value || !!suppliersError.value)
 })
 
 function onSupplierEdit(payload: { id: string }) {
@@ -166,8 +174,9 @@ async function onSupplierToggleAtivo(payload: { id: string, ativo: boolean }) {
   }
 }
 
-function onSupplierRequestDelete(payload: { id: string }) {
+function onSupplierRequestDelete(payload: { id: string, name?: string }) {
   deleteTargetId.value = payload.id
+  deleteTargetName.value = payload.name ?? activeSuppliers.value.find(row => row.id === payload.id)?.nome
   deleteOpen.value = true
 }
 
@@ -309,7 +318,7 @@ async function onSupplierConfirmDelete() {
 
           <CatalogDeleteModal
             v-model:open="deleteOpen"
-            title="Excluir fornecedor?"
+            :title="deleteTitle"
             description="Esta ação não pode ser desfeita. Só é permitido se não houver itens no catálogo nem contas a pagar vinculadas."
             :loading="deleting"
             @confirm="onSupplierConfirmDelete"

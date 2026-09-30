@@ -45,11 +45,15 @@ watch(
 useVoiceForm('pricing', {
   ops: ['edit'],
   apply: (voice) => {
+    if (!params.value) {
+      useToast().add({ title: 'Não foi possível carregar a precificação.', color: 'warning' })
+      return
+    }
     const next = { ...draft.value } as unknown as Record<string, unknown>
     applyVoiceFields(next, voice.fields, VOICE_CATALOG.pricing)
     draft.value = next as unknown as PricingParamsDraft
   },
-  ready: () => !pending.value && !!params.value
+  ready: () => !pending.value && (!!params.value || !!error.value)
 })
 
 async function onSave() {

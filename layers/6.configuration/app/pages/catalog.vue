@@ -39,10 +39,12 @@ const {
   pageSize: budgetPageSize,
   total: budgetTotal,
   pending: budgetPending,
+  status: budgetStatus,
   tipoFilter,
-  refresh: refreshBudget
+  refresh: refreshBudget,
+  fetchItem: fetchCatalogItem
 } = useCatalogList(initialTipo)
-const { data: activeCatalogItems } = useServiceCatalog()
+const { data: activeCatalogItems, status: activeCatalogStatus } = useServiceCatalog()
 const { suppliers } = useSuppliersList()
 const {
   createCatalogItem,
@@ -59,6 +61,7 @@ const formSaving = ref(false)
 const budgetTogglingId = ref<string | null>(null)
 const deleteOpen = ref(false)
 const deleteTargetId = ref<string | null>(null)
+const deleteTargetName = ref<string>()
 const deleting = ref(false)
 
 const activeSuppliers = computed(() => suppliers.value || [])
@@ -71,6 +74,10 @@ const countLabel = computed(() => {
 
 const hasActiveFilters = computed(() =>
   Boolean(budgetQ.value.trim()) || tipoFilter.value !== 'all'
+)
+
+const deleteTitle = computed(() =>
+  deleteTargetName.value ? `Excluir o item "${deleteTargetName.value}"?` : undefined
 )
 
 const formTitle = computed(() =>
@@ -117,6 +124,10 @@ function applyKitItems(items: VoiceRecord[]) {
     toast.add({ title: 'Itens só podem ser incluídos em kits.', color: 'warning' })
     return
   }
+  if (!activeCatalogItems.value) {
+    toast.add({ title: 'Não foi possível carregar o catálogo para incluir os itens.', color: 'warning' })
+    return
+  }
   for (const item of items) {
     const id = typeof item.item === 'string' ? item.item : undefined
     if (!id) continue
@@ -124,7 +135,7 @@ function applyKitItems(items: VoiceRecord[]) {
       toast.add({ title: 'Um kit não pode conter ele mesmo.', color: 'warning' })
       continue
     }
-    if (activeCatalogItems.value?.find(row => row.id === id)?.tipo === 'kit') {
+    if (activeCatalogItems.value.find(row => row.id === id)?.tipo === 'kit') {
       toast.add({ title: 'Kits não podem conter outros kits.', color: 'warning' })
       continue
     }
@@ -149,9 +160,13 @@ useVoiceForm('catalogItem', {
     }
     if (draft.op === 'create') {
       openCreate()
-    } else if (!editingThis && !onBudgetEdit({ id: draft.id! })) {
-      useToast().add({ title: 'Item fora da lista atual. Limpe a busca e os filtros e tente de novo.', color: 'warning' })
-      return
+    } else if (!editingThis) {
+      const item = findBudgetItem(draft.id!) ?? await fetchCatalogItem(draft.id!)
+      if (!item) {
+        useToast().add({ title: 'Item não encontrado no catálogo.', color: 'warning' })
+        return
+      }
+      openEdit(item)
     }
     await nextTick()
     await applyCatalogVoice(draft.fields)
@@ -161,21 +176,28 @@ useVoiceForm('catalogItem', {
     desativar: draft => onBudgetToggleAtivo({ id: draft.id!, ativo: false }),
     reativar: draft => onBudgetToggleAtivo({ id: draft.id!, ativo: true }),
     excluir: (draft) => {
-      onBudgetRequestDelete({ id: draft.id! })
+      onBudgetRequestDelete({ id: draft.id!, name: draft.label })
     }
   },
   currentId: openEditId,
-  label: () => budgetDraft.nome
+  label: () => budgetDraft.nome,
+  ready: () => [budgetStatus.value, activeCatalogStatus.value].every(status => status === 'success' || status === 'error')
 })
 
-function onBudgetEdit(payload: { id: string }) {
-  const item = (budgetItems.value as CatalogItemRow[]).find(row => row.id === payload.id)
-  if (!item) return false
+function findBudgetItem(id: string) {
+  return (budgetItems.value as CatalogItemRow[]).find(row => row.id === id)
+}
+
+function openEdit(item: CatalogItemRow) {
   formMode.value = 'edit'
   editingId.value = item.id
   Object.assign(budgetDraft, catalogDraftFromRow(item))
   formOpen.value = true
-  return true
+}
+
+function onBudgetEdit(payload: { id: string }) {
+  const item = findBudgetItem(payload.id)
+  if (item) openEdit(item)
 }
 
 async function onFormSubmit() {
@@ -216,8 +238,9 @@ async function onBudgetToggleAtivo(payload: { id: string, ativo: boolean }) {
   }
 }
 
-function onBudgetRequestDelete(payload: { id: string }) {
+function onBudgetRequestDelete(payload: { id: string, name?: string }) {
   deleteTargetId.value = payload.id
+  deleteTargetName.value = payload.name ?? findBudgetItem(payload.id)?.nome
   deleteOpen.value = true
 }
 
@@ -389,6 +412,7 @@ function clearFilters() {
 
           <CatalogDeleteModal
             v-model:open="deleteOpen"
+            :title="deleteTitle"
             :loading="deleting"
             @confirm="onBudgetConfirmDelete"
           />

@@ -21,7 +21,7 @@ const breadcrumbItems = settingsHubBreadcrumb('Equipe')
 const user = useSupabaseUser()
 const currentUserId = computed(() => user.value?.id)
 
-const { collaborators, pending, refresh } = useCollaboratorsList()
+const { collaborators, pending, refresh, error: collaboratorsError } = useCollaboratorsList()
 const { updatePapel, resetCollaboratorPassword, deleteCollaborator } = useCollaboratorMutations()
 
 const createOpen = ref(false)
@@ -42,6 +42,10 @@ const { confirmVoice } = useVoiceConfirm()
 
 function collaboratorRow(id?: string) {
   return collaborators.value?.find(row => row.id === id)
+}
+
+function missingCollaboratorMessage() {
+  return collaboratorsError.value ? 'Não foi possível carregar a equipe.' : 'Colaborador não encontrado na lista.'
 }
 
 async function changeRoleByVoice(id: string | undefined, papel: unknown) {
@@ -68,7 +72,7 @@ useVoiceForm('collaborator', {
       return
     }
     if (!collaboratorRow(draft.id)) {
-      useToast().add({ title: 'Colaborador não encontrado na lista.', color: 'warning' })
+      useToast().add({ title: missingCollaboratorMessage(), color: 'warning' })
       return
     }
     if (await confirmVoice({ title: voiceConfirmText(VOICE_CATALOG.collaborator.actions.trocarPapel!.confirm!, { label: draft.label, papel }) })) {
@@ -79,7 +83,7 @@ useVoiceForm('collaborator', {
   unavailable: (action, draft) => {
     if (action !== 'redefinirSenha' && draft.id === currentUserId.value) return 'Você não pode fazer isso com o próprio usuário.'
     if (action === 'trocarPapel' && typeof draft.args?.papel !== 'string') return 'Diga o novo papel.'
-    if (!collaboratorRow(draft.id)) return 'Colaborador não encontrado na lista.'
+    if (!collaboratorRow(draft.id)) return missingCollaboratorMessage()
     return undefined
   },
   actions: {
@@ -93,7 +97,8 @@ useVoiceForm('collaborator', {
       const row = collaboratorRow(draft.id)
       if (row) onDelete(row)
     }
-  }
+  },
+  ready: () => !pending.value && (!!collaborators.value || !!collaboratorsError.value)
 })
 
 const countLabel = computed(() => {

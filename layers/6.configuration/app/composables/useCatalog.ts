@@ -72,7 +72,7 @@ export function useCatalogList(
     REPORT_PAGE_SIZE
   )
 
-  const { data, pending, refresh, error } = useAsyncData(
+  const { data, pending, status, refresh, error } = useAsyncData(
     CATALOG_LIST_KEY,
     async () => {
       const { from, to } = rangeBounds()
@@ -111,6 +111,16 @@ export function useCatalogList(
     router.replace({ query: nextQuery })
   })
 
+  /** A row outside the current page/filters (voice edit by id). */
+  async function fetchItem(id: string) {
+    const { data: row } = await supabase
+      .from('servicos_catalogo')
+      .select(CATALOG_SELECT)
+      .eq('id', id)
+      .maybeSingle()
+    return row as CatalogItemRow | null
+  }
+
   return {
     q,
     tipoFilter,
@@ -119,8 +129,10 @@ export function useCatalogList(
     pageSize,
     total: computed(() => data.value?.total ?? 0),
     pending,
+    status,
     refresh,
-    error
+    error,
+    fetchItem
   }
 }
 
