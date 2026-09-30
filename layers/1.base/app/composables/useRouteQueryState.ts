@@ -16,7 +16,7 @@ export function useRouteQueryState<T extends string = string>(key: string, fallb
     state.value = next
   })
 
-  // Debounced like the search box: an in-flight replace must not echo back over newer keystrokes.
+  // Debounced like the search box so a replace doesn't run per keystroke.
   watch(state, (value) => {
     clearTimeout(writeTimer)
     writeTimer = setTimeout(() => {
@@ -24,6 +24,7 @@ export function useRouteQueryState<T extends string = string>(key: string, fallb
     }, SEARCH_DEBOUNCE_MS)
   })
 
+  onBeforeRouteLeave(() => clearTimeout(writeTimer))
   onScopeDispose(() => clearTimeout(writeTimer))
   return state
 }
