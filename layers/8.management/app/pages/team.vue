@@ -2,6 +2,7 @@
 import type { ColaboradorPapel } from '~~/shared/types/oficina'
 import type { CollaboratorRow } from '#layers/auth/app/composables/useCollaborators'
 import { settingsHubBreadcrumb } from '#layers/configuration/app/utils/settings-hub'
+import { VOICE_CATALOG, voiceConfirmText } from '#layers/base/app/utils/voice/catalog'
 
 defineOptions({ name: 'TeamIndexPage' })
 
@@ -37,11 +38,60 @@ watch(createOpen, (open) => {
   if (!open) voiceCollaborator.value = undefined
 })
 
+const { confirmVoice } = useVoiceConfirm()
+
+function collaboratorRow(id?: string) {
+  return collaborators.value?.find(row => row.id === id)
+}
+
+async function changeRoleByVoice(id: string | undefined, papel: unknown) {
+  const row = collaboratorRow(id)
+  if (!row || typeof papel !== 'string') return
+  await onUpdatePapel({ id: row.id, papel: papel as ColaboradorPapel })
+}
+
 useVoiceForm('collaborator', {
-  ops: ['create'],
-  apply: (draft) => {
-    voiceCollaborator.value = { ...draft.fields } as typeof voiceCollaborator.value
-    createOpen.value = true
+  apply: async (draft) => {
+    if (draft.op === 'create') {
+      voiceCollaborator.value = { ...draft.fields } as typeof voiceCollaborator.value
+      createOpen.value = true
+      return
+    }
+    const papel = draft.fields.papel
+    if (typeof papel !== 'string') {
+      useToast().add({ title: 'Por voz, só dá para mudar o papel de um colaborador.', color: 'warning' })
+      return
+    }
+    if (draft.id === currentUserId.value) {
+      useToast().add({ title: 'Você não pode mudar o próprio papel.', color: 'warning' })
+      return
+    }
+    if (!collaboratorRow(draft.id)) {
+      useToast().add({ title: 'Colaborador não encontrado na lista.', color: 'warning' })
+      return
+    }
+    if (await confirmVoice({ title: voiceConfirmText(VOICE_CATALOG.collaborator.actions.trocarPapel!.confirm!, { label: draft.label, papel }) })) {
+      await changeRoleByVoice(draft.id, papel)
+    }
+  },
+  unavailable: (action, draft) => {
+    if (action !== 'redefinirSenha' && draft.id === currentUserId.value) return 'Você não pode fazer isso com o próprio usuário.'
+    if (!collaboratorRow(draft.id)) return 'Colaborador não encontrado na lista.'
+    return undefined
+  },
+  actions: {
+    trocarPapel: async (draft) => {
+      await changeRoleByVoice(draft.id, draft.args?.papel)
+    },
+    redefinirSenha: (draft) => {
+      const row = collaboratorRow(draft.id)
+      if (row) onResetPassword(row)
+      return { message: 'Digite a nova senha.' }
+    },
+    excluir: (draft) => {
+      const row = collaboratorRow(draft.id)
+      if (row) onDelete(row)
+    }
   }
 })
 

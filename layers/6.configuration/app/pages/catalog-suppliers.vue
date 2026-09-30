@@ -2,6 +2,8 @@
 import type { Fornecedor } from '~~/shared/types/database'
 import { emptySupplierDraft } from '../utils/catalog'
 import { settingsHubBreadcrumb } from '../utils/settings-hub'
+import { applyVoiceFields } from '#layers/base/app/utils/voice/apply'
+import { VOICE_CATALOG } from '#layers/base/app/utils/voice/catalog'
 
 defineOptions({ name: 'CatalogSuppliersPage' })
 
@@ -90,14 +92,33 @@ function openCreate() {
 }
 
 useVoiceForm('supplier', {
-  ops: ['create'],
-  state: supplierDraft,
-  open: () => openCreate()
+  apply: (draft) => {
+    if (draft.op === 'create') {
+      openCreate()
+    } else if (!(formOpen.value && formMode.value === 'edit' && editingId.value === draft.id) && !onSupplierEdit({ id: draft.id! })) {
+      useToast().add({ title: 'Fornecedor não encontrado na lista.', color: 'warning' })
+      return
+    }
+    applyVoiceFields(supplierDraft, draft.fields, VOICE_CATALOG.supplier)
+  },
+  actions: {
+    desativar: async (draft) => {
+      await onSupplierToggleAtivo({ id: draft.id!, ativo: false })
+    },
+    reativar: async (draft) => {
+      await onSupplierToggleAtivo({ id: draft.id!, ativo: true })
+    },
+    excluir: (draft) => {
+      onSupplierRequestDelete({ id: draft.id! })
+    }
+  },
+  currentId: () => (formOpen.value && formMode.value === 'edit' ? editingId.value ?? undefined : undefined),
+  label: () => supplierDraft.nome
 })
 
 function onSupplierEdit(payload: { id: string }) {
   const supplier = activeSuppliers.value.find((row: Fornecedor) => row.id === payload.id)
-  if (!supplier) return
+  if (!supplier) return false
   formMode.value = 'edit'
   editingId.value = supplier.id
   supplierDraft.nome = supplier.nome
@@ -105,6 +126,7 @@ function onSupplierEdit(payload: { id: string }) {
   supplierDraft.email = supplier.email || ''
   supplierDraft.observacoes = supplier.observacoes || ''
   formOpen.value = true
+  return true
 }
 
 async function onFormSubmit() {

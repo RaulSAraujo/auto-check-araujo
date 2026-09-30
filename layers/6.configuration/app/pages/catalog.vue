@@ -10,6 +10,7 @@ import {
 import { settingsHubBreadcrumb } from '../utils/settings-hub'
 import { applyVoiceFields } from '#layers/base/app/utils/voice/apply'
 import { VOICE_CATALOG } from '#layers/base/app/utils/voice/catalog'
+import type { VoiceRecord } from '#layers/base/app/utils/voice/types'
 
 defineOptions({ name: 'CatalogIndexPage' })
 
@@ -97,31 +98,72 @@ function openCreate() {
   formOpen.value = true
 }
 
-useVoiceForm('catalogItem', {
-  ops: ['create'],
-  apply: async (draft) => {
-    openCreate()
-    await nextTick()
-    const { tipo, usar_preco_sugerido, valor_padrao, ...rest } = draft.fields
-    if (typeof tipo === 'string') budgetDraft.tipo = tipo as CatalogItemDraft['tipo']
-    // CatalogForm's tipo watcher resets custo/estoque/horas/preco_manual; let it run before applying spoken values.
-    await nextTick()
-    applyVoiceFields(budgetDraft as unknown as Record<string, unknown>, rest, VOICE_CATALOG.catalogItem)
-    if (typeof valor_padrao === 'number') {
-      if (budgetDraft.tipo === 'servico') budgetDraft.preco_manual = true
-      budgetDraft.valor_padrao = valor_padrao
-    }
-    if (typeof usar_preco_sugerido === 'boolean') budgetDraft.preco_manual = !usar_preco_sugerido
+async function applyCatalogVoice(fields: VoiceRecord) {
+  const { tipo, usar_preco_sugerido, valor_padrao, ...rest } = fields
+  if (typeof tipo === 'string') budgetDraft.tipo = tipo as CatalogItemDraft['tipo']
+  // CatalogForm's tipo watcher resets custo/estoque/horas/preco_manual; let it run before applying spoken values.
+  await nextTick()
+  applyVoiceFields(budgetDraft as unknown as Record<string, unknown>, rest, VOICE_CATALOG.catalogItem)
+  if (typeof valor_padrao === 'number') {
+    if (budgetDraft.tipo === 'servico') budgetDraft.preco_manual = true
+    budgetDraft.valor_padrao = valor_padrao
   }
+  if (typeof usar_preco_sugerido === 'boolean') budgetDraft.preco_manual = !usar_preco_sugerido
+}
+
+function isEditing(id?: string) {
+  return formOpen.value && formMode.value === 'edit' && editingId.value === id
+}
+
+useVoiceForm('catalogItem', {
+  apply: async (draft) => {
+    if (draft.op === 'create') {
+      openCreate()
+    } else if (!isEditing(draft.id) && !onBudgetEdit({ id: draft.id! })) {
+      useToast().add({ title: 'Item fora da lista atual. Limpe a busca e os filtros e tente de novo.', color: 'warning' })
+      return
+    }
+    await nextTick()
+    await applyCatalogVoice(draft.fields)
+  },
+  onItems: (items, draft) => {
+    if (draft.op === 'edit' && !isEditing(draft.id)) return
+    if (budgetDraft.tipo !== 'kit') {
+      useToast().add({ title: 'Itens só podem ser incluídos em kits.', color: 'warning' })
+      return
+    }
+    for (const item of items) {
+      const id = typeof item.item === 'string' ? item.item : undefined
+      if (!id || id === editingId.value) continue
+      const quantidade = typeof item.quantidade === 'number' ? item.quantidade : 1
+      const existing = budgetDraft.kit_itens.find(row => row.item_id === id)
+      if (existing) existing.quantidade = quantidade
+      else budgetDraft.kit_itens.push({ item_id: id, quantidade })
+    }
+  },
+  actions: {
+    desativar: async (draft) => {
+      await onBudgetToggleAtivo({ id: draft.id!, ativo: false })
+    },
+    reativar: async (draft) => {
+      await onBudgetToggleAtivo({ id: draft.id!, ativo: true })
+    },
+    excluir: (draft) => {
+      onBudgetRequestDelete({ id: draft.id! })
+    }
+  },
+  currentId: () => (formOpen.value && formMode.value === 'edit' ? editingId.value ?? undefined : undefined),
+  label: () => budgetDraft.nome
 })
 
 function onBudgetEdit(payload: { id: string }) {
   const item = (budgetItems.value as CatalogItemRow[]).find(row => row.id === payload.id)
-  if (!item) return
+  if (!item) return false
   formMode.value = 'edit'
   editingId.value = item.id
   Object.assign(budgetDraft, catalogDraftFromRow(item))
   formOpen.value = true
+  return true
 }
 
 async function onFormSubmit() {

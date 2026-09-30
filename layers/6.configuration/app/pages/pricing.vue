@@ -5,6 +5,8 @@ import {
   type PricingParamsDraft
 } from '../utils/pricing'
 import { settingsHubBreadcrumb } from '../utils/settings-hub'
+import { applyVoiceFields } from '#layers/base/app/utils/voice/apply'
+import { VOICE_CATALOG } from '#layers/base/app/utils/voice/catalog'
 
 defineOptions({ name: 'PricingIndexPage' })
 
@@ -39,6 +41,16 @@ watch(
   },
   { immediate: true }
 )
+
+useVoiceForm('pricing', {
+  ops: ['edit'],
+  apply: (voice) => {
+    const next = { ...draft.value } as unknown as Record<string, unknown>
+    applyVoiceFields(next, voice.fields, VOICE_CATALOG.pricing)
+    draft.value = next as unknown as PricingParamsDraft
+  },
+  ready: () => !!draftDefaults.value
+})
 
 async function onSave() {
   if (!isPricingDraftValid(draft.value) || saving.value) return
