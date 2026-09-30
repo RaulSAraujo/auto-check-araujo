@@ -5,7 +5,7 @@ import {
   type AccountsFilter,
   type FinanceCategoryDraft
 } from '../utils/accounts-payable'
-import { currentMonthValue } from '../utils/finance'
+import { currentMonthValue, isMonthValue } from '../utils/finance'
 import type { SupplierDraft } from '#layers/configuration/app/utils/catalog'
 import {
   useSupplierMutations,
@@ -20,12 +20,10 @@ export const FINANCE_TAB_ITEMS = [
   { label: 'Recebíveis', value: 'recebiveis' as const, icon: 'i-lucide-wallet' }
 ]
 
-const MONTH_RE = /^\d{4}-(0[1-9]|1[0-2])$/
-
 export function useFinanceWorkspace() {
   const tab = useRouteQueryState<FinanceTab>('aba', 'resumo', FINANCE_TAB_ITEMS.map(item => item.value))
   const accountsFilter = useRouteQueryState<AccountsFilter>('contas', 'a_pagar', ACCOUNTS_FILTER_ITEMS.map(item => item.value))
-  const month = useRouteQueryState('mes', currentMonthValue(), value => MONTH_RE.test(value))
+  const month = useRouteQueryState('mes', currentMonthValue(), isMonthValue)
   const categoriesOpen = ref(false)
   const suppliersOpen = ref(false)
 

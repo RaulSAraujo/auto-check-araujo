@@ -17,6 +17,9 @@ export function useRouteQueryState<T extends string = string>(key: string, fallb
   })
 
   // Debounced like the search box so a replace doesn't run per keystroke.
+  // ponytail: each instance writes on its own timer from route.query and adopts any route change, safe only while
+  // navigation settles within microtasks (sync middleware, no async guards); an async guard would let two close writes
+  // drop a key or an in-flight echo undo a keystroke. Upgrade: serialize writes from router.currentRoute, ignore echo while pending.
   watch(state, (value) => {
     clearTimeout(writeTimer)
     writeTimer = setTimeout(() => {
