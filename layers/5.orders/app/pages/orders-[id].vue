@@ -9,6 +9,8 @@ import { primaryPhone } from '~~/shared/utils/contact'
 import { formatTimeShort, schedulingDayPath } from '#layers/scheduling/app/utils/scheduling'
 import { applyVoiceFields, voiceBudgetItem } from '#layers/base/app/utils/voice/apply'
 import { VOICE_CATALOG } from '#layers/base/app/utils/voice/catalog'
+import { foldText } from '#layers/base/app/utils/voice/text'
+import type { VoiceDraft } from '#layers/base/app/utils/voice/types'
 
 defineOptions({ name: 'OrdersDetailPage' })
 
@@ -58,7 +60,8 @@ const {
   onSubmitForApproval,
   onApprove,
   onReject,
-  openVoiceItem
+  openVoiceItem,
+  addVoiceItems
 } = useOrderBudgetPage(id, ordem, budgetItems, refresh, refreshBudgetItems)
 
 const {
@@ -80,33 +83,6 @@ const {
   saveStatus
 } = useOrderStatusEditor(id, ordem, refresh)
 
-const ORDER_FORM_FIELDS = ['km_entrada', 'reclamacao', 'diagnostico', 'observacoes'] as const
-
-useVoiceForm('order', {
-  ops: ['edit'],
-  apply: (draft) => {
-    const { status, ...rest } = draft.fields
-    const hasForm = ORDER_FORM_FIELDS.some(key => key in rest)
-    if ((hasForm || status) && !canEdit.value) {
-      useToast().add({ title: 'Esta OS não pode ser editada.', color: 'warning' })
-      return
-    }
-    applyVoiceFields(state, rest, VOICE_CATALOG.order, { only: ORDER_FORM_FIELDS })
-    if (typeof status === 'string') {
-      if (statusItems.value.some(item => item.value === status)) selectedStatus.value = status
-      else useToast().add({ title: 'Esse status não está disponível para esta OS.', color: 'warning' })
-    }
-  },
-  onItems: async (items) => {
-    await openVoiceItem(voiceBudgetItem(items[0]!))
-    if (items.length > 1) useToast().add({ title: 'Só o primeiro item foi preenchido. Dite o próximo em seguida.', color: 'warning' })
-  },
-  currentId: () => id.value,
-  label: () => ordem.value?.numero,
-  accept: draft => draft.id === id.value,
-  ready: () => !!ordem.value
-})
-
 const {
   state: paymentState,
   saving: savingPayment,
@@ -120,6 +96,86 @@ const {
   discard: discardPayment,
   savePayment
 } = useOrderPayment(id, ordem, refresh)
+
+const { confirmVoice } = useVoiceConfirm()
+
+const ORDER_FORM_FIELDS = ['km_entrada', 'reclamacao', 'diagnostico', 'observacoes'] as const
+const PAYMENT_FIELDS = ['pago', 'forma_pagamento', 'parcelas', 'valor_cobrado'] as const
+
+function voiceItemMatches(draft: VoiceDraft) {
+  const spoken = typeof draft.args?.descricao === 'string' ? foldText(draft.args.descricao) : ''
+  return spoken ? (budgetItems.value ?? []).filter(item => foldText(item.descricao).includes(spoken)) : []
+}
+
+useVoiceForm('order', {
+  ops: ['edit'],
+  apply: (draft) => {
+    const { status, ...rest } = draft.fields
+    const hasForm = ORDER_FORM_FIELDS.some(key => key in rest)
+    if ((hasForm || status) && !canEdit.value) {
+      useToast().add({ title: 'Esta OS não pode ser editada.', color: 'warning' })
+      return
+    }
+    applyVoiceFields(state, rest, VOICE_CATALOG.order, { only: ORDER_FORM_FIELDS })
+    if (PAYMENT_FIELDS.some(key => key in rest)) {
+      if (!canEditPayment.value || !showPaymentSection.value) {
+        useToast().add({ title: 'O pagamento desta OS não pode ser editado agora.', color: 'warning' })
+      } else {
+        // A spoken charge must survive the forma/parcelas watchers that recompute the suggestion.
+        if ('valor_cobrado' in rest) markChargeTouched()
+        applyVoiceFields(paymentState, rest, VOICE_CATALOG.order, { only: PAYMENT_FIELDS })
+        if (rest.forma_pagamento && rest.forma_pagamento !== 'cartao_credito') paymentState.parcelas = null
+      }
+    }
+    if (typeof status === 'string') {
+      if (statusItems.value.some(item => item.value === status)) selectedStatus.value = status
+      else useToast().add({ title: 'Esse status não está disponível para esta OS.', color: 'warning' })
+    }
+  },
+  onItems: async (items) => {
+    const voice = items.map(voiceBudgetItem)
+    if (voice.length === 1) return openVoiceItem(voice[0]!)
+    if (!canEditItems.value) {
+      useToast().add({ title: 'Orçamento bloqueado', description: 'Este orçamento não pode receber itens agora.', color: 'warning' })
+      return
+    }
+    const lines = voice.map(item => `${item.quantidade ?? 1}× ${item.descricao ?? 'item'}${item.valor_unitario != null ? ` — ${formatMoney(item.valor_unitario)}` : ''}`)
+    const ok = await confirmVoice({ title: `Adicionar ${voice.length} itens ao orçamento?`, description: lines.join('\n') })
+    if (!ok) return
+    const { added } = await addVoiceItems(voice)
+    if (added < voice.length) useToast().add({ title: `${added} de ${voice.length} itens adicionados.`, color: 'warning' })
+  },
+  unavailable: (action, draft) => {
+    if (['enviarAprovacao', 'removerItem'].includes(action) && !canEditItems.value) return 'Este orçamento não pode ser alterado agora.'
+    if (action === 'enviarAprovacao' && budgetStatus.value === 'aguardando_aprovacao') return 'O orçamento já está aguardando aprovação.'
+    if (action === 'enviarAprovacao' && !budgetItems.value?.length) return 'Adicione ao menos um item antes de enviar o orçamento.'
+    if (['aprovar', 'rejeitar'].includes(action) && budgetStatus.value !== 'aguardando_aprovacao') return 'O orçamento não está aguardando aprovação.'
+    if (action === 'removerItem') {
+      const count = voiceItemMatches(draft).length
+      if (count !== 1) return count ? 'Mais de um item com esse nome. Diga o nome completo.' : 'Item não encontrado no orçamento.'
+    }
+    if (action === 'usarSugestao' && (!canEditPayment.value || !showPaymentSection.value)) return 'O pagamento desta OS não pode ser editado agora.'
+    return undefined
+  },
+  actions: {
+    enviarAprovacao: () => onSubmitForApproval().then(() => undefined),
+    aprovar: () => onApprove().then(() => undefined),
+    rejeitar: () => onReject().then(() => undefined),
+    removerItem: async (draft) => {
+      const [match, ...rest] = voiceItemMatches(draft)
+      if (!match || rest.length) return { unavailable: 'Item não encontrado no orçamento.' }
+      await onDeleteItem(match.id)
+    },
+    usarSugestao: () => {
+      applySuggestedCharge()
+      return { message: 'Valor sugerido aplicado. Confira e salve.' }
+    }
+  },
+  currentId: () => id.value,
+  label: () => ordem.value?.numero,
+  accept: draft => draft.id === id.value,
+  ready: () => !!ordem.value
+})
 
 const isDirty = computed(() =>
   isFormDirty.value || isStatusDirty.value || isPaymentDirty.value

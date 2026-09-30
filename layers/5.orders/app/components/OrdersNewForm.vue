@@ -37,6 +37,13 @@ const emit = defineEmits<{
 const { back: cancel } = useSmartBack(() => cancelTo)
 
 const showNotes = ref(Boolean(state.value.observacoes.trim()))
+const showDiagnosis = ref(Boolean(state.value.diagnostico.trim()))
+watch(() => state.value.observacoes, (value) => {
+  if (value.trim()) showNotes.value = true
+})
+watch(() => state.value.diagnostico, (value) => {
+  if (value.trim()) showDiagnosis.value = true
+})
 const isDesktop = ref(false)
 
 onMounted(() => {
@@ -320,6 +327,57 @@ const vehicleLabel = computed(() => {
             autocomplete="off"
             name="observacoes"
             @blur="state.observacoes = toSentenceCase(state.observacoes)"
+          />
+        </UFormField>
+      </div>
+    </section>
+
+    <section
+      class="rounded-lg border border-default bg-default p-4 shadow-sm dark:shadow-none sm:p-5"
+      aria-labelledby="os-diagnosis-heading"
+    >
+      <div class="flex items-start justify-between gap-3">
+        <div class="min-w-0">
+          <p
+            id="os-diagnosis-heading"
+            class="text-sm font-semibold uppercase tracking-widest text-muted"
+          >
+            Diagnóstico
+          </p>
+          <p class="mt-1 text-sm text-pretty text-muted">
+            O que a oficina já identificou no veículo.
+          </p>
+        </div>
+        <UButton
+          :label="showDiagnosis ? 'Ocultar' : 'Adicionar'"
+          color="neutral"
+          variant="ghost"
+          size="sm"
+          :aria-expanded="showDiagnosis"
+          aria-controls="os-diagnosis-field"
+          @click="showDiagnosis = !showDiagnosis"
+        />
+      </div>
+
+      <div
+        v-if="showDiagnosis"
+        id="os-diagnosis-field"
+        class="mt-4"
+      >
+        <UFormField
+          label="Diagnóstico"
+          name="diagnostico"
+        >
+          <UTextarea
+            v-model="state.diagnostico"
+            class="w-full"
+            :rows="3"
+            autoresize
+            :maxrows="8"
+            placeholder="Pastilhas dianteiras no limite…"
+            autocomplete="off"
+            name="diagnostico"
+            @blur="state.diagnostico = toSentenceCase(state.diagnostico)"
           />
         </UFormField>
       </div>
