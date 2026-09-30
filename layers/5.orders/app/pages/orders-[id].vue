@@ -29,7 +29,7 @@ const breadcrumbOrigin = resolveOrderBreadcrumbOrigin()
 
 const [
   { data: ordem, pending, refresh },
-  { data: budgetItems, refresh: refreshBudgetItems }
+  { data: budgetItems, refresh: refreshBudgetItems, status: budgetItemsStatus }
 ] = await Promise.all([
   useOrderQuery(id),
   useOrderItemsQuery(id)
@@ -192,7 +192,7 @@ useVoiceForm('order', {
       return { message: 'Valor sugerido aplicado. Confira e salve.' }
     },
     baixarPdf: () => onDownloadBudgetPdf(),
-    // window.open outside a tap is blocked; the toast button supplies the gesture.
+    // Print and WhatsApp: window.open outside a tap is blocked; the toast button supplies the gesture.
     imprimir: () => {
       useToast().add({
         title: 'Orçamento pronto para imprimir',
@@ -215,7 +215,7 @@ useVoiceForm('order', {
   currentId: () => id.value,
   label: () => ordem.value?.numero,
   accept: draft => draft.id === id.value,
-  ready: () => !!ordem.value && !!budgetItems.value
+  ready: () => !!ordem.value && ['success', 'error'].includes(budgetItemsStatus.value)
 })
 
 const isDirty = computed(() =>
