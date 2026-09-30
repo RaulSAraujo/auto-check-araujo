@@ -2,6 +2,11 @@
 defineOptions({ name: 'BaseVoiceConfirm' })
 
 const { request, settle } = useVoiceConfirm()
+const route = useRoute()
+
+watch(() => route.path, () => {
+  if (request.value) settle(false)
+})
 
 const open = computed({
   get: () => !!request.value,

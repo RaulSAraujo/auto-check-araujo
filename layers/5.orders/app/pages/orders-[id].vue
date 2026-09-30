@@ -166,7 +166,12 @@ useVoiceForm('order', {
     if (action === 'enviarAprovacao' && budgetStatus.value === 'aguardando_aprovacao') return 'O orçamento já está aguardando aprovação.'
     if (action === 'enviarAprovacao' && !budgetItems.value?.length) return 'Adicione ao menos um item antes de enviar o orçamento.'
     if (['aprovar', 'rejeitar'].includes(action) && budgetStatus.value !== 'aguardando_aprovacao') return 'O orçamento não está aguardando aprovação.'
-    if (action === 'removerItem') return voiceItemToRemove(draft).error
+    if (action === 'removerItem') {
+      const { item, error } = voiceItemToRemove(draft)
+      // The confirmation names the matched item, not the spoken fragment.
+      if (item) draft.args = { ...draft.args, descricao: item.descricao }
+      return error
+    }
     if (action === 'usarSugestao' && (!canEditPayment.value || !showPaymentSection.value)) return 'O pagamento desta OS não pode ser editado agora.'
     if (action === 'usarSugestao' && !paymentState.pago) return UNPAID_MESSAGE
     return undefined

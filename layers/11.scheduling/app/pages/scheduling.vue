@@ -126,6 +126,11 @@ function withVoiceAppointment(draft: { id?: string, inicio?: string }, action: (
 useVoiceForm('appointment', {
   apply: (draft) => {
     if (!canWrite.value) return
+    const editingThis = draft.op === 'edit' && !!draft.id && openAppointment.value?.id === draft.id
+    if (formOpen.value && !editingThis) {
+      toast.add({ title: 'Feche o formulário aberto antes.', color: 'warning' })
+      return
+    }
     const { veiculo, date, startTime, problema } = draft.fields
     if (draft.op === 'create') {
       if (typeof date === 'string') selectDay(combineLocalDateTime(date, '00:00'))

@@ -254,7 +254,11 @@ export function useVoiceCommand() {
     const permission = command.op === 'action'
       ? entity.actions[command.action!]!.permission
       : entity.permission[command.op as 'create' | 'edit']
-    if (!permission) return go({ path: SCREEN_PATH[entityKey], opened: true }, here, isCancelled, false)
+    if (!permission) {
+      const screen = Object.values(NAV).find(nav => nav.path === SCREEN_PATH[entityKey])?.permission
+      if (screen && !can(screen)) return forbidden()
+      return go({ path: SCREEN_PATH[entityKey], opened: true }, here, isCancelled, false)
+    }
     if (!can(permission)) return forbidden()
 
     const warnings: string[] = []
