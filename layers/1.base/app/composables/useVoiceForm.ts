@@ -17,7 +17,7 @@ export interface VoiceFormOptions {
   /** Replaces open + state for screens whose form needs special handling. */
   apply?: (draft: VoiceDraft) => MaybePromise<void>
   onItems?: (items: VoiceRecord[], draft: VoiceDraft) => MaybePromise<void>
-  actions?: Record<string, (draft: VoiceDraft) => MaybePromise<VoiceActionResult>>
+  actions?: Record<string, (draft: VoiceDraft) => MaybePromise<VoiceActionResult> | Promise<void>>
   /** Reason the action can't run now; checked before asking for confirmation. */
   unavailable?: (action: string, draft: VoiceDraft) => string | undefined
   currentId?: () => string | undefined
@@ -58,7 +58,7 @@ export function useVoiceForm(entityKey: VoiceEntityKey, options: VoiceFormOption
       const ok = await confirmVoice({ title: voiceConfirmText(action.confirm ?? name, { ...draft.args, label }) })
       if (!ok) return
     }
-    const result = await handler(draft)
+    const result = await handler(draft) as VoiceActionResult
     if (result?.unavailable) toast.add({ title: result.unavailable, color: 'warning' })
     else if (result?.message) toast.add({ title: result.message, color: 'info', icon: 'i-lucide-mic' })
   }
