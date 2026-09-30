@@ -1460,8 +1460,8 @@
     "semantic_hash": ""
   },
   "layers/6.configuration/app/composables/useCatalog.ts": {
-    "mtime": 1790778489.1056738,
-    "ast_hash": "40cfb59fdd158a8922493f468e49a29f",
+    "mtime": 1790779156.7072132,
+    "ast_hash": "6ee0425445207e6a6d0231da13323f35",
     "semantic_hash": ""
   },
   "layers/6.configuration/app/composables/usePricingParams.ts": {
@@ -1485,8 +1485,8 @@
     "semantic_hash": ""
   },
   "layers/6.configuration/app/pages/catalog.vue": {
-    "mtime": 1790778500.9783947,
-    "ast_hash": "df67e1ae43462cf8c0a765bfca914572",
+    "mtime": 1790779163.5681355,
+    "ast_hash": "56b46c44146bdfeee03b79861a3d822e",
     "semantic_hash": ""
   },
   "layers/6.configuration/app/pages/pricing.vue": {
@@ -2060,8 +2060,8 @@
     "semantic_hash": ""
   },
   "layers/1.base/app/components/VoiceConfirm.vue": {
-    "mtime": 1790778514.7256787,
-    "ast_hash": "36120f209e296166c4626e7391c19916",
+    "mtime": 1790779152.88645,
+    "ast_hash": "330b8ad31f7b0cd3138ff51c995ebfb5",
     "semantic_hash": ""
   },
   "layers/1.base/app/composables/useVoiceConfirm.ts": {
