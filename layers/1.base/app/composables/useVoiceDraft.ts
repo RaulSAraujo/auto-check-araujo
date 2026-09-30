@@ -1,14 +1,16 @@
-import type { VoiceDraft, VoiceEntityKey } from '../utils/voice/types'
+import type { VoiceCurrentMap } from '../utils/voice/current'
+import type { VoiceDraft } from '../utils/voice/types'
+
+export type { VoiceCurrent } from '../utils/voice/current'
 
 type PendingVoiceDraft = { draft: VoiceDraft, createdAt: number }
-export interface VoiceCurrent { id: string, label?: string }
 
 const DRAFT_TTL_MS = 15_000
 
 export function useVoiceDraft() {
   const pending = useState<PendingVoiceDraft | null>('voice-draft', () => null)
   /** Record open on screen per entity (detail page or edit slideover), used when a command has no target. */
-  const current = useState<Partial<Record<VoiceEntityKey, VoiceCurrent>>>('voice-current', () => ({}))
+  const current = useState<VoiceCurrentMap>('voice-current', () => ({}))
 
   function setVoiceDraft(draft: VoiceDraft) {
     pending.value = { draft, createdAt: Date.now() }

@@ -130,16 +130,21 @@ useVoiceForm('appointment', {
       ...(typeof date === 'string' ? { date } : {}),
       ...(typeof startTime === 'string' ? { startTime } : {})
     }
-    // No plate spoken: the runtime used the appointment open in the slideover (no `inicio`).
-    if (editingAppointment.value && draft.id === editingAppointment.value.id) return openEdit(editingAppointment.value, override)
-    if (!draft.id || !draft.inicio) return
+    if (!draft.id) return
+    // No plate spoken (no `inicio`): the runtime used the appointment open in the slideover.
+    if (!draft.inicio) {
+      if (editingAppointment.value?.id === draft.id) openEdit(editingAppointment.value, override)
+      return
+    }
     whenAppointmentLoaded(draft.id, draft.inicio, appointment => openEdit(appointment, override))
   },
   actions: {
     faltou: (draft) => {
       if (!canWrite.value || !draft.id) return
-      if (editingAppointment.value && draft.id === editingAppointment.value.id) return requestNoShow(draft.id)
-      if (!draft.inicio) return
+      if (!draft.inicio) {
+        if (editingAppointment.value?.id === draft.id) requestNoShow(draft.id)
+        return
+      }
       whenAppointmentLoaded(draft.id, draft.inicio, appointment => requestNoShow(appointment.id))
     }
   },

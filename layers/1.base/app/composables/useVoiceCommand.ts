@@ -265,7 +265,11 @@ export function useVoiceCommand() {
     const destination = destinationFor(draft)
     const opened = draft.op === 'edit' && !!RECORD_PATH[entityKey] && !Object.keys(draft.fields).length && !draft.items?.length
     if (opened) {
-      if (destination.path === here) return { ok: false, reason: 'not_understood' }
+      // Nothing left to fill (items without permission, unresolved refs): explain instead of "not understood".
+      if (destination.path === here) {
+        warnings.forEach(title => warn(title))
+        return { ok: false, reason: warnings.length ? 'context' : 'not_understood' }
+      }
       destination.opened = true
     } else {
       setVoiceDraft(draft)

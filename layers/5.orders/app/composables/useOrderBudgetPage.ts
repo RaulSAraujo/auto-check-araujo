@@ -131,18 +131,24 @@ export function useOrderBudgetPage(
   }
 
   /** Several spoken items: the page confirms the list first, then each one is inserted like the add modal does. */
-  async function addVoiceItems(voice: VoiceBudgetItemDraft[]) {
-    let nextOrdem = items.value?.length || 0
+  async function addVoiceItems(voice: VoiceBudgetItemDraft[]): Promise<{ added: number, skipped: number }> {
+    const startOrdem = items.value?.length || 0
+    let added = 0
+    let skipped = 0
     for (const item of voice) {
-      if (!await fillVoiceItem(item)) return
-      if (!isOrderItemDraftValid(draft)) continue
-      const { error } = await addOrderItem(toValue(orderId), { ...draft }, nextOrdem, { silent: true })
+      if (!await fillVoiceItem(item)) return { added, skipped }
+      if (!isOrderItemDraftValid(draft)) {
+        skipped++
+        continue
+      }
+      const { error } = await addOrderItem(toValue(orderId), { ...draft }, startOrdem + added, { silent: true })
       if (error) break
-      nextOrdem++
+      added++
     }
     Object.assign(draft, emptyOrderItemDraft())
     selectedCatalogId.value = undefined
     await refreshItems()
+    return { added, skipped }
   }
 
   async function refreshAll() {

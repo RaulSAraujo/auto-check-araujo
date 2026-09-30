@@ -49,6 +49,10 @@ const {
   removeVehicle
 } = useVehicleDetailPage(id, veiculo, state, refresh)
 
+watch(editing, (value) => {
+  if (!value) voiceClienteId.value = ''
+})
+
 const { can } = usePermissions()
 
 useVoiceForm('vehicle', {
