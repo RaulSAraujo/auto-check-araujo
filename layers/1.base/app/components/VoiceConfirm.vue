@@ -2,9 +2,10 @@
 defineOptions({ name: 'BaseVoiceConfirm' })
 
 const { request, settle } = useVoiceConfirm()
-const route = useRoute()
+const router = useRouter()
 
-watch(() => route.path, () => {
+// The layout's useRoute() syncs only after the new page's setup, which may already have asked for confirmation.
+watch(() => router.currentRoute.value.path, () => {
   if (request.value) settle(false)
 })
 

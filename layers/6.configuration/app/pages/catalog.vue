@@ -161,9 +161,11 @@ useVoiceForm('catalogItem', {
     if (draft.op === 'create') {
       openCreate()
     } else if (!editingThis) {
-      const item = findBudgetItem(draft.id!) ?? await fetchCatalogItem(draft.id!)
+      const loaded = findBudgetItem(draft.id!)
+      const { item, error } = loaded ? { item: loaded, error: null } : await fetchCatalogItem(draft.id!)
       if (!item) {
-        useToast().add({ title: 'Item não encontrado no catálogo.', color: 'warning' })
+        const title = error ? 'Não foi possível carregar o item do catálogo.' : 'Item não encontrado no catálogo.'
+        useToast().add({ title, color: 'warning' })
         return
       }
       openEdit(item)

@@ -113,12 +113,12 @@ export function useCatalogList(
 
   /** A row outside the current page/filters (voice edit by id). */
   async function fetchItem(id: string) {
-    const { data: row } = await supabase
+    const { data: row, error: fetchError } = await supabase
       .from('servicos_catalogo')
       .select(CATALOG_SELECT)
       .eq('id', id)
       .maybeSingle()
-    return row as CatalogItemRow | null
+    return { item: row as CatalogItemRow | null, error: fetchError }
   }
 
   return {
