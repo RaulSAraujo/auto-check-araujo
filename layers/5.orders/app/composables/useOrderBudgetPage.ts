@@ -272,7 +272,6 @@ export function useOrderBudgetPage(
     onSubmitForApproval,
     onApprove,
     onReject,
-    fillVoiceItem,
     openVoiceItem,
     addVoiceItems
   }

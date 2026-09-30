@@ -46,6 +46,13 @@ test('lists keep valid items only, capped at 10', () => {
   assert.deepEqual(result?.fields?.emails, ['a@b.com'])
 })
 
+test('items capped at 20 and long text truncated at 1000 chars', () => {
+  const items = Array.from({ length: 25 }, (_, i) => ({ descricao: `Item ${i}` }))
+  const result = n({ op: 'edit', entity: 'order', fields: { reclamacao: 'a'.repeat(1500) }, items })
+  assert.equal(result?.items?.length, 20)
+  assert.equal((result?.fields?.reclamacao as string).length, 1000)
+})
+
 test('actions need a known name; args validated', () => {
   assert.deepEqual(n({ op: 'action', entity: 'account', target: { descricao: 'energia' }, action: 'pagar', args: { forma: 'pix', x: 1 } }),
     { op: 'action', entity: 'account', target: { descricao: 'energia' }, action: 'pagar', args: { forma: 'pix' } })

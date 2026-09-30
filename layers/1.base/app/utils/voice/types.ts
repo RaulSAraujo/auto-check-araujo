@@ -1,7 +1,5 @@
 export type VoiceItemTipo = 'servico' | 'peca' | 'kit'
 export type VoicePapel = 'recepcao' | 'mecanico' | 'gerente'
-export type VoiceOrderStatus = 'aberta' | 'em_andamento' | 'concluida' | 'cancelada'
-
 export type VoicePage
   = | 'order-detail' | 'order-new'
     | 'customer-detail' | 'customer-new'
