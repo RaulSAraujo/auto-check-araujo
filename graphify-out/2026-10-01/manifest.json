@@ -1970,13 +1970,13 @@
     "semantic_hash": ""
   },
   "layers/1.base/app/utils/voice/normalize.test.ts": {
-    "mtime": 1790880687.9021654,
-    "ast_hash": "1fc5051f806cfc5b19893d70ad78e138",
+    "mtime": 1790883521.7768564,
+    "ast_hash": "e600967dc6e147db25cbe1b050e0023b",
     "semantic_hash": ""
   },
   "layers/1.base/app/utils/voice/normalize.ts": {
-    "mtime": 1790880687.9022691,
-    "ast_hash": "ad68ed512595f67c4080a7c9b4ac7e1c",
+    "mtime": 1790883515.0042896,
+    "ast_hash": "6140f37d6d9f8fe66fefcbedb25698e4",
     "semantic_hash": ""
   },
   "layers/1.base/app/utils/voice/prompt.test.ts": {
@@ -1985,8 +1985,8 @@
     "semantic_hash": ""
   },
   "layers/1.base/app/utils/voice/prompt.ts": {
-    "mtime": 1790881018.74856,
-    "ast_hash": "9af3cbd2feeba3e011d4b37915ac0973",
+    "mtime": 1790883536.6050596,
+    "ast_hash": "a728dc1a9f6f1d6b2db9280a10e9302a",
     "semantic_hash": ""
   },
   "docs/superpowers/plans/2026-09-29-voice-ai-edit.md": {
@@ -2030,8 +2030,8 @@
     "semantic_hash": ""
   },
   "layers/1.base/app/utils/voice/catalog.ts": {
-    "mtime": 1790880687.9016657,
-    "ast_hash": "ffaee0ca341ef669906ee7b2e49c9035",
+    "mtime": 1790883536.938523,
+    "ast_hash": "c0aac2bfcddeea0ceab9e77f79a88321",
     "semantic_hash": ""
   },
   "layers/1.base/app/utils/voice/legacy-types.ts": {

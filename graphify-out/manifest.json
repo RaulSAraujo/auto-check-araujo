@@ -1945,8 +1945,8 @@
     "semantic_hash": ""
   },
   "layers/1.base/app/composables/useVoiceCommand.ts": {
-    "mtime": 1790880937.6397297,
-    "ast_hash": "08dd158826c12ba4ba5b2139f01e332b",
+    "mtime": 1790884312.7612503,
+    "ast_hash": "132afce27ab4abac954cf90bc8e3d8bf",
     "semantic_hash": ""
   },
   "layers/1.base/app/composables/useVoiceDraft.ts": {
@@ -1985,8 +1985,8 @@
     "semantic_hash": ""
   },
   "layers/1.base/app/utils/voice/prompt.ts": {
-    "mtime": 1790883536.6050596,
-    "ast_hash": "a728dc1a9f6f1d6b2db9280a10e9302a",
+    "mtime": 1790884136.2652776,
+    "ast_hash": "82ab545ab5299542bdca5a4f08c90cec",
     "semantic_hash": ""
   },
   "docs/superpowers/plans/2026-09-29-voice-ai-edit.md": {
@@ -2192,6 +2192,16 @@
   "layers/1.base/app/utils/voice/ai-failure.ts": {
     "mtime": 1790880687.9012525,
     "ast_hash": "7ffcc60266298da4bbf4a05d8de0ad1b",
+    "semantic_hash": ""
+  },
+  "layers/1.base/app/utils/voice/dictation.test.ts": {
+    "mtime": 1790884303.5285318,
+    "ast_hash": "eeeaec87b8bb69f7c4f7eb5b9fe2afa8",
+    "semantic_hash": ""
+  },
+  "layers/1.base/app/utils/voice/dictation.ts": {
+    "mtime": 1790884303.3305964,
+    "ast_hash": "68d260ed7cf83028e494803fe860b7bf",
     "semantic_hash": ""
   }
 }
