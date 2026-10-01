@@ -18,7 +18,9 @@ const toast = useToast()
 const { supported, listening, interim, error, start, stop, cancel, onChunk } = useSpeechRecognition()
 const { run } = useVoiceCommand()
 const { messages, pending, muted, ask, cancel: cancelAsk, reset: resetAsk, stopSpeaking, toggleMute } = useVoiceAsk()
-const conversing = computed(() => messages.value.length > 0)
+// Once a question was detected, everything goes to ask until the panel closes, even if that first question was cancelled.
+const asked = ref(false)
+const conversing = computed(() => asked.value || messages.value.length > 0)
 
 const open = ref(false)
 const text = ref('')
@@ -35,6 +37,7 @@ watch(open, (value) => {
   cancel()
   runId++
   resetAsk()
+  asked.value = false
 })
 
 function openModal() {
@@ -65,6 +68,7 @@ function pickExample(example: string) {
 }
 
 async function sendQuestion(question: string) {
+  asked.value = true
   text.value = ''
   interim.value = ''
   const answered = await ask(question)
@@ -199,6 +203,7 @@ async function submit() {
           autoresize
           :placeholder="conversing ? 'Pergunte mais alguma coisa…' : 'Ex.: abre a OS do ABC1D23 e coloca no diagnóstico pastilha gasta'"
           :aria-label="conversing ? 'Pergunta' : 'Comando'"
+          :maxlength="2000"
           class="w-full"
         />
 
