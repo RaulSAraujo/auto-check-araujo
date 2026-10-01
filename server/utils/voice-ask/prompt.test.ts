@@ -7,6 +7,7 @@ test('ask prompt has date, weekday, role and the safety rules', () => {
   assert.match(prompt, /Hoje é 2026-09-30 \(quarta-feira\)/)
   assert.match(prompt, /Perfil do usuário: recepção/)
   assert.match(prompt, /Nunca invente/)
+  assert.match(prompt, /sem ano é o de 2026/)
   assert.match(prompt, /até 3 frases/)
   assert.match(prompt, /\[telefone 1\]/)
   assert.match(prompt, /final_answer/)
