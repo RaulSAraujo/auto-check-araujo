@@ -276,7 +276,7 @@
   "274": "8.management/nuxt.config.ts",
   "275": "File Map",
   "276": "useVoiceCommand.ts",
-  "277": "refs.ts",
+  "277": "SSR Middleware Mode",
   "278": "APPENDICES - Real Source-Backed Reference Material",
   "279": "FinanceAccountsTable.vue",
   "280": "useSchedulingMutations.ts",
@@ -290,10 +290,7 @@
   "288": "useOrderQuery.ts",
   "289": "useOrderVehicleOptions.ts",
   "290": "customers.vue",
-  "291": "legacy-types.ts",
   "292": "tools.test.ts",
-  "293": "text.test.ts",
-  "294": "useVoiceCommand",
   "295": "TS Library CI Workflows",
   "296": "@antfu/eslint-config Guide"
 }

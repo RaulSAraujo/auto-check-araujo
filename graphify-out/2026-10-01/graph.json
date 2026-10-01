@@ -1224,8 +1224,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "layers_1_base_app_composables_usevoiceask",
-      "community": 276,
-      "community_name": "useVoiceCommand.ts",
+      "community": 65,
+      "community_name": "voice/prompt.ts",
       "norm_label": "usevoiceask.ts"
     },
     {
@@ -1237,8 +1237,8 @@
       "_callable_class": true,
       "_origin": "ast",
       "id": "layers_1_base_app_composables_usevoiceask_voiceasklink",
-      "community": 276,
-      "community_name": "useVoiceCommand.ts",
+      "community": 65,
+      "community_name": "voice/prompt.ts",
       "norm_label": "voiceasklink"
     },
     {
@@ -1250,8 +1250,8 @@
       "_callable_class": true,
       "_origin": "ast",
       "id": "layers_1_base_app_composables_usevoiceask_voiceaskmessage",
-      "community": 276,
-      "community_name": "useVoiceCommand.ts",
+      "community": 65,
+      "community_name": "voice/prompt.ts",
       "norm_label": "voiceaskmessage"
     },
     {
@@ -1263,8 +1263,8 @@
       "_callable_class": true,
       "_origin": "ast",
       "id": "layers_1_base_app_composables_usevoiceask_historymessage",
-      "community": 276,
-      "community_name": "useVoiceCommand.ts",
+      "community": 65,
+      "community_name": "voice/prompt.ts",
       "norm_label": "historymessage"
     },
     {
@@ -1275,8 +1275,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "layers_1_base_app_composables_usevoiceask_usevoiceask",
-      "community": 276,
-      "community_name": "useVoiceCommand.ts",
+      "community": 65,
+      "community_name": "voice/prompt.ts",
       "norm_label": "usevoiceask()"
     },
     {
@@ -1379,8 +1379,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "layers_1_base_app_composables_usevoicecommand_usevoicecommand",
-      "community": 294,
-      "community_name": "useVoiceCommand",
+      "community": 276,
+      "community_name": "useVoiceCommand.ts",
       "norm_label": "usevoicecommand()"
     },
     {
@@ -1905,8 +1905,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "layers_1_base_app_utils_voice_ai_failure_test",
-      "community": 276,
-      "community_name": "useVoiceCommand.ts",
+      "community": 65,
+      "community_name": "voice/prompt.ts",
       "norm_label": "ai-failure.test.ts"
     },
     {
@@ -1916,8 +1916,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "layers_1_base_app_utils_voice_ai_failure",
-      "community": 276,
-      "community_name": "useVoiceCommand.ts",
+      "community": 65,
+      "community_name": "voice/prompt.ts",
       "norm_label": "ai-failure.ts"
     },
     {
@@ -1927,8 +1927,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "layers_1_base_app_utils_voice_ai_failure_ai_failure",
-      "community": 276,
-      "community_name": "useVoiceCommand.ts",
+      "community": 65,
+      "community_name": "voice/prompt.ts",
       "norm_label": "ai_failure"
     },
     {
@@ -1939,8 +1939,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "layers_1_base_app_utils_voice_ai_failure_voiceaifailure",
-      "community": 276,
-      "community_name": "useVoiceCommand.ts",
+      "community": 65,
+      "community_name": "voice/prompt.ts",
       "norm_label": "voiceaifailure()"
     },
     {
@@ -2370,8 +2370,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "layers_1_base_app_utils_voice_legacy_types",
-      "community": 291,
-      "community_name": "legacy-types.ts",
+      "community": 150,
+      "community_name": "parser.ts",
       "norm_label": "legacy-types.ts"
     },
     {
@@ -2383,8 +2383,8 @@
       "_callable_class": true,
       "_origin": "ast",
       "id": "layers_1_base_app_utils_voice_legacy_types_legacyvoiceintent",
-      "community": 291,
-      "community_name": "legacy-types.ts",
+      "community": 150,
+      "community_name": "parser.ts",
       "norm_label": "legacyvoiceintent"
     },
     {
@@ -2396,8 +2396,8 @@
       "_callable_class": true,
       "_origin": "ast",
       "id": "layers_1_base_app_utils_voice_legacy_types_voicecustomerpayload",
-      "community": 291,
-      "community_name": "legacy-types.ts",
+      "community": 150,
+      "community_name": "parser.ts",
       "norm_label": "voicecustomerpayload"
     },
     {
@@ -2409,8 +2409,8 @@
       "_callable_class": true,
       "_origin": "ast",
       "id": "layers_1_base_app_utils_voice_legacy_types_voicevehiclepayload",
-      "community": 291,
-      "community_name": "legacy-types.ts",
+      "community": 150,
+      "community_name": "parser.ts",
       "norm_label": "voicevehiclepayload"
     },
     {
@@ -2422,8 +2422,8 @@
       "_callable_class": true,
       "_origin": "ast",
       "id": "layers_1_base_app_utils_voice_legacy_types_voiceorderpayload",
-      "community": 291,
-      "community_name": "legacy-types.ts",
+      "community": 150,
+      "community_name": "parser.ts",
       "norm_label": "voiceorderpayload"
     },
     {
@@ -2435,8 +2435,8 @@
       "_callable_class": true,
       "_origin": "ast",
       "id": "layers_1_base_app_utils_voice_legacy_types_voiceappointmentpayload",
-      "community": 291,
-      "community_name": "legacy-types.ts",
+      "community": 150,
+      "community_name": "parser.ts",
       "norm_label": "voiceappointmentpayload"
     },
     {
@@ -2448,8 +2448,8 @@
       "_callable_class": true,
       "_origin": "ast",
       "id": "layers_1_base_app_utils_voice_legacy_types_voicebudgetitempayload",
-      "community": 291,
-      "community_name": "legacy-types.ts",
+      "community": 150,
+      "community_name": "parser.ts",
       "norm_label": "voicebudgetitempayload"
     },
     {
@@ -2461,8 +2461,8 @@
       "_callable_class": true,
       "_origin": "ast",
       "id": "layers_1_base_app_utils_voice_legacy_types_voiceaccountpayload",
-      "community": 291,
-      "community_name": "legacy-types.ts",
+      "community": 150,
+      "community_name": "parser.ts",
       "norm_label": "voiceaccountpayload"
     },
     {
@@ -2474,8 +2474,8 @@
       "_callable_class": true,
       "_origin": "ast",
       "id": "layers_1_base_app_utils_voice_legacy_types_voicecatalogitempayload",
-      "community": 291,
-      "community_name": "legacy-types.ts",
+      "community": 150,
+      "community_name": "parser.ts",
       "norm_label": "voicecatalogitempayload"
     },
     {
@@ -2487,8 +2487,8 @@
       "_callable_class": true,
       "_origin": "ast",
       "id": "layers_1_base_app_utils_voice_legacy_types_voicesupplierpayload",
-      "community": 291,
-      "community_name": "legacy-types.ts",
+      "community": 150,
+      "community_name": "parser.ts",
       "norm_label": "voicesupplierpayload"
     },
     {
@@ -2500,8 +2500,8 @@
       "_callable_class": true,
       "_origin": "ast",
       "id": "layers_1_base_app_utils_voice_legacy_types_voicecollaboratorpayload",
-      "community": 291,
-      "community_name": "legacy-types.ts",
+      "community": 150,
+      "community_name": "parser.ts",
       "norm_label": "voicecollaboratorpayload"
     },
     {
@@ -2513,8 +2513,8 @@
       "_callable_class": true,
       "_origin": "ast",
       "id": "layers_1_base_app_utils_voice_legacy_types_legacyvoicepayloadmap",
-      "community": 291,
-      "community_name": "legacy-types.ts",
+      "community": 150,
+      "community_name": "parser.ts",
       "norm_label": "legacyvoicepayloadmap"
     },
     {
@@ -2526,8 +2526,8 @@
       "_callable_class": true,
       "_origin": "ast",
       "id": "layers_1_base_app_utils_voice_legacy_types_legacyvoicecommand",
-      "community": 291,
-      "community_name": "legacy-types.ts",
+      "community": 150,
+      "community_name": "parser.ts",
       "norm_label": "legacyvoicecommand"
     },
     {
@@ -2537,8 +2537,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "layers_1_base_app_utils_voice_legacy_test",
-      "community": 294,
-      "community_name": "useVoiceCommand",
+      "community": 276,
+      "community_name": "useVoiceCommand.ts",
       "norm_label": "legacy.test.ts"
     },
     {
@@ -2549,8 +2549,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "layers_1_base_app_utils_voice_legacy_test_run",
-      "community": 294,
-      "community_name": "useVoiceCommand",
+      "community": 276,
+      "community_name": "useVoiceCommand.ts",
       "norm_label": "run()"
     },
     {
@@ -2560,8 +2560,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "layers_1_base_app_utils_voice_legacy",
-      "community": 291,
-      "community_name": "legacy-types.ts",
+      "community": 150,
+      "community_name": "parser.ts",
       "norm_label": "legacy.ts"
     },
     {
@@ -2572,8 +2572,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "layers_1_base_app_utils_voice_legacy_legacytocommand",
-      "community": 294,
-      "community_name": "useVoiceCommand",
+      "community": 276,
+      "community_name": "useVoiceCommand.ts",
       "norm_label": "legacytocommand()"
     },
     {
@@ -2583,8 +2583,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "layers_1_base_app_utils_voice_normalize_test",
-      "community": 0,
-      "community_name": "normalize.ts",
+      "community": 276,
+      "community_name": "useVoiceCommand.ts",
       "norm_label": "normalize.test.ts"
     },
     {
@@ -2810,8 +2810,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "layers_1_base_app_utils_voice_normalize_normalizevoicecommand",
-      "community": 0,
-      "community_name": "normalize.ts",
+      "community": 276,
+      "community_name": "useVoiceCommand.ts",
       "norm_label": "normalizevoicecommand()"
     },
     {
@@ -2821,8 +2821,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "layers_1_base_app_utils_voice_parser_test",
-      "community": 294,
-      "community_name": "useVoiceCommand",
+      "community": 276,
+      "community_name": "useVoiceCommand.ts",
       "norm_label": "parser.test.ts"
     },
     {
@@ -2832,8 +2832,8 @@
       "source_location": "L6",
       "_origin": "ast",
       "id": "layers_1_base_app_utils_voice_parser_test_now",
-      "community": 294,
-      "community_name": "useVoiceCommand",
+      "community": 276,
+      "community_name": "useVoiceCommand.ts",
       "norm_label": "now"
     },
     {
@@ -2844,8 +2844,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "layers_1_base_app_utils_voice_parser_test_parse",
-      "community": 294,
-      "community_name": "useVoiceCommand",
+      "community": 276,
+      "community_name": "useVoiceCommand.ts",
       "norm_label": "parse()"
     },
     {
@@ -2894,8 +2894,8 @@
       "_callable_class": true,
       "_origin": "ast",
       "id": "layers_1_base_app_utils_voice_parser_trigger",
-      "community": 291,
-      "community_name": "legacy-types.ts",
+      "community": 150,
+      "community_name": "parser.ts",
       "norm_label": "trigger"
     },
     {
@@ -3003,8 +3003,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "layers_1_base_app_utils_voice_parser_digits",
-      "community": 293,
-      "community_name": "text.test.ts",
+      "community": 103,
+      "community_name": "text.ts",
       "norm_label": "digits()"
     },
     {
@@ -3163,8 +3163,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "layers_1_base_app_utils_voice_parser_parsevoicecommand",
-      "community": 294,
-      "community_name": "useVoiceCommand",
+      "community": 276,
+      "community_name": "useVoiceCommand.ts",
       "norm_label": "parsevoicecommand()"
     },
     {
@@ -3300,8 +3300,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "layers_1_base_app_utils_voice_prompt_localdateinput",
-      "community": 276,
-      "community_name": "useVoiceCommand.ts",
+      "community": 65,
+      "community_name": "voice/prompt.ts",
       "norm_label": "localdateinput()"
     },
     {
@@ -3383,8 +3383,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "layers_1_base_app_utils_voice_text_test",
-      "community": 293,
-      "community_name": "text.test.ts",
+      "community": 103,
+      "community_name": "text.ts",
       "norm_label": "text.test.ts"
     },
     {
@@ -3394,8 +3394,8 @@
       "source_location": "L20",
       "_origin": "ast",
       "id": "layers_1_base_app_utils_voice_text_test_now",
-      "community": 293,
-      "community_name": "text.test.ts",
+      "community": 103,
+      "community_name": "text.ts",
       "norm_label": "now"
     },
     {
@@ -3406,8 +3406,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "layers_1_base_app_utils_voice_text_test_t",
-      "community": 293,
-      "community_name": "text.test.ts",
+      "community": 103,
+      "community_name": "text.ts",
       "norm_label": "t()"
     },
     {
@@ -3520,8 +3520,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "layers_1_base_app_utils_voice_text_appendtext",
-      "community": 293,
-      "community_name": "text.test.ts",
+      "community": 1,
+      "community_name": "voice/catalog.ts",
       "norm_label": "appendtext()"
     },
     {
@@ -3544,8 +3544,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "layers_1_base_app_utils_voice_text_tokenize",
-      "community": 293,
-      "community_name": "text.test.ts",
+      "community": 103,
+      "community_name": "text.ts",
       "norm_label": "tokenize()"
     },
     {
@@ -3628,8 +3628,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "layers_1_base_app_utils_voice_text_placachars",
-      "community": 293,
-      "community_name": "text.test.ts",
+      "community": 103,
+      "community_name": "text.ts",
       "norm_label": "placachars()"
     },
     {
@@ -3640,8 +3640,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "layers_1_base_app_utils_voice_text_readplaca",
-      "community": 293,
-      "community_name": "text.test.ts",
+      "community": 103,
+      "community_name": "text.ts",
       "norm_label": "readplaca()"
     },
     {
@@ -3652,8 +3652,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "layers_1_base_app_utils_voice_text_parseplaca",
-      "community": 293,
-      "community_name": "text.test.ts",
+      "community": 103,
+      "community_name": "text.ts",
       "norm_label": "parseplaca()"
     },
     {
@@ -3664,8 +3664,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "layers_1_base_app_utils_voice_text_digitsof",
-      "community": 293,
-      "community_name": "text.test.ts",
+      "community": 103,
+      "community_name": "text.ts",
       "norm_label": "digitsof()"
     },
     {
@@ -3676,8 +3676,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "layers_1_base_app_utils_voice_text_parsedigits",
-      "community": 293,
-      "community_name": "text.test.ts",
+      "community": 103,
+      "community_name": "text.ts",
       "norm_label": "parsedigits()"
     },
     {
@@ -3688,8 +3688,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "layers_1_base_app_utils_voice_text_parseemail",
-      "community": 293,
-      "community_name": "text.test.ts",
+      "community": 103,
+      "community_name": "text.ts",
       "norm_label": "parseemail()"
     },
     {
@@ -3832,8 +3832,8 @@
       "_callable_class": true,
       "_origin": "ast",
       "id": "layers_1_base_app_utils_voice_types_voiceitemtipo",
-      "community": 291,
-      "community_name": "legacy-types.ts",
+      "community": 150,
+      "community_name": "parser.ts",
       "norm_label": "voiceitemtipo"
     },
     {
@@ -3845,8 +3845,8 @@
       "_callable_class": true,
       "_origin": "ast",
       "id": "layers_1_base_app_utils_voice_types_voicepapel",
-      "community": 291,
-      "community_name": "legacy-types.ts",
+      "community": 150,
+      "community_name": "parser.ts",
       "norm_label": "voicepapel"
     },
     {
@@ -3884,8 +3884,8 @@
       "_callable_class": true,
       "_origin": "ast",
       "id": "layers_1_base_app_utils_voice_types_voicecontext",
-      "community": 65,
-      "community_name": "voice/prompt.ts",
+      "community": 260,
+      "community_name": "types.ts",
       "norm_label": "voicecontext"
     },
     {
@@ -3949,8 +3949,8 @@
       "_callable_class": true,
       "_origin": "ast",
       "id": "layers_1_base_app_utils_voice_types_voicecommand",
-      "community": 276,
-      "community_name": "useVoiceCommand.ts",
+      "community": 260,
+      "community_name": "types.ts",
       "norm_label": "voicecommand"
     },
     {
@@ -3986,8 +3986,8 @@
       "source_location": "L65",
       "_origin": "ast",
       "id": "layers_1_base_app_utils_voice_types_voice_examples",
-      "community": 261,
-      "community_name": "VoiceCommandButton.vue",
+      "community": 260,
+      "community_name": "types.ts",
       "norm_label": "voice_examples"
     },
     {
@@ -11876,8 +11876,8 @@
       "source_location": "L50",
       "_origin": "ast",
       "id": "layers_6_configuration_app_components_catalog_catalogform_hourlyrate",
-      "community": 10,
-      "community_name": "pricing.ts",
+      "community": 45,
+      "community_name": "CatalogForm.vue",
       "norm_label": "hourlyrate"
     },
     {
@@ -13625,8 +13625,8 @@
       "_callable_class": true,
       "_origin": "ast",
       "id": "layers_6_configuration_app_utils_pricing_pricingparamsdraft",
-      "community": 10,
-      "community_name": "pricing.ts",
+      "community": 48,
+      "community_name": "CatalogTable.vue",
       "norm_label": "pricingparamsdraft"
     },
     {
@@ -17055,7 +17055,7 @@
       "label": "askWithTools()",
       "file_type": "code",
       "source_file": "server/utils/voice-ask/loop.ts",
-      "source_location": "L115",
+      "source_location": "L118",
       "_callable": true,
       "_origin": "ast",
       "id": "server_utils_voice_ask_loop_askwithtools",
@@ -17162,8 +17162,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "server_utils_voice_ask_prompt_test",
-      "community": 244,
-      "community_name": "ask.post.ts",
+      "community": 11,
+      "community_name": "oficina.ts",
       "norm_label": "voice-ask/prompt.test.ts"
     },
     {
@@ -17173,8 +17173,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "server_utils_voice_ask_prompt",
-      "community": 244,
-      "community_name": "ask.post.ts",
+      "community": 11,
+      "community_name": "oficina.ts",
       "norm_label": "voice-ask/prompt.ts"
     },
     {
@@ -17185,8 +17185,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "server_utils_voice_ask_prompt_buildasksystemprompt",
-      "community": 244,
-      "community_name": "ask.post.ts",
+      "community": 11,
+      "community_name": "oficina.ts",
       "norm_label": "buildasksystemprompt()"
     },
     {
@@ -17196,8 +17196,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "server_utils_voice_ask_refs_test",
-      "community": 277,
-      "community_name": "refs.ts",
+      "community": 244,
+      "community_name": "ask.post.ts",
       "norm_label": "refs.test.ts"
     },
     {
@@ -17207,8 +17207,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "server_utils_voice_ask_refs",
-      "community": 277,
-      "community_name": "refs.ts",
+      "community": 244,
+      "community_name": "ask.post.ts",
       "norm_label": "refs.ts"
     },
     {
@@ -17220,8 +17220,8 @@
       "_callable_class": true,
       "_origin": "ast",
       "id": "server_utils_voice_ask_refs_voicereftype",
-      "community": 277,
-      "community_name": "refs.ts",
+      "community": 11,
+      "community_name": "oficina.ts",
       "norm_label": "voicereftype"
     },
     {
@@ -17233,8 +17233,8 @@
       "_callable_class": true,
       "_origin": "ast",
       "id": "server_utils_voice_ask_refs_voicelink",
-      "community": 277,
-      "community_name": "refs.ts",
+      "community": 244,
+      "community_name": "ask.post.ts",
       "norm_label": "voicelink"
     },
     {
@@ -17246,8 +17246,8 @@
       "_callable_class": true,
       "_origin": "ast",
       "id": "server_utils_voice_ask_refs_row",
-      "community": 277,
-      "community_name": "refs.ts",
+      "community": 244,
+      "community_name": "ask.post.ts",
       "norm_label": "row"
     },
     {
@@ -17258,8 +17258,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "server_utils_voice_ask_refs_shopday",
-      "community": 277,
-      "community_name": "refs.ts",
+      "community": 244,
+      "community_name": "ask.post.ts",
       "norm_label": "shopday()"
     },
     {
@@ -17269,8 +17269,8 @@
       "source_location": "L19",
       "_origin": "ast",
       "id": "server_utils_voice_ask_refs_link",
-      "community": 277,
-      "community_name": "refs.ts",
+      "community": 244,
+      "community_name": "ask.post.ts",
       "norm_label": "link"
     },
     {
@@ -17281,8 +17281,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "server_utils_voice_ask_refs_createrefs",
-      "community": 277,
-      "community_name": "refs.ts",
+      "community": 244,
+      "community_name": "ask.post.ts",
       "norm_label": "createrefs()"
     },
     {
@@ -17392,8 +17392,8 @@
       "_callable_class": true,
       "_origin": "ast",
       "id": "server_utils_voice_ask_tools_toolcontext",
-      "community": 277,
-      "community_name": "refs.ts",
+      "community": 11,
+      "community_name": "oficina.ts",
       "norm_label": "toolcontext"
     },
     {
@@ -17825,7 +17825,7 @@
       "label": "messages",
       "file_type": "code",
       "source_file": "server/utils/voice-providers.test.ts",
-      "source_location": "L13",
+      "source_location": "L22",
       "_origin": "ast",
       "id": "server_utils_voice_providers_test_messages",
       "community": 255,
@@ -17836,7 +17836,7 @@
       "label": "groq",
       "file_type": "code",
       "source_file": "server/utils/voice-providers.test.ts",
-      "source_location": "L14",
+      "source_location": "L23",
       "_origin": "ast",
       "id": "server_utils_voice_providers_test_groq",
       "community": 255,
@@ -17847,7 +17847,7 @@
       "label": "gemini",
       "file_type": "code",
       "source_file": "server/utils/voice-providers.test.ts",
-      "source_location": "L15",
+      "source_location": "L24",
       "_origin": "ast",
       "id": "server_utils_voice_providers_test_gemini",
       "community": 255,
@@ -17858,7 +17858,7 @@
       "label": "reply()",
       "file_type": "code",
       "source_file": "server/utils/voice-providers.test.ts",
-      "source_location": "L17",
+      "source_location": "L26",
       "_callable": true,
       "_origin": "ast",
       "id": "server_utils_voice_providers_test_reply",
@@ -17870,7 +17870,7 @@
       "label": "fakeFetch()",
       "file_type": "code",
       "source_file": "server/utils/voice-providers.test.ts",
-      "source_location": "L21",
+      "source_location": "L30",
       "_callable": true,
       "_origin": "ast",
       "id": "server_utils_voice_providers_test_fakefetch",
@@ -17882,12 +17882,12 @@
       "label": "cancel()",
       "file_type": "code",
       "source_file": "server/utils/voice-providers.test.ts",
-      "source_location": "L81",
+      "source_location": "L90",
       "_callable": true,
       "_origin": "ast",
       "id": "server_utils_voice_providers_test_cancel",
-      "community": 268,
-      "community_name": "useSpeechRecognition.ts",
+      "community": 65,
+      "community_name": "voice/prompt.ts",
       "norm_label": "cancel()"
     },
     {
@@ -17941,10 +17941,21 @@
       "norm_label": "completeoptions"
     },
     {
+      "label": "MISSING_KEY",
+      "file_type": "code",
+      "source_file": "server/utils/voice-providers.ts",
+      "source_location": "L20",
+      "_origin": "ast",
+      "id": "server_utils_voice_providers_missing_key",
+      "community": 255,
+      "community_name": "voice-providers.ts",
+      "norm_label": "missing_key"
+    },
+    {
       "label": "aiFailureStatus()",
       "file_type": "code",
       "source_file": "server/utils/voice-providers.ts",
-      "source_location": "L24",
+      "source_location": "L26",
       "_callable": true,
       "_origin": "ast",
       "id": "server_utils_voice_providers_aifailurestatus",
@@ -17956,7 +17967,7 @@
       "label": "parseContent()",
       "file_type": "code",
       "source_file": "server/utils/voice-providers.ts",
-      "source_location": "L30",
+      "source_location": "L32",
       "_callable": true,
       "_origin": "ast",
       "id": "server_utils_voice_providers_parsecontent",
@@ -17968,7 +17979,7 @@
       "label": "completeWithFallback()",
       "file_type": "code",
       "source_file": "server/utils/voice-providers.ts",
-      "source_location": "L35",
+      "source_location": "L37",
       "_callable": true,
       "_origin": "ast",
       "id": "server_utils_voice_providers_completewithfallback",
@@ -18423,8 +18434,8 @@
       "_callable_class": true,
       "_origin": "ast",
       "id": "shared_types_oficina_colaboradorpapel",
-      "community": 277,
-      "community_name": "refs.ts",
+      "community": 11,
+      "community_name": "oficina.ts",
       "norm_label": "colaboradorpapel"
     },
     {
@@ -18499,8 +18510,8 @@
       "source_location": "L15",
       "_origin": "ast",
       "id": "shared_types_oficina_colaborador_papel_label",
-      "community": 244,
-      "community_name": "ask.post.ts",
+      "community": 11,
+      "community_name": "oficina.ts",
       "norm_label": "colaborador_papel_label"
     },
     {
@@ -36118,8 +36129,8 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 59,
-      "community_name": "Rolldown Migration (Vite 8)",
+      "community": 262,
+      "community_name": "Vite Build and SSR",
       "norm_label": "vite library mode",
       "_origin": "semantic",
       "id": "_cursor_skills_vite_references_build_and_ssr_library_mode"
@@ -36148,8 +36159,8 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 262,
-      "community_name": "Vite Build and SSR",
+      "community": 277,
+      "community_name": "SSR Middleware Mode",
       "norm_label": "ssr middleware mode",
       "_origin": "semantic",
       "id": "_cursor_skills_vite_references_build_and_ssr_ssr_middleware_mode"
@@ -36163,8 +36174,8 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 262,
-      "community_name": "Vite Build and SSR",
+      "community": 277,
+      "community_name": "SSR Middleware Mode",
       "norm_label": "ssrloadmodule",
       "_origin": "semantic",
       "id": "_cursor_skills_vite_references_build_and_ssr_ssr_load_module"
@@ -36268,8 +36279,8 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 59,
-      "community_name": "Rolldown Migration (Vite 8)",
+      "community": 262,
+      "community_name": "Vite Build and SSR",
       "norm_label": "library package.json exports setup",
       "_origin": "semantic",
       "id": "_cursor_skills_vite_references_build_and_ssr_library_package_json"
@@ -36539,8 +36550,8 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 77,
-      "community_name": "Vite Plugin API",
+      "community": 277,
+      "community_name": "SSR Middleware Mode",
       "norm_label": "configureserver hook",
       "_origin": "semantic",
       "id": "_cursor_skills_vite_references_core_plugin_api_configure_server"
@@ -36644,8 +36655,8 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 262,
-      "community_name": "Vite Build and SSR",
+      "community": 277,
+      "community_name": "SSR Middleware Mode",
       "norm_label": "environment api (vite 6+)",
       "_origin": "semantic",
       "id": "_cursor_skills_vite_references_environment_api_document"
@@ -36660,8 +36671,8 @@
       "author": null,
       "contributor": null,
       "rationale": "Vite 6+ formalizes environments beyond implicit client/SSR split",
-      "community": 262,
-      "community_name": "Vite Build and SSR",
+      "community": 277,
+      "community_name": "SSR Middleware Mode",
       "norm_label": "multiple runtime environments",
       "_origin": "semantic",
       "id": "_cursor_skills_vite_references_environment_api_multiple_environments"
@@ -36675,8 +36686,8 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 262,
-      "community_name": "Vite Build and SSR",
+      "community": 277,
+      "community_name": "SSR Middleware Mode",
       "norm_label": "custom environment instances",
       "_origin": "semantic",
       "id": "_cursor_skills_vite_references_environment_api_custom_environment_instances"
@@ -36690,8 +36701,8 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 262,
-      "community_name": "Vite Build and SSR",
+      "community": 277,
+      "community_name": "SSR Middleware Mode",
       "norm_label": "ssr backward compatibility",
       "_origin": "semantic",
       "id": "_cursor_skills_vite_references_environment_api_backward_compatibility"
@@ -36751,8 +36762,8 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 59,
-      "community_name": "Rolldown Migration (Vite 8)",
+      "community": 262,
+      "community_name": "Vite Build and SSR",
       "norm_label": "rolldownoptions (replaces rollupoptions)",
       "_origin": "semantic",
       "id": "_cursor_skills_vite_references_rolldown_migration_rolldown_options"
@@ -36963,8 +36974,8 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 262,
-      "community_name": "Vite Build and SSR",
+      "community": 277,
+      "community_name": "SSR Middleware Mode",
       "norm_label": "data-allow-mismatch ssr hydration",
       "_origin": "semantic",
       "id": "_cursor_skills_vue_references_components_data_allow_mismatch"
@@ -64498,7 +64509,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "server/utils/voice-ask/loop.ts",
-      "source_location": "L115",
+      "source_location": "L118",
       "weight": 1.0,
       "_origin": "ast",
       "source": "server_utils_voice_ask_loop",
@@ -64614,6 +64625,18 @@
       "weight": 1.0,
       "_origin": "ast",
       "source": "server_utils_voice_ask_loop",
+      "target": "server_utils_voice_providers_missing_key",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "server/utils/voice-ask/loop.ts",
+      "source_location": "L1",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "server_utils_voice_ask_loop",
       "target": "server_utils_voice_providers_voiceprovider",
       "confidence_score": 1.0
     },
@@ -64658,7 +64681,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "server/utils/voice-ask/loop.ts",
-      "source_location": "L138",
+      "source_location": "L142",
       "weight": 1.0,
       "_origin": "ast",
       "source": "server_utils_voice_ask_loop_askwithtools",
@@ -64682,7 +64705,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "server/utils/voice-ask/loop.ts",
-      "source_location": "L131",
+      "source_location": "L134",
       "weight": 1.0,
       "_origin": "ast",
       "source": "server_utils_voice_ask_loop_askwithtools",
@@ -64694,7 +64717,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "server/utils/voice-ask/loop.ts",
-      "source_location": "L122",
+      "source_location": "L125",
       "weight": 1.0,
       "_origin": "ast",
       "source": "server_utils_voice_ask_loop_askwithtools",
@@ -64706,7 +64729,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "server/utils/voice-ask/loop.ts",
-      "source_location": "L151",
+      "source_location": "L155",
       "weight": 1.0,
       "_origin": "ast",
       "source": "server_utils_voice_ask_loop_askwithtools",
@@ -64718,7 +64741,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "server/utils/voice-ask/loop.ts",
-      "source_location": "L117",
+      "source_location": "L120",
       "weight": 1.0,
       "_origin": "ast",
       "source": "server_utils_voice_ask_loop_askwithtools",
@@ -65787,10 +65810,22 @@
       "confidence_score": 1.0
     },
     {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "server/utils/voice-providers.test.ts",
+      "source_location": "L3",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "server_utils_voice_providers_test",
+      "target": "server_utils_voice_providers_missing_key",
+      "confidence_score": 1.0
+    },
+    {
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "server/utils/voice-providers.test.ts",
-      "source_location": "L81",
+      "source_location": "L90",
       "weight": 1.0,
       "_origin": "ast",
       "source": "server_utils_voice_providers_test",
@@ -65801,7 +65836,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "server/utils/voice-providers.test.ts",
-      "source_location": "L21",
+      "source_location": "L30",
       "weight": 1.0,
       "_origin": "ast",
       "source": "server_utils_voice_providers_test",
@@ -65812,7 +65847,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "server/utils/voice-providers.test.ts",
-      "source_location": "L15",
+      "source_location": "L24",
       "weight": 1.0,
       "_origin": "ast",
       "source": "server_utils_voice_providers_test",
@@ -65823,7 +65858,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "server/utils/voice-providers.test.ts",
-      "source_location": "L14",
+      "source_location": "L23",
       "weight": 1.0,
       "_origin": "ast",
       "source": "server_utils_voice_providers_test",
@@ -65834,7 +65869,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "server/utils/voice-providers.test.ts",
-      "source_location": "L13",
+      "source_location": "L22",
       "weight": 1.0,
       "_origin": "ast",
       "source": "server_utils_voice_providers_test",
@@ -65845,7 +65880,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "server/utils/voice-providers.test.ts",
-      "source_location": "L17",
+      "source_location": "L26",
       "weight": 1.0,
       "_origin": "ast",
       "source": "server_utils_voice_providers_test",
@@ -65868,7 +65903,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "server/utils/voice-providers.ts",
-      "source_location": "L24",
+      "source_location": "L26",
       "weight": 1.0,
       "_origin": "ast",
       "source": "server_utils_voice_providers",
@@ -65890,7 +65925,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "server/utils/voice-providers.ts",
-      "source_location": "L35",
+      "source_location": "L37",
       "weight": 1.0,
       "_origin": "ast",
       "source": "server_utils_voice_providers",
@@ -65901,7 +65936,18 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "server/utils/voice-providers.ts",
-      "source_location": "L30",
+      "source_location": "L20",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "server_utils_voice_providers",
+      "target": "server_utils_voice_providers_missing_key",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "server/utils/voice-providers.ts",
+      "source_location": "L32",
       "weight": 1.0,
       "_origin": "ast",
       "source": "server_utils_voice_providers",
@@ -65935,7 +65981,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "server/utils/voice-providers.ts",
-      "source_location": "L70",
+      "source_location": "L75",
       "weight": 1.0,
       "_origin": "ast",
       "source": "server_utils_voice_providers_completewithfallback",
@@ -84322,5 +84368,5 @@
       "source_file": "public/logo.png"
     }
   ],
-  "built_at_commit": "d117597ec4ffcb87496b436c90d7cac564d5d62d"
+  "built_at_commit": "f1333e0072e0c4ea1603310b9f59639033931d21"
 }
