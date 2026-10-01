@@ -162,7 +162,15 @@ export function useVoiceCommand() {
       }
       return out
     }))
-    const kept = resolved.filter((item): item is VoiceRecord => !!item)
+    // A split phrase ("alinhamento", "balanceamento") can land twice on the same catalog entry.
+    const used = new Set<unknown>()
+    const kept = resolved.filter((item): item is VoiceRecord => {
+      if (!item) return false
+      if (item.catalogItemId === undefined) return true
+      if (used.has(item.catalogItemId)) return false
+      used.add(item.catalogItemId)
+      return true
+    })
     return kept.length ? kept : undefined
   }
 

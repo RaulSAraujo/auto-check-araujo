@@ -113,6 +113,13 @@ export function buildVoiceMessages(text: string, context: VoiceContext): VoiceCh
   const detailed = here.map(key => describeDetailed(key, VOICE_CATALOG[key])).join('\n')
   const compact = all.filter(key => !here.includes(key)).map(key => describeCompact(key, VOICE_CATALOG[key])).join('\n')
   const views = Object.entries(VOICE_VIEWS).map(([to, spec]) => `- ${to}: ${describeFields(spec)}`).join('\n')
+  const catalog = context.catalog?.length
+    ? `
+Itens do catálogo (orçamento):
+${context.catalog.map(item => `- ${item}`).join('\n')}
+Em items, quando a fala corresponder a um item do catálogo (mesmo com outras palavras: "alinhar e balancear" = "Alinhamento e Balanceamento"), use o nome exato em descricao e o tipo dele. Nunca divida um nome do catálogo em vários itens. Serviço e peça citados juntos são itens separados ("trocar o óleo e o filtro" = Troca de Óleo + Filtro de Óleo).
+`
+    : ''
 
   const system = `Você converte comandos falados de uma oficina mecânica brasileira em JSON.
 Responda SOMENTE com um objeto JSON, em um destes formatos:
@@ -128,12 +135,13 @@ ${compact}
 
 Filtros de lista (query do navigate):
 ${views}
-
+${catalog}
 Regras:
 - create = cadastrar/criar/"nova OS"/"novo cliente". edit = abrir ou alterar registro existente ("abre a OS do…", "muda o km…"). action = executar uma ação da lista ("aprova", "paga", "remove", "desativa", "exclui", "faltou").
 - navigate = abrir uma tela. Para mostrar/buscar/filtrar uma lista ("mostra as OS abertas do João", "contas vencidas", "agenda da semana"), use navigate com query só com o que foi dito. Mês "YYYY-MM".
 - ask = pergunta sobre dados que pede uma resposta, não uma tela ("quantas OS estão abertas?", "quanto faturei em agosto?", "qual o telefone do João?", "quando o ABC1D23 veio por último?", "tem pastilha em estoque?"). Pedido para mostrar/abrir/filtrar lista continua navigate.
 - target identifica o registro existente; omita target quando a frase se refere ao registro aberto na tela atual.
+- Na tela OS aberta, citar serviço ou peça ("coloca", "bota", "põe", "lança", "adiciona", "inclui", "precisa de", "o cliente quer" ou só o nome) = edit da order com items, sem target; não é nova OS.
 - Use só os nomes de fields/items/actions/args listados. Omita o que não foi dito; nunca invente valores. Nunca inclua senha.
 - Vários itens na mesma frase: um objeto por item em "items".
 - Datas "YYYY-MM-DD" a partir de hoje ("amanhã", "sexta", "dia 10"), sempre a data futura mais próxima. Horas "HH:MM" em 24h ("2 da tarde" = "14:00").

@@ -24,6 +24,14 @@ test('every entity belongs to a page', () => {
   assert.deepEqual(voiceEntitiesForPage('other'), [])
 })
 
+test('catalog items go in the prompt only when given', () => {
+  const [withCatalog] = buildVoiceMessages('coloca alinhamento', { page: 'order-detail', today: '2026-09-30', catalog: ['Alinhamento e Balanceamento (servico)'] })
+  assert.match(withCatalog!.content, /Itens do catálogo \(orçamento\):\n- Alinhamento e Balanceamento \(servico\)/)
+  assert.match(withCatalog!.content, /Nunca divida um nome do catálogo/)
+  const [without] = buildVoiceMessages('coloca alinhamento', { page: 'order-detail', today: '2026-09-30' })
+  assert.doesNotMatch(without!.content, /Itens do catálogo/)
+})
+
 test('prompt has date, page, text, detailed current entity and compact others', () => {
   const [system, user] = buildVoiceMessages('paga no pix', { page: 'order-detail', today: '2026-09-30' })
   assert.equal(user?.content, 'paga no pix')

@@ -14,6 +14,8 @@ export type VoiceNavTarget
 export interface VoiceContext {
   page: VoicePage
   today: string
+  /** Active catalog items as "Nome (tipo)", on the order screens. */
+  catalog?: string[]
 }
 
 export type VoiceEntityKey
