@@ -33,9 +33,10 @@ Regras que continuam: a voz nunca grava no banco; chaves só no `runtimeConfig` 
 fala → modal → /api/voice/interpret ─ IA: comando (como hoje) ou {"op":"ask"}
   ask → o modal vira conversa → POST /api/voice/ask { messages, today }
         servidor: auth → papel (profiles) → Groq + ferramentas
-                  ↺ até 3 rodadas de consulta (Supabase do usuário + can(papel))
-                    resultado mascarado → IA
-                  → final_answer { answer, refs } → servidor desmascara, valida refs, monta links
+                  1ª chamada: IA escolhe as ferramentas (ou final_answer direto)
+                    consultas (Supabase do usuário + can(papel)), resultado mascarado
+                  2ª chamada, sem ferramentas: dados → JSON { answer, refs }
+                  → servidor desmascara, valida refs, monta links
   ← { answer, refs: [{ label, to }], history } → bolha na tela + fala + botões de atalho
 ```
 
@@ -55,9 +56,10 @@ fala → modal → /api/voice/interpret ─ IA: comando (como hoje) ou {"op":"as
 
 ### Laço de ferramentas — `loop.ts`
 
-- Provedores: `groqModel` e `groqFallbackModel` (sem Gemini). Chamada OpenAI-compatível com `tools` e `tool_choice: 'required'`; 8 s por chamada, 25 s no total.
-- Toda rodada chama ao menos uma ferramenta. Até 3 rodadas de dados; na 4ª, `tool_choice` força `final_answer`.
-- `final_answer({ answer: string, refs?: { type, id }[] })` encerra.
+- Provedores: `groqModel` e `groqFallbackModel` (sem Gemini); 8 s por chamada, 25 s no total. Resposta inutilizável (vazia, 400, JSON sem `answer`) passa para o próximo modelo.
+- 1ª chamada OpenAI-compatível com `tools` e `tool_choice: 'required'`: a IA chama de uma vez as ferramentas de que precisa (até 5), ou `final_answer({ answer })` quando a pergunta não precisa de dados.
+- 2ª chamada, nova e sem ferramentas, com `response_format: json_object`: recebe os resultados como dados e devolve `{ answer, refs?: { type, id }[] }`.
+- Uma rodada só de dados: no Groq, o gpt-oss quebra ao continuar a conversa depois de um resultado de ferramenta (turno vazio, 400, ferramenta inventada) — medido ao vivo em 16 de 18 tentativas, nos dois modelos, com qualquer `tool_choice`.
 - Falha do provedor em todas as tentativas → 503 "Não consegui responder agora. Tente de novo."
 - Função pura com `fetch` e executor de ferramentas injetados (testável sem rede/banco).
 
@@ -100,7 +102,9 @@ Português; hoje e dia da semana; papel do usuário; "responda só com dados das
 
 ### Privacidade
 
-A IA recebe só pergunta/histórico mascarados, a data e o papel. Sem logs de pergunta, resposta ou resultado de ferramenta — só o motivo de falha do provedor. Nenhuma escrita no banco.
+Em `/ask`, a IA recebe só pergunta/histórico mascarados, a data e o papel. Sem logs de pergunta, resposta ou resultado de ferramenta — só o motivo de falha do provedor. Nenhuma escrita no banco.
+
+Exceção conhecida: a primeira frase do painel ainda passa pelo `/interpret` (que decide entre comando e pergunta) sem máscara e com a cadeia Groq → Gemini, como os comandos desde a parte 1 — comandos precisam do telefone/documento ditado para preencher o formulário. As falas seguintes da conversa vão direto para `/ask`.
 
 ## 3. Cliente
 
@@ -125,6 +129,6 @@ A IA recebe só pergunta/histórico mascarados, a data e o papel. Sem logs de pe
 - `mask.test.ts`: resultados e texto do usuário mascarados; desmascarar resposta e argumentos; mesmo valor → mesmo marcador.
 - `refs.test.ts`: só refs vistos viram links; URL por tipo; limite 5.
 - `tools.test.ts`: validação de argumentos de cada ferramenta e gating por papel (executor de banco falso).
-- `loop.test.ts`: fetch falso — rodada de ferramenta → final_answer; final forçado após 3 rodadas; falha dos dois modelos → null.
+- `loop.test.ts`: fetch falso — ferramentas → chamada sem ferramentas responde em JSON; final_answer direto; resposta inutilizável passa ao próximo modelo; falha dos dois modelos → null.
 - `normalize`/`prompt` do interpret: `{ op: 'ask' }`.
-- `pnpm test`, typecheck, lint, build. Validação ao vivo depende de chaves Groq válidas (hoje 401).
+- `pnpm test`, typecheck, lint, build; validação ao vivo contra o Groq com banco falso.
