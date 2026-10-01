@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { emptyVehicleForm, isVehicleFormDirty } from '../utils/vehicle-form'
+import { emptyVehicleForm, formatPlacaInput, isVehicleFormDirty } from '../utils/vehicle-form'
 import { VEHICLE_ROUTES } from '../utils/vehicle-routes'
 
 defineOptions({ name: 'VehiclesNewPage' })
@@ -19,11 +19,12 @@ const router = useRouter()
 const clienteId = (route.query.cliente_id as string) || ''
 useRequirePermission('vehicles.write')
 const { state } = useVehicleForm(undefined, clienteId)
+const preferredClienteId = ref(clienteId)
 const {
   clienteItems,
   searchTerm: clienteSearchTerm,
   pending: clientesPending
-} = useCustomerOptions('clientes-options', () => clienteId || undefined)
+} = useCustomerOptions('clientes-options', () => preferredClienteId.value || undefined)
 const { createVehicle } = useVehicleMutations()
 
 const initialState = emptyVehicleForm(clienteId)
@@ -31,6 +32,15 @@ const loading = ref(false)
 const allowLeave = ref(false)
 
 const isDirty = computed(() => isVehicleFormDirty(state, initialState))
+
+useVoiceForm('vehicle', {
+  ops: ['create'],
+  state,
+  format: { placa: v => formatPlacaInput(String(v)) },
+  open: (draft) => {
+    if (typeof draft.fields.dono === 'string') preferredClienteId.value = draft.fields.dono
+  }
+})
 
 const backFallback = computed(() =>
   clienteId ? `/clientes/${clienteId}` : VEHICLE_ROUTES.list

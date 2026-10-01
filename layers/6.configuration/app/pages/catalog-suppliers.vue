@@ -2,6 +2,8 @@
 import type { Fornecedor } from '~~/shared/types/database'
 import { emptySupplierDraft } from '../utils/catalog'
 import { settingsHubBreadcrumb } from '../utils/settings-hub'
+import { applyVoiceFields } from '#layers/base/app/utils/voice/apply'
+import { VOICE_CATALOG } from '#layers/base/app/utils/voice/catalog'
 
 defineOptions({ name: 'CatalogSuppliersPage' })
 
@@ -21,6 +23,7 @@ const breadcrumbItems = settingsHubBreadcrumb('Fornecedores')
 const {
   suppliers,
   pending: suppliersPending,
+  error: suppliersError,
   refresh: refreshSuppliers
 } = useSuppliersList()
 const {
@@ -38,8 +41,9 @@ const formSaving = ref(false)
 const supplierTogglingId = ref<string | null>(null)
 const deleteOpen = ref(false)
 const deleteTargetId = ref<string | null>(null)
+const deleteTargetName = ref<string>()
 const deleting = ref(false)
-const supplierQ = ref('')
+const supplierQ = useRouteQueryState('q', '')
 
 const activeSuppliers = computed(() => suppliers.value || [])
 
@@ -63,6 +67,10 @@ const countLabel = computed(() => {
   }
   return n === 1 ? '1 fornecedor' : `${n} fornecedores`
 })
+
+const deleteTitle = computed(() =>
+  deleteTargetName.value ? `Excluir o fornecedor "${deleteTargetName.value}"?` : 'Excluir fornecedor?'
+)
 
 const formTitle = computed(() =>
   formMode.value === 'edit' ? 'Editar fornecedor' : 'Novo fornecedor'
@@ -89,9 +97,41 @@ function openCreate() {
   formOpen.value = true
 }
 
+function openEditId() {
+  return formOpen.value && formMode.value === 'edit' ? editingId.value ?? undefined : undefined
+}
+
+useVoiceForm('supplier', {
+  apply: (draft) => {
+    const editingThis = draft.op === 'edit' && !!draft.id && openEditId() === draft.id
+    if (formOpen.value && !editingThis) {
+      useToast().add({ title: 'Feche o formulário aberto antes.', color: 'warning' })
+      return
+    }
+    if (draft.op === 'create') {
+      openCreate()
+    } else if (!editingThis && !onSupplierEdit({ id: draft.id! })) {
+      const title = suppliersError.value ? 'Não foi possível carregar os fornecedores.' : 'Fornecedor não encontrado na lista.'
+      useToast().add({ title, color: 'warning' })
+      return
+    }
+    applyVoiceFields(supplierDraft, draft.fields, VOICE_CATALOG.supplier)
+  },
+  actions: {
+    desativar: draft => onSupplierToggleAtivo({ id: draft.id!, ativo: false }),
+    reativar: draft => onSupplierToggleAtivo({ id: draft.id!, ativo: true }),
+    excluir: (draft) => {
+      onSupplierRequestDelete({ id: draft.id!, name: draft.label })
+    }
+  },
+  currentId: openEditId,
+  label: () => supplierDraft.nome,
+  ready: () => !suppliersPending.value && (!!suppliers.value || !!suppliersError.value)
+})
+
 function onSupplierEdit(payload: { id: string }) {
   const supplier = activeSuppliers.value.find((row: Fornecedor) => row.id === payload.id)
-  if (!supplier) return
+  if (!supplier) return false
   formMode.value = 'edit'
   editingId.value = supplier.id
   supplierDraft.nome = supplier.nome
@@ -99,6 +139,7 @@ function onSupplierEdit(payload: { id: string }) {
   supplierDraft.email = supplier.email || ''
   supplierDraft.observacoes = supplier.observacoes || ''
   formOpen.value = true
+  return true
 }
 
 async function onFormSubmit() {
@@ -133,8 +174,9 @@ async function onSupplierToggleAtivo(payload: { id: string, ativo: boolean }) {
   }
 }
 
-function onSupplierRequestDelete(payload: { id: string }) {
+function onSupplierRequestDelete(payload: { id: string, name?: string }) {
   deleteTargetId.value = payload.id
+  deleteTargetName.value = payload.name ?? activeSuppliers.value.find(row => row.id === payload.id)?.nome
   deleteOpen.value = true
 }
 
@@ -276,7 +318,7 @@ async function onSupplierConfirmDelete() {
 
           <CatalogDeleteModal
             v-model:open="deleteOpen"
-            title="Excluir fornecedor?"
+            :title="deleteTitle"
             description="Esta ação não pode ser desfeita. Só é permitido se não houver itens no catálogo nem contas a pagar vinculadas."
             :loading="deleting"
             @confirm="onSupplierConfirmDelete"

@@ -39,7 +39,7 @@ const emit = defineEmits<{
 
 const draftModel = defineModel<OrderItemDraft>('draft', { required: true })
 
-const showAddModal = ref(false)
+const showAddModal = defineModel<boolean>('addOpen', { default: false })
 const rejectConfirmOpen = ref(false)
 
 const showShareMenu = computed(() => props.items.length > 0)

@@ -3,6 +3,7 @@ import {
   ORDER_PHOTOS_ACCEPT,
   ORDER_PHOTOS_MAX_COUNT
 } from '../utils/order-photos'
+import type { VoiceDraft } from '#layers/base/app/utils/voice/types'
 
 defineOptions({ name: 'OrdersPhotosSection' })
 
@@ -16,6 +17,7 @@ const inputRef = ref<HTMLInputElement | null>(null)
 const {
   photos,
   pending,
+  loaded,
   uploading,
   deletingId,
   uploadFiles,
@@ -28,6 +30,47 @@ const {
 const canAdd = computed(() =>
   props.canEdit && photos.value.length < ORDER_PHOTOS_MAX_COUNT
 )
+
+const sectionRef = ref<HTMLElement | null>(null)
+
+function photoAt(draft: VoiceDraft) {
+  const n = Number(draft.args?.numero)
+  return Number.isInteger(n) && n >= 1 ? photos.value[n - 1] : undefined
+}
+
+function spokenCaption(draft: VoiceDraft) {
+  return typeof draft.args?.legenda === 'string' ? draft.args.legenda.trim() : ''
+}
+
+useVoiceForm('order', {
+  accept: draft => draft.id === props.ordemId,
+  ready: () => loaded.value && !pending.value,
+  unavailable: (action, draft) => {
+    if (!props.canEdit) return 'As fotos desta OS não podem ser alteradas.'
+    if (action === 'adicionarFoto' && !canAdd.value) return `Limite de ${ORDER_PHOTOS_MAX_COUNT} fotos atingido.`
+    if (action !== 'adicionarFoto' && !photoAt(draft)) return `Foto ${draft.args?.numero ?? ''} não encontrada.`
+    if (action === 'legendarFoto' && !spokenCaption(draft)) return 'Diga a legenda da foto.'
+    return undefined
+  },
+  actions: {
+    legendarFoto: async (draft) => {
+      const photo = photoAt(draft)
+      const legenda = spokenCaption(draft)
+      if (!photo) return { unavailable: 'Foto não encontrada.' }
+      if (!legenda) return { unavailable: 'Diga a legenda da foto.' }
+      await updateCaption(photo.id, legenda)
+    },
+    removerFoto: async (draft) => {
+      const photo = photoAt(draft)
+      if (!photo) return { unavailable: 'Foto não encontrada.' }
+      await removePhoto(photo)
+    },
+    adicionarFoto: () => {
+      sectionRef.value?.scrollIntoView({ behavior: 'smooth', block: 'center' })
+      return { message: `Toque em ${photos.value.length ? 'Adicionar' : 'Tirar ou escolher foto'} para usar a câmera.` }
+    }
+  }
+})
 
 function openPicker() {
   inputRef.value?.click()
@@ -48,6 +91,7 @@ async function onCaptionBlur(photoId: string, event: FocusEvent) {
 
 <template>
   <div
+    ref="sectionRef"
     class="space-y-3"
     aria-labelledby="os-fotos-heading"
   >

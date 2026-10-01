@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { BreadcrumbItem, DropdownMenuItem } from '@nuxt/ui'
 import { VEHICLE_ROUTES } from '../utils/vehicle-routes'
+import { formatPlacaInput } from '../utils/vehicle-form'
 
 defineOptions({ name: 'VehiclesDetailPage' })
 
@@ -18,7 +19,8 @@ const [
   useVehicleQuery(id),
   useVehicleOrders(id)
 ])
-const preferredClienteId = computed(() => veiculo.value?.cliente_id || undefined)
+const voiceClienteId = ref('')
+const preferredClienteId = computed(() => voiceClienteId.value || veiculo.value?.cliente_id || undefined)
 const {
   clienteItems,
   searchTerm: clienteSearchTerm,
@@ -47,7 +49,31 @@ const {
   removeVehicle
 } = useVehicleDetailPage(id, veiculo, state, refresh)
 
+watch(editing, (value) => {
+  if (!value) voiceClienteId.value = ''
+})
+
 const { can } = usePermissions()
+
+useVoiceForm('vehicle', {
+  ops: ['edit'],
+  state,
+  format: { placa: v => formatPlacaInput(String(v)) },
+  open: (draft) => {
+    if (!can('vehicles.write')) return
+    if (!editing.value) startEdit()
+    if (typeof draft.fields.dono === 'string') voiceClienteId.value = draft.fields.dono
+  },
+  actions: {
+    excluir: () => {
+      deleteOpen.value = true
+    }
+  },
+  currentId: () => id.value,
+  label: () => (veiculo.value ? formatPlaca(veiculo.value.placa) : undefined),
+  accept: draft => draft.id === id.value,
+  ready: () => !!veiculo.value
+})
 
 const backFallback = computed(() => {
   const owner = veiculo.value?.clientes

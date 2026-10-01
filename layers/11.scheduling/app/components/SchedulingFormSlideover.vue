@@ -2,6 +2,7 @@
 import type { FormError, FormSubmitEvent } from '@nuxt/ui'
 import type { SchedulingAppointment } from '../composables/useSchedulingBoard'
 import { ORDER_ROUTES } from '#layers/orders/app/utils/order-routes'
+import { appendText } from '#layers/base/app/utils/voice/text'
 import { useVehicleOptions } from '#layers/vehicles/app/composables/useVehicleOptions'
 import {
   appointmentToDraft,
@@ -28,16 +29,12 @@ const emit = defineEmits<{
   submit: [draft: AppointmentDraft]
 }>()
 
-const preferredVeiculoId = computed(
-  () => props.appointment?.veiculo_id || undefined
-)
-
 const {
   veiculos,
   searchTerm: vehicleSearchTerm,
   pending: vehiclesPending
 } = await useVehicleOptions({
-  preferredId: preferredVeiculoId,
+  preferredId: () => props.appointment?.veiculo_id || props.prefill?.veiculo_id || undefined,
   key: 'scheduling-veiculos-options'
 })
 
@@ -72,19 +69,36 @@ const openOrderHref = computed(() => {
   return ORDER_ROUTES.newFromAppointment(props.appointment.veiculo_id, props.appointment.id)
 })
 
-function resetDraft() {
-  if (props.appointment) Object.assign(draft, appointmentToDraft(props.appointment))
-  else Object.assign(draft, emptyAppointmentDraft(props.day, props.prefill ?? undefined))
-  snapshot.value = JSON.stringify({ ...draft })
+function applyEditPrefill(prefill: AppointmentCreatePrefill) {
+  if (prefill.date) draft.date = prefill.date
+  if (prefill.startTime) draft.startTime = prefill.startTime
+  if (prefill.veiculo_id) draft.veiculo_id = prefill.veiculo_id
+  if (prefill.problema) draft.problema = appendText(draft.problema, prefill.problema)
 }
 
-watch(open, (isOpen) => {
+function resetDraft() {
+  if (props.appointment) {
+    Object.assign(draft, appointmentToDraft(props.appointment))
+    snapshot.value = JSON.stringify({ ...draft })
+    // Voice edit: the prefill lands after the snapshot so the change is dirty.
+    if (props.prefill) applyEditPrefill(props.prefill)
+    return
+  }
+  Object.assign(draft, emptyAppointmentDraft(props.day, props.prefill ?? undefined))
+  snapshot.value = JSON.stringify(emptyAppointmentDraft(props.day, { hour: props.prefill?.hour }))
+}
+
+// One watcher: open, appointment and prefill can change in the same tick, and the prefill must land once.
+watch([open, () => props.appointment?.id, () => props.prefill], ([isOpen, id, prefill], previous) => {
   if (!isOpen) {
     discardOpen.value = false
     return
   }
-  resetDraft()
-})
+  const [wasOpen, previousId] = previous ?? []
+  if (!wasOpen || id !== previousId) resetDraft()
+  // Voice edit on the appointment already open: keep the manual edits, apply only what was spoken.
+  else if (props.appointment && prefill) applyEditPrefill(prefill)
+}, { immediate: true })
 
 function onOpenChange(value: boolean) {
   if (value) {

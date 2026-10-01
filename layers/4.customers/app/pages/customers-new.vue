@@ -1,5 +1,10 @@
 <script setup lang="ts">
-import { emptyCustomerForm, isCustomerFormDirty } from '../utils/customer-form'
+import {
+  emptyCustomerForm,
+  formatDocumento,
+  formatPhoneBr,
+  isCustomerFormDirty
+} from '../utils/customer-form'
 import { CUSTOMER_ROUTES } from '../utils/customer-routes'
 
 defineOptions({ name: 'CustomersNewPage' })
@@ -23,6 +28,12 @@ const loading = ref(false)
 const allowLeave = ref(false)
 
 const isDirty = computed(() => isCustomerFormDirty(state, initialState))
+
+useVoiceForm('customer', {
+  ops: ['create'],
+  state,
+  format: { telefones: v => formatPhoneBr(String(v)), documento: v => formatDocumento(String(v)) }
+})
 
 async function onSubmit() {
   loading.value = true

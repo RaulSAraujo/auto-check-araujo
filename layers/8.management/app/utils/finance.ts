@@ -28,6 +28,10 @@ export function currentMonthValue(): string {
   return `${now.getFullYear()}-${month}`
 }
 
+export function isMonthValue(value: string): boolean {
+  return /^\d{4}-(0[1-9]|1[0-2])$/.test(value)
+}
+
 export function monthValueToDate(monthValue: string): string {
   return `${monthValue}-01`
 }

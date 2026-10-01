@@ -6,15 +6,12 @@ import {
   type CustomerStatusFilter
 } from '../utils/customer-status'
 
-export async function useCustomersList(
-  initialStatus: CustomerStatusFilter = CUSTOMER_STATUS_FILTER_ACTIVE
-) {
+export async function useCustomersList() {
   const supabase = useTypedSupabaseClient()
-  const router = useRouter()
 
-  const q = ref('')
-  const debouncedQ = ref('')
-  const statusFilter = ref<CustomerStatusFilter>(initialStatus)
+  const q = useRouteQueryState('q', '')
+  const debouncedQ = ref(q.value)
+  const statusFilter = useRouteQueryState<CustomerStatusFilter>('status', CUSTOMER_STATUS_FILTER_ACTIVE, CUSTOMER_STATUS_FILTER_ITEMS.map(item => item.value))
   const { page, pageSize, rangeBounds } = useListPagination([debouncedQ, statusFilter])
 
   let debounceTimer: ReturnType<typeof setTimeout> | undefined
@@ -59,12 +56,6 @@ export async function useCustomersList(
     },
     { watch: [debouncedQ, page, statusFilter], lazy: true }
   )
-
-  watch(statusFilter, (value) => {
-    router.replace({
-      query: value !== CUSTOMER_STATUS_FILTER_ACTIVE ? { status: value } : {}
-    })
-  })
 
   const clientes = computed(() => data.value?.items ?? [])
   const total = computed(() => data.value?.total ?? 0)

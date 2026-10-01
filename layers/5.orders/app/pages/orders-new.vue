@@ -37,8 +37,9 @@ const { data: linkedAppointment } = await useAsyncData(
   }
 )
 
+const voiceVeiculoId = ref('')
 const preferredVeiculoId = computed(
-  () => linkedAppointment.value?.veiculo_id || initialVeiculoId || undefined
+  () => voiceVeiculoId.value || linkedAppointment.value?.veiculo_id || initialVeiculoId || undefined
 )
 
 const {
@@ -69,6 +70,14 @@ const allowLeave = ref(false)
 
 const selectedVehicle = computed(() => findVehicle(state.veiculo_id))
 const isDirty = computed(() => isOrderFormDirty(state, initialState))
+
+useVoiceForm('order', {
+  ops: ['create'],
+  state,
+  open: (draft) => {
+    if (typeof draft.fields.veiculo === 'string') voiceVeiculoId.value = draft.fields.veiculo
+  }
+})
 
 const backFallback = computed(() => {
   if (agendamentoId.value) return APP_ROUTES.scheduling

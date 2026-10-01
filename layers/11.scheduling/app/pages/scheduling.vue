@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import type { DropdownMenuItem } from '@nuxt/ui'
 import type { SchedulingAppointment } from '../composables/useSchedulingBoard'
+import { ORDER_ROUTES } from '#layers/orders/app/utils/order-routes'
 import {
+  combineLocalDateTime,
   formatBoardDate,
   formatWeekHeading,
   isSameLocalDay,
@@ -75,7 +77,8 @@ const moreMenuItems = computed<DropdownMenuItem[][]>(() => [[
 
 function openCreate(prefill?: AppointmentCreatePrefill) {
   const next: AppointmentCreatePrefill = { ...prefill }
-  if (next.hour == null && isSameLocalDay(selectedDate.value, new Date())) {
+  const day = next.date ? combineLocalDateTime(next.date, '00:00') : selectedDate.value
+  if (next.hour == null && !next.startTime && isSameLocalDay(day, new Date())) {
     const hour = new Date().getHours()
     if (hour >= TIMELINE_START_HOUR && hour <= TIMELINE_END_HOUR) next.hour = hour
   }
@@ -84,8 +87,101 @@ function openCreate(prefill?: AppointmentCreatePrefill) {
   formOpen.value = true
 }
 
-function openEdit(appointment: SchedulingAppointment) {
-  createPrefill.value = null
+// Draft handlers can run outside the page's effect scope, so their watchers/timers are disposed by hand.
+const appointmentLookups = new Set<() => void>()
+onBeforeUnmount(() => appointmentLookups.forEach(dispose => dispose()))
+
+function whenAppointmentLoaded(id: string, inicio: string, action: (appointment: SchedulingAppointment) => void) {
+  selectDay(new Date(inicio))
+  const loaded = dayAppointments.value.find(item => item.id === id)
+  if (loaded) return action(loaded)
+  const stop = watch(dayAppointments, (list) => {
+    const found = list.find(item => item.id === id)
+    if (!found) return
+    dispose()
+    action(found)
+  })
+  const timer = setTimeout(() => {
+    dispose()
+    toast.add({ title: 'Agendamento não encontrado na agenda.', color: 'warning' })
+  }, 10_000)
+  const dispose = () => {
+    stop()
+    clearTimeout(timer)
+    appointmentLookups.delete(dispose)
+  }
+  appointmentLookups.add(dispose)
+}
+
+// editingAppointment isn't cleared when the slideover closes by v-model.
+const openAppointment = computed(() => (formOpen.value ? editingAppointment.value : null))
+
+function withVoiceAppointment(draft: { id?: string, inicio?: string }, action: (appointment: SchedulingAppointment) => void) {
+  if (draft.id && draft.inicio) return whenAppointmentLoaded(draft.id, draft.inicio, action)
+  // No plate spoken (no `inicio`): the runtime used the appointment open in the slideover.
+  if (draft.id && openAppointment.value?.id === draft.id) return action(openAppointment.value)
+  toast.add({ title: 'Não encontrei o agendamento.', color: 'warning' })
+}
+
+useVoiceForm('appointment', {
+  apply: (draft) => {
+    if (!canWrite.value) return
+    const editingThis = draft.op === 'edit' && !!draft.id && openAppointment.value?.id === draft.id
+    if (formOpen.value && !editingThis) {
+      toast.add({ title: 'Feche o formulário aberto antes.', color: 'warning' })
+      return
+    }
+    const { veiculo, date, startTime, problema } = draft.fields
+    if (draft.op === 'create') {
+      if (typeof date === 'string') selectDay(combineLocalDateTime(date, '00:00'))
+      openCreate({
+        veiculo_id: typeof veiculo === 'string' ? veiculo : undefined,
+        date: typeof date === 'string' ? date : undefined,
+        startTime: typeof startTime === 'string' ? startTime : undefined,
+        problema: typeof problema === 'string' ? problema : undefined
+      })
+      return
+    }
+    const override = {
+      ...(typeof date === 'string' ? { date } : {}),
+      ...(typeof startTime === 'string' ? { startTime } : {}),
+      ...(typeof veiculo === 'string' ? { veiculo_id: veiculo } : {}),
+      ...(typeof problema === 'string' ? { problema } : {})
+    }
+    withVoiceAppointment(draft, appointment => openEdit(appointment, override))
+  },
+  unavailable: (action, draft) => {
+    if (action !== 'desfazerFalta' || draft.inicio) return undefined
+    const open = openAppointment.value
+    if (!open || open.id !== draft.id) return 'Não encontrei o agendamento.'
+    if (open.status !== 'nao_compareceu') return 'Este agendamento não está marcado como falta.'
+    return undefined
+  },
+  actions: {
+    faltou: (draft) => {
+      if (!canWrite.value) return
+      withVoiceAppointment(draft, appointment => requestNoShow(appointment.id))
+    },
+    desfazerFalta: (draft) => {
+      if (!canWrite.value || !draft.id) return
+      // By id: the board filters may hide no-shows, and `unavailable` already checked the no-plate case.
+      if (draft.inicio) selectDay(new Date(draft.inicio))
+      return onUndoNoShow(draft.id)
+    },
+    abrirOS: (draft) => {
+      withVoiceAppointment(draft, (appointment) => {
+        if (appointment.ordem_servico_id) navigateTo(ORDER_ROUTES.detail(appointment.ordem_servico_id))
+        else navigateTo(ORDER_ROUTES.newFromAppointment(appointment.veiculo_id, appointment.id))
+      })
+    }
+  },
+  currentId: () => openAppointment.value?.id,
+  label: () => (openAppointment.value?.veiculos?.placa ? formatPlaca(openAppointment.value.veiculos.placa) : undefined)
+})
+
+function openEdit(appointment: SchedulingAppointment, override?: Omit<AppointmentCreatePrefill, 'hour'>) {
+  // A new object each time: the open slideover watches the prefill reference.
+  createPrefill.value = override ? { ...override } : null
   editingAppointment.value = appointment
   formOpen.value = true
 }
