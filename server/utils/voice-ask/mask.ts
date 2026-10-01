@@ -1,6 +1,8 @@
 type PiiKind = 'telefone' | 'email' | 'documento'
 
 const TOKEN_RE = /\[(telefone|email|documento) (\d+)\]/g
+/** A token left after unmasking came from an earlier request and has no real value here. */
+export const STALE_TOKEN_RE = /\[(?:telefone|email|documento) \d+\]/
 const FIELD_KIND: Record<string, PiiKind> = {
   telefone: 'telefone',
   telefones: 'telefone',
