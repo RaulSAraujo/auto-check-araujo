@@ -27,7 +27,11 @@ export function useVoiceAsk() {
   let controller: AbortController | undefined
 
   onMounted(() => {
-    muted.value = localStorage.getItem(MUTE_KEY) === '1'
+    try {
+      muted.value = localStorage.getItem(MUTE_KEY) === '1'
+    } catch {
+      // Storage blocked (private mode): the toggle still works for this session.
+    }
   })
 
   function canSpeak() {
@@ -48,11 +52,16 @@ export function useVoiceAsk() {
 
   function toggleMute() {
     muted.value = !muted.value
-    localStorage.setItem(MUTE_KEY, muted.value ? '1' : '0')
     if (muted.value) stopSpeaking()
+    try {
+      localStorage.setItem(MUTE_KEY, muted.value ? '1' : '0')
+    } catch {
+      // Storage blocked: keep the in-memory choice.
+    }
   }
 
   function cancel() {
+    if (controller && messages.value.at(-1)?.role === 'user') messages.value.pop()
     controller?.abort()
     controller = undefined
     pending.value = false
@@ -68,6 +77,8 @@ export function useVoiceAsk() {
   async function ask(question: string): Promise<boolean> {
     cancel()
     stopSpeaking()
+    // A resend replaces the failed attempt instead of stacking it.
+    if (messages.value.at(-1)?.role === 'error') messages.value.splice(-2)
     const current = new AbortController()
     controller = current
     messages.value.push({ role: 'user', content: question })

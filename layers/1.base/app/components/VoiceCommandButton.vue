@@ -198,7 +198,7 @@ async function submit() {
           v-model="text"
           autoresize
           :placeholder="conversing ? 'Pergunte mais alguma coisa…' : 'Ex.: abre a OS do ABC1D23 e coloca no diagnóstico pastilha gasta'"
-          aria-label="Comando"
+          :aria-label="conversing ? 'Pergunta' : 'Comando'"
           class="w-full"
         />
 
@@ -270,7 +270,8 @@ async function submit() {
         <UButton
           v-if="conversing"
           :icon="muted ? 'i-lucide-volume-x' : 'i-lucide-volume-2'"
-          :aria-label="muted ? 'Ativar leitura das respostas' : 'Silenciar respostas'"
+          aria-label="Silenciar respostas"
+          :aria-pressed="muted"
           color="neutral"
           variant="ghost"
           class="me-auto"
