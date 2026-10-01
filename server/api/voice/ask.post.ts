@@ -6,6 +6,7 @@ import { createMasker, STALE_TOKEN_RE } from '../../utils/voice-ask/mask'
 import { buildAskSystemPrompt } from '../../utils/voice-ask/prompt'
 import { createRefs } from '../../utils/voice-ask/refs'
 import { runVoiceTool, VOICE_TOOL_SCHEMAS } from '../../utils/voice-ask/tools'
+import { aiFailureStatus } from '../../utils/voice-providers'
 
 const GROQ_URL = 'https://api.groq.com/openai/v1/chat/completions'
 const MAX_MESSAGES = 10
@@ -63,6 +64,7 @@ export default defineEventHandler(async (event) => {
   const masker = createMasker(messages.map(item => item.content))
   const refs = createRefs()
   const config = useRuntimeConfig(event)
+  const failures: string[] = []
   const conversation: AskMessage[] = [
     { role: 'system', content: buildAskSystemPrompt({ today, papel }) },
     ...messages.map(item => ({ role: item.role, content: masker.maskText(item.content) }))
@@ -80,11 +82,14 @@ export default defineEventHandler(async (event) => {
       if (STALE_TOKEN_RE.test(JSON.stringify(realArgs))) return { erro: 'argumento_invalido', campo: 'marcador' }
       return masker.maskResult(await runVoiceTool(name, realArgs, { db, papel, today, see: refs.add }))
     },
-    onError: (provider, reason) => console.warn(`[voice-ask] ${provider} failed: ${reason}`)
+    onError: (provider, reason) => {
+      failures.push(reason)
+      console.warn(`[voice-ask] ${provider} failed: ${reason}`)
+    }
   })
 
   if (!result) {
-    throw createError({ statusCode: 503, message: UNAVAILABLE })
+    throw createError({ statusCode: aiFailureStatus(failures), message: UNAVAILABLE })
   }
 
   return { answer: masker.unmask(result.answer), refs: refs.links(result.refs), history: result.answer }

@@ -183,7 +183,9 @@ test('plain text without tool calls is accepted as the answer; empty final answe
 
 test('stops when the total time budget is spent', async () => {
   const { fn, calls } = fakeFetch({ 'https://main.test': () => reply({ tool_calls: [call('search_orders', {})] }) })
-  const result = await askWithTools({ providers: [main], messages: base, tools, execute: async () => ({}), fetch: fn, totalTimeoutMs: 0 })
+  const errors: string[] = []
+  const result = await askWithTools({ providers: [main], messages: base, tools, execute: async () => ({}), fetch: fn, totalTimeoutMs: 0, onError: (p, r) => errors.push(`${p}: ${r}`) })
   assert.equal(result, null)
   assert.equal(calls.length, 0)
+  assert.deepEqual(errors, ['groq: time budget spent'])
 })

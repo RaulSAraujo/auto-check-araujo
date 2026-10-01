@@ -17,6 +17,16 @@ interface CompleteOptions {
   onError?: (provider: string, reason: string) => void
 }
 
+/**
+ * HTTP status telling the client why every provider failed, from the `onError` reasons:
+ * 429 = free-tier quota hit, 502 = key rejected or missing (no provider was even tried), 503 = anything else.
+ */
+export function aiFailureStatus(reasons: string[]): 429 | 502 | 503 {
+  if (reasons.includes('HTTP 429')) return 429
+  if (!reasons.length || reasons.includes('HTTP 401') || reasons.includes('HTTP 403')) return 502
+  return 503
+}
+
 function parseContent(content: string): unknown {
   return JSON.parse(content.trim().replace(/^```(?:json)?\s*/i, '').replace(/\s*```$/, ''))
 }

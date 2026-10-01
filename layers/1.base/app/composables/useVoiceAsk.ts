@@ -1,3 +1,4 @@
+import { voiceAiFailure } from '../utils/voice/ai-failure'
 import { localDateInput } from '../utils/voice/prompt'
 
 export interface VoiceAskLink {
@@ -97,9 +98,9 @@ export function useVoiceAsk() {
       messages.value.push({ role: 'assistant', content: response.answer, refs: response.refs })
       speak(response.answer)
       return true
-    } catch {
+    } catch (error) {
       if (current !== controller) return false
-      messages.value.push({ role: 'error', content: ERROR_TEXT })
+      messages.value.push({ role: 'error', content: voiceAiFailure(error, ERROR_TEXT) })
       return false
     } finally {
       if (current === controller) {

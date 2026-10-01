@@ -24,7 +24,8 @@ const conversing = computed(() => asked.value || messages.value.length > 0)
 
 const open = ref(false)
 const text = ref('')
-const notUnderstood = ref(false)
+const NOT_UNDERSTOOD = 'Não entendi o comando. Veja os exemplos abaixo.'
+const notice = ref('')
 const running = ref(false)
 let runId = 0
 
@@ -44,7 +45,7 @@ function openModal() {
   open.value = true
   text.value = ''
   error.value = null
-  notUnderstood.value = false
+  notice.value = ''
   if (supported.value) start()
 }
 
@@ -59,7 +60,7 @@ function clearText() {
   interim.value = ''
   // The segment still being recognized would come back on the next result; restarting drops it.
   if (listening.value) start()
-  notUnderstood.value = false
+  notice.value = ''
 }
 
 function pickExample(example: string) {
@@ -80,7 +81,7 @@ async function submit() {
   cancel()
   if (!command || running.value) return
   text.value = command
-  notUnderstood.value = false
+  notice.value = ''
   running.value = true
   const id = ++runId
   const isCancelled = () => id !== runId
@@ -92,7 +93,8 @@ async function submit() {
     const result = await run(command, isCancelled)
     if (isCancelled()) return
     if (result.ok && result.ask) await sendQuestion(command)
-    else if (!result.ok && result.reason === 'not_understood') notUnderstood.value = true
+    else if (!result.ok && result.reason === 'not_understood') notice.value = NOT_UNDERSTOOD
+    else if (!result.ok && result.reason === 'unavailable') notice.value = result.message
     else open.value = false
   } catch {
     if (isCancelled()) return
@@ -232,11 +234,11 @@ async function submit() {
         />
 
         <UAlert
-          v-if="notUnderstood && !conversing"
+          v-if="notice && !conversing"
           color="error"
           variant="subtle"
-          icon="i-lucide-circle-help"
-          description="Não entendi o comando. Veja os exemplos abaixo."
+          :icon="notice === NOT_UNDERSTOOD ? 'i-lucide-circle-help' : 'i-lucide-cloud-off'"
+          :description="notice"
         />
 
         <UCollapsible v-if="!conversing">

@@ -2,7 +2,7 @@ import { serverSupabaseUser } from '#supabase/server'
 import { buildVoiceMessages, VOICE_PAGES } from '~~/layers/1.base/app/utils/voice/prompt'
 import { normalizeVoiceCommand } from '~~/layers/1.base/app/utils/voice/normalize'
 import type { VoicePage } from '~~/layers/1.base/app/utils/voice/types'
-import { completeWithFallback } from '../../utils/voice-providers'
+import { aiFailureStatus, completeWithFallback } from '../../utils/voice-providers'
 
 const GROQ_URL = 'https://api.groq.com/openai/v1/chat/completions'
 const GEMINI_URL = 'https://generativelanguage.googleapis.com/v1beta/openai/chat/completions'
@@ -31,6 +31,7 @@ export default defineEventHandler(async (event) => {
   }
 
   const config = useRuntimeConfig(event)
+  const failures: string[] = []
   const raw = await completeWithFallback(
     [
       { name: 'groq', url: GROQ_URL, apiKey: config.groqApiKey, model: config.groqModel, extra: { reasoning_effort: 'low' } },
@@ -38,11 +39,17 @@ export default defineEventHandler(async (event) => {
       { name: 'gemini', url: GEMINI_URL, apiKey: config.geminiApiKey, model: config.geminiModel }
     ],
     buildVoiceMessages(text, { page, today }),
-    { timeoutMs: 8_000, onError: (provider, reason) => console.warn(`[voice] ${provider} failed: ${reason}`) }
+    {
+      timeoutMs: 8_000,
+      onError: (provider, reason) => {
+        failures.push(reason)
+        console.warn(`[voice] ${provider} failed: ${reason}`)
+      }
+    }
   )
 
   if (raw === null) {
-    throw createError({ statusCode: 503, message: 'Interpretação por IA indisponível' })
+    throw createError({ statusCode: aiFailureStatus(failures), message: 'Interpretação por IA indisponível' })
   }
 
   return { command: normalizeVoiceCommand(raw) }

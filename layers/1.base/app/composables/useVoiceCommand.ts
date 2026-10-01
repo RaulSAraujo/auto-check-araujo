@@ -1,4 +1,5 @@
 import type { PermissionAction } from '#layers/auth/app/utils/permissions'
+import { voiceAiFailure } from '../utils/voice/ai-failure'
 import { VOICE_CATALOG, type VoiceRefKind } from '../utils/voice/catalog'
 import { legacyToCommand } from '../utils/voice/legacy'
 import { normalizeVoiceCommand } from '../utils/voice/normalize'
@@ -11,6 +12,9 @@ import type { VoiceFound } from './useVoiceLookup'
 export type VoiceRunResult
   = | { ok: true, ask?: true }
     | { ok: false, reason: 'not_understood' | 'forbidden' | 'context' | 'cancelled' }
+    | { ok: false, reason: 'unavailable', message: string }
+
+const AI_DOWN = 'Não consegui falar com a IA agora. Tente de novo em instantes.'
 
 /** `opened`: only navigates, no draft is stored. */
 type Destination = { path: string, query?: Record<string, string>, opened?: true }
@@ -69,7 +73,8 @@ export function useVoiceCommand() {
   const { setVoiceDraft, clearVoiceDraft, current } = useVoiceDraft()
   const lookup = useVoiceLookup()
 
-  async function interpret(text: string, page: VoicePage): Promise<VoiceCommand | null> {
+  /** `failure`: why the AI couldn't be used; the local parser still gets a chance. */
+  async function interpret(text: string, page: VoicePage): Promise<{ command: VoiceCommand | null, failure?: string }> {
     const local = () => normalizeVoiceCommand(legacyToCommand(parseVoiceCommand(text)))
     try {
       const { command } = await $fetch<{ command: VoiceCommand | null }>('/api/voice/interpret', {
@@ -78,9 +83,9 @@ export function useVoiceCommand() {
         // Server worst case: 3 providers × 8 s.
         timeout: 30_000
       })
-      return command ?? local()
-    } catch {
-      return local()
+      return { command: command ?? local() }
+    } catch (error) {
+      return { command: local(), failure: voiceAiFailure(error, AI_DOWN) }
     }
   }
 
@@ -238,9 +243,9 @@ export function useVoiceCommand() {
   async function run(text: string, isCancelled: () => boolean = () => false): Promise<VoiceRunResult> {
     const here = currentRoute.value.path
     const page = voicePageFromPath(here)
-    const command = await interpret(text, page)
+    const { command, failure } = await interpret(text, page)
     if (isCancelled()) return { ok: false, reason: 'cancelled' }
-    if (!command) return { ok: false, reason: 'not_understood' }
+    if (!command) return failure ? { ok: false, reason: 'unavailable', message: failure } : { ok: false, reason: 'not_understood' }
     if (command.op === 'ask') return { ok: true, ask: true }
 
     if (command.op === 'navigate') {

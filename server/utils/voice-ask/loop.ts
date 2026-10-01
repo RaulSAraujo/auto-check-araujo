@@ -77,7 +77,10 @@ async function complete<T>(options: AskOptions, payload: Record<string, unknown>
     const provider = options.providers[index]!
     if (!provider.apiKey) continue
     const left = deadline - Date.now()
-    if (left <= 0) return null
+    if (left <= 0) {
+      options.onError?.(provider.name, 'time budget spent')
+      return null
+    }
     try {
       const response = await doFetch(provider.url, {
         method: 'POST',

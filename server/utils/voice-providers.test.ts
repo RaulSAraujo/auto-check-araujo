@@ -1,6 +1,14 @@
 import assert from 'node:assert/strict'
 import test from 'node:test'
-import { completeWithFallback, type VoiceProvider } from './voice-providers.ts'
+import { aiFailureStatus, completeWithFallback, type VoiceProvider } from './voice-providers.ts'
+
+test('aiFailureStatus: quota beats everything, rejected or missing key is 502, the rest 503', () => {
+  assert.equal(aiFailureStatus(['HTTP 429', 'HTTP 401', 'timeout']), 429)
+  assert.equal(aiFailureStatus(['HTTP 401', 'HTTP 500']), 502)
+  assert.equal(aiFailureStatus(['HTTP 403']), 502)
+  assert.equal(aiFailureStatus([]), 502)
+  assert.equal(aiFailureStatus(['HTTP 500', 'The operation was aborted due to timeout', 'empty response']), 503)
+})
 
 const messages = [{ role: 'user' as const, content: 'oi' }]
 const groq: VoiceProvider = { name: 'groq', url: 'https://groq.test', apiKey: 'g', model: 'm1', extra: { reasoning_effort: 'low' } }
