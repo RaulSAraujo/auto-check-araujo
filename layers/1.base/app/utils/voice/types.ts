@@ -63,22 +63,12 @@ export interface VoiceDraft {
 }
 
 export const VOICE_EXAMPLES: readonly string[] = [
-  'Abre a OS do ABC1D23 e coloca no diagnóstico pastilha de freio gasta',
-  'Cliente reclama de barulho na roda dianteira, km 45 mil (com a OS aberta)',
-  'Adiciona duas pastilhas de freio a 150 reais cada e mão de obra de 80',
-  'Pagamento no Pix em 3 vezes (com a OS aberta)',
-  'Aprova o orçamento da OS do ABC1D23',
-  'Nova OS para o ABC1D23, carro falhando na partida',
-  'Novo cliente João da Silva, telefone 11 98888 7777',
-  'Muda o dono do ABC1D23 para Maria Souza',
-  'Remarca o ABC1D23 para sexta às 10h',
-  'A conta de energia foi paga no Pix',
-  'Desativa o fornecedor Auto Peças Silva',
-  'O custo da hora é 120 reais',
-  'Mostra as OS abertas do João',
-  'Contas vencidas do financeiro',
-  'Manda o orçamento no WhatsApp (com a OS aberta)',
-  'Quantas OS estão abertas?',
-  'Qual o telefone do João da Silva?',
+  'Abre a OS do ABC1D23',
+  'Diagnóstico … / Reclamação … / Observação … (com a OS aberta)',
+  'Coloca alinhamento e balanceamento (com a OS aberta)',
+  'Nova OS para o ABC1D23',
+  'Agenda o ABC1D23 sexta às 9h',
+  'Novo cliente …, telefone …',
+  'Mostra as OS abertas',
   'Quanto faturei este mês?'
 ]
