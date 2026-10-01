@@ -118,8 +118,8 @@ export const VOICE_CATALOG: Record<VoiceEntityKey, VoiceEntity> = {
     permission: { create: 'vehicles.write', edit: 'vehicles.write' },
     fields: {
       placa: { type: 'placa' },
-      marca: text,
-      modelo: text,
+      marca: { ...text, hint: 'fabricante: Volkswagen, Fiat…' },
+      modelo: { ...text, hint: 'Gol, Uno…' },
       ano: number,
       cor: text,
       km_atual: number,
