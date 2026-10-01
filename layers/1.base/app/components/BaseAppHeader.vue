@@ -235,7 +235,8 @@ function closeMobileMenu() {
     </div>
   </nav>
 
-  <div class="fixed right-4 z-50 sm:hidden bottom-[calc(4.5rem+env(safe-area-inset-bottom))]">
+  <!-- Bottom bars marked with data-voice-fab-lift (e.g. unsaved changes) keep their spot; the voice button moves above them. -->
+  <div class="fixed right-4 z-50 sm:hidden bottom-[calc(4.5rem+env(safe-area-inset-bottom))] transition-[bottom] duration-200 ease-out [body:has([data-voice-fab-lift])_&]:bottom-[calc(8.75rem+env(safe-area-inset-bottom))]">
     <BaseVoiceCommandButton
       variant="solid"
       color="primary"
