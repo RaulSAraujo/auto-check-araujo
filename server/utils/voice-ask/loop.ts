@@ -1,4 +1,4 @@
-import type { VoiceProvider } from '../voice-providers.ts'
+import { MISSING_KEY, type VoiceProvider } from '../voice-providers.ts'
 
 export interface ToolSchema {
   type: 'function'
@@ -75,7 +75,10 @@ async function complete<T>(options: AskOptions, payload: Record<string, unknown>
   for (let i = 0; i < count; i++) {
     const index = (start + i) % count
     const provider = options.providers[index]!
-    if (!provider.apiKey) continue
+    if (!provider.apiKey) {
+      options.onError?.(provider.name, MISSING_KEY)
+      continue
+    }
     const left = deadline - Date.now()
     if (left <= 0) {
       options.onError?.(provider.name, 'time budget spent')
@@ -129,6 +132,7 @@ export async function askWithTools(options: AskOptions): Promise<Answer | null> 
   const final = calls.find(item => item.name === 'final_answer')
   if (final) {
     const direct = readAnswer(final.args)
+    if (!direct) options.onError?.(options.providers[planned.index]!.name, 'empty answer')
     return direct ? { answer: direct.answer, refs: [] } : null
   }
   if (!calls.length) return { answer: content!.slice(0, MAX_ANSWER), refs: [] }

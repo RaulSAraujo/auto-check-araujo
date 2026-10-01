@@ -178,7 +178,9 @@ test('plain text without tool calls is accepted as the answer; empty final answe
   const text = fakeFetch({ 'https://main.test': () => reply({ content: ' Há 2 OS. ' }) })
   assert.deepEqual(await askWithTools({ providers: [main], messages: base, tools, execute: async () => ({}), fetch: text.fn }), { answer: 'Há 2 OS.', refs: [] })
   const empty = fakeFetch({ 'https://main.test': () => reply({ tool_calls: [call('final_answer', { answer: '  ' })] }) })
-  assert.equal(await askWithTools({ providers: [main], messages: base, tools, execute: async () => ({}), fetch: empty.fn }), null)
+  const errors: string[] = []
+  assert.equal(await askWithTools({ providers: [main], messages: base, tools, execute: async () => ({}), fetch: empty.fn, onError: (p, r) => errors.push(`${p}: ${r}`) }), null)
+  assert.deepEqual(errors, ['groq: empty answer'])
 })
 
 test('stops when the total time budget is spent', async () => {

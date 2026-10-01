@@ -31,6 +31,16 @@ test('create ignores target and edit-only fields', () => {
     { op: 'create', entity: 'order', fields: { veiculo: 'ABC1D23', reclamacao: 'barulho' } })
 })
 
+test('create takes the plate the AI put in target when the plate field was not given', () => {
+  assert.deepEqual(n({ op: 'create', entity: 'order', target: { placa: 'abc-1d23' }, fields: {} }),
+    { op: 'create', entity: 'order', fields: { veiculo: 'ABC1D23' } })
+  assert.deepEqual(n({ op: 'create', entity: 'appointment', target: { placa: 'ABC1D23' }, fields: { startTime: '09:00' } }),
+    { op: 'create', entity: 'appointment', fields: { startTime: '09:00', veiculo: 'ABC1D23' } })
+  assert.deepEqual(n({ op: 'create', entity: 'vehicle', target: { placa: 'ABC1D23' } }),
+    { op: 'create', entity: 'vehicle', fields: { placa: 'ABC1D23' } })
+  assert.deepEqual(n({ op: 'create', entity: 'customer', target: { placa: 'ABC1D23' } }), { op: 'create', entity: 'customer' })
+})
+
 test('number limits and types', () => {
   assert.deepEqual(n({ op: 'edit', entity: 'order', fields: { parcelas: 13, km_entrada: -1, pago: 'true' } }),
     { op: 'edit', entity: 'order', fields: { pago: true } })
