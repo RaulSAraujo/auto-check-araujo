@@ -10,16 +10,16 @@ const FIELD_KIND: Record<string, PiiKind> = {
 }
 // ponytail: regex heuristics — a bare 11-digit number is a phone when its 3rd digit is 9 (mobile), otherwise a CPF; numbers spoken in other shapes slip through.
 const PATTERNS: [PiiKind, RegExp][] = [
-  ['email', /[\w.+-]+@[\w-]+(?:\.[\w-]+)+/g],
-  ['documento', /\b\d{3}\.\d{3}\.\d{3}-\d{2}\b/g],
+  ['email', /[\p{L}\p{N}._%+-]+@[\p{L}\p{N}-]+(?:\.[\p{L}\p{N}-]+)+/gu],
+  ['documento', /\b\d{3}\.?\d{3}\.?\d{3}-\d{2}\b/g],
   ['documento', /\b\d{2}\.?\d{3}\.?\d{3}\/?\d{4}-?\d{2}\b/g],
-  ['telefone', /(?:\+?55[\s-]?)?(?:\(\d{2}\)|\b\d{2})[\s-]?9?\d{4}[\s-]?\d{4}\b/g],
+  ['telefone', /(?<![\w+])(?:\+?55[\s.-]?)?(?:\(\d{2}\)|\d{2})[\s.-]?(?:9[\s.-]?)?\d{4}[\s.-]?\d{4}(?!\d)/g],
   ['documento', /\b\d{11}\b/g]
 ]
 
 function valueKey(kind: PiiKind, value: string): string {
-  if (kind === 'email') return `email:${value.trim().toLowerCase()}`
   const digits = value.replace(/\D/g, '')
+  if (kind === 'email' || !digits) return `${kind}:${value.trim().toLowerCase()}`
   return `${kind}:${kind === 'telefone' ? digits.replace(/^55(?=\d{10,11}$)/, '') : digits}`
 }
 
@@ -45,8 +45,9 @@ export function createMasker(seen: readonly string[] = []) {
   }
 
   function maskResult(value: unknown, key = ''): unknown {
+    const kind = FIELD_KIND[key]
+    if (kind && typeof value === 'number') return token(kind, String(value))
     if (typeof value === 'string') {
-      const kind = FIELD_KIND[key]
       if (kind) return value ? token(kind, value) : value
       return key === 'id' || key.endsWith('_id') ? value : maskText(value)
     }
