@@ -155,6 +155,7 @@ function orderSummary(row: Row, see: ToolContext['see']) {
     orcamento_status: row.orcamento_status,
     placa: vehicle?.placa ?? null,
     veiculo: [vehicle?.marca, vehicle?.modelo].filter(Boolean).join(' ') || null,
+    veiculo_id: vehicle?.id ?? null,
     cliente_id: customer?.id ?? null,
     cliente: customer?.nome ?? null,
     aberta_em: row.aberta_em,
@@ -334,6 +335,7 @@ const TOOLS: Record<string, Tool> = {
       const next = rows(nextResult)[0]
       if (next) see('appointment', next.id, next)
       return {
+        id: vehicle.id,
         placa: vehicle.placa,
         veiculo: [vehicle.marca, vehicle.modelo, vehicle.ano].filter(Boolean).join(' '),
         cor: vehicle.cor,
@@ -383,6 +385,8 @@ const TOOLS: Record<string, Tool> = {
             id: row.id,
             inicio: row.inicio,
             fim: row.fim,
+            veiculo_id: row.veiculos?.id ?? null,
+            cliente_id: row.clientes?.id ?? null,
             placa: row.veiculos?.placa ?? null,
             veiculo: [row.veiculos?.marca, row.veiculos?.modelo].filter(Boolean).join(' ') || null,
             cliente: row.clientes?.nome ?? null,

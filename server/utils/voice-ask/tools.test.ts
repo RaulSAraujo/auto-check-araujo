@@ -110,7 +110,7 @@ test('search_orders filters, caps the limit and flattens rows', async () => {
     total: 1,
     ordens: [{
       id: 'o1', numero: 'OS-2026-1234', status: 'aberta', orcamento_status: 'rascunho', placa: 'ABC1D23', veiculo: 'Fiat Uno',
-      cliente_id: 'c1', cliente: 'João', aberta_em: '2026-09-10T12:00:00+00:00', concluida_em: null, valor_total: 300, pago: false
+      veiculo_id: 'v1', cliente_id: 'c1', cliente: 'João', aberta_em: '2026-09-10T12:00:00+00:00', concluida_em: null, valor_total: 300, pago: false
     }]
   })
   assert.ok(calls.includes('ordens_servico.eq("status","aberta")'))
