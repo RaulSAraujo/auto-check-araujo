@@ -82,6 +82,66 @@ test('falls back to the second model and keeps the conversation', async () => {
   assert.deepEqual(errors, ['groq: HTTP 429'])
 })
 
+test('after a fallback, the next round starts from the model that answered', async () => {
+  const { fn, calls } = fakeFetch({
+    'https://main.test': () => new Response('limit', { status: 429 }),
+    'https://backup.test': body => body.messages.some(m => m.role === 'tool')
+      ? reply({ tool_calls: [call('final_answer', { answer: 'Há 7.' }, 'c2')] })
+      : reply({ tool_calls: [call('search_orders', {})] })
+  })
+  const result = await askWithTools({ providers: [main, backup], messages: base, tools, execute: async () => ({ total: 7 }), fetch: fn })
+  assert.equal(result?.answer, 'Há 7.')
+  assert.deepEqual(calls.map(item => item.url), ['https://main.test', 'https://backup.test', 'https://backup.test'])
+  assert.deepEqual(calls[2]?.body.messages.at(-1), { role: 'tool', tool_call_id: 'c1', content: '{"total":7}' })
+})
+
+test('a throwing tool becomes falha_consulta; an undefined result is sent as null', async () => {
+  const { fn, calls } = fakeFetch({
+    'https://main.test': body => body.messages.some(m => m.role === 'tool')
+      ? reply({ tool_calls: [call('final_answer', { answer: 'Não consegui consultar.' }, 'c3')] })
+      : reply({ tool_calls: [call('search_orders', {}, 'c1'), call('get_order', {}, 'c2')] })
+  })
+  const result = await askWithTools({
+    providers: [main],
+    messages: base,
+    tools,
+    execute: async (name) => {
+      if (name === 'search_orders') throw new Error('boom')
+      return undefined
+    },
+    fetch: fn
+  })
+  assert.equal(result?.answer, 'Não consegui consultar.')
+  assert.deepEqual(calls[1]?.body.messages.slice(-2), [
+    { role: 'tool', tool_call_id: 'c1', content: '{"erro":"falha_consulta"}' },
+    { role: 'tool', tool_call_id: 'c2', content: 'null' }
+  ])
+})
+
+test('more than 5 tool calls in a round are cut to 5', async () => {
+  const many = Array.from({ length: 7 }, (_, i) => call('search_orders', {}, `c${i}`))
+  const { fn, calls } = fakeFetch({
+    'https://main.test': body => body.messages.some(m => m.role === 'tool')
+      ? reply({ tool_calls: [call('final_answer', { answer: 'Ok.' }, 'f')] })
+      : reply({ tool_calls: many })
+  })
+  let executed = 0
+  await askWithTools({
+    providers: [main],
+    messages: base,
+    tools,
+    execute: async () => {
+      executed++
+      return {}
+    },
+    fetch: fn
+  })
+  const sent = calls[1]!.body.messages.slice(base.length)
+  assert.equal(executed, 5)
+  assert.equal((sent[0]?.tool_calls as unknown[]).length, 5)
+  assert.deepEqual(sent.slice(1).map(m => m.role), ['tool', 'tool', 'tool', 'tool', 'tool'])
+})
+
 test('both models failing returns null', async () => {
   const { fn } = fakeFetch({
     'https://main.test': () => new Response('x', { status: 500 }),

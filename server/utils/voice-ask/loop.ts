@@ -68,9 +68,13 @@ function parseArgs(raw: string | undefined): unknown {
   }
 }
 
-async function complete(options: AskOptions, messages: AskMessage[], toolChoice: unknown, deadline: number): Promise<ModelMessage | null> {
+/** Tries providers starting at `start`, wrapping around; returns the index of the one that answered. */
+async function complete(options: AskOptions, messages: AskMessage[], toolChoice: unknown, deadline: number, start: number): Promise<{ message: ModelMessage, index: number } | null> {
   const doFetch = options.fetch ?? fetch
-  for (const provider of options.providers) {
+  const count = options.providers.length
+  for (let i = 0; i < count; i++) {
+    const index = (start + i) % count
+    const provider = options.providers[index]!
     if (!provider.apiKey) continue
     const left = deadline - Date.now()
     if (left <= 0) return null
@@ -102,7 +106,7 @@ async function complete(options: AskOptions, messages: AskMessage[], toolChoice:
         options.onError?.(provider.name, 'empty response')
         continue
       }
-      return message
+      return { message, index }
     } catch (error) {
       options.onError?.(provider.name, error instanceof Error ? error.message : String(error))
     }
@@ -114,10 +118,13 @@ async function complete(options: AskOptions, messages: AskMessage[], toolChoice:
 export async function askWithTools(options: AskOptions): Promise<{ answer: string, refs: unknown } | null> {
   const deadline = Date.now() + (options.totalTimeoutMs ?? 25_000)
   const messages = [...options.messages]
+  let start = 0
   for (let round = 0; round <= MAX_DATA_ROUNDS; round++) {
     const toolChoice = round === MAX_DATA_ROUNDS ? { type: 'function', function: { name: 'final_answer' } } : 'required'
-    const message = await complete(options, messages, toolChoice, deadline)
-    if (!message) return null
+    const answered = await complete(options, messages, toolChoice, deadline, start)
+    if (!answered) return null
+    const { message } = answered
+    start = answered.index
 
     const calls = (message.tool_calls ?? []).slice(0, MAX_CALLS_PER_ROUND)
     const final = calls.find(item => item.function?.name === 'final_answer')
@@ -134,10 +141,15 @@ export async function askWithTools(options: AskOptions): Promise<{ answer: strin
     messages.push({ role: 'assistant', content: message.content ?? null, tool_calls: calls })
     for (const item of calls) {
       const args = parseArgs(item.function?.arguments)
-      const result = args === undefined
-        ? { erro: 'argumento_invalido', campo: 'json' }
-        : await options.execute(item.function.name, args)
-      messages.push({ role: 'tool', tool_call_id: item.id, content: JSON.stringify(result) })
+      let result: unknown = { erro: 'argumento_invalido', campo: 'json' }
+      if (args !== undefined) {
+        try {
+          result = await options.execute(item.function.name, args)
+        } catch {
+          result = { erro: 'falha_consulta' }
+        }
+      }
+      messages.push({ role: 'tool', tool_call_id: item.id, content: JSON.stringify(result ?? null) })
     }
   }
   return null
