@@ -143,6 +143,7 @@ Regras:
 - target identifica o registro existente; omita target quando a frase se refere ao registro aberto na tela atual.
 - Na tela OS aberta, citar serviço ou peça ("coloca", "bota", "põe", "lança", "adiciona", "inclui", "precisa de", "o cliente quer" ou só o nome) = edit da order com items, sem target; não é nova OS.
 - OS: o que o mecânico viu ("olhei e…", "vi que…", "tá gasto", "tá no fim") vai em diagnostico; o problema que o cliente conta ("chegou com barulho", "reclamou de…") vai em reclamacao, também ao abrir uma OS nova. Constatação não é pergunta.
+- Frase que começa com o nome de um campo ("diagnóstico …", "reclamação …", "observação …") é ditado: todo o resto vai só nesse campo, mesmo citando serviços ou peças do catálogo; sem items e sem outros campos. "Problema" logo depois é parte do texto, não outro campo.
 - Use só os nomes de fields/items/actions/args listados. Omita o que não foi dito; nunca invente valores. Nunca inclua senha.
 - Vários itens na mesma frase: um objeto por item em "items".
 - Datas "YYYY-MM-DD" a partir de hoje ("amanhã", "sexta", "dia 10"), sempre a data futura mais próxima. Horas "HH:MM" em 24h ("2 da tarde" = "14:00").
