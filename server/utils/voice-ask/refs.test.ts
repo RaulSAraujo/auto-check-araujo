@@ -4,7 +4,7 @@ import { createRefs } from './refs.ts'
 
 test('only refs seen in tool results become links, one URL per type', () => {
   const refs = createRefs()
-  refs.add('order', 'o1', { numero: '1234' })
+  refs.add('order', 'o1', { numero: 'OS-2026-1234' })
   refs.add('customer', 'c1', { nome: 'João' })
   refs.add('vehicle', 'v1', { placa: 'ABC1D23' })
   refs.add('appointment', 'a1', { inicio: '2026-10-02T13:00:00+00:00' })
@@ -21,11 +21,21 @@ test('only refs seen in tool results become links, one URL per type', () => {
     'lixo',
     { type: 'order' }
   ]), [
-    { label: 'Abrir OS 1234', to: '/ordens/o1' },
+    { label: 'Abrir OS-2026-1234', to: '/ordens/o1' },
     { label: 'Abrir João', to: '/clientes/c1' },
     { label: 'Abrir ABC1D23', to: '/veiculos/v1' },
     { label: 'Abrir agenda de 02/10', to: '/agendamentos?dia=2026-10-02' },
     { label: 'Abrir contas a pagar', to: '/gestao/financeiro?aba=contas' }
+  ])
+})
+
+test('missing label fields fall back to a generic label', () => {
+  const refs = createRefs()
+  refs.add('order', 'o1', {})
+  refs.add('customer', 'c1', { nome: null })
+  refs.add('vehicle', 'v1', {})
+  assert.deepEqual(refs.links([{ type: 'order', id: 'o1' }, { type: 'customer', id: 'c1' }, { type: 'vehicle', id: 'v1' }]).map(link => link.label), [
+    'Abrir OS', 'Abrir cliente', 'Abrir veículo'
   ])
 })
 

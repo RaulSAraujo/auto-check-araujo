@@ -64,12 +64,43 @@ test('invalid arguments never query', async () => {
   assert.deepEqual(await runVoiceTool('customer_summary', { id: 'drop table' }, context), { erro: 'argumento_invalido', campo: 'id' })
   assert.deepEqual(await runVoiceTool('finance_summary', { mes: '2026-9' }, context), { erro: 'argumento_invalido', campo: 'mes' })
   assert.deepEqual(await runVoiceTool('nope', {}, context), { erro: 'ferramenta_desconhecida' })
+  assert.deepEqual(await runVoiceTool('list_appointments', { from: '2026-02-30' }, context), { erro: 'argumento_invalido', campo: 'from' })
+  assert.deepEqual(await runVoiceTool('search_customers', { telefone: '[telefone 3]' }, context), { erro: 'argumento_invalido', campo: 'telefone' })
+  assert.deepEqual(await runVoiceTool('search_customers', { telefone: '9888-777' }, context), { erro: 'argumento_invalido', campo: 'telefone' })
+  assert.deepEqual(await runVoiceTool('search_customers', { documento: '123.456.789' }, context), { erro: 'argumento_invalido', campo: 'documento' })
   assert.deepEqual(calls, [])
+})
+
+test('order numbers: digits match the latest OS-<year>-<number>, full numbers match exactly', async () => {
+  const digits = ctx('mecanico')
+  await runVoiceTool('search_orders', { numero: '12' }, digits.context)
+  await runVoiceTool('get_order', { numero: '12' }, digits.context)
+  assert.deepEqual(digits.calls.filter(call => call.includes('"numero"')), [
+    'ordens_servico.like("numero","OS-%-0012")',
+    'ordens_servico.like("numero","OS-%-0012")'
+  ])
+  const full = ctx('mecanico')
+  await runVoiceTool('search_orders', { numero: ' os-2026-0012 ' }, full.context)
+  await runVoiceTool('get_order', { numero: 'os-2026-0012' }, full.context)
+  assert.deepEqual(full.calls.filter(call => call.includes('"numero"')), [
+    'ordens_servico.eq("numero","OS-2026-0012")',
+    'ordens_servico.eq("numero","OS-2026-0012")'
+  ])
+})
+
+test('list_appointments hides cancelled ones unless asked', async () => {
+  const all = ctx('mecanico')
+  await runVoiceTool('list_appointments', {}, all.context)
+  assert.ok(all.calls.includes('agendamentos.neq("status","cancelado")'))
+  const cancelled = ctx('mecanico')
+  await runVoiceTool('list_appointments', { status: 'cancelado' }, cancelled.context)
+  assert.ok(cancelled.calls.includes('agendamentos.eq("status","cancelado")'))
+  assert.ok(!cancelled.calls.some(call => call.includes('.neq(')))
 })
 
 test('search_orders filters, caps the limit and flattens rows', async () => {
   const row = {
-    id: 'o1', numero: '1234', status: 'aberta', orcamento_status: 'rascunho', aberta_em: '2026-09-10T12:00:00+00:00',
+    id: 'o1', numero: 'OS-2026-1234', status: 'aberta', orcamento_status: 'rascunho', aberta_em: '2026-09-10T12:00:00+00:00',
     concluida_em: null, valor_total: 300, pago: false,
     veiculos: { id: 'v1', placa: 'ABC1D23', marca: 'Fiat', modelo: 'Uno', clientes: { id: 'c1', nome: 'João' } }
   }
@@ -78,7 +109,7 @@ test('search_orders filters, caps the limit and flattens rows', async () => {
   assert.deepEqual(result, {
     total: 1,
     ordens: [{
-      id: 'o1', numero: '1234', status: 'aberta', orcamento_status: 'rascunho', placa: 'ABC1D23', veiculo: 'Fiat Uno',
+      id: 'o1', numero: 'OS-2026-1234', status: 'aberta', orcamento_status: 'rascunho', placa: 'ABC1D23', veiculo: 'Fiat Uno',
       cliente_id: 'c1', cliente: 'João', aberta_em: '2026-09-10T12:00:00+00:00', concluida_em: null, valor_total: 300, pago: false
     }]
   })

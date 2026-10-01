@@ -1,6 +1,6 @@
 import type { serverSupabaseClient } from '#supabase/server'
 import type { Database } from '../../../shared/types/database.ts'
-import type { ColaboradorPapel } from '../../../shared/types/oficina.ts'
+import type { AgendamentoStatus, ColaboradorPapel } from '../../../shared/types/oficina.ts'
 import { can, type PermissionAction } from '../../../layers/2.auth/app/utils/permissions.ts'
 import { ilikePattern } from '../../../layers/1.base/app/utils/supabase-search.ts'
 import type { ToolSchema } from './loop.ts'
@@ -35,7 +35,7 @@ const MONTH_RE = /^\d{4}-(0[1-9]|1[0-2])$/
 const PLACA_RE = /^[A-Z]{3}\d[A-Z0-9]\d{2}$/
 const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i
 const ORDER_STATUS = ['aberta', 'em_andamento', 'concluida', 'cancelada'] as const
-const APPOINTMENT_STATUS = ['agendado', 'confirmado', 'em_atendimento', 'concluido', 'nao_compareceu'] as const
+const APPOINTMENT_STATUS = ['agendado', 'confirmado', 'em_atendimento', 'concluido', 'nao_compareceu', 'tratado', 'cancelado'] as const satisfies readonly AgendamentoStatus[]
 const ACCOUNT_STATUS = ['a_pagar', 'pagas', 'vencidas'] as const
 const CATALOG_TIPO = ['servico', 'peca', 'kit'] as const
 
@@ -62,7 +62,8 @@ function text(args: Args, key: string, max = 100): string | undefined {
 function date(args: Args, key: string): string | undefined {
   const value = args[key]
   if (!present(value)) return undefined
-  if (typeof value !== 'string' || !DATE_RE.test(value) || Number.isNaN(Date.parse(value))) throw new ArgError(key)
+  const time = typeof value === 'string' && DATE_RE.test(value) ? Date.parse(`${value}T00:00:00Z`) : Number.NaN
+  if (Number.isNaN(time) || new Date(time).toISOString().slice(0, 10) !== value) throw new ArgError(key)
   return value
 }
 
@@ -101,11 +102,20 @@ function placa(args: Args, key: string): string | undefined {
   return value
 }
 
-function digits(args: Args, key: string): string | undefined {
-  const value = text(args, key, 40)?.replace(/\D/g, '')
-  if (value === undefined) return undefined
-  if (!value) throw new ArgError(key)
+/** A `[` means a masked token the masker didn't know (from an earlier request). */
+function digits(args: Args, key: string, min: number): string | undefined {
+  const raw = text(args, key, 40)
+  if (raw === undefined) return undefined
+  const value = raw.replace(/\D/g, '')
+  if (raw.includes('[') || value.length < min) throw new ArgError(key)
   return value
+}
+
+/** Stored as OS-<year>-<4 digits>; spoken digits alone match that sequence in any year. */
+function orderNumero(args: Args, key: string): { like: string } | { eq: string } | undefined {
+  const value = text(args, key, 20)?.toUpperCase()
+  if (value === undefined) return undefined
+  return /^\d+$/.test(value) ? { like: `OS-%-${value.padStart(4, '0')}` } : { eq: value }
 }
 
 function uuid(args: Args, key: string): string | undefined {
@@ -176,7 +186,7 @@ const TOOLS: Record<string, Tool> = {
     async run(args, { db, see }) {
       const status = oneOf(args, 'status', ORDER_STATUS)
       const p = placa(args, 'placa')
-      const numero = text(args, 'numero', 20)
+      const numero = orderNumero(args, 'numero')
       const cliente = text(args, 'cliente')
       const from = date(args, 'from')
       const to = date(args, 'to')
@@ -195,7 +205,7 @@ const TOOLS: Record<string, Tool> = {
 
       let query = db.from('ordens_servico').select(ORDER_SELECT, { count: 'exact' }).order('aberta_em', { ascending: false }).limit(n)
       if (status) query = query.eq('status', status)
-      if (numero) query = query.eq('numero', numero)
+      if (numero) query = 'like' in numero ? query.like('numero', numero.like) : query.eq('numero', numero.eq)
       if (pago !== undefined) query = query.eq('pago', pago)
       if (from) query = query.gte('aberta_em', dayStart(from))
       if (to) query = query.lte('aberta_em', dayEnd(to))
@@ -210,13 +220,13 @@ const TOOLS: Record<string, Tool> = {
     parameters: object({ id: s('id da OS'), numero: s('Número da OS'), placa: s('Placa do veículo') }),
     async run(args, { db, see }) {
       const id = uuid(args, 'id')
-      const numero = text(args, 'numero', 20)
+      const numero = orderNumero(args, 'numero')
       const p = placa(args, 'placa')
       if (!id && !numero && !p) throw new ArgError('id')
 
       let query = db.from('ordens_servico').select(ORDER_DETAIL_SELECT).order('aberta_em', { ascending: false }).limit(1)
       if (id) query = query.eq('id', id)
-      else if (numero) query = query.eq('numero', numero)
+      else if (numero) query = 'like' in numero ? query.like('numero', numero.like) : query.eq('numero', numero.eq)
       else {
         const vehicleIds = await vehicleIdsByPlaca(db, p!)
         if (!vehicleIds.length) return { encontrada: false }
@@ -245,8 +255,8 @@ const TOOLS: Record<string, Tool> = {
     parameters: object({ nome: s('Nome do cliente'), documento: s('CPF ou CNPJ'), telefone: s('Telefone') }),
     async run(args, { db, see }) {
       const nome = text(args, 'nome')
-      const documento = digits(args, 'documento')
-      const telefone = digits(args, 'telefone')
+      const documento = digits(args, 'documento', 11)
+      const telefone = digits(args, 'telefone', 8)
       if (!nome && !documento && !telefone) throw new ArgError('nome')
 
       let query = db.from('clientes').select('id, nome, ativo, telefones, emails, documento, veiculos(count)').order('nome').limit(50)
@@ -315,6 +325,7 @@ const TOOLS: Record<string, Tool> = {
       see('vehicle', vehicle.id, vehicle)
       if (vehicle.clientes) see('customer', vehicle.clientes.id, vehicle.clientes)
 
+      // ponytail: totals over the latest 500 orders; move to an RPC if a vehicle ever passes that.
       const [ordersResult, nextResult] = await Promise.all([
         db.from('ordens_servico').select('id, numero, status, aberta_em, concluida_em, valor_total, reclamacao').eq('veiculo_id', vehicle.id).order('aberta_em', { ascending: false }).limit(500),
         db.from('agendamentos').select('id, inicio, servico, status').eq('veiculo_id', vehicle.id).in('status', ['agendado', 'confirmado']).gte('inicio', new Date().toISOString()).order('inicio').limit(1)
@@ -355,7 +366,7 @@ const TOOLS: Record<string, Tool> = {
         .lte('inicio', dayEnd(to))
         .order('inicio')
         .limit(MAX_ROWS)
-      if (status) query = query.eq('status', status)
+      query = status ? query.eq('status', status) : query.neq('status', 'cancelado')
       if (p) {
         const vehicleIds = await vehicleIdsByPlaca(db, p)
         if (!vehicleIds.length) return { total: 0, agendamentos: [] }

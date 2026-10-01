@@ -17,9 +17,9 @@ function shopDay(iso: unknown): string | undefined {
 }
 
 const LINK: Record<VoiceRefType, (id: string, row: Row) => VoiceLink> = {
-  order: (id, row) => ({ label: `Abrir OS ${row.numero}`, to: `/ordens/${id}` }),
-  customer: (id, row) => ({ label: `Abrir ${row.nome}`, to: `/clientes/${id}` }),
-  vehicle: (id, row) => ({ label: `Abrir ${row.placa}`, to: `/veiculos/${id}` }),
+  order: (id, row) => ({ label: `Abrir ${row.numero || 'OS'}`, to: `/ordens/${id}` }),
+  customer: (id, row) => ({ label: `Abrir ${row.nome || 'cliente'}`, to: `/clientes/${id}` }),
+  vehicle: (id, row) => ({ label: `Abrir ${row.placa || 'veículo'}`, to: `/veiculos/${id}` }),
   appointment: (_id, row) => {
     const day = shopDay(row.inicio)
     return day
