@@ -1935,8 +1935,8 @@
     "semantic_hash": ""
   },
   "layers/1.base/app/components/VoiceCommandButton.vue": {
-    "mtime": 1790858480.3350775,
-    "ast_hash": "f48cd96f1da9d98b03b5723a13349a6f",
+    "mtime": 1790872208.3382735,
+    "ast_hash": "aa6a77b159f87b3d15db11e31a31c587",
     "semantic_hash": ""
   },
   "layers/1.base/app/composables/useSpeechRecognition.ts": {
@@ -1945,8 +1945,8 @@
     "semantic_hash": ""
   },
   "layers/1.base/app/composables/useVoiceCommand.ts": {
-    "mtime": 1790857029.9460793,
-    "ast_hash": "315018f20affb71a7385feb1b5c68982",
+    "mtime": 1790872196.1755023,
+    "ast_hash": "e959444c2dabf9fae0cd771e74945d89",
     "semantic_hash": ""
   },
   "layers/1.base/app/composables/useVoiceDraft.ts": {
@@ -2000,18 +2000,18 @@
     "semantic_hash": ""
   },
   "server/api/voice/interpret.post.ts": {
-    "mtime": 1790774582.613076,
-    "ast_hash": "c7b2eb42603d4a8c85901a39bae43443",
+    "mtime": 1790872175.8262548,
+    "ast_hash": "3602f85a491d53e700051844db3cae44",
     "semantic_hash": ""
   },
   "server/utils/voice-providers.test.ts": {
-    "mtime": 1790778539.1538131,
-    "ast_hash": "86e68f4b1ddde7ba2ddd3c5330699e39",
+    "mtime": 1790872171.5212023,
+    "ast_hash": "4b78f8d9e526bbadf91ff0f6172c03b6",
     "semantic_hash": ""
   },
   "server/utils/voice-providers.ts": {
-    "mtime": 1790715414.42664,
-    "ast_hash": "c61bf408244f1482b22d489aa8c7c6a9",
+    "mtime": 1790872168.5041656,
+    "ast_hash": "a7f622b55926d306c91ad17f9a59caff",
     "semantic_hash": ""
   },
   "layers/1.base/app/utils/voice/apply.test.ts": {
@@ -2115,23 +2115,23 @@
     "semantic_hash": ""
   },
   "layers/1.base/app/composables/useVoiceAsk.ts": {
-    "mtime": 1790858088.0185251,
-    "ast_hash": "811b9d833d2a12c6ceb9657325a1bdac",
+    "mtime": 1790872189.2924187,
+    "ast_hash": "b25139b99057eb4a595ae6cf0efa2719",
     "semantic_hash": ""
   },
   "server/api/voice/ask.post.ts": {
-    "mtime": 1790858086.3176115,
-    "ast_hash": "915920d83b3d4ae9a69bd9d72777720b",
+    "mtime": 1790872177.304508,
+    "ast_hash": "57319c1c88efcebb560c314b278628d1",
     "semantic_hash": ""
   },
   "server/utils/voice-ask/loop.test.ts": {
-    "mtime": 1790859684.71653,
-    "ast_hash": "f9676a16db11531678c6987c641156ae",
+    "mtime": 1790872183.3143458,
+    "ast_hash": "d80d2796ef203aa4b81691744bdbd9c4",
     "semantic_hash": ""
   },
   "server/utils/voice-ask/loop.ts": {
-    "mtime": 1790859654.5277045,
-    "ast_hash": "daa609f910bdcdcfc97f056bedc6993f",
+    "mtime": 1790872183.1933444,
+    "ast_hash": "a05353ce2fde6a5a7f58f016366e54ba",
     "semantic_hash": ""
   },
   "server/utils/voice-ask/mask.test.ts": {
@@ -2182,6 +2182,16 @@
   "docs/superpowers/specs/2026-09-30-voice-questions-design.md": {
     "mtime": 1790860012.3340714,
     "ast_hash": "09690f23a5559bf9df1dddc213ac1924",
+    "semantic_hash": ""
+  },
+  "layers/1.base/app/utils/voice/ai-failure.test.ts": {
+    "mtime": 1790872214.1972194,
+    "ast_hash": "5a9ef74941e87598fe408a378849ec41",
+    "semantic_hash": ""
+  },
+  "layers/1.base/app/utils/voice/ai-failure.ts": {
+    "mtime": 1790872188.770672,
+    "ast_hash": "7ffcc60266298da4bbf4a05d8de0ad1b",
     "semantic_hash": ""
   }
 }

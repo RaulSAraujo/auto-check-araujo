@@ -829,21 +829,21 @@
       "norm_label": "text"
     },
     {
-      "label": "notUnderstood",
+      "label": "notice",
       "file_type": "code",
       "source_file": "layers/1.base/app/components/VoiceCommandButton.vue",
-      "source_location": "L27",
+      "source_location": "L28",
       "_origin": "ast",
-      "id": "layers_1_base_app_components_voicecommandbutton_notunderstood",
+      "id": "layers_1_base_app_components_voicecommandbutton_notice",
       "community": 261,
       "community_name": "VoiceCommandButton.vue",
-      "norm_label": "notunderstood"
+      "norm_label": "notice"
     },
     {
       "label": "running",
       "file_type": "code",
       "source_file": "layers/1.base/app/components/VoiceCommandButton.vue",
-      "source_location": "L28",
+      "source_location": "L29",
       "_origin": "ast",
       "id": "layers_1_base_app_components_voicecommandbutton_running",
       "community": 261,
@@ -854,7 +854,7 @@
       "label": "openModal()",
       "file_type": "code",
       "source_file": "layers/1.base/app/components/VoiceCommandButton.vue",
-      "source_location": "L43",
+      "source_location": "L44",
       "_callable": true,
       "_origin": "ast",
       "id": "layers_1_base_app_components_voicecommandbutton_openmodal",
@@ -866,7 +866,7 @@
       "label": "toggleListening()",
       "file_type": "code",
       "source_file": "layers/1.base/app/components/VoiceCommandButton.vue",
-      "source_location": "L51",
+      "source_location": "L52",
       "_callable": true,
       "_origin": "ast",
       "id": "layers_1_base_app_components_voicecommandbutton_togglelistening",
@@ -878,7 +878,7 @@
       "label": "clearText()",
       "file_type": "code",
       "source_file": "layers/1.base/app/components/VoiceCommandButton.vue",
-      "source_location": "L57",
+      "source_location": "L58",
       "_callable": true,
       "_origin": "ast",
       "id": "layers_1_base_app_components_voicecommandbutton_cleartext",
@@ -890,7 +890,7 @@
       "label": "pickExample()",
       "file_type": "code",
       "source_file": "layers/1.base/app/components/VoiceCommandButton.vue",
-      "source_location": "L65",
+      "source_location": "L66",
       "_callable": true,
       "_origin": "ast",
       "id": "layers_1_base_app_components_voicecommandbutton_pickexample",
@@ -902,7 +902,7 @@
       "label": "sendQuestion()",
       "file_type": "code",
       "source_file": "layers/1.base/app/components/VoiceCommandButton.vue",
-      "source_location": "L70",
+      "source_location": "L71",
       "_callable": true,
       "_origin": "ast",
       "id": "layers_1_base_app_components_voicecommandbutton_sendquestion",
@@ -914,7 +914,7 @@
       "label": "submit()",
       "file_type": "code",
       "source_file": "layers/1.base/app/components/VoiceCommandButton.vue",
-      "source_location": "L78",
+      "source_location": "L79",
       "_callable": true,
       "_origin": "ast",
       "id": "layers_1_base_app_components_voicecommandbutton_submit",
@@ -1224,59 +1224,59 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "layers_1_base_app_composables_usevoiceask",
-      "community": 268,
-      "community_name": "useSpeechRecognition.ts",
+      "community": 276,
+      "community_name": "useVoiceCommand.ts",
       "norm_label": "usevoiceask.ts"
     },
     {
       "label": "VoiceAskLink",
       "file_type": "code",
       "source_file": "layers/1.base/app/composables/useVoiceAsk.ts",
-      "source_location": "L3",
+      "source_location": "L4",
       "_callable": true,
       "_callable_class": true,
       "_origin": "ast",
       "id": "layers_1_base_app_composables_usevoiceask_voiceasklink",
-      "community": 268,
-      "community_name": "useSpeechRecognition.ts",
+      "community": 276,
+      "community_name": "useVoiceCommand.ts",
       "norm_label": "voiceasklink"
     },
     {
       "label": "VoiceAskMessage",
       "file_type": "code",
       "source_file": "layers/1.base/app/composables/useVoiceAsk.ts",
-      "source_location": "L8",
+      "source_location": "L9",
       "_callable": true,
       "_callable_class": true,
       "_origin": "ast",
       "id": "layers_1_base_app_composables_usevoiceask_voiceaskmessage",
-      "community": 268,
-      "community_name": "useSpeechRecognition.ts",
+      "community": 276,
+      "community_name": "useVoiceCommand.ts",
       "norm_label": "voiceaskmessage"
     },
     {
       "label": "HistoryMessage",
       "file_type": "code",
       "source_file": "layers/1.base/app/composables/useVoiceAsk.ts",
-      "source_location": "L14",
+      "source_location": "L15",
       "_callable": true,
       "_callable_class": true,
       "_origin": "ast",
       "id": "layers_1_base_app_composables_usevoiceask_historymessage",
-      "community": 268,
-      "community_name": "useSpeechRecognition.ts",
+      "community": 276,
+      "community_name": "useVoiceCommand.ts",
       "norm_label": "historymessage"
     },
     {
       "label": "useVoiceAsk()",
       "file_type": "code",
       "source_file": "layers/1.base/app/composables/useVoiceAsk.ts",
-      "source_location": "L21",
+      "source_location": "L22",
       "_callable": true,
       "_origin": "ast",
       "id": "layers_1_base_app_composables_usevoiceask_usevoiceask",
-      "community": 268,
-      "community_name": "useSpeechRecognition.ts",
+      "community": 276,
+      "community_name": "useVoiceCommand.ts",
       "norm_label": "usevoiceask()"
     },
     {
@@ -1286,7 +1286,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "layers_1_base_app_composables_usevoicecommand",
-      "community": 260,
+      "community": 276,
       "community_name": "useVoiceCommand.ts",
       "norm_label": "usevoicecommand.ts"
     },
@@ -1294,12 +1294,12 @@
       "label": "VoiceRunResult",
       "file_type": "code",
       "source_file": "layers/1.base/app/composables/useVoiceCommand.ts",
-      "source_location": "L11",
+      "source_location": "L12",
       "_callable": true,
       "_callable_class": true,
       "_origin": "ast",
       "id": "layers_1_base_app_composables_usevoicecommand_voicerunresult",
-      "community": 260,
+      "community": 276,
       "community_name": "useVoiceCommand.ts",
       "norm_label": "voicerunresult"
     },
@@ -1307,12 +1307,12 @@
       "label": "Destination",
       "file_type": "code",
       "source_file": "layers/1.base/app/composables/useVoiceCommand.ts",
-      "source_location": "L16",
+      "source_location": "L20",
       "_callable": true,
       "_callable_class": true,
       "_origin": "ast",
       "id": "layers_1_base_app_composables_usevoicecommand_destination",
-      "community": 260,
+      "community": 276,
       "community_name": "useVoiceCommand.ts",
       "norm_label": "destination"
     },
@@ -1320,10 +1320,10 @@
       "label": "NAV",
       "file_type": "code",
       "source_file": "layers/1.base/app/composables/useVoiceCommand.ts",
-      "source_location": "L18",
+      "source_location": "L22",
       "_origin": "ast",
       "id": "layers_1_base_app_composables_usevoicecommand_nav",
-      "community": 260,
+      "community": 276,
       "community_name": "useVoiceCommand.ts",
       "norm_label": "nav"
     },
@@ -1331,10 +1331,10 @@
       "label": "RECORD_PATH",
       "file_type": "code",
       "source_file": "layers/1.base/app/composables/useVoiceCommand.ts",
-      "source_location": "L32",
+      "source_location": "L36",
       "_origin": "ast",
       "id": "layers_1_base_app_composables_usevoicecommand_record_path",
-      "community": 260,
+      "community": 276,
       "community_name": "useVoiceCommand.ts",
       "norm_label": "record_path"
     },
@@ -1342,10 +1342,10 @@
       "label": "CREATE_PATH",
       "file_type": "code",
       "source_file": "layers/1.base/app/composables/useVoiceCommand.ts",
-      "source_location": "L38",
+      "source_location": "L42",
       "_origin": "ast",
       "id": "layers_1_base_app_composables_usevoicecommand_create_path",
-      "community": 260,
+      "community": 276,
       "community_name": "useVoiceCommand.ts",
       "norm_label": "create_path"
     },
@@ -1353,10 +1353,10 @@
       "label": "SCREEN_PATH",
       "file_type": "code",
       "source_file": "layers/1.base/app/composables/useVoiceCommand.ts",
-      "source_location": "L44",
+      "source_location": "L48",
       "_origin": "ast",
       "id": "layers_1_base_app_composables_usevoicecommand_screen_path",
-      "community": 260,
+      "community": 276,
       "community_name": "useVoiceCommand.ts",
       "norm_label": "screen_path"
     },
@@ -1364,10 +1364,10 @@
       "label": "REF_LABEL",
       "file_type": "code",
       "source_file": "layers/1.base/app/composables/useVoiceCommand.ts",
-      "source_location": "L57",
+      "source_location": "L61",
       "_origin": "ast",
       "id": "layers_1_base_app_composables_usevoicecommand_ref_label",
-      "community": 260,
+      "community": 276,
       "community_name": "useVoiceCommand.ts",
       "norm_label": "ref_label"
     },
@@ -1375,12 +1375,12 @@
       "label": "useVoiceCommand()",
       "file_type": "code",
       "source_file": "layers/1.base/app/composables/useVoiceCommand.ts",
-      "source_location": "L65",
+      "source_location": "L69",
       "_callable": true,
       "_origin": "ast",
       "id": "layers_1_base_app_composables_usevoicecommand_usevoicecommand",
       "community": 276,
-      "community_name": "useVoiceCommand",
+      "community_name": "useVoiceCommand.ts",
       "norm_label": "usevoicecommand()"
     },
     {
@@ -1427,7 +1427,7 @@
       "_origin": "ast",
       "id": "layers_1_base_app_composables_usevoicedraft",
       "community": 260,
-      "community_name": "useVoiceCommand.ts",
+      "community_name": "types.ts",
       "norm_label": "usevoicedraft.ts"
     },
     {
@@ -1440,7 +1440,7 @@
       "_origin": "ast",
       "id": "layers_1_base_app_composables_usevoicedraft_pendingvoicedraft",
       "community": 260,
-      "community_name": "useVoiceCommand.ts",
+      "community_name": "types.ts",
       "norm_label": "pendingvoicedraft"
     },
     {
@@ -1451,8 +1451,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "layers_1_base_app_composables_usevoicedraft_usevoicedraft",
-      "community": 276,
-      "community_name": "useVoiceCommand",
+      "community": 260,
+      "community_name": "types.ts",
       "norm_label": "usevoicedraft()"
     },
     {
@@ -1462,8 +1462,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "layers_1_base_app_composables_usevoiceform",
-      "community": 1,
-      "community_name": "voice/catalog.ts",
+      "community": 260,
+      "community_name": "types.ts",
       "norm_label": "usevoiceform.ts"
     },
     {
@@ -1475,8 +1475,8 @@
       "_callable_class": true,
       "_origin": "ast",
       "id": "layers_1_base_app_composables_usevoiceform_maybepromise",
-      "community": 1,
-      "community_name": "voice/catalog.ts",
+      "community": 260,
+      "community_name": "types.ts",
       "norm_label": "maybepromise"
     },
     {
@@ -1488,8 +1488,8 @@
       "_callable_class": true,
       "_origin": "ast",
       "id": "layers_1_base_app_composables_usevoiceform_voiceactionresult",
-      "community": 1,
-      "community_name": "voice/catalog.ts",
+      "community": 260,
+      "community_name": "types.ts",
       "norm_label": "voiceactionresult"
     },
     {
@@ -1501,8 +1501,8 @@
       "_callable_class": true,
       "_origin": "ast",
       "id": "layers_1_base_app_composables_usevoiceform_voiceformoptions",
-      "community": 1,
-      "community_name": "voice/catalog.ts",
+      "community": 260,
+      "community_name": "types.ts",
       "norm_label": "voiceformoptions"
     },
     {
@@ -1513,8 +1513,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "layers_1_base_app_composables_usevoiceform_usevoiceform",
-      "community": 1,
-      "community_name": "voice/catalog.ts",
+      "community": 260,
+      "community_name": "types.ts",
       "norm_label": "usevoiceform()"
     },
     {
@@ -1525,7 +1525,7 @@
       "_origin": "ast",
       "id": "layers_1_base_app_composables_usevoicelookup",
       "community": 104,
-      "community_name": "foldText",
+      "community_name": "apply.ts",
       "norm_label": "usevoicelookup.ts"
     },
     {
@@ -1538,7 +1538,7 @@
       "_origin": "ast",
       "id": "layers_1_base_app_composables_usevoicelookup_voicefound",
       "community": 104,
-      "community_name": "foldText",
+      "community_name": "apply.ts",
       "norm_label": "voicefound"
     },
     {
@@ -1551,7 +1551,7 @@
       "_origin": "ast",
       "id": "layers_1_base_app_composables_usevoicelookup_namedkind",
       "community": 104,
-      "community_name": "foldText",
+      "community_name": "apply.ts",
       "norm_label": "namedkind"
     },
     {
@@ -1562,7 +1562,7 @@
       "_origin": "ast",
       "id": "layers_1_base_app_composables_usevoicelookup_named_table",
       "community": 104,
-      "community_name": "foldText",
+      "community_name": "apply.ts",
       "norm_label": "named_table"
     },
     {
@@ -1574,7 +1574,7 @@
       "_origin": "ast",
       "id": "layers_1_base_app_composables_usevoicelookup_pickbyname",
       "community": 104,
-      "community_name": "foldText",
+      "community_name": "apply.ts",
       "norm_label": "pickbyname()"
     },
     {
@@ -1586,7 +1586,7 @@
       "_origin": "ast",
       "id": "layers_1_base_app_composables_usevoicelookup_daymonth",
       "community": 104,
-      "community_name": "foldText",
+      "community_name": "apply.ts",
       "norm_label": "daymonth()"
     },
     {
@@ -1598,7 +1598,7 @@
       "_origin": "ast",
       "id": "layers_1_base_app_composables_usevoicelookup_usevoicelookup",
       "community": 104,
-      "community_name": "foldText",
+      "community_name": "apply.ts",
       "norm_label": "usevoicelookup()"
     },
     {
@@ -1899,14 +1899,59 @@
       "norm_label": "ilikepattern()"
     },
     {
+      "label": "ai-failure.test.ts",
+      "file_type": "code",
+      "source_file": "layers/1.base/app/utils/voice/ai-failure.test.ts",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "layers_1_base_app_utils_voice_ai_failure_test",
+      "community": 276,
+      "community_name": "useVoiceCommand.ts",
+      "norm_label": "ai-failure.test.ts"
+    },
+    {
+      "label": "ai-failure.ts",
+      "file_type": "code",
+      "source_file": "layers/1.base/app/utils/voice/ai-failure.ts",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "layers_1_base_app_utils_voice_ai_failure",
+      "community": 276,
+      "community_name": "useVoiceCommand.ts",
+      "norm_label": "ai-failure.ts"
+    },
+    {
+      "label": "AI_FAILURE",
+      "file_type": "code",
+      "source_file": "layers/1.base/app/utils/voice/ai-failure.ts",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "layers_1_base_app_utils_voice_ai_failure_ai_failure",
+      "community": 276,
+      "community_name": "useVoiceCommand.ts",
+      "norm_label": "ai_failure"
+    },
+    {
+      "label": "voiceAiFailure()",
+      "file_type": "code",
+      "source_file": "layers/1.base/app/utils/voice/ai-failure.ts",
+      "source_location": "L7",
+      "_callable": true,
+      "_origin": "ast",
+      "id": "layers_1_base_app_utils_voice_ai_failure_voiceaifailure",
+      "community": 276,
+      "community_name": "useVoiceCommand.ts",
+      "norm_label": "voiceaifailure()"
+    },
+    {
       "label": "apply.test.ts",
       "file_type": "code",
       "source_file": "layers/1.base/app/utils/voice/apply.test.ts",
       "source_location": "L1",
       "_origin": "ast",
       "id": "layers_1_base_app_utils_voice_apply_test",
-      "community": 1,
-      "community_name": "voice/catalog.ts",
+      "community": 104,
+      "community_name": "apply.ts",
       "norm_label": "apply.test.ts"
     },
     {
@@ -1916,8 +1961,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "layers_1_base_app_utils_voice_apply",
-      "community": 1,
-      "community_name": "voice/catalog.ts",
+      "community": 104,
+      "community_name": "apply.ts",
       "norm_label": "apply.ts"
     },
     {
@@ -1929,8 +1974,8 @@
       "_callable_class": true,
       "_origin": "ast",
       "id": "layers_1_base_app_utils_voice_apply_format",
-      "community": 1,
-      "community_name": "voice/catalog.ts",
+      "community": 104,
+      "community_name": "apply.ts",
       "norm_label": "format"
     },
     {
@@ -1941,8 +1986,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "layers_1_base_app_utils_voice_apply_listkey",
-      "community": 1,
-      "community_name": "voice/catalog.ts",
+      "community": 104,
+      "community_name": "apply.ts",
       "norm_label": "listkey()"
     },
     {
@@ -1953,8 +1998,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "layers_1_base_app_utils_voice_apply_applyvoicefields",
-      "community": 1,
-      "community_name": "voice/catalog.ts",
+      "community": 104,
+      "community_name": "apply.ts",
       "norm_label": "applyvoicefields()"
     },
     {
@@ -1965,8 +2010,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "layers_1_base_app_utils_voice_apply_voicebudgetitem",
-      "community": 1,
-      "community_name": "voice/catalog.ts",
+      "community": 104,
+      "community_name": "apply.ts",
       "norm_label": "voicebudgetitem()"
     },
     {
@@ -2037,7 +2082,7 @@
       "_callable_class": true,
       "_origin": "ast",
       "id": "layers_1_base_app_utils_voice_catalog_voicerefkind",
-      "community": 260,
+      "community": 276,
       "community_name": "useVoiceCommand.ts",
       "norm_label": "voicerefkind"
     },
@@ -2220,8 +2265,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "layers_1_base_app_utils_voice_catalog_voiceconfirmtext",
-      "community": 1,
-      "community_name": "voice/catalog.ts",
+      "community": 260,
+      "community_name": "types.ts",
       "norm_label": "voiceconfirmtext()"
     },
     {
@@ -2232,7 +2277,7 @@
       "_origin": "ast",
       "id": "layers_1_base_app_utils_voice_current_test",
       "community": 260,
-      "community_name": "useVoiceCommand.ts",
+      "community_name": "types.ts",
       "norm_label": "current.test.ts"
     },
     {
@@ -2243,7 +2288,7 @@
       "_origin": "ast",
       "id": "layers_1_base_app_utils_voice_current_test_effectscope_nexttick_ref_watch",
       "community": 260,
-      "community_name": "useVoiceCommand.ts",
+      "community_name": "types.ts",
       "norm_label": "{ effectscope, nexttick, ref, watch }"
     },
     {
@@ -2255,7 +2300,7 @@
       "_origin": "ast",
       "id": "layers_1_base_app_utils_voice_current_test_flush",
       "community": 260,
-      "community_name": "useVoiceCommand.ts",
+      "community_name": "types.ts",
       "norm_label": "flush()"
     },
     {
@@ -2266,7 +2311,7 @@
       "_origin": "ast",
       "id": "vue",
       "community": 260,
-      "community_name": "useVoiceCommand.ts",
+      "community_name": "types.ts",
       "norm_label": "vue"
     },
     {
@@ -2277,7 +2322,7 @@
       "_origin": "ast",
       "id": "layers_1_base_app_utils_voice_current",
       "community": 260,
-      "community_name": "useVoiceCommand.ts",
+      "community_name": "types.ts",
       "norm_label": "current.ts"
     },
     {
@@ -2290,7 +2335,7 @@
       "_origin": "ast",
       "id": "layers_1_base_app_utils_voice_current_voicecurrent",
       "community": 260,
-      "community_name": "useVoiceCommand.ts",
+      "community_name": "types.ts",
       "norm_label": "voicecurrent"
     },
     {
@@ -2303,7 +2348,7 @@
       "_origin": "ast",
       "id": "layers_1_base_app_utils_voice_current_voicecurrentmap",
       "community": 260,
-      "community_name": "useVoiceCommand.ts",
+      "community_name": "types.ts",
       "norm_label": "voicecurrentmap"
     },
     {
@@ -2314,8 +2359,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "layers_1_base_app_utils_voice_current_trackvoicecurrent",
-      "community": 1,
-      "community_name": "voice/catalog.ts",
+      "community": 260,
+      "community_name": "types.ts",
       "norm_label": "trackvoicecurrent()"
     },
     {
@@ -2481,8 +2526,8 @@
       "_callable_class": true,
       "_origin": "ast",
       "id": "layers_1_base_app_utils_voice_legacy_types_legacyvoicecommand",
-      "community": 276,
-      "community_name": "useVoiceCommand",
+      "community": 150,
+      "community_name": "parser.ts",
       "norm_label": "legacyvoicecommand"
     },
     {
@@ -2493,7 +2538,7 @@
       "_origin": "ast",
       "id": "layers_1_base_app_utils_voice_legacy_test",
       "community": 276,
-      "community_name": "useVoiceCommand",
+      "community_name": "useVoiceCommand.ts",
       "norm_label": "legacy.test.ts"
     },
     {
@@ -2505,7 +2550,7 @@
       "_origin": "ast",
       "id": "layers_1_base_app_utils_voice_legacy_test_run",
       "community": 276,
-      "community_name": "useVoiceCommand",
+      "community_name": "useVoiceCommand.ts",
       "norm_label": "run()"
     },
     {
@@ -2515,8 +2560,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "layers_1_base_app_utils_voice_legacy",
-      "community": 276,
-      "community_name": "useVoiceCommand",
+      "community": 150,
+      "community_name": "parser.ts",
       "norm_label": "legacy.ts"
     },
     {
@@ -2528,7 +2573,7 @@
       "_origin": "ast",
       "id": "layers_1_base_app_utils_voice_legacy_legacytocommand",
       "community": 276,
-      "community_name": "useVoiceCommand",
+      "community_name": "useVoiceCommand.ts",
       "norm_label": "legacytocommand()"
     },
     {
@@ -2538,8 +2583,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "layers_1_base_app_utils_voice_normalize_test",
-      "community": 0,
-      "community_name": "normalize.ts",
+      "community": 276,
+      "community_name": "useVoiceCommand.ts",
       "norm_label": "normalize.test.ts"
     },
     {
@@ -2765,8 +2810,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "layers_1_base_app_utils_voice_normalize_normalizevoicecommand",
-      "community": 0,
-      "community_name": "normalize.ts",
+      "community": 276,
+      "community_name": "useVoiceCommand.ts",
       "norm_label": "normalizevoicecommand()"
     },
     {
@@ -2777,7 +2822,7 @@
       "_origin": "ast",
       "id": "layers_1_base_app_utils_voice_parser_test",
       "community": 276,
-      "community_name": "useVoiceCommand",
+      "community_name": "useVoiceCommand.ts",
       "norm_label": "parser.test.ts"
     },
     {
@@ -2788,7 +2833,7 @@
       "_origin": "ast",
       "id": "layers_1_base_app_utils_voice_parser_test_now",
       "community": 276,
-      "community_name": "useVoiceCommand",
+      "community_name": "useVoiceCommand.ts",
       "norm_label": "now"
     },
     {
@@ -2800,7 +2845,7 @@
       "_origin": "ast",
       "id": "layers_1_base_app_utils_voice_parser_test_parse",
       "community": 276,
-      "community_name": "useVoiceCommand",
+      "community_name": "useVoiceCommand.ts",
       "norm_label": "parse()"
     },
     {
@@ -2970,8 +3015,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "layers_1_base_app_utils_voice_parser_date",
-      "community": 103,
-      "community_name": "text.ts",
+      "community": 150,
+      "community_name": "parser.ts",
       "norm_label": "date()"
     },
     {
@@ -3119,7 +3164,7 @@
       "_origin": "ast",
       "id": "layers_1_base_app_utils_voice_parser_parsevoicecommand",
       "community": 276,
-      "community_name": "useVoiceCommand",
+      "community_name": "useVoiceCommand.ts",
       "norm_label": "parsevoicecommand()"
     },
     {
@@ -3231,8 +3276,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "layers_1_base_app_utils_voice_prompt_voicepagefrompath",
-      "community": 276,
-      "community_name": "useVoiceCommand",
+      "community": 65,
+      "community_name": "voice/prompt.ts",
       "norm_label": "voicepagefrompath()"
     },
     {
@@ -3255,8 +3300,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "layers_1_base_app_utils_voice_prompt_localdateinput",
-      "community": 268,
-      "community_name": "useSpeechRecognition.ts",
+      "community": 276,
+      "community_name": "useVoiceCommand.ts",
       "norm_label": "localdateinput()"
     },
     {
@@ -3464,7 +3509,7 @@
       "_origin": "ast",
       "id": "layers_1_base_app_utils_voice_text_foldtext",
       "community": 104,
-      "community_name": "foldText",
+      "community_name": "apply.ts",
       "norm_label": "foldtext()"
     },
     {
@@ -3475,8 +3520,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "layers_1_base_app_utils_voice_text_appendtext",
-      "community": 1,
-      "community_name": "voice/catalog.ts",
+      "community": 104,
+      "community_name": "apply.ts",
       "norm_label": "appendtext()"
     },
     {
@@ -3775,7 +3820,7 @@
       "_origin": "ast",
       "id": "layers_1_base_app_utils_voice_types",
       "community": 260,
-      "community_name": "useVoiceCommand.ts",
+      "community_name": "types.ts",
       "norm_label": "types.ts"
     },
     {
@@ -3840,7 +3885,7 @@
       "_origin": "ast",
       "id": "layers_1_base_app_utils_voice_types_voicecontext",
       "community": 260,
-      "community_name": "useVoiceCommand.ts",
+      "community_name": "types.ts",
       "norm_label": "voicecontext"
     },
     {
@@ -3853,7 +3898,7 @@
       "_origin": "ast",
       "id": "layers_1_base_app_utils_voice_types_voiceentitykey",
       "community": 260,
-      "community_name": "useVoiceCommand.ts",
+      "community_name": "types.ts",
       "norm_label": "voiceentitykey"
     },
     {
@@ -3866,7 +3911,7 @@
       "_origin": "ast",
       "id": "layers_1_base_app_utils_voice_types_voiceop",
       "community": 260,
-      "community_name": "useVoiceCommand.ts",
+      "community_name": "types.ts",
       "norm_label": "voiceop"
     },
     {
@@ -3878,8 +3923,8 @@
       "_callable_class": true,
       "_origin": "ast",
       "id": "layers_1_base_app_utils_voice_types_voicevalue",
-      "community": 1,
-      "community_name": "voice/catalog.ts",
+      "community": 260,
+      "community_name": "types.ts",
       "norm_label": "voicevalue"
     },
     {
@@ -3891,8 +3936,8 @@
       "_callable_class": true,
       "_origin": "ast",
       "id": "layers_1_base_app_utils_voice_types_voicerecord",
-      "community": 1,
-      "community_name": "voice/catalog.ts",
+      "community": 260,
+      "community_name": "types.ts",
       "norm_label": "voicerecord"
     },
     {
@@ -3905,7 +3950,7 @@
       "_origin": "ast",
       "id": "layers_1_base_app_utils_voice_types_voicecommand",
       "community": 260,
-      "community_name": "useVoiceCommand.ts",
+      "community_name": "types.ts",
       "norm_label": "voicecommand"
     },
     {
@@ -3917,8 +3962,8 @@
       "_callable_class": true,
       "_origin": "ast",
       "id": "layers_1_base_app_utils_voice_types_voicebudgetitemdraft",
-      "community": 1,
-      "community_name": "voice/catalog.ts",
+      "community": 260,
+      "community_name": "types.ts",
       "norm_label": "voicebudgetitemdraft"
     },
     {
@@ -3931,7 +3976,7 @@
       "_origin": "ast",
       "id": "layers_1_base_app_utils_voice_types_voicedraft",
       "community": 260,
-      "community_name": "useVoiceCommand.ts",
+      "community_name": "types.ts",
       "norm_label": "voicedraft"
     },
     {
@@ -4196,8 +4241,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "layers_10_vehicles_app_components_vehicleseditform_validate",
-      "community": 134,
-      "community_name": "VehiclesEditForm.vue",
+      "community": 106,
+      "community_name": "vehicle-form.ts",
       "norm_label": "validate()"
     },
     {
@@ -4365,8 +4410,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "layers_10_vehicles_app_components_vehiclesnewform_validate",
-      "community": 134,
-      "community_name": "VehiclesEditForm.vue",
+      "community": 106,
+      "community_name": "vehicle-form.ts",
       "norm_label": "validate()"
     },
     {
@@ -4469,7 +4514,7 @@
       "_origin": "ast",
       "id": "layers_10_vehicles_app_composables_usevehicledetailpage",
       "community": 85,
-      "community_name": "vehicle-form.ts",
+      "community_name": "useVehicleDetailPage.ts",
       "norm_label": "usevehicledetailpage.ts"
     },
     {
@@ -4481,7 +4526,7 @@
       "_origin": "ast",
       "id": "layers_10_vehicles_app_composables_usevehicledetailpage_usevehicledetailpage",
       "community": 85,
-      "community_name": "vehicle-form.ts",
+      "community_name": "useVehicleDetailPage.ts",
       "norm_label": "usevehicledetailpage()"
     },
     {
@@ -4492,7 +4537,7 @@
       "_origin": "ast",
       "id": "layers_10_vehicles_app_composables_usevehicleform",
       "community": 85,
-      "community_name": "vehicle-form.ts",
+      "community_name": "useVehicleDetailPage.ts",
       "norm_label": "usevehicleform.ts"
     },
     {
@@ -4504,7 +4549,7 @@
       "_origin": "ast",
       "id": "layers_10_vehicles_app_composables_usevehicleform_usevehicleform",
       "community": 85,
-      "community_name": "vehicle-form.ts",
+      "community_name": "useVehicleDetailPage.ts",
       "norm_label": "usevehicleform()"
     },
     {
@@ -4515,7 +4560,7 @@
       "_origin": "ast",
       "id": "layers_10_vehicles_app_composables_usevehiclemutations",
       "community": 106,
-      "community_name": "useVehicleMutations.ts",
+      "community_name": "vehicle-form.ts",
       "norm_label": "usevehiclemutations.ts"
     },
     {
@@ -4527,7 +4572,7 @@
       "_origin": "ast",
       "id": "layers_10_vehicles_app_composables_usevehiclemutations_vehiclesaveerrormessage",
       "community": 106,
-      "community_name": "useVehicleMutations.ts",
+      "community_name": "vehicle-form.ts",
       "norm_label": "vehiclesaveerrormessage()"
     },
     {
@@ -4539,7 +4584,7 @@
       "_origin": "ast",
       "id": "layers_10_vehicles_app_composables_usevehiclemutations_usevehiclemutations",
       "community": 106,
-      "community_name": "useVehicleMutations.ts",
+      "community_name": "vehicle-form.ts",
       "norm_label": "usevehiclemutations()"
     },
     {
@@ -4955,8 +5000,8 @@
       "source_location": "L34",
       "_origin": "ast",
       "id": "layers_10_vehicles_app_pages_vehicles_new_isdirty",
-      "community": 102,
-      "community_name": "vehicles-new.vue",
+      "community": 85,
+      "community_name": "useVehicleDetailPage.ts",
       "norm_label": "isdirty"
     },
     {
@@ -5022,7 +5067,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "layers_10_vehicles_app_utils_vehicle_form",
-      "community": 85,
+      "community": 106,
       "community_name": "vehicle-form.ts",
       "norm_label": "vehicle-form.ts"
     },
@@ -5035,8 +5080,8 @@
       "_callable_class": true,
       "_origin": "ast",
       "id": "layers_10_vehicles_app_utils_vehicle_form_vehicleformstate",
-      "community": 85,
-      "community_name": "vehicle-form.ts",
+      "community": 41,
+      "community_name": "VehiclesFormFields.vue",
       "norm_label": "vehicleformstate"
     },
     {
@@ -5048,7 +5093,7 @@
       "_callable_class": true,
       "_origin": "ast",
       "id": "layers_10_vehicles_app_utils_vehicle_form_vehicleformfieldname",
-      "community": 85,
+      "community": 106,
       "community_name": "vehicle-form.ts",
       "norm_label": "vehicleformfieldname"
     },
@@ -5061,7 +5106,7 @@
       "_callable_class": true,
       "_origin": "ast",
       "id": "layers_10_vehicles_app_utils_vehicle_form_vehicleformfielderror",
-      "community": 85,
+      "community": 106,
       "community_name": "vehicle-form.ts",
       "norm_label": "vehicleformfielderror"
     },
@@ -5074,7 +5119,7 @@
       "_origin": "ast",
       "id": "layers_10_vehicles_app_utils_vehicle_form_emptyvehicleform",
       "community": 85,
-      "community_name": "vehicle-form.ts",
+      "community_name": "useVehicleDetailPage.ts",
       "norm_label": "emptyvehicleform()"
     },
     {
@@ -5086,7 +5131,7 @@
       "_origin": "ast",
       "id": "layers_10_vehicles_app_utils_vehicle_form_vehicleformfromrow",
       "community": 85,
-      "community_name": "vehicle-form.ts",
+      "community_name": "useVehicleDetailPage.ts",
       "norm_label": "vehicleformfromrow()"
     },
     {
@@ -5109,7 +5154,7 @@
       "_callable": true,
       "_origin": "ast",
       "id": "layers_10_vehicles_app_utils_vehicle_form_normalizedplaca",
-      "community": 85,
+      "community": 106,
       "community_name": "vehicle-form.ts",
       "norm_label": "normalizedplaca()"
     },
@@ -5121,8 +5166,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "layers_10_vehicles_app_utils_vehicle_form_maxvehicleyear",
-      "community": 134,
-      "community_name": "VehiclesEditForm.vue",
+      "community": 106,
+      "community_name": "vehicle-form.ts",
       "norm_label": "maxvehicleyear()"
     },
     {
@@ -5133,8 +5178,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "layers_10_vehicles_app_utils_vehicle_form_isfillednumber",
-      "community": 134,
-      "community_name": "VehiclesEditForm.vue",
+      "community": 106,
+      "community_name": "vehicle-form.ts",
       "norm_label": "isfillednumber()"
     },
     {
@@ -5146,7 +5191,7 @@
       "_origin": "ast",
       "id": "layers_10_vehicles_app_utils_vehicle_form_vehicleformtoinsert",
       "community": 106,
-      "community_name": "useVehicleMutations.ts",
+      "community_name": "vehicle-form.ts",
       "norm_label": "vehicleformtoinsert()"
     },
     {
@@ -5158,7 +5203,7 @@
       "_origin": "ast",
       "id": "layers_10_vehicles_app_utils_vehicle_form_vehicleformtoupdate",
       "community": 106,
-      "community_name": "useVehicleMutations.ts",
+      "community_name": "vehicle-form.ts",
       "norm_label": "vehicleformtoupdate()"
     },
     {
@@ -5169,8 +5214,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "layers_10_vehicles_app_utils_vehicle_form_validatevehicleform",
-      "community": 134,
-      "community_name": "VehiclesEditForm.vue",
+      "community": 106,
+      "community_name": "vehicle-form.ts",
       "norm_label": "validatevehicleform()"
     },
     {
@@ -5182,7 +5227,7 @@
       "_origin": "ast",
       "id": "layers_10_vehicles_app_utils_vehicle_form_isvehicleformvalid",
       "community": 106,
-      "community_name": "useVehicleMutations.ts",
+      "community_name": "vehicle-form.ts",
       "norm_label": "isvehicleformvalid()"
     },
     {
@@ -5194,7 +5239,7 @@
       "_origin": "ast",
       "id": "layers_10_vehicles_app_utils_vehicle_form_isvehicleformdirty",
       "community": 85,
-      "community_name": "vehicle-form.ts",
+      "community_name": "useVehicleDetailPage.ts",
       "norm_label": "isvehicleformdirty()"
     },
     {
@@ -10547,8 +10592,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "layers_5_orders_app_pages_orders_id_save",
-      "community": 29,
-      "community_name": "orders-[id].vue",
+      "community": 85,
+      "community_name": "useVehicleDetailPage.ts",
       "norm_label": "save()"
     },
     {
@@ -11831,8 +11876,8 @@
       "source_location": "L50",
       "_origin": "ast",
       "id": "layers_6_configuration_app_components_catalog_catalogform_hourlyrate",
-      "community": 10,
-      "community_name": "pricing.ts",
+      "community": 45,
+      "community_name": "CatalogForm.vue",
       "norm_label": "hourlyrate"
     },
     {
@@ -13580,8 +13625,8 @@
       "_callable_class": true,
       "_origin": "ast",
       "id": "layers_6_configuration_app_utils_pricing_pricingparamsdraft",
-      "community": 10,
-      "community_name": "pricing.ts",
+      "community": 48,
+      "community_name": "CatalogTable.vue",
       "norm_label": "pricingparamsdraft"
     },
     {
@@ -16603,7 +16648,7 @@
       "label": "PAPEIS",
       "file_type": "code",
       "source_file": "server/api/voice/ask.post.ts",
-      "source_location": "L13",
+      "source_location": "L14",
       "_origin": "ast",
       "id": "server_api_voice_ask_post_papeis",
       "community": 244,
@@ -16614,7 +16659,7 @@
       "label": "ChatMessage",
       "file_type": "code",
       "source_file": "server/api/voice/ask.post.ts",
-      "source_location": "L16",
+      "source_location": "L17",
       "_callable": true,
       "_callable_class": true,
       "_origin": "ast",
@@ -16627,7 +16672,7 @@
       "label": "parseMessages()",
       "file_type": "code",
       "source_file": "server/api/voice/ask.post.ts",
-      "source_location": "L18",
+      "source_location": "L19",
       "_callable": true,
       "_origin": "ast",
       "id": "server_api_voice_ask_post_parsemessages",
@@ -16639,7 +16684,7 @@
       "label": "isDay()",
       "file_type": "code",
       "source_file": "server/api/voice/ask.post.ts",
-      "source_location": "L32",
+      "source_location": "L33",
       "_callable": true,
       "_origin": "ast",
       "id": "server_api_voice_ask_post_isday",
@@ -16654,8 +16699,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "server_api_voice_interpret_post",
-      "community": 138,
-      "community_name": "loop.ts",
+      "community": 255,
+      "community_name": "voice-providers.ts",
       "norm_label": "interpret.post.ts"
     },
     {
@@ -16667,8 +16712,8 @@
       "_callable_class": true,
       "_origin": "ast",
       "id": "server_api_voice_interpret_post_interpretbody",
-      "community": 138,
-      "community_name": "loop.ts",
+      "community": 255,
+      "community_name": "voice-providers.ts",
       "norm_label": "interpretbody"
     },
     {
@@ -16880,8 +16925,8 @@
       "_callable_class": true,
       "_origin": "ast",
       "id": "server_utils_voice_ask_loop_askmessage",
-      "community": 244,
-      "community_name": "ask.post.ts",
+      "community": 138,
+      "community_name": "loop.ts",
       "norm_label": "askmessage"
     },
     {
@@ -16893,8 +16938,8 @@
       "_callable_class": true,
       "_origin": "ast",
       "id": "server_utils_voice_ask_loop_askoptions",
-      "community": 138,
-      "community_name": "loop.ts",
+      "community": 255,
+      "community_name": "voice-providers.ts",
       "norm_label": "askoptions"
     },
     {
@@ -16998,7 +17043,7 @@
       "label": "askWithTools()",
       "file_type": "code",
       "source_file": "server/utils/voice-ask/loop.ts",
-      "source_location": "L112",
+      "source_location": "L115",
       "_callable": true,
       "_origin": "ast",
       "id": "server_utils_voice_ask_loop_askwithtools",
@@ -17760,77 +17805,77 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "server_utils_voice_providers_test",
-      "community": 138,
-      "community_name": "loop.ts",
+      "community": 255,
+      "community_name": "voice-providers.ts",
       "norm_label": "voice-providers.test.ts"
     },
     {
       "label": "messages",
       "file_type": "code",
       "source_file": "server/utils/voice-providers.test.ts",
-      "source_location": "L5",
+      "source_location": "L13",
       "_origin": "ast",
       "id": "server_utils_voice_providers_test_messages",
-      "community": 138,
-      "community_name": "loop.ts",
+      "community": 255,
+      "community_name": "voice-providers.ts",
       "norm_label": "messages"
     },
     {
       "label": "groq",
       "file_type": "code",
       "source_file": "server/utils/voice-providers.test.ts",
-      "source_location": "L6",
+      "source_location": "L14",
       "_origin": "ast",
       "id": "server_utils_voice_providers_test_groq",
-      "community": 138,
-      "community_name": "loop.ts",
+      "community": 255,
+      "community_name": "voice-providers.ts",
       "norm_label": "groq"
     },
     {
       "label": "gemini",
       "file_type": "code",
       "source_file": "server/utils/voice-providers.test.ts",
-      "source_location": "L7",
+      "source_location": "L15",
       "_origin": "ast",
       "id": "server_utils_voice_providers_test_gemini",
-      "community": 138,
-      "community_name": "loop.ts",
+      "community": 255,
+      "community_name": "voice-providers.ts",
       "norm_label": "gemini"
     },
     {
       "label": "reply()",
       "file_type": "code",
       "source_file": "server/utils/voice-providers.test.ts",
-      "source_location": "L9",
+      "source_location": "L17",
       "_callable": true,
       "_origin": "ast",
       "id": "server_utils_voice_providers_test_reply",
-      "community": 138,
-      "community_name": "loop.ts",
+      "community": 255,
+      "community_name": "voice-providers.ts",
       "norm_label": "reply()"
     },
     {
       "label": "fakeFetch()",
       "file_type": "code",
       "source_file": "server/utils/voice-providers.test.ts",
-      "source_location": "L13",
+      "source_location": "L21",
       "_callable": true,
       "_origin": "ast",
       "id": "server_utils_voice_providers_test_fakefetch",
-      "community": 138,
-      "community_name": "loop.ts",
+      "community": 255,
+      "community_name": "voice-providers.ts",
       "norm_label": "fakefetch()"
     },
     {
       "label": "cancel()",
       "file_type": "code",
       "source_file": "server/utils/voice-providers.test.ts",
-      "source_location": "L73",
+      "source_location": "L81",
       "_callable": true,
       "_origin": "ast",
       "id": "server_utils_voice_providers_test_cancel",
-      "community": 268,
-      "community_name": "useSpeechRecognition.ts",
+      "community": 276,
+      "community_name": "useVoiceCommand.ts",
       "norm_label": "cancel()"
     },
     {
@@ -17840,8 +17885,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "server_utils_voice_providers",
-      "community": 138,
-      "community_name": "loop.ts",
+      "community": 255,
+      "community_name": "voice-providers.ts",
       "norm_label": "voice-providers.ts"
     },
     {
@@ -17853,8 +17898,8 @@
       "_callable_class": true,
       "_origin": "ast",
       "id": "server_utils_voice_providers_voiceprovider",
-      "community": 138,
-      "community_name": "loop.ts",
+      "community": 255,
+      "community_name": "voice-providers.ts",
       "norm_label": "voiceprovider"
     },
     {
@@ -17866,8 +17911,8 @@
       "_callable_class": true,
       "_origin": "ast",
       "id": "server_utils_voice_providers_voiceprovidermessage",
-      "community": 138,
-      "community_name": "loop.ts",
+      "community": 255,
+      "community_name": "voice-providers.ts",
       "norm_label": "voiceprovidermessage"
     },
     {
@@ -17879,32 +17924,44 @@
       "_callable_class": true,
       "_origin": "ast",
       "id": "server_utils_voice_providers_completeoptions",
-      "community": 138,
-      "community_name": "loop.ts",
+      "community": 255,
+      "community_name": "voice-providers.ts",
       "norm_label": "completeoptions"
+    },
+    {
+      "label": "aiFailureStatus()",
+      "file_type": "code",
+      "source_file": "server/utils/voice-providers.ts",
+      "source_location": "L24",
+      "_callable": true,
+      "_origin": "ast",
+      "id": "server_utils_voice_providers_aifailurestatus",
+      "community": 255,
+      "community_name": "voice-providers.ts",
+      "norm_label": "aifailurestatus()"
     },
     {
       "label": "parseContent()",
       "file_type": "code",
       "source_file": "server/utils/voice-providers.ts",
-      "source_location": "L20",
+      "source_location": "L30",
       "_callable": true,
       "_origin": "ast",
       "id": "server_utils_voice_providers_parsecontent",
-      "community": 138,
-      "community_name": "loop.ts",
+      "community": 255,
+      "community_name": "voice-providers.ts",
       "norm_label": "parsecontent()"
     },
     {
       "label": "completeWithFallback()",
       "file_type": "code",
       "source_file": "server/utils/voice-providers.ts",
-      "source_location": "L25",
+      "source_location": "L35",
       "_callable": true,
       "_origin": "ast",
       "id": "server_utils_voice_providers_completewithfallback",
-      "community": 138,
-      "community_name": "loop.ts",
+      "community": 255,
+      "community_name": "voice-providers.ts",
       "norm_label": "completewithfallback()"
     },
     {
@@ -21499,8 +21556,8 @@
       "source_location": "L43",
       "_origin": "ast",
       "id": "cursor_skills_design_taste_frontend_skill_1_the_three_dials_core_configuration",
-      "community": 239,
-      "community_name": "tasteskill: Anti-Slop Frontend Skill",
+      "community": 291,
+      "community_name": "1. THE THREE DIALS (Core Configuration)",
       "norm_label": "1. the three dials (core configuration)"
     },
     {
@@ -21510,8 +21567,8 @@
       "source_location": "L53",
       "_origin": "ast",
       "id": "cursor_skills_design_taste_frontend_skill_1_a_dial_inference_design_read_dial_values",
-      "community": 239,
-      "community_name": "tasteskill: Anti-Slop Frontend Skill",
+      "community": 291,
+      "community_name": "1. THE THREE DIALS (Core Configuration)",
       "norm_label": "1.a dial inference (design read \u2192 dial values)"
     },
     {
@@ -21521,8 +21578,8 @@
       "source_location": "L64",
       "_origin": "ast",
       "id": "cursor_skills_design_taste_frontend_skill_1_b_use_case_presets",
-      "community": 239,
-      "community_name": "tasteskill: Anti-Slop Frontend Skill",
+      "community": 291,
+      "community_name": "1. THE THREE DIALS (Core Configuration)",
       "norm_label": "1.b use-case presets"
     },
     {
@@ -21532,8 +21589,8 @@
       "source_location": "L77",
       "_origin": "ast",
       "id": "cursor_skills_design_taste_frontend_skill_1_c_how_the_dials_drive_output",
-      "community": 239,
-      "community_name": "tasteskill: Anti-Slop Frontend Skill",
+      "community": 291,
+      "community_name": "1. THE THREE DIALS (Core Configuration)",
       "norm_label": "1.c how the dials drive output"
     },
     {
@@ -29940,7 +29997,7 @@
       "author": null,
       "contributor": null,
       "community": 100,
-      "community_name": "Dashboard Layout",
+      "community_name": "Live Editing",
       "norm_label": "live editing",
       "_origin": "semantic",
       "id": "_cursor_skills_nuxt_studio_references_live_editing_live_editing"
@@ -29956,7 +30013,7 @@
       "contributor": null,
       "rationale": "Converts Markdown/MDC to editable TipTap document",
       "community": 100,
-      "community_name": "Dashboard Layout",
+      "community_name": "Live Editing",
       "norm_label": "visual editor (tiptap)",
       "_origin": "semantic",
       "id": "_cursor_skills_nuxt_studio_references_live_editing_visual_editor"
@@ -29971,7 +30028,7 @@
       "author": null,
       "contributor": null,
       "community": 100,
-      "community_name": "Dashboard Layout",
+      "community_name": "Live Editing",
       "norm_label": "code editor",
       "_origin": "semantic",
       "id": "_cursor_skills_nuxt_studio_references_live_editing_code_editor"
@@ -29987,7 +30044,7 @@
       "contributor": null,
       "rationale": "Edit frontmatter and data files from Nuxt Content collection schema",
       "community": 100,
-      "community_name": "Dashboard Layout",
+      "community_name": "Live Editing",
       "norm_label": "schema forms",
       "_origin": "semantic",
       "id": "_cursor_skills_nuxt_studio_references_live_editing_schema_forms"
@@ -30322,8 +30379,8 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 111,
-      "community_name": "Nuxt UI Components Index",
+      "community": 55,
+      "community_name": "Dashboard Layout",
       "norm_label": "utable",
       "_origin": "semantic",
       "id": "_cursor_skills_nuxt_ui_references_components_utable"
@@ -30337,7 +30394,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 100,
+      "community": 55,
       "community_name": "Dashboard Layout",
       "norm_label": "udashboardgroup",
       "_origin": "semantic",
@@ -30368,7 +30425,7 @@
       "author": null,
       "contributor": null,
       "community": 100,
-      "community_name": "Dashboard Layout",
+      "community_name": "Live Editing",
       "norm_label": "ueditor",
       "_origin": "semantic",
       "id": "_cursor_skills_nuxt_ui_references_components_ueditor"
@@ -30901,7 +30958,7 @@
       "author": null,
       "contributor": null,
       "community": 55,
-      "community_name": "UDashboardPanel",
+      "community_name": "Dashboard Layout",
       "norm_label": "chat component tree",
       "_origin": "semantic",
       "id": "_cursor_skills_nuxt_ui_references_layouts_chat_chat_component_tree"
@@ -30915,7 +30972,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 100,
+      "community": 55,
       "community_name": "Dashboard Layout",
       "norm_label": "dashboard layout",
       "_origin": "semantic",
@@ -30931,7 +30988,7 @@
       "author": null,
       "contributor": null,
       "community": 55,
-      "community_name": "UDashboardPanel",
+      "community_name": "Dashboard Layout",
       "norm_label": "udashboardpanel",
       "_origin": "semantic",
       "id": "_cursor_skills_nuxt_ui_references_layouts_dashboard_udashboard_panel"
@@ -30945,7 +31002,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 100,
+      "community": 55,
       "community_name": "Dashboard Layout",
       "norm_label": "udashboardsidebar",
       "_origin": "semantic",
@@ -30961,7 +31018,7 @@
       "author": null,
       "contributor": null,
       "community": 55,
-      "community_name": "UDashboardPanel",
+      "community_name": "Dashboard Layout",
       "norm_label": "multi-panel list-detail",
       "_origin": "semantic",
       "id": "_cursor_skills_nuxt_ui_references_layouts_dashboard_multi_panel"
@@ -30977,7 +31034,7 @@
       "contributor": null,
       "rationale": "Putting content directly in UDashboardPanel without #body breaks scrolling",
       "community": 55,
-      "community_name": "UDashboardPanel",
+      "community_name": "Dashboard Layout",
       "norm_label": "use #body slot for scrollable content",
       "_origin": "semantic",
       "id": "_cursor_skills_nuxt_ui_references_layouts_dashboard_body_slot_rule"
@@ -31053,7 +31110,7 @@
       "author": null,
       "contributor": null,
       "community": 100,
-      "community_name": "Dashboard Layout",
+      "community_name": "Live Editing",
       "norm_label": "editor layout",
       "_origin": "semantic",
       "id": "_cursor_skills_nuxt_ui_references_layouts_editor_editor_layout"
@@ -31068,7 +31125,7 @@
       "author": null,
       "contributor": null,
       "community": 100,
-      "community_name": "Dashboard Layout",
+      "community_name": "Live Editing",
       "norm_label": "tiptap editor instance",
       "_origin": "semantic",
       "id": "_cursor_skills_nuxt_ui_references_layouts_editor_tiptap_instance"
@@ -31190,7 +31247,7 @@
       "author": null,
       "contributor": null,
       "community": 55,
-      "community_name": "UDashboardPanel",
+      "community_name": "Dashboard Layout",
       "norm_label": "data tables recipe",
       "_origin": "semantic",
       "id": "_cursor_skills_nuxt_ui_references_recipes_data_tables_data_tables"
@@ -31205,7 +31262,7 @@
       "author": null,
       "contributor": null,
       "community": 55,
-      "community_name": "UDashboardPanel",
+      "community_name": "Dashboard Layout",
       "norm_label": "tanstack table integration",
       "_origin": "semantic",
       "id": "_cursor_skills_nuxt_ui_references_recipes_data_tables_tanstack_table"
@@ -31219,8 +31276,8 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 111,
-      "community_name": "Nuxt UI Components Index",
+      "community": 55,
+      "community_name": "Dashboard Layout",
       "norm_label": "table row selection",
       "_origin": "semantic",
       "id": "_cursor_skills_nuxt_ui_references_recipes_data_tables_row_selection"
@@ -31234,8 +31291,8 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 111,
-      "community_name": "Nuxt UI Components Index",
+      "community": 55,
+      "community_name": "Dashboard Layout",
       "norm_label": "table pagination",
       "_origin": "semantic",
       "id": "_cursor_skills_nuxt_ui_references_recipes_data_tables_table_pagination"
@@ -31733,7 +31790,7 @@
       "author": null,
       "contributor": null,
       "community": 55,
-      "community_name": "UDashboardPanel",
+      "community_name": "Dashboard Layout",
       "norm_label": "uselazyfetch",
       "_origin": "semantic",
       "id": "_cursor_skills_nuxt_references_best_practices_data_fetching_uselazyfetch"
@@ -32308,7 +32365,7 @@
       "author": null,
       "contributor": null,
       "community": 56,
-      "community_name": "Deployment",
+      "community_name": "Server Routes",
       "norm_label": "deployment",
       "_origin": "semantic",
       "id": "_cursor_skills_nuxt_references_core_deployment_deployment"
@@ -32323,7 +32380,7 @@
       "author": null,
       "contributor": null,
       "community": 56,
-      "community_name": "Deployment",
+      "community_name": "Server Routes",
       "norm_label": "nitro",
       "_origin": "semantic",
       "id": "_cursor_skills_nuxt_references_core_deployment_nitro"
@@ -32338,7 +32395,7 @@
       "author": null,
       "contributor": null,
       "community": 56,
-      "community_name": "Deployment",
+      "community_name": "Server Routes",
       "norm_label": "node.js server deployment",
       "_origin": "semantic",
       "id": "_cursor_skills_nuxt_references_core_deployment_nodejs_server"
@@ -32353,7 +32410,7 @@
       "author": null,
       "contributor": null,
       "community": 56,
-      "community_name": "Deployment",
+      "community_name": "Server Routes",
       "norm_label": "static generation",
       "_origin": "semantic",
       "id": "_cursor_skills_nuxt_references_core_deployment_static_generation"
@@ -32367,8 +32424,8 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 56,
-      "community_name": "Deployment",
+      "community": 256,
+      "community_name": "Deployment Platform Choice",
       "norm_label": "nitro preset",
       "_origin": "semantic",
       "id": "_cursor_skills_nuxt_references_core_deployment_nitro_preset"
@@ -32382,8 +32439,8 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 56,
-      "community_name": "Deployment",
+      "community": 256,
+      "community_name": "Deployment Platform Choice",
       "norm_label": "vercel",
       "_origin": "semantic",
       "id": "_cursor_skills_nuxt_references_core_deployment_vercel"
@@ -32397,8 +32454,8 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 56,
-      "community_name": "Deployment",
+      "community": 256,
+      "community_name": "Deployment Platform Choice",
       "norm_label": "netlify",
       "_origin": "semantic",
       "id": "_cursor_skills_nuxt_references_core_deployment_netlify"
@@ -32412,8 +32469,8 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 56,
-      "community_name": "Deployment",
+      "community": 256,
+      "community_name": "Deployment Platform Choice",
       "norm_label": "cloudflare pages",
       "_origin": "semantic",
       "id": "_cursor_skills_nuxt_references_core_deployment_cloudflare_pages"
@@ -32428,8 +32485,8 @@
       "author": null,
       "contributor": null,
       "rationale": "Vercel for fastest DX; Netlify for static/forms; Cloudflare for cost/edge; GitHub Actions+VPS for full control.",
-      "community": 56,
-      "community_name": "Deployment",
+      "community": 256,
+      "community_name": "Deployment Platform Choice",
       "norm_label": "deployment platform choice",
       "_origin": "semantic",
       "id": "_cursor_skills_nuxt_references_core_deployment_platform_choice"
@@ -32473,7 +32530,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 293,
+      "community": 56,
       "community_name": "Server Routes",
       "norm_label": "server/ directory",
       "_origin": "semantic",
@@ -32609,7 +32666,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 293,
+      "community": 56,
       "community_name": "Server Routes",
       "norm_label": "addserverhandler",
       "_origin": "semantic",
@@ -33000,7 +33057,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 293,
+      "community": 56,
       "community_name": "Server Routes",
       "norm_label": "server routes",
       "_origin": "semantic",
@@ -33015,7 +33072,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 293,
+      "community": 56,
       "community_name": "Server Routes",
       "norm_label": "defineeventhandler",
       "_origin": "semantic",
@@ -33030,7 +33087,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 293,
+      "community": 56,
       "community_name": "Server Routes",
       "norm_label": "server middleware",
       "_origin": "semantic",
@@ -33061,7 +33118,7 @@
       "author": null,
       "contributor": null,
       "community": 56,
-      "community_name": "Deployment",
+      "community_name": "Server Routes",
       "norm_label": "usestorage",
       "_origin": "semantic",
       "id": "_cursor_skills_nuxt_references_features_server_use_storage"
@@ -33076,7 +33133,7 @@
       "author": null,
       "contributor": null,
       "community": 56,
-      "community_name": "Deployment",
+      "community_name": "Server Routes",
       "norm_label": "nitro server engine",
       "_origin": "semantic",
       "id": "_cursor_skills_nuxt_references_features_server_nitro_engine"
@@ -33256,8 +33313,8 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 56,
-      "community_name": "Deployment",
+      "community": 256,
+      "community_name": "Deployment Platform Choice",
       "norm_label": "edge-side rendering",
       "_origin": "semantic",
       "id": "_cursor_skills_nuxt_references_rendering_modes_edge_side_rendering"
@@ -33272,7 +33329,7 @@
       "author": null,
       "contributor": null,
       "community": 56,
-      "community_name": "Deployment",
+      "community_name": "Server Routes",
       "norm_label": "prerendering",
       "_origin": "semantic",
       "id": "_cursor_skills_nuxt_references_rendering_modes_prerendering"
@@ -33453,8 +33510,8 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 57,
-      "community_name": "pnpm CLI Commands Guide",
+      "community": 67,
+      "community_name": "pnpm CI/CD & Migration Guide",
       "norm_label": "build changed packages filter",
       "_origin": "semantic",
       "id": "_cursor_skills_pnpm_references_ci_monorepo_filter_changed"
@@ -33528,8 +33585,8 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 57,
-      "community_name": "pnpm CLI Commands Guide",
+      "community": 67,
+      "community_name": "pnpm CI/CD & Migration Guide",
       "norm_label": "pnpm store commands",
       "_origin": "semantic",
       "id": "_cursor_skills_pnpm_references_cli_store_management"
@@ -33680,8 +33737,8 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 291,
-      "community_name": "Supabase Skill Changelog",
+      "community": 67,
+      "community_name": "pnpm CI/CD & Migration Guide",
       "norm_label": "pnpm supply chain protection",
       "_origin": "semantic",
       "id": "_cursor_skills_pnpm_references_features_supply_chain_protection"
@@ -33925,8 +33982,8 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 291,
-      "community_name": "Supabase Skill Changelog",
+      "community": 34,
+      "community_name": "Supabase Skill",
       "norm_label": "supabase skill changelog",
       "_origin": "semantic",
       "id": "_cursor_skills_supabase_changelog_document"
@@ -33940,8 +33997,8 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 291,
-      "community_name": "Supabase Skill Changelog",
+      "community": 34,
+      "community_name": "Supabase Skill",
       "norm_label": "supabase skill v0.1.7",
       "_origin": "semantic",
       "id": "_cursor_skills_supabase_changelog_v0_1_7"
@@ -33955,8 +34012,8 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 291,
-      "community_name": "Supabase Skill Changelog",
+      "community": 34,
+      "community_name": "Supabase Skill",
       "norm_label": "debugging workflows feature",
       "_origin": "semantic",
       "id": "_cursor_skills_supabase_changelog_debugging_workflows"
@@ -33970,8 +34027,8 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 291,
-      "community_name": "Supabase Skill Changelog",
+      "community": 34,
+      "community_name": "Supabase Skill",
       "norm_label": "declarative schema section",
       "_origin": "semantic",
       "id": "_cursor_skills_supabase_changelog_declarative_schema"
@@ -33985,8 +34042,8 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 291,
-      "community_name": "Supabase Skill Changelog",
+      "community": 67,
+      "community_name": "pnpm CI/CD & Migration Guide",
       "norm_label": "npm supply-chain security guidance",
       "_origin": "semantic",
       "id": "_cursor_skills_supabase_changelog_npm_supply_chain"
@@ -34016,8 +34073,8 @@
       "author": "supabase",
       "contributor": null,
       "rationale": "Supabase changes frequently \u2014 do not rely on training data; check changelog and docs first",
-      "community": 291,
-      "community_name": "Supabase Skill Changelog",
+      "community": 34,
+      "community_name": "Supabase Skill",
       "norm_label": "verify against changelog principle",
       "_origin": "semantic",
       "id": "_cursor_skills_supabase_skill_verify_changelog"
@@ -34109,8 +34166,8 @@
       "captured_at": null,
       "author": "supabase",
       "contributor": null,
-      "community": 291,
-      "community_name": "Supabase Skill Changelog",
+      "community": 34,
+      "community_name": "Supabase Skill",
       "norm_label": "declarative schema workflow",
       "_origin": "semantic",
       "id": "_cursor_skills_supabase_skill_declarative_schemas"
@@ -34200,7 +34257,7 @@
       "author": null,
       "contributor": null,
       "community": 58,
-      "community_name": "API Design Patterns (patterns/)",
+      "community_name": "TypeScript Library Skill",
       "norm_label": "typescript library skill",
       "_origin": "semantic",
       "id": "_cursor_skills_ts_library_skill_document"
@@ -34216,7 +34273,7 @@
       "contributor": null,
       "rationale": "type:module with .mjs outputs; always support both CJS and ESM consumers",
       "community": 58,
-      "community_name": "API Design Patterns (patterns/)",
+      "community_name": "TypeScript Library Skill",
       "norm_label": "esm-first dual format principle",
       "_origin": "semantic",
       "id": "_cursor_skills_ts_library_skill_esm_first"
@@ -34231,7 +34288,7 @@
       "author": null,
       "contributor": null,
       "community": 58,
-      "community_name": "API Design Patterns (patterns/)",
+      "community_name": "TypeScript Library Skill",
       "norm_label": "tsdown build tool preference",
       "_origin": "semantic",
       "id": "_cursor_skills_ts_library_skill_tsdown"
@@ -34245,7 +34302,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 58,
+      "community": 112,
       "community_name": "API Design Patterns (patterns/)",
       "norm_label": "api design patterns (patterns/)",
       "_origin": "semantic",
@@ -34260,7 +34317,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 58,
+      "community": 112,
       "community_name": "API Design Patterns (patterns/)",
       "norm_label": "options / resolvedoptions pattern",
       "_origin": "semantic",
@@ -34275,7 +34332,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 58,
+      "community": 112,
       "community_name": "API Design Patterns (patterns/)",
       "norm_label": "factory functions pattern",
       "_origin": "semantic",
@@ -34291,7 +34348,7 @@
       "author": null,
       "contributor": null,
       "community": 112,
-      "community_name": "Type Patterns Guide",
+      "community_name": "API Design Patterns (patterns/)",
       "norm_label": "builder pattern with type accumulation",
       "_origin": "semantic",
       "id": "_cursor_skills_ts_library_patterns_api_builder"
@@ -34305,7 +34362,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 58,
+      "community": 112,
       "community_name": "API Design Patterns (patterns/)",
       "norm_label": "unplugin plugin pattern",
       "_origin": "semantic",
@@ -34320,7 +34377,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 58,
+      "community": 112,
       "community_name": "API Design Patterns (patterns/)",
       "norm_label": "lazy getters tree-shaking",
       "_origin": "semantic",
@@ -34351,7 +34408,7 @@
       "author": null,
       "contributor": null,
       "community": 112,
-      "community_name": "Type Patterns Guide",
+      "community_name": "API Design Patterns (patterns/)",
       "norm_label": "type patterns guide",
       "_origin": "semantic",
       "id": "_cursor_skills_ts_library_patterns_types_document"
@@ -34366,7 +34423,7 @@
       "author": null,
       "contributor": null,
       "community": 112,
-      "community_name": "Type Patterns Guide",
+      "community_name": "API Design Patterns (patterns/)",
       "norm_label": "utility types (awaitable, arrayable, etc.)",
       "_origin": "semantic",
       "id": "_cursor_skills_ts_library_patterns_types_utility_types"
@@ -34381,7 +34438,7 @@
       "author": null,
       "contributor": null,
       "community": 112,
-      "community_name": "Type Patterns Guide",
+      "community_name": "API Design Patterns (patterns/)",
       "norm_label": "brand types nominal typing",
       "_origin": "semantic",
       "id": "_cursor_skills_ts_library_patterns_types_brand"
@@ -34396,7 +34453,7 @@
       "author": null,
       "contributor": null,
       "community": 112,
-      "community_name": "Type Patterns Guide",
+      "community_name": "API Design Patterns (patterns/)",
       "norm_label": "type accumulation in builders",
       "_origin": "semantic",
       "id": "_cursor_skills_ts_library_patterns_types_accumulation"
@@ -34411,7 +34468,7 @@
       "author": null,
       "contributor": null,
       "community": 112,
-      "community_name": "Type Patterns Guide",
+      "community_name": "API Design Patterns (patterns/)",
       "norm_label": "module augmentation via register",
       "_origin": "semantic",
       "id": "_cursor_skills_ts_library_patterns_types_module_augmentation"
@@ -34426,7 +34483,7 @@
       "author": null,
       "contributor": null,
       "community": 58,
-      "community_name": "API Design Patterns (patterns/)",
+      "community_name": "TypeScript Library Skill",
       "norm_label": "api design patterns (references/)",
       "_origin": "semantic",
       "id": "_cursor_skills_ts_library_references_api_design_document"
@@ -34441,7 +34498,7 @@
       "author": null,
       "contributor": null,
       "community": 58,
-      "community_name": "API Design Patterns (patterns/)",
+      "community_name": "TypeScript Library Skill",
       "norm_label": "build tooling guide",
       "_origin": "semantic",
       "id": "_cursor_skills_ts_library_references_build_tooling_document"
@@ -34456,7 +34513,7 @@
       "author": null,
       "contributor": null,
       "community": 58,
-      "community_name": "API Design Patterns (patterns/)",
+      "community_name": "TypeScript Library Skill",
       "norm_label": "tsdown configuration",
       "_origin": "semantic",
       "id": "_cursor_skills_ts_library_references_build_tooling_tsdown"
@@ -34471,7 +34528,7 @@
       "author": null,
       "contributor": null,
       "community": 58,
-      "community_name": "API Design Patterns (patterns/)",
+      "community_name": "TypeScript Library Skill",
       "norm_label": "unbuild configuration",
       "_origin": "semantic",
       "id": "_cursor_skills_ts_library_references_build_tooling_unbuild"
@@ -34486,7 +34543,7 @@
       "author": null,
       "contributor": null,
       "community": 58,
-      "community_name": "API Design Patterns (patterns/)",
+      "community_name": "TypeScript Library Skill",
       "norm_label": "dual cjs/esm output",
       "_origin": "semantic",
       "id": "_cursor_skills_ts_library_references_build_tooling_dual_format"
@@ -34500,8 +34557,8 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 255,
-      "community_name": "TS Library CI Workflows",
+      "community": 58,
+      "community_name": "TypeScript Library Skill",
       "norm_label": "ts library ci workflows",
       "_origin": "semantic",
       "id": "_cursor_skills_ts_library_references_ci_workflows_document"
@@ -34516,8 +34573,8 @@
       "author": null,
       "contributor": null,
       "rationale": "Tokenless npm publish with GitHub OIDC \u2014 requires Node 24+, id-token:write, --provenance",
-      "community": 255,
-      "community_name": "TS Library CI Workflows",
+      "community": 58,
+      "community_name": "TypeScript Library Skill",
       "norm_label": "oidc provenance release",
       "_origin": "semantic",
       "id": "_cursor_skills_ts_library_references_ci_workflows_oidc_release"
@@ -34531,8 +34588,8 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 255,
-      "community_name": "TS Library CI Workflows",
+      "community": 58,
+      "community_name": "TypeScript Library Skill",
       "norm_label": "matrix testing strategy",
       "_origin": "semantic",
       "id": "_cursor_skills_ts_library_references_ci_workflows_matrix"
@@ -34546,8 +34603,8 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 255,
-      "community_name": "TS Library CI Workflows",
+      "community": 58,
+      "community_name": "TypeScript Library Skill",
       "norm_label": "pkg-pr-new pr publish",
       "_origin": "semantic",
       "id": "_cursor_skills_ts_library_references_ci_workflows_pkg_pr_new"
@@ -34561,8 +34618,8 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 256,
-      "community_name": "@antfu/eslint-config Guide",
+      "community": 58,
+      "community_name": "TypeScript Library Skill",
       "norm_label": "@antfu/eslint-config guide",
       "_origin": "semantic",
       "id": "_cursor_skills_ts_library_references_eslint_config_document"
@@ -34577,8 +34634,8 @@
       "author": null,
       "contributor": null,
       "rationale": "Handles linting and formatting \u2014 replaces Prettier",
-      "community": 256,
-      "community_name": "@antfu/eslint-config Guide",
+      "community": 58,
+      "community_name": "TypeScript Library Skill",
       "norm_label": "@antfu/eslint-config flat config",
       "_origin": "semantic",
       "id": "_cursor_skills_ts_library_references_eslint_config_antfu"
@@ -34592,8 +34649,8 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 256,
-      "community_name": "@antfu/eslint-config Guide",
+      "community": 58,
+      "community_name": "TypeScript Library Skill",
       "norm_label": "type-aware eslint rules",
       "_origin": "semantic",
       "id": "_cursor_skills_ts_library_references_eslint_config_type_aware"
@@ -38713,7 +38770,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "layers/1.base/app/components/VoiceCommandButton.vue",
-      "source_location": "L57",
+      "source_location": "L58",
       "weight": 1.0,
       "_origin": "ast",
       "source": "layers_1_base_app_components_voicecommandbutton",
@@ -38746,11 +38803,11 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "layers/1.base/app/components/VoiceCommandButton.vue",
-      "source_location": "L27",
+      "source_location": "L28",
       "weight": 1.0,
       "_origin": "ast",
       "source": "layers_1_base_app_components_voicecommandbutton",
-      "target": "layers_1_base_app_components_voicecommandbutton_notunderstood",
+      "target": "layers_1_base_app_components_voicecommandbutton_notice",
       "confidence_score": 1.0
     },
     {
@@ -38768,7 +38825,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "layers/1.base/app/components/VoiceCommandButton.vue",
-      "source_location": "L43",
+      "source_location": "L44",
       "weight": 1.0,
       "_origin": "ast",
       "source": "layers_1_base_app_components_voicecommandbutton",
@@ -38779,7 +38836,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "layers/1.base/app/components/VoiceCommandButton.vue",
-      "source_location": "L65",
+      "source_location": "L66",
       "weight": 1.0,
       "_origin": "ast",
       "source": "layers_1_base_app_components_voicecommandbutton",
@@ -38801,7 +38858,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "layers/1.base/app/components/VoiceCommandButton.vue",
-      "source_location": "L28",
+      "source_location": "L29",
       "weight": 1.0,
       "_origin": "ast",
       "source": "layers_1_base_app_components_voicecommandbutton",
@@ -38812,7 +38869,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "layers/1.base/app/components/VoiceCommandButton.vue",
-      "source_location": "L70",
+      "source_location": "L71",
       "weight": 1.0,
       "_origin": "ast",
       "source": "layers_1_base_app_components_voicecommandbutton",
@@ -38823,7 +38880,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "layers/1.base/app/components/VoiceCommandButton.vue",
-      "source_location": "L78",
+      "source_location": "L79",
       "weight": 1.0,
       "_origin": "ast",
       "source": "layers_1_base_app_components_voicecommandbutton",
@@ -38867,7 +38924,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "layers/1.base/app/components/VoiceCommandButton.vue",
-      "source_location": "L51",
+      "source_location": "L52",
       "weight": 1.0,
       "_origin": "ast",
       "source": "layers_1_base_app_components_voicecommandbutton",
@@ -38903,7 +38960,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "layers/1.base/app/components/VoiceCommandButton.vue",
-      "source_location": "L89",
+      "source_location": "L90",
       "weight": 1.0,
       "_origin": "ast",
       "source": "layers_1_base_app_components_voicecommandbutton_submit",
@@ -39268,7 +39325,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "layers/1.base/app/composables/useVoiceAsk.ts",
-      "source_location": "L14",
+      "source_location": "L15",
       "weight": 1.0,
       "_origin": "ast",
       "source": "layers_1_base_app_composables_usevoiceask",
@@ -39279,7 +39336,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "layers/1.base/app/composables/useVoiceAsk.ts",
-      "source_location": "L21",
+      "source_location": "L22",
       "weight": 1.0,
       "_origin": "ast",
       "source": "layers_1_base_app_composables_usevoiceask",
@@ -39290,7 +39347,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "layers/1.base/app/composables/useVoiceAsk.ts",
-      "source_location": "L3",
+      "source_location": "L4",
       "weight": 1.0,
       "_origin": "ast",
       "source": "layers_1_base_app_composables_usevoiceask",
@@ -39301,7 +39358,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "layers/1.base/app/composables/useVoiceAsk.ts",
-      "source_location": "L8",
+      "source_location": "L9",
       "weight": 1.0,
       "_origin": "ast",
       "source": "layers_1_base_app_composables_usevoiceask",
@@ -39317,7 +39374,7 @@
       "weight": 1.0,
       "_origin": "ast",
       "source": "layers_1_base_app_composables_usevoiceask",
-      "target": "layers_1_base_app_utils_voice_prompt",
+      "target": "layers_1_base_app_utils_voice_ai_failure",
       "confidence_score": 1.0
     },
     {
@@ -39326,6 +39383,30 @@
       "confidence": "EXTRACTED",
       "source_file": "layers/1.base/app/composables/useVoiceAsk.ts",
       "source_location": "L1",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "layers_1_base_app_composables_usevoiceask",
+      "target": "layers_1_base_app_utils_voice_ai_failure_voiceaifailure",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "layers/1.base/app/composables/useVoiceAsk.ts",
+      "source_location": "L2",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "layers_1_base_app_composables_usevoiceask",
+      "target": "layers_1_base_app_utils_voice_prompt",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "layers/1.base/app/composables/useVoiceAsk.ts",
+      "source_location": "L2",
       "weight": 1.0,
       "_origin": "ast",
       "source": "layers_1_base_app_composables_usevoiceask",
@@ -39338,7 +39419,19 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "layers/1.base/app/composables/useVoiceAsk.ts",
-      "source_location": "L90",
+      "source_location": "L103",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "layers_1_base_app_composables_usevoiceask_usevoiceask",
+      "target": "layers_1_base_app_utils_voice_ai_failure_voiceaifailure"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "layers/1.base/app/composables/useVoiceAsk.ts",
+      "source_location": "L91",
       "weight": 1.0,
       "_origin": "ast",
       "source": "layers_1_base_app_composables_usevoiceask_usevoiceask",
@@ -39350,7 +39443,7 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "layers/1.base/app/composables/useVoiceAsk.ts",
-      "source_location": "L114",
+      "source_location": "L115",
       "weight": 1.0,
       "_origin": "ast",
       "source": "layers_1_base_app_composables_usevoiceask_usevoiceask",
@@ -39360,7 +39453,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "layers/1.base/app/composables/useVoiceCommand.ts",
-      "source_location": "L38",
+      "source_location": "L42",
       "weight": 1.0,
       "_origin": "ast",
       "source": "layers_1_base_app_composables_usevoicecommand",
@@ -39371,7 +39464,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "layers/1.base/app/composables/useVoiceCommand.ts",
-      "source_location": "L16",
+      "source_location": "L20",
       "weight": 1.0,
       "_origin": "ast",
       "source": "layers_1_base_app_composables_usevoicecommand",
@@ -39382,7 +39475,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "layers/1.base/app/composables/useVoiceCommand.ts",
-      "source_location": "L18",
+      "source_location": "L22",
       "weight": 1.0,
       "_origin": "ast",
       "source": "layers_1_base_app_composables_usevoicecommand",
@@ -39393,7 +39486,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "layers/1.base/app/composables/useVoiceCommand.ts",
-      "source_location": "L32",
+      "source_location": "L36",
       "weight": 1.0,
       "_origin": "ast",
       "source": "layers_1_base_app_composables_usevoicecommand",
@@ -39404,7 +39497,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "layers/1.base/app/composables/useVoiceCommand.ts",
-      "source_location": "L57",
+      "source_location": "L61",
       "weight": 1.0,
       "_origin": "ast",
       "source": "layers_1_base_app_composables_usevoicecommand",
@@ -39415,7 +39508,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "layers/1.base/app/composables/useVoiceCommand.ts",
-      "source_location": "L44",
+      "source_location": "L48",
       "weight": 1.0,
       "_origin": "ast",
       "source": "layers_1_base_app_composables_usevoicecommand",
@@ -39426,7 +39519,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "layers/1.base/app/composables/useVoiceCommand.ts",
-      "source_location": "L65",
+      "source_location": "L69",
       "weight": 1.0,
       "_origin": "ast",
       "source": "layers_1_base_app_composables_usevoicecommand",
@@ -39437,7 +39530,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "layers/1.base/app/composables/useVoiceCommand.ts",
-      "source_location": "L11",
+      "source_location": "L12",
       "weight": 1.0,
       "_origin": "ast",
       "source": "layers_1_base_app_composables_usevoicecommand",
@@ -39449,7 +39542,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "layers/1.base/app/composables/useVoiceCommand.ts",
-      "source_location": "L8",
+      "source_location": "L9",
       "weight": 1.0,
       "_origin": "ast",
       "source": "layers_1_base_app_composables_usevoicecommand",
@@ -39461,7 +39554,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "layers/1.base/app/composables/useVoiceCommand.ts",
-      "source_location": "L9",
+      "source_location": "L10",
       "weight": 1.0,
       "_origin": "ast",
       "source": "layers_1_base_app_composables_usevoicecommand",
@@ -39473,7 +39566,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "layers/1.base/app/composables/useVoiceCommand.ts",
-      "source_location": "L9",
+      "source_location": "L10",
       "weight": 1.0,
       "_origin": "ast",
       "source": "layers_1_base_app_composables_usevoicecommand",
@@ -39489,7 +39582,7 @@
       "weight": 1.0,
       "_origin": "ast",
       "source": "layers_1_base_app_composables_usevoicecommand",
-      "target": "layers_1_base_app_utils_voice_catalog",
+      "target": "layers_1_base_app_utils_voice_ai_failure",
       "confidence_score": 1.0
     },
     {
@@ -39498,6 +39591,30 @@
       "confidence": "EXTRACTED",
       "source_file": "layers/1.base/app/composables/useVoiceCommand.ts",
       "source_location": "L2",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "layers_1_base_app_composables_usevoicecommand",
+      "target": "layers_1_base_app_utils_voice_ai_failure_voiceaifailure",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "layers/1.base/app/composables/useVoiceCommand.ts",
+      "source_location": "L3",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "layers_1_base_app_composables_usevoicecommand",
+      "target": "layers_1_base_app_utils_voice_catalog",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "layers/1.base/app/composables/useVoiceCommand.ts",
+      "source_location": "L3",
       "weight": 1.0,
       "_origin": "ast",
       "source": "layers_1_base_app_composables_usevoicecommand",
@@ -39509,7 +39626,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "layers/1.base/app/composables/useVoiceCommand.ts",
-      "source_location": "L2",
+      "source_location": "L3",
       "weight": 1.0,
       "_origin": "ast",
       "source": "layers_1_base_app_composables_usevoicecommand",
@@ -39521,7 +39638,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "layers/1.base/app/composables/useVoiceCommand.ts",
-      "source_location": "L8",
+      "source_location": "L9",
       "weight": 1.0,
       "_origin": "ast",
       "source": "layers_1_base_app_composables_usevoicecommand",
@@ -39533,7 +39650,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "layers/1.base/app/composables/useVoiceCommand.ts",
-      "source_location": "L3",
+      "source_location": "L4",
       "weight": 1.0,
       "_origin": "ast",
       "source": "layers_1_base_app_composables_usevoicecommand",
@@ -39545,7 +39662,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "layers/1.base/app/composables/useVoiceCommand.ts",
-      "source_location": "L3",
+      "source_location": "L4",
       "weight": 1.0,
       "_origin": "ast",
       "source": "layers_1_base_app_composables_usevoicecommand",
@@ -39557,7 +39674,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "layers/1.base/app/composables/useVoiceCommand.ts",
-      "source_location": "L4",
+      "source_location": "L5",
       "weight": 1.0,
       "_origin": "ast",
       "source": "layers_1_base_app_composables_usevoicecommand",
@@ -39569,7 +39686,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "layers/1.base/app/composables/useVoiceCommand.ts",
-      "source_location": "L4",
+      "source_location": "L5",
       "weight": 1.0,
       "_origin": "ast",
       "source": "layers_1_base_app_composables_usevoicecommand",
@@ -39581,7 +39698,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "layers/1.base/app/composables/useVoiceCommand.ts",
-      "source_location": "L5",
+      "source_location": "L6",
       "weight": 1.0,
       "_origin": "ast",
       "source": "layers_1_base_app_composables_usevoicecommand",
@@ -39593,7 +39710,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "layers/1.base/app/composables/useVoiceCommand.ts",
-      "source_location": "L5",
+      "source_location": "L6",
       "weight": 1.0,
       "_origin": "ast",
       "source": "layers_1_base_app_composables_usevoicecommand",
@@ -39605,7 +39722,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "layers/1.base/app/composables/useVoiceCommand.ts",
-      "source_location": "L6",
+      "source_location": "L7",
       "weight": 1.0,
       "_origin": "ast",
       "source": "layers_1_base_app_composables_usevoicecommand",
@@ -39617,7 +39734,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "layers/1.base/app/composables/useVoiceCommand.ts",
-      "source_location": "L6",
+      "source_location": "L7",
       "weight": 1.0,
       "_origin": "ast",
       "source": "layers_1_base_app_composables_usevoicecommand",
@@ -39629,7 +39746,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "layers/1.base/app/composables/useVoiceCommand.ts",
-      "source_location": "L6",
+      "source_location": "L7",
       "weight": 1.0,
       "_origin": "ast",
       "source": "layers_1_base_app_composables_usevoicecommand",
@@ -39641,7 +39758,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "layers/1.base/app/composables/useVoiceCommand.ts",
-      "source_location": "L7",
+      "source_location": "L8",
       "weight": 1.0,
       "_origin": "ast",
       "source": "layers_1_base_app_composables_usevoicecommand",
@@ -39653,7 +39770,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "layers/1.base/app/composables/useVoiceCommand.ts",
-      "source_location": "L7",
+      "source_location": "L8",
       "weight": 1.0,
       "_origin": "ast",
       "source": "layers_1_base_app_composables_usevoicecommand",
@@ -39665,7 +39782,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "layers/1.base/app/composables/useVoiceCommand.ts",
-      "source_location": "L7",
+      "source_location": "L8",
       "weight": 1.0,
       "_origin": "ast",
       "source": "layers_1_base_app_composables_usevoicecommand",
@@ -39677,7 +39794,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "layers/1.base/app/composables/useVoiceCommand.ts",
-      "source_location": "L7",
+      "source_location": "L8",
       "weight": 1.0,
       "_origin": "ast",
       "source": "layers_1_base_app_composables_usevoicecommand",
@@ -39689,7 +39806,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "layers/1.base/app/composables/useVoiceCommand.ts",
-      "source_location": "L7",
+      "source_location": "L8",
       "weight": 1.0,
       "_origin": "ast",
       "source": "layers_1_base_app_composables_usevoicecommand",
@@ -39701,7 +39818,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "layers/1.base/app/composables/useVoiceCommand.ts",
-      "source_location": "L7",
+      "source_location": "L8",
       "weight": 1.0,
       "_origin": "ast",
       "source": "layers_1_base_app_composables_usevoicecommand",
@@ -39713,7 +39830,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "layers/1.base/app/composables/useVoiceCommand.ts",
-      "source_location": "L7",
+      "source_location": "L8",
       "weight": 1.0,
       "_origin": "ast",
       "source": "layers_1_base_app_composables_usevoicecommand",
@@ -39726,7 +39843,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "layers/1.base/app/composables/useVoiceCommand.ts",
-      "source_location": "L69",
+      "source_location": "L73",
       "weight": 1.0,
       "_origin": "ast",
       "source": "layers_1_base_app_composables_usevoicecommand_usevoicecommand",
@@ -39738,7 +39855,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "layers/1.base/app/composables/useVoiceCommand.ts",
-      "source_location": "L70",
+      "source_location": "L74",
       "weight": 1.0,
       "_origin": "ast",
       "source": "layers_1_base_app_composables_usevoicecommand_usevoicecommand",
@@ -39750,7 +39867,19 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "layers/1.base/app/composables/useVoiceCommand.ts",
-      "source_location": "L73",
+      "source_location": "L88",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "layers_1_base_app_composables_usevoicecommand_usevoicecommand",
+      "target": "layers_1_base_app_utils_voice_ai_failure_voiceaifailure"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "layers/1.base/app/composables/useVoiceCommand.ts",
+      "source_location": "L78",
       "weight": 1.0,
       "_origin": "ast",
       "source": "layers_1_base_app_composables_usevoicecommand_usevoicecommand",
@@ -39762,7 +39891,7 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "layers/1.base/app/composables/useVoiceCommand.ts",
-      "source_location": "L291",
+      "source_location": "L296",
       "weight": 1.0,
       "_origin": "ast",
       "source": "layers_1_base_app_composables_usevoicecommand_usevoicecommand",
@@ -39774,7 +39903,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "layers/1.base/app/composables/useVoiceCommand.ts",
-      "source_location": "L73",
+      "source_location": "L78",
       "weight": 1.0,
       "_origin": "ast",
       "source": "layers_1_base_app_composables_usevoicecommand_usevoicecommand",
@@ -39786,7 +39915,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "layers/1.base/app/composables/useVoiceCommand.ts",
-      "source_location": "L73",
+      "source_location": "L78",
       "weight": 1.0,
       "_origin": "ast",
       "source": "layers_1_base_app_composables_usevoicecommand_usevoicecommand",
@@ -39798,7 +39927,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "layers/1.base/app/composables/useVoiceCommand.ts",
-      "source_location": "L77",
+      "source_location": "L82",
       "weight": 1.0,
       "_origin": "ast",
       "source": "layers_1_base_app_composables_usevoicecommand_usevoicecommand",
@@ -39810,7 +39939,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "layers/1.base/app/composables/useVoiceCommand.ts",
-      "source_location": "L240",
+      "source_location": "L245",
       "weight": 1.0,
       "_origin": "ast",
       "source": "layers_1_base_app_composables_usevoicecommand_usevoicecommand",
@@ -39822,7 +39951,7 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "layers/1.base/app/composables/useVoiceCommand.ts",
-      "source_location": "L228",
+      "source_location": "L233",
       "weight": 1.0,
       "_origin": "ast",
       "source": "layers_1_base_app_composables_usevoicecommand_usevoicecommand",
@@ -40621,6 +40750,52 @@
       "_origin": "ast",
       "source": "server_utils_voice_ask_tools",
       "target": "layers_1_base_app_utils_supabase_search_ilikepattern",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "layers/1.base/app/utils/voice/ai-failure.test.ts",
+      "source_location": "L3",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "layers_1_base_app_utils_voice_ai_failure_test",
+      "target": "layers_1_base_app_utils_voice_ai_failure",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "layers/1.base/app/utils/voice/ai-failure.test.ts",
+      "source_location": "L3",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "layers_1_base_app_utils_voice_ai_failure_test",
+      "target": "layers_1_base_app_utils_voice_ai_failure_voiceaifailure",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "layers/1.base/app/utils/voice/ai-failure.ts",
+      "source_location": "L1",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "layers_1_base_app_utils_voice_ai_failure",
+      "target": "layers_1_base_app_utils_voice_ai_failure_ai_failure",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "layers/1.base/app/utils/voice/ai-failure.ts",
+      "source_location": "L7",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "layers_1_base_app_utils_voice_ai_failure",
+      "target": "layers_1_base_app_utils_voice_ai_failure_voiceaifailure",
       "confidence_score": 1.0
     },
     {
@@ -63781,7 +63956,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "server/api/voice/ask.post.ts",
-      "source_location": "L16",
+      "source_location": "L17",
       "weight": 1.0,
       "_origin": "ast",
       "source": "server_api_voice_ask_post",
@@ -63792,7 +63967,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "server/api/voice/ask.post.ts",
-      "source_location": "L32",
+      "source_location": "L33",
       "weight": 1.0,
       "_origin": "ast",
       "source": "server_api_voice_ask_post",
@@ -63803,7 +63978,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "server/api/voice/ask.post.ts",
-      "source_location": "L13",
+      "source_location": "L14",
       "weight": 1.0,
       "_origin": "ast",
       "source": "server_api_voice_ask_post",
@@ -63814,7 +63989,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "server/api/voice/ask.post.ts",
-      "source_location": "L18",
+      "source_location": "L19",
       "weight": 1.0,
       "_origin": "ast",
       "source": "server_api_voice_ask_post",
@@ -63978,6 +64153,30 @@
       "confidence_score": 1.0
     },
     {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "server/api/voice/ask.post.ts",
+      "source_location": "L9",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "server_api_voice_ask_post",
+      "target": "server_utils_voice_providers",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "server/api/voice/ask.post.ts",
+      "source_location": "L9",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "server_api_voice_ask_post",
+      "target": "server_utils_voice_providers_aifailurestatus",
+      "confidence_score": 1.0
+    },
+    {
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "server/api/voice/interpret.post.ts",
@@ -63998,6 +64197,18 @@
       "_origin": "ast",
       "source": "server_api_voice_interpret_post",
       "target": "server_utils_voice_providers",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "server/api/voice/interpret.post.ts",
+      "source_location": "L5",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "server_api_voice_interpret_post",
+      "target": "server_utils_voice_providers_aifailurestatus",
       "confidence_score": 1.0
     },
     {
@@ -64264,7 +64475,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "server/utils/voice-ask/loop.ts",
-      "source_location": "L112",
+      "source_location": "L115",
       "weight": 1.0,
       "_origin": "ast",
       "source": "server_utils_voice_ask_loop",
@@ -64424,7 +64635,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "server/utils/voice-ask/loop.ts",
-      "source_location": "L135",
+      "source_location": "L138",
       "weight": 1.0,
       "_origin": "ast",
       "source": "server_utils_voice_ask_loop_askwithtools",
@@ -64448,7 +64659,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "server/utils/voice-ask/loop.ts",
-      "source_location": "L128",
+      "source_location": "L131",
       "weight": 1.0,
       "_origin": "ast",
       "source": "server_utils_voice_ask_loop_askwithtools",
@@ -64460,7 +64671,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "server/utils/voice-ask/loop.ts",
-      "source_location": "L119",
+      "source_location": "L122",
       "weight": 1.0,
       "_origin": "ast",
       "source": "server_utils_voice_ask_loop_askwithtools",
@@ -64472,7 +64683,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "server/utils/voice-ask/loop.ts",
-      "source_location": "L148",
+      "source_location": "L151",
       "weight": 1.0,
       "_origin": "ast",
       "source": "server_utils_voice_ask_loop_askwithtools",
@@ -64484,7 +64695,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "server/utils/voice-ask/loop.ts",
-      "source_location": "L114",
+      "source_location": "L117",
       "weight": 1.0,
       "_origin": "ast",
       "source": "server_utils_voice_ask_loop_askwithtools",
@@ -65537,6 +65748,18 @@
       "weight": 1.0,
       "_origin": "ast",
       "source": "server_utils_voice_providers_test",
+      "target": "server_utils_voice_providers_aifailurestatus",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "server/utils/voice-providers.test.ts",
+      "source_location": "L3",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "server_utils_voice_providers_test",
       "target": "server_utils_voice_providers_completewithfallback",
       "confidence_score": 1.0
     },
@@ -65544,7 +65767,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "server/utils/voice-providers.test.ts",
-      "source_location": "L73",
+      "source_location": "L81",
       "weight": 1.0,
       "_origin": "ast",
       "source": "server_utils_voice_providers_test",
@@ -65555,7 +65778,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "server/utils/voice-providers.test.ts",
-      "source_location": "L13",
+      "source_location": "L21",
       "weight": 1.0,
       "_origin": "ast",
       "source": "server_utils_voice_providers_test",
@@ -65566,7 +65789,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "server/utils/voice-providers.test.ts",
-      "source_location": "L7",
+      "source_location": "L15",
       "weight": 1.0,
       "_origin": "ast",
       "source": "server_utils_voice_providers_test",
@@ -65577,7 +65800,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "server/utils/voice-providers.test.ts",
-      "source_location": "L6",
+      "source_location": "L14",
       "weight": 1.0,
       "_origin": "ast",
       "source": "server_utils_voice_providers_test",
@@ -65588,7 +65811,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "server/utils/voice-providers.test.ts",
-      "source_location": "L5",
+      "source_location": "L13",
       "weight": 1.0,
       "_origin": "ast",
       "source": "server_utils_voice_providers_test",
@@ -65599,7 +65822,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "server/utils/voice-providers.test.ts",
-      "source_location": "L9",
+      "source_location": "L17",
       "weight": 1.0,
       "_origin": "ast",
       "source": "server_utils_voice_providers_test",
@@ -65622,6 +65845,17 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "server/utils/voice-providers.ts",
+      "source_location": "L24",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "server_utils_voice_providers",
+      "target": "server_utils_voice_providers_aifailurestatus",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "server/utils/voice-providers.ts",
       "source_location": "L14",
       "weight": 1.0,
       "_origin": "ast",
@@ -65633,7 +65867,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "server/utils/voice-providers.ts",
-      "source_location": "L25",
+      "source_location": "L35",
       "weight": 1.0,
       "_origin": "ast",
       "source": "server_utils_voice_providers",
@@ -65644,7 +65878,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "server/utils/voice-providers.ts",
-      "source_location": "L20",
+      "source_location": "L30",
       "weight": 1.0,
       "_origin": "ast",
       "source": "server_utils_voice_providers",
@@ -65678,7 +65912,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "server/utils/voice-providers.ts",
-      "source_location": "L60",
+      "source_location": "L70",
       "weight": 1.0,
       "_origin": "ast",
       "source": "server_utils_voice_providers_completewithfallback",
@@ -84065,5 +84299,5 @@
       "source_file": "public/logo.png"
     }
   ],
-  "built_at_commit": "79c64017d06e6a5da8d6847d4064e7e8a258047d"
+  "built_at_commit": "5cbbd7edcfe6ca2ce83cc9324467d91f9142306b"
 }
