@@ -489,7 +489,7 @@ onMounted(() => {
         >
           <div
             v-if="isDirty"
-            class="orders-detail-command fixed inset-x-4 bottom-[calc(3.5rem+env(safe-area-inset-bottom)+1rem)] z-30 mx-auto flex max-w-lg items-center gap-3 rounded-full border border-default/80 bg-default/95 px-4 py-2.5 backdrop-blur-md sm:inset-x-auto sm:left-1/2 sm:-translate-x-1/2 sm:bottom-4"
+            class="orders-detail-command fixed inset-x-4 bottom-[calc(8rem+env(safe-area-inset-bottom))] z-30 mx-auto flex max-w-lg items-center gap-3 rounded-full border border-default/80 bg-default/95 px-4 py-2.5 backdrop-blur-md sm:inset-x-auto sm:left-1/2 sm:-translate-x-1/2 sm:bottom-4"
             role="status"
             aria-live="polite"
             style="padding-bottom: max(0.625rem, env(safe-area-inset-bottom))"
