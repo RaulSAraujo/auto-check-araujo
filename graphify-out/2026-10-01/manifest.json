@@ -15,8 +15,8 @@
     "semantic_hash": ""
   },
   "layers/1.base/app/components/BaseAppHeader.vue": {
-    "mtime": 1790709369.5476074,
-    "ast_hash": "8775632202218e5d5c551f8aee8880ce",
+    "mtime": 1790871125.3781197,
+    "ast_hash": "ef784bba6ccd6d8590d9aa1df035068c",
     "semantic_hash": ""
   },
   "layers/1.base/app/components/BaseBrandIcon.vue": {
@@ -560,8 +560,8 @@
     "semantic_hash": ""
   },
   "layers/5.orders/app/pages/orders-[id].vue": {
-    "mtime": 1790783370.5536869,
-    "ast_hash": "dbd85f3aeb5daf66ea693eda116d6c1f",
+    "mtime": 1790871125.5309188,
+    "ast_hash": "d9f108d8e056c33385820d06eed3f505",
     "semantic_hash": ""
   },
   "layers/5.orders/app/pages/orders-new.vue": {
@@ -1920,8 +1920,8 @@
     "semantic_hash": ""
   },
   "layers/1.base/app/utils/voice/types.ts": {
-    "mtime": 1790782239.8463912,
-    "ast_hash": "2e8b828745f6118fd91925de40f6e142",
+    "mtime": 1790857027.830067,
+    "ast_hash": "ef9b5e91def9c3da3ab53dd50393e5cc",
     "semantic_hash": ""
   },
   "docs/superpowers/plans/2026-09-29-voice-commands.md": {
@@ -1935,8 +1935,8 @@
     "semantic_hash": ""
   },
   "layers/1.base/app/components/VoiceCommandButton.vue": {
-    "mtime": 1790716006.145017,
-    "ast_hash": "f441ebc622575771be45c42fa4493d96",
+    "mtime": 1790858480.3350775,
+    "ast_hash": "f48cd96f1da9d98b03b5723a13349a6f",
     "semantic_hash": ""
   },
   "layers/1.base/app/composables/useSpeechRecognition.ts": {
@@ -1945,8 +1945,8 @@
     "semantic_hash": ""
   },
   "layers/1.base/app/composables/useVoiceCommand.ts": {
-    "mtime": 1790782259.9485843,
-    "ast_hash": "587bb140fefd88cbfc05275c0cc4beae",
+    "mtime": 1790857029.9460793,
+    "ast_hash": "315018f20affb71a7385feb1b5c68982",
     "semantic_hash": ""
   },
   "layers/1.base/app/composables/useVoiceDraft.ts": {
@@ -1970,23 +1970,23 @@
     "semantic_hash": ""
   },
   "layers/1.base/app/utils/voice/normalize.test.ts": {
-    "mtime": 1790782214.0101442,
-    "ast_hash": "8882f256147fd813e76cec4f5dbf6983",
+    "mtime": 1790857001.4153378,
+    "ast_hash": "1fc5051f806cfc5b19893d70ad78e138",
     "semantic_hash": ""
   },
   "layers/1.base/app/utils/voice/normalize.ts": {
-    "mtime": 1790782250.0444891,
-    "ast_hash": "fd7a66e082066c768c7363d06bf87908",
+    "mtime": 1790857027.9730194,
+    "ast_hash": "ad68ed512595f67c4080a7c9b4ac7e1c",
     "semantic_hash": ""
   },
   "layers/1.base/app/utils/voice/prompt.test.ts": {
-    "mtime": 1790782214.7551513,
-    "ast_hash": "7da389bd0006b77189999e9610e00d32",
+    "mtime": 1790857002.2149184,
+    "ast_hash": "e7ca7acc31ab8fd1b98952ab4f8ae5d8",
     "semantic_hash": ""
   },
   "layers/1.base/app/utils/voice/prompt.ts": {
-    "mtime": 1790782253.980527,
-    "ast_hash": "7d23fe00d0ef98fe99e932d5f3935039",
+    "mtime": 1790857028.9240732,
+    "ast_hash": "c5a11a20ffc606d8a4df22b4271654d9",
     "semantic_hash": ""
   },
   "docs/superpowers/plans/2026-09-29-voice-ai-edit.md": {
@@ -2112,6 +2112,76 @@
   "docs/superpowers/specs/2026-09-30-voice-screen-controls-design.md": {
     "mtime": 1790781797.096416,
     "ast_hash": "67ca4a73f4627ecc3383a1531273379e",
+    "semantic_hash": ""
+  },
+  "layers/1.base/app/composables/useVoiceAsk.ts": {
+    "mtime": 1790858088.0185251,
+    "ast_hash": "811b9d833d2a12c6ceb9657325a1bdac",
+    "semantic_hash": ""
+  },
+  "server/api/voice/ask.post.ts": {
+    "mtime": 1790858086.3176115,
+    "ast_hash": "915920d83b3d4ae9a69bd9d72777720b",
+    "semantic_hash": ""
+  },
+  "server/utils/voice-ask/loop.test.ts": {
+    "mtime": 1790859684.71653,
+    "ast_hash": "f9676a16db11531678c6987c641156ae",
+    "semantic_hash": ""
+  },
+  "server/utils/voice-ask/loop.ts": {
+    "mtime": 1790859654.5277045,
+    "ast_hash": "daa609f910bdcdcfc97f056bedc6993f",
+    "semantic_hash": ""
+  },
+  "server/utils/voice-ask/mask.test.ts": {
+    "mtime": 1790857770.560382,
+    "ast_hash": "613e258e3add26a52ae3081697506621",
+    "semantic_hash": ""
+  },
+  "server/utils/voice-ask/mask.ts": {
+    "mtime": 1790858067.7954075,
+    "ast_hash": "785c396df4d04c9ff45cb68c954ba279",
+    "semantic_hash": ""
+  },
+  "server/utils/voice-ask/prompt.test.ts": {
+    "mtime": 1790859888.3914795,
+    "ast_hash": "a00cff174ba259d3a0ef084a3de08cfd",
+    "semantic_hash": ""
+  },
+  "server/utils/voice-ask/prompt.ts": {
+    "mtime": 1790859888.2084754,
+    "ast_hash": "2b6d3178172e67b56b3cb626595e0843",
+    "semantic_hash": ""
+  },
+  "server/utils/voice-ask/refs.test.ts": {
+    "mtime": 1790857825.927769,
+    "ast_hash": "eb7a87bf7676633ae38c2d22cece231e",
+    "semantic_hash": ""
+  },
+  "server/utils/voice-ask/refs.ts": {
+    "mtime": 1790857837.1985912,
+    "ast_hash": "4b39b0c4135397e08d74c3e803401e3d",
+    "semantic_hash": ""
+  },
+  "server/utils/voice-ask/tools.test.ts": {
+    "mtime": 1790858466.3269885,
+    "ast_hash": "379ff8c7fe477842291059debcc87fcb",
+    "semantic_hash": ""
+  },
+  "server/utils/voice-ask/tools.ts": {
+    "mtime": 1790858468.607003,
+    "ast_hash": "dce2b96e7808af552d387c413247971c",
+    "semantic_hash": ""
+  },
+  "docs/superpowers/plans/2026-09-30-voice-questions.md": {
+    "mtime": 1790856937.672544,
+    "ast_hash": "5acf2ec56cdcc2b361ee73a92319548f",
+    "semantic_hash": ""
+  },
+  "docs/superpowers/specs/2026-09-30-voice-questions-design.md": {
+    "mtime": 1790860012.3340714,
+    "ast_hash": "09690f23a5559bf9df1dddc213ac1924",
     "semantic_hash": ""
   }
 }
