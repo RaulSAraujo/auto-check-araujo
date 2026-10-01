@@ -1,13 +1,22 @@
 import assert from 'node:assert/strict'
 import test from 'node:test'
-import { aiFailureStatus, completeWithFallback, type VoiceProvider } from './voice-providers.ts'
+import { aiFailureStatus, completeWithFallback, MISSING_KEY, type VoiceProvider } from './voice-providers.ts'
 
 test('aiFailureStatus: quota beats everything, rejected or missing key is 502, the rest 503', () => {
   assert.equal(aiFailureStatus(['HTTP 429', 'HTTP 401', 'timeout']), 429)
   assert.equal(aiFailureStatus(['HTTP 401', 'HTTP 500']), 502)
   assert.equal(aiFailureStatus(['HTTP 403']), 502)
-  assert.equal(aiFailureStatus([]), 502)
+  assert.equal(aiFailureStatus([MISSING_KEY, 'HTTP 500']), 502)
+  assert.equal(aiFailureStatus([]), 503)
+  assert.equal(aiFailureStatus(['empty answer']), 503)
   assert.equal(aiFailureStatus(['HTTP 500', 'The operation was aborted due to timeout', 'empty response']), 503)
+})
+
+test('a provider without key is reported, not skipped silently', async () => {
+  const errors: string[] = []
+  const result = await completeWithFallback([{ ...groq, apiKey: '' }], messages, { fetch: (async () => reply('{}')) as typeof fetch, onError: (p, r) => errors.push(`${p}: ${r}`) })
+  assert.equal(result, null)
+  assert.deepEqual(errors, ['groq: missing key'])
 })
 
 const messages = [{ role: 'user' as const, content: 'oi' }]
