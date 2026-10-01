@@ -35,6 +35,8 @@ test('prompt has date, page, text, detailed current entity and compact others', 
   assert.match(system!.content, /- orders: q \(busca\), status \(all\|aberta\|em_andamento\|concluida\|cancelada\)/)
   assert.match(system!.content, /mes \(YYYY-MM\)/)
   assert.match(system!.content, /"query":\{/)
+  assert.match(system!.content, /\{"op":"ask"\}/)
+  assert.match(system!.content, /ask = pergunta sobre dados/)
 })
 
 test('prompt stays under the token budget on every page', () => {

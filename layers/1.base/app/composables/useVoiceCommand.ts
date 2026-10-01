@@ -9,7 +9,7 @@ import type { VoiceCurrent } from './useVoiceDraft'
 import type { VoiceFound } from './useVoiceLookup'
 
 export type VoiceRunResult
-  = | { ok: true }
+  = | { ok: true, ask?: true }
     | { ok: false, reason: 'not_understood' | 'forbidden' | 'context' | 'cancelled' }
 
 /** `opened`: only navigates, no draft is stored. */
@@ -241,6 +241,7 @@ export function useVoiceCommand() {
     const command = await interpret(text, page)
     if (isCancelled()) return { ok: false, reason: 'cancelled' }
     if (!command) return { ok: false, reason: 'not_understood' }
+    if (command.op === 'ask') return { ok: true, ask: true }
 
     if (command.op === 'navigate') {
       const nav = NAV[command.to!]

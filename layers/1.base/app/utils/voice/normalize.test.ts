@@ -79,6 +79,11 @@ test('navigate keeps only the query params the screen declares', () => {
   assert.equal(n({ op: 'navigate', to: 'moon' }), null)
 })
 
+test('ask carries no other fields', () => {
+  assert.deepEqual(n({ op: 'ask' }), { op: 'ask' })
+  assert.deepEqual(n({ op: 'ask', entity: 'order', to: 'home', query: { q: 'x' } }), { op: 'ask' })
+})
+
 test('kit items need a non-enum value', () => {
   assert.deepEqual(n({ op: 'create', entity: 'catalogItem', fields: { tipo: 'kit', nome: 'Revisão' }, items: [{ item: 'Filtro de óleo', quantidade: 1 }, { quantidade: 0 }] }),
     { op: 'create', entity: 'catalogItem', fields: { tipo: 'kit', nome: 'Revisão' }, items: [{ item: 'Filtro de óleo', quantidade: 1 }] })

@@ -20,13 +20,13 @@ export type VoiceEntityKey
   = | 'order' | 'customer' | 'vehicle' | 'appointment' | 'account'
     | 'category' | 'catalogItem' | 'supplier' | 'collaborator' | 'pricing'
 
-export type VoiceOp = 'create' | 'edit' | 'action' | 'navigate'
+export type VoiceOp = 'create' | 'edit' | 'action' | 'navigate' | 'ask'
 export type VoiceValue = string | number | boolean | string[]
 export type VoiceRecord = Record<string, VoiceValue>
 
 export interface VoiceCommand {
   op: VoiceOp
-  /** Absent only for `navigate`. */
+  /** Absent for `navigate` and `ask`. */
   entity?: VoiceEntityKey
   target?: Record<string, string>
   fields?: VoiceRecord
@@ -75,5 +75,8 @@ export const VOICE_EXAMPLES: readonly string[] = [
   'O custo da hora é 120 reais',
   'Mostra as OS abertas do João',
   'Contas vencidas do financeiro',
-  'Manda o orçamento no WhatsApp (com a OS aberta)'
+  'Manda o orçamento no WhatsApp (com a OS aberta)',
+  'Quantas OS estão abertas?',
+  'Qual o telefone do João da Silva?',
+  'Quanto faturei este mês?'
 ]

@@ -133,6 +133,7 @@ function pick(spec: Record<string, VoiceField>, raw: unknown, op?: 'create' | 'e
 /** Trust boundary: nothing produced by the AI reaches the app without passing here. */
 export function normalizeVoiceCommand(raw: unknown): VoiceCommand | null {
   if (!isObj(raw)) return null
+  if (raw.op === 'ask') return { op: 'ask' }
 
   if (raw.op === 'navigate') {
     const to = oneOf(raw.to, NAV_TARGETS)

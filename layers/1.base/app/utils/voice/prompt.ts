@@ -119,6 +119,7 @@ Responda SOMENTE com um objeto JSON, em um destes formatos:
 {"op":"create"|"edit","entity":"...","target":{...},"fields":{...},"items":[{...}]}
 {"op":"action","entity":"...","target":{...},"action":"...","args":{...}}
 {"op":"navigate","to":"home"|"orders"|"scheduling"|"customers"|"vehicles"|"finance"|"team"|"catalog"|"suppliers"|"pricing"|"settings","query":{...}}
+{"op":"ask"} para perguntas sobre dados da oficina.
 {"op":null} se não for um comando reconhecível.
 Hoje é ${context.today} (${weekday(context.today)}). Tela atual: ${PAGE_LABEL[context.page]}.
 ${detailed ? `\nEntidades desta tela:\n${detailed}\n` : ''}
@@ -131,6 +132,7 @@ ${views}
 Regras:
 - create = cadastrar/criar/"nova OS"/"novo cliente". edit = abrir ou alterar registro existente ("abre a OS do…", "muda o km…"). action = executar uma ação da lista ("aprova", "paga", "remove", "desativa", "exclui", "faltou").
 - navigate = abrir uma tela. Para mostrar/buscar/filtrar uma lista ("mostra as OS abertas do João", "contas vencidas", "agenda da semana"), use navigate com query só com o que foi dito. Mês "YYYY-MM".
+- ask = pergunta sobre dados que pede uma resposta, não uma tela ("quantas OS estão abertas?", "quanto faturei em agosto?", "qual o telefone do João?", "quando o ABC1D23 veio por último?", "tem pastilha em estoque?"). Pedido para mostrar/abrir/filtrar lista continua navigate.
 - target identifica o registro existente; omita target quando a frase se refere ao registro aberto na tela atual.
 - Use só os nomes de fields/items/actions/args listados. Omita o que não foi dito; nunca invente valores. Nunca inclua senha.
 - Vários itens na mesma frase: um objeto por item em "items".
