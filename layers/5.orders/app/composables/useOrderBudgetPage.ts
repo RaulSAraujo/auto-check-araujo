@@ -5,6 +5,7 @@ import { isBudgetEditable, ORDEM_ITEM_TIPO_LABEL } from '~~/shared/types/oficina
 import {
   calcItemsTotal,
   emptyOrderItemDraft,
+  isOrderItemDraftValid,
   type OrderItemDraft
 } from '../utils/budget'
 import {
@@ -13,6 +14,7 @@ import {
   resolveCatalogUnitPrice,
   type PricingParamsRow
 } from '#layers/configuration/app/utils/pricing'
+import type { VoiceBudgetItemDraft } from '#layers/base/app/utils/voice/types'
 
 export function useOrderBudgetPage(
   orderId: MaybeRefOrGetter<string>,
@@ -32,6 +34,7 @@ export function useOrderBudgetPage(
 
   const draft = reactive<OrderItemDraft>(emptyOrderItemDraft())
   const selectedCatalogId = ref<string | undefined>()
+  const addModalOpen = ref(false)
   const adding = ref(false)
   const deletingId = ref<string | null>(null)
   const updatingStatus = ref(false)
@@ -88,7 +91,7 @@ export function useOrderBudgetPage(
     )
   })
 
-  watch(selectedCatalogId, (id) => {
+  function applyCatalogEntry(id: string | undefined) {
     if (!id || !catalog.value) return
     const entry = catalog.value.find(item => item.id === id)
     if (!entry) return
@@ -98,7 +101,55 @@ export function useOrderBudgetPage(
     if (!draft.quantidade || draft.quantidade < 1) {
       draft.quantidade = 1
     }
-  })
+  }
+
+  watch(selectedCatalogId, applyCatalogEntry)
+
+  /** Fills the add-item draft from voice (catalog entry first, spoken values on top). */
+  async function fillVoiceItem(voice: VoiceBudgetItemDraft): Promise<boolean> {
+    if (!canEditItems.value) {
+      useToast().add({
+        title: 'Orçamento bloqueado',
+        description: 'Este orçamento não pode receber itens agora.',
+        color: 'warning'
+      })
+      return false
+    }
+    Object.assign(draft, emptyOrderItemDraft(), { tipo: voice.tipo })
+    if (voice.descricao) draft.descricao = voice.descricao
+    selectedCatalogId.value = voice.catalogItemId
+    applyCatalogEntry(voice.catalogItemId)
+    // Spoken values must land after the selectedCatalogId watcher re-applies the catalog price.
+    await nextTick()
+    if (voice.quantidade != null) draft.quantidade = voice.quantidade
+    if (voice.valor_unitario != null) draft.valor_unitario = voice.valor_unitario
+    return true
+  }
+
+  async function openVoiceItem(voice: VoiceBudgetItemDraft) {
+    if (await fillVoiceItem(voice)) addModalOpen.value = true
+  }
+
+  /** Several spoken items: the page confirms the list first, then each one is inserted like the add modal does. */
+  async function addVoiceItems(voice: VoiceBudgetItemDraft[]): Promise<{ added: number, skipped: number }> {
+    const startOrdem = items.value?.length || 0
+    let added = 0
+    let skipped = 0
+    for (const item of voice) {
+      if (!await fillVoiceItem(item)) return { added, skipped }
+      if (!isOrderItemDraftValid(draft)) {
+        skipped++
+        continue
+      }
+      const { error } = await addOrderItem(toValue(orderId), { ...draft }, startOrdem + added, { silent: true })
+      if (error) break
+      added++
+    }
+    Object.assign(draft, emptyOrderItemDraft())
+    selectedCatalogId.value = undefined
+    await refreshItems()
+    return { added, skipped }
+  }
 
   async function refreshAll() {
     await Promise.all([refreshOrder(), refreshItems()])
@@ -206,6 +257,7 @@ export function useOrderBudgetPage(
   return {
     draft,
     selectedCatalogId,
+    addModalOpen,
     adding,
     deletingId,
     updatingStatus,
@@ -219,6 +271,8 @@ export function useOrderBudgetPage(
     onDeleteItem,
     onSubmitForApproval,
     onApprove,
-    onReject
+    onReject,
+    openVoiceItem,
+    addVoiceItems
   }
 }

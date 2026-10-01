@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import type { FormaPagamento } from '~~/shared/types/oficina'
 import { ACCOUNTS_FILTER_ITEMS, emptyFinanceAccountDraft } from '../utils/accounts-payable'
 
 defineOptions({ name: 'FinanceIndexPage' })
@@ -72,6 +73,60 @@ const accountCreateOpen = ref(false)
 
 watch(accountCreateOpen, (open) => {
   if (!open) Object.assign(accountDraft, emptyFinanceAccountDraft())
+})
+
+useVoiceForm('account', {
+  ops: ['create'],
+  state: accountDraft,
+  open: () => {
+    tab.value = 'contas'
+    Object.assign(accountDraft, emptyFinanceAccountDraft())
+    accountCreateOpen.value = true
+  },
+  // Pix is the table's default payment form; set it before the confirmation so the title reads "(Pix)".
+  unavailable: (action, draft) => {
+    if (action === 'pagar' && !draft.args?.forma) draft.args = { ...draft.args, forma: 'pix' }
+    return undefined
+  },
+  actions: {
+    pagar: (draft) => {
+      tab.value = 'contas'
+      return onMarkPaid({ id: draft.id!, forma_pagamento: draft.args!.forma as FormaPagamento })
+    },
+    cancelar: (draft) => {
+      tab.value = 'contas'
+      return onCancelAccount(draft.id!)
+    },
+    reabrir: (draft) => {
+      tab.value = 'contas'
+      return onReopenAccount(draft.id!)
+    },
+    excluir: (draft) => {
+      tab.value = 'contas'
+      return onRemoveAccount(draft.id!)
+    }
+  }
+})
+
+const { confirmVoice } = useVoiceConfirm()
+
+useVoiceForm('category', {
+  apply: async (draft) => {
+    const nome = typeof draft.fields.nome === 'string' ? draft.fields.nome : ''
+    if (!nome) {
+      useToast().add({ title: 'Diga o nome da categoria.', color: 'warning' })
+      return
+    }
+    categoriesOpen.value = true
+    const title = draft.op === 'create' ? `Criar a categoria "${nome}"?` : `Renomear a categoria ${draft.label} para "${nome}"?`
+    if (!await confirmVoice({ title })) return
+    if (draft.op === 'create') await onAddCategory({ nome })
+    else if (draft.id) await onSaveCategory({ id: draft.id, draft: { nome } })
+  },
+  actions: {
+    ativar: draft => onToggleCategory({ id: draft.id!, ativo: true }),
+    desativar: draft => onToggleCategory({ id: draft.id!, ativo: false })
+  }
 })
 
 async function handleAddAccount() {

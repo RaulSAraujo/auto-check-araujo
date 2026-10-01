@@ -6,6 +6,10 @@ import { toTitleCasePt } from '~~/shared/utils/text-case'
 
 defineOptions({ name: 'TeamCollaboratorsCreateForm' })
 
+const props = defineProps<{
+  initial?: { nome?: string, username?: string, papel?: ColaboradorPapel }
+}>()
+
 const emit = defineEmits<{
   created: []
 }>()
@@ -19,6 +23,13 @@ const papel = ref<ColaboradorPapel>('recepcao')
 const creating = ref(false)
 const showPassword = ref(false)
 const passwordInputId = useId()
+
+watch(() => props.initial, (value) => {
+  if (!value) return
+  if (value.nome) nome.value = value.nome
+  if (value.username) username.value = value.username
+  if (value.papel) papel.value = value.papel
+}, { immediate: true })
 
 const papelItems = computed(() =>
   (Object.keys(COLABORADOR_PAPEL_LABEL) as ColaboradorPapel[]).map(value => ({

@@ -156,6 +156,10 @@ export type AppointmentDraft = {
 
 export type AppointmentCreatePrefill = {
   hour?: number
+  veiculo_id?: string
+  date?: string
+  startTime?: string
+  problema?: string
 }
 
 export function emptyAppointmentDraft(
@@ -166,10 +170,10 @@ export function emptyAppointmentDraft(
   start.setHours(prefill?.hour ?? 9, 0, 0, 0)
 
   return {
-    veiculo_id: '',
-    date: toDateInputValue(day),
-    startTime: toTimeInputValue(start),
-    problema: ''
+    veiculo_id: prefill?.veiculo_id ?? '',
+    date: prefill?.date ?? toDateInputValue(day),
+    startTime: prefill?.startTime ?? toTimeInputValue(start),
+    problema: prefill?.problema ?? ''
   }
 }
 

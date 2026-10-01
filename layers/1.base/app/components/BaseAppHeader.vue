@@ -145,6 +145,8 @@ function closeMobileMenu() {
         @focusin="prefetchAppRouteFromEvent"
       />
 
+      <BaseVoiceCommandButton />
+
       <USeparator
         orientation="vertical"
         class="mx-0.5 h-5 shrink-0"
@@ -232,6 +234,16 @@ function closeMobileMenu() {
       </button>
     </div>
   </nav>
+
+  <!-- Bottom bars marked with data-voice-fab-lift (e.g. unsaved changes) keep their spot; the voice button moves above them. -->
+  <div class="fixed right-4 z-50 sm:hidden bottom-[calc(4.5rem+env(safe-area-inset-bottom))] transition-[bottom] duration-200 ease-out [body:has([data-voice-fab-lift])_&]:bottom-[calc(8.75rem+env(safe-area-inset-bottom))]">
+    <BaseVoiceCommandButton
+      variant="solid"
+      color="primary"
+      size="xl"
+      class="shadow-lg"
+    />
+  </div>
 
   <UDrawer
     v-model:open="mobileMenuOpen"

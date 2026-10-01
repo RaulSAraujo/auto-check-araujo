@@ -15,8 +15,8 @@
     "semantic_hash": ""
   },
   "layers/1.base/app/components/BaseAppHeader.vue": {
-    "mtime": 1789394037.2492776,
-    "ast_hash": "9248197ad723fd34570e021beaee2e54",
+    "mtime": 1790871125.3781197,
+    "ast_hash": "ef784bba6ccd6d8590d9aa1df035068c",
     "semantic_hash": ""
   },
   "layers/1.base/app/components/BaseBrandIcon.vue": {
@@ -60,13 +60,13 @@
     "semantic_hash": ""
   },
   "layers/1.base/app/layouts/default.vue": {
-    "mtime": 1789394028.1202998,
-    "ast_hash": "d207350ad3bbbfc6faf7087c55ee107e",
+    "mtime": 1790775557.972704,
+    "ast_hash": "a2297ff637eaae10c0d7f523068b1159",
     "semantic_hash": ""
   },
   "layers/1.base/app/utils/app-routes.ts": {
-    "mtime": 1789153981.4240491,
-    "ast_hash": "94ff4e62cbba810d25bf2c8c4f75c7ce",
+    "mtime": 1790709287.6412735,
+    "ast_hash": "3a09154b920fcc02a621c5aef4ad1ffa",
     "semantic_hash": ""
   },
   "layers/1.base/app/utils/brand.ts": {
@@ -130,18 +130,18 @@
     "semantic_hash": ""
   },
   "layers/10.vehicles/app/composables/useVehiclesList.ts": {
-    "mtime": 1790011563.5963368,
-    "ast_hash": "35507975b5fc2db676e5a4ec0407cd8e",
+    "mtime": 1790782661.4810233,
+    "ast_hash": "d09cab7cd312ba801e15faa788165e57",
     "semantic_hash": ""
   },
   "layers/10.vehicles/app/pages/vehicles-[id].vue": {
-    "mtime": 1789490258.9247682,
-    "ast_hash": "eea8cc9698ffaef8a233ff3ab16ca02b",
+    "mtime": 1790776693.0852275,
+    "ast_hash": "b1151189352d2180046a3bcf56160091",
     "semantic_hash": ""
   },
   "layers/10.vehicles/app/pages/vehicles-new.vue": {
-    "mtime": 1789392711.0116494,
-    "ast_hash": "25a1c9b8336ef7b6b9380c30abbf0653",
+    "mtime": 1790775640.3580022,
+    "ast_hash": "a18a62005550eb1abf24f49b9746048f",
     "semantic_hash": ""
   },
   "layers/10.vehicles/app/pages/vehicles.vue": {
@@ -190,8 +190,8 @@
     "semantic_hash": ""
   },
   "layers/11.scheduling/app/components/SchedulingFormSlideover.vue": {
-    "mtime": 1789750892.8114533,
-    "ast_hash": "5ba45188e8fb0b3c0deaba3ed7947c3b",
+    "mtime": 1790777691.4490242,
+    "ast_hash": "45045bd9fa47b327e6f0a1938c7fc4c3",
     "semantic_hash": ""
   },
   "layers/11.scheduling/app/composables/useSchedulingBoard.ts": {
@@ -205,13 +205,13 @@
     "semantic_hash": ""
   },
   "layers/11.scheduling/app/pages/scheduling.vue": {
-    "mtime": 1789394499.3078394,
-    "ast_hash": "8233cda1f36afb86c8873388cc16d4ee",
+    "mtime": 1790778510.4025893,
+    "ast_hash": "e781417c88cd4da45df9f0d3335a74a7",
     "semantic_hash": ""
   },
   "layers/11.scheduling/app/utils/scheduling.ts": {
-    "mtime": 1789147987.796797,
-    "ast_hash": "d1385129058634449bd31c05a38496fa",
+    "mtime": 1790709747.240206,
+    "ast_hash": "a6df3b8b54d17baefadef12c1671b445",
     "semantic_hash": ""
   },
   "layers/11.scheduling/nuxt.config.ts": {
@@ -410,23 +410,23 @@
     "semantic_hash": ""
   },
   "layers/4.customers/app/composables/useCustomersList.ts": {
-    "mtime": 1790011562.8251948,
-    "ast_hash": "2fae6ba5adf3489e855ff129a93b42ae",
+    "mtime": 1790782659.8964612,
+    "ast_hash": "f32bc3e1b1374ea6c7a69b22d60792c0",
     "semantic_hash": ""
   },
   "layers/4.customers/app/pages/customers-[id].vue": {
-    "mtime": 1789392711.128643,
-    "ast_hash": "193c01d126b680588875cfdf45d95f2a",
+    "mtime": 1790777667.016517,
+    "ast_hash": "e9b7198279b374db64ec28e8471b56b7",
     "semantic_hash": ""
   },
   "layers/4.customers/app/pages/customers-new.vue": {
-    "mtime": 1789392710.8826566,
-    "ast_hash": "c8f000b052efac6dcf741b1b313b6684",
-    "semantic_hash": "c8f000b052efac6dcf741b1b313b6684"
+    "mtime": 1790775633.2411842,
+    "ast_hash": "0b06165fc6378c32d6fc065c8e9e7902",
+    "semantic_hash": ""
   },
   "layers/4.customers/app/pages/customers.vue": {
-    "mtime": 1789409481.0213864,
-    "ast_hash": "185f057bfc8370b8cb37265a9009db7a",
+    "mtime": 1790782661.5385735,
+    "ast_hash": "d5876ad370d14adbba944b2b219f6439",
     "semantic_hash": ""
   },
   "layers/4.customers/app/utils/customer-form.ts": {
@@ -460,8 +460,8 @@
     "semantic_hash": ""
   },
   "layers/5.orders/app/components/OrdersBudgetSection.vue": {
-    "mtime": 1789751939.8814,
-    "ast_hash": "ebe6322156f5727550d3d06be9f20da4",
+    "mtime": 1790709775.0163608,
+    "ast_hash": "6c69cba2b5cffe4a1558b6e1a5a886f7",
     "semantic_hash": ""
   },
   "layers/5.orders/app/components/OrdersDetailHero.vue": {
@@ -475,8 +475,8 @@
     "semantic_hash": ""
   },
   "layers/5.orders/app/components/OrdersNewForm.vue": {
-    "mtime": 1789750861.31887,
-    "ast_hash": "af9225f70980295c3fc4ce083f82df21",
+    "mtime": 1790776731.185698,
+    "ast_hash": "445b89160d4ba32294af7f9ec58ba84b",
     "semantic_hash": ""
   },
   "layers/5.orders/app/components/OrdersPaymentEditor.vue": {
@@ -505,8 +505,8 @@
     "semantic_hash": ""
   },
   "layers/5.orders/app/composables/useOrderBudgetPage.ts": {
-    "mtime": 1789474827.1962883,
-    "ast_hash": "de2cf46bc0cd3a17c0014ffcdceb96e5",
+    "mtime": 1790778547.2541885,
+    "ast_hash": "dabedae22f87192844c6644c2c774e76",
     "semantic_hash": ""
   },
   "layers/5.orders/app/composables/useOrderDetailEditor.ts": {
@@ -550,8 +550,8 @@
     "semantic_hash": ""
   },
   "layers/5.orders/app/composables/useOrdersList.ts": {
-    "mtime": 1790011562.1193314,
-    "ast_hash": "0745192d12d2afe9f84b97168c732d00",
+    "mtime": 1790782657.143529,
+    "ast_hash": "d0496a80f96c66cd9c1465467151f388",
     "semantic_hash": ""
   },
   "layers/5.orders/app/pages/orders-[id]-print.vue": {
@@ -560,18 +560,18 @@
     "semantic_hash": ""
   },
   "layers/5.orders/app/pages/orders-[id].vue": {
-    "mtime": 1789749525.2543778,
-    "ast_hash": "c27c28ec6e48713d00f5c36cef30b9d1",
+    "mtime": 1790871125.5309188,
+    "ast_hash": "d9f108d8e056c33385820d06eed3f505",
     "semantic_hash": ""
   },
   "layers/5.orders/app/pages/orders-new.vue": {
-    "mtime": 1789147992.041801,
-    "ast_hash": "331f7de7d177f50f84611c970318e7f5",
+    "mtime": 1790775670.5298376,
+    "ast_hash": "32a673fc30130fe06eaefebddce4d128",
     "semantic_hash": ""
   },
   "layers/5.orders/app/pages/orders.vue": {
-    "mtime": 1790011217.8842204,
-    "ast_hash": "63813c8281d362dff87f6bd91f8dfddd",
+    "mtime": 1790782658.5570056,
+    "ast_hash": "8d4e491419c2786c48c9f511274206b8",
     "semantic_hash": ""
   },
   "layers/5.orders/app/types/orders.ts": {
@@ -635,14 +635,14 @@
     "semantic_hash": "4b77b7de8d2a3d4646ac9a531cc4d11f"
   },
   "nuxt.config.ts": {
-    "mtime": 1789153984.635663,
-    "ast_hash": "9b039fa798f01d98cecaa586a415ccd3",
+    "mtime": 1790715206.8157725,
+    "ast_hash": "560f3f15e29fc1149685bb61d1b5d6fa",
     "semantic_hash": ""
   },
   "package.json": {
-    "mtime": 1788367477.3042345,
-    "ast_hash": "227f0a549b163e98bb3d41d80539a274",
-    "semantic_hash": "227f0a549b163e98bb3d41d80539a274"
+    "mtime": 1790714464.9482732,
+    "ast_hash": "542ffb47cb37e5588755c476b6c7da22",
+    "semantic_hash": ""
   },
   "renovate.json": {
     "mtime": 1788165562.0,
@@ -1460,8 +1460,8 @@
     "semantic_hash": ""
   },
   "layers/6.configuration/app/composables/useCatalog.ts": {
-    "mtime": 1790011564.0733385,
-    "ast_hash": "3ef6ce86b77144486bf29a185f537792",
+    "mtime": 1790782664.1255999,
+    "ast_hash": "46bd3d3b2ecc3ab78acab1e11d4fc982",
     "semantic_hash": ""
   },
   "layers/6.configuration/app/composables/usePricingParams.ts": {
@@ -1480,18 +1480,18 @@
     "semantic_hash": ""
   },
   "layers/6.configuration/app/pages/catalog-suppliers.vue": {
-    "mtime": 1789755904.9868383,
-    "ast_hash": "e74c0dbb2bd2ec2fba1f5be409b5a896",
+    "mtime": 1790782665.6681142,
+    "ast_hash": "2adbcb056e28dbc479be9d4867ba914e",
     "semantic_hash": ""
   },
   "layers/6.configuration/app/pages/catalog.vue": {
-    "mtime": 1789755904.9868383,
-    "ast_hash": "a0f2ba4365c457ad11bb57d51bdc5382",
+    "mtime": 1790782665.4966137,
+    "ast_hash": "350bf876e79c7aeb65ae47b1d2322175",
     "semantic_hash": ""
   },
   "layers/6.configuration/app/pages/pricing.vue": {
-    "mtime": 1789411600.4109058,
-    "ast_hash": "b7cb1d33c838f826d652ddacc04d8a60",
+    "mtime": 1790778506.832789,
+    "ast_hash": "5eaf98972d5ac723a0ca262b5a5490bd",
     "semantic_hash": ""
   },
   "layers/6.configuration/app/utils/catalog.ts": {
@@ -1555,8 +1555,8 @@
     "semantic_hash": ""
   },
   "layers/8.management/app/components/team/TeamCollaboratorsCreateForm.vue": {
-    "mtime": 1789750864.7126236,
-    "ast_hash": "0933ba5a55e1eadcdc3c44d5d81aeabf",
+    "mtime": 1790709743.206066,
+    "ast_hash": "0a097b8ec8e171eeb90a2f8992838297",
     "semantic_hash": ""
   },
   "layers/8.management/app/components/team/TeamCollaboratorsTable.vue": {
@@ -1585,8 +1585,8 @@
     "semantic_hash": ""
   },
   "layers/8.management/app/composables/useFinanceReport.ts": {
-    "mtime": 1788978006.565853,
-    "ast_hash": "2f881b1b36222339af95ccb4c0a32936",
+    "mtime": 1790782666.8486276,
+    "ast_hash": "2955f9301b09462b64e3b4791757b305",
     "semantic_hash": ""
   },
   "layers/8.management/app/pages/collaborators.vue": {
@@ -1595,13 +1595,13 @@
     "semantic_hash": ""
   },
   "layers/8.management/app/pages/finance.vue": {
-    "mtime": 1789391378.2982905,
-    "ast_hash": "887caf108e76437dd72f71e93e6f1504",
+    "mtime": 1790777681.5138743,
+    "ast_hash": "5f8d758b59dacbb56f3c5136fc937961",
     "semantic_hash": ""
   },
   "layers/8.management/app/pages/team.vue": {
-    "mtime": 1789480386.042063,
-    "ast_hash": "edd4ea9d9854a7b939829e62bfa765e1",
+    "mtime": 1790778475.3508635,
+    "ast_hash": "bdc34bb1057206e47c38d71d89bb4089",
     "semantic_hash": ""
   },
   "layers/8.management/app/utils/accounts-payable.ts": {
@@ -1615,8 +1615,8 @@
     "semantic_hash": ""
   },
   "layers/8.management/app/utils/finance.ts": {
-    "mtime": 1789069889.3476639,
-    "ast_hash": "44d804454c4c7067df495eeeacc75b62",
+    "mtime": 1790783371.5936966,
+    "ast_hash": "e5cc5003a538ceda9fc07c8e4484c098",
     "semantic_hash": ""
   },
   "layers/8.management/nuxt.config.ts": {
@@ -1630,8 +1630,8 @@
     "semantic_hash": ""
   },
   "layers/8.management/app/composables/useFinanceWorkspace.ts": {
-    "mtime": 1789158023.6513379,
-    "ast_hash": "086fc9ef90e3128f806b3f23ea1884c9",
+    "mtime": 1790783378.1897585,
+    "ast_hash": "4502201d8709e23f9977f6f4f8b36614",
     "semantic_hash": ""
   },
   ".cursor/skills/idea-refine/scripts/idea-refine.sh": {
@@ -1835,13 +1835,13 @@
     "semantic_hash": ""
   },
   "layers/5.orders/app/components/OrdersPhotosSection.vue": {
-    "mtime": 1789399090.9695032,
-    "ast_hash": "1919931be24e8b58af6ceec4266c3369",
+    "mtime": 1790777678.5403502,
+    "ast_hash": "82e588a1e1b2f3e0cd7f7bf2b37933b6",
     "semantic_hash": ""
   },
   "layers/5.orders/app/composables/useOrderPhotos.ts": {
-    "mtime": 1789391321.8272753,
-    "ast_hash": "0a2ca990d5dccc3b06e9294829f37e30",
+    "mtime": 1790777677.9427702,
+    "ast_hash": "69539fb4e4ed24ae0e5bb5f7467dfb02",
     "semantic_hash": ""
   },
   "layers/5.orders/app/utils/order-photos.ts": {
@@ -1907,6 +1907,291 @@
   "shared/utils/text-case.ts": {
     "mtime": 1789750639.6038578,
     "ast_hash": "a04b738b3cea4c6198c1637b2fdc43ec",
+    "semantic_hash": ""
+  },
+  "layers/1.base/app/utils/voice/text.test.ts": {
+    "mtime": 1790772333.6961105,
+    "ast_hash": "0ec7d1a0e17a5feaf5880c53fcc6d3e6",
+    "semantic_hash": ""
+  },
+  "layers/1.base/app/utils/voice/text.ts": {
+    "mtime": 1790772269.1270552,
+    "ast_hash": "b3c9fe570d26da07868ca4efbec7c82d",
+    "semantic_hash": ""
+  },
+  "layers/1.base/app/utils/voice/types.ts": {
+    "mtime": 1790857027.830067,
+    "ast_hash": "ef9b5e91def9c3da3ab53dd50393e5cc",
+    "semantic_hash": ""
+  },
+  "docs/superpowers/plans/2026-09-29-voice-commands.md": {
+    "mtime": 1790708698.9716558,
+    "ast_hash": "f82b822a37b94c98150d40d6ce59393d",
+    "semantic_hash": ""
+  },
+  "docs/superpowers/specs/2026-09-29-voice-commands-design.md": {
+    "mtime": 1790708609.179844,
+    "ast_hash": "9bdee85223e02de60158c5ce613a4413",
+    "semantic_hash": ""
+  },
+  "layers/1.base/app/components/VoiceCommandButton.vue": {
+    "mtime": 1790872208.3382735,
+    "ast_hash": "aa6a77b159f87b3d15db11e31a31c587",
+    "semantic_hash": ""
+  },
+  "layers/1.base/app/composables/useSpeechRecognition.ts": {
+    "mtime": 1790772279.8735652,
+    "ast_hash": "2c6766f3d88de14ad3889085b1103027",
+    "semantic_hash": ""
+  },
+  "layers/1.base/app/composables/useVoiceCommand.ts": {
+    "mtime": 1790872196.1755023,
+    "ast_hash": "e959444c2dabf9fae0cd771e74945d89",
+    "semantic_hash": ""
+  },
+  "layers/1.base/app/composables/useVoiceDraft.ts": {
+    "mtime": 1790776380.9882736,
+    "ast_hash": "d5485fa0821d7ecd088ed918d118fdcb",
+    "semantic_hash": ""
+  },
+  "layers/1.base/app/composables/useVoiceLookup.ts": {
+    "mtime": 1790775565.8041885,
+    "ast_hash": "e763ec8518894c11b38ae406b11446db",
+    "semantic_hash": ""
+  },
+  "layers/1.base/app/utils/voice/parser.test.ts": {
+    "mtime": 1790710975.1814005,
+    "ast_hash": "7171d9f3d6850ee287e9864d5f8dcec8",
+    "semantic_hash": ""
+  },
+  "layers/1.base/app/utils/voice/parser.ts": {
+    "mtime": 1790774453.0793483,
+    "ast_hash": "8871b3c3c05aa6aa770500416c56ae10",
+    "semantic_hash": ""
+  },
+  "layers/1.base/app/utils/voice/normalize.test.ts": {
+    "mtime": 1790857001.4153378,
+    "ast_hash": "1fc5051f806cfc5b19893d70ad78e138",
+    "semantic_hash": ""
+  },
+  "layers/1.base/app/utils/voice/normalize.ts": {
+    "mtime": 1790857027.9730194,
+    "ast_hash": "ad68ed512595f67c4080a7c9b4ac7e1c",
+    "semantic_hash": ""
+  },
+  "layers/1.base/app/utils/voice/prompt.test.ts": {
+    "mtime": 1790857002.2149184,
+    "ast_hash": "e7ca7acc31ab8fd1b98952ab4f8ae5d8",
+    "semantic_hash": ""
+  },
+  "layers/1.base/app/utils/voice/prompt.ts": {
+    "mtime": 1790857028.9240732,
+    "ast_hash": "c5a11a20ffc606d8a4df22b4271654d9",
+    "semantic_hash": ""
+  },
+  "docs/superpowers/plans/2026-09-29-voice-ai-edit.md": {
+    "mtime": 1790716019.9963148,
+    "ast_hash": "c2245b88223171c7c93b227ac9d07fd0",
+    "semantic_hash": ""
+  },
+  "docs/superpowers/specs/2026-09-29-voice-ai-edit-design.md": {
+    "mtime": 1790716018.6262856,
+    "ast_hash": "9f10e264421fd12ecf805223129a96e3",
+    "semantic_hash": ""
+  },
+  "server/api/voice/interpret.post.ts": {
+    "mtime": 1790872175.8262548,
+    "ast_hash": "3602f85a491d53e700051844db3cae44",
+    "semantic_hash": ""
+  },
+  "server/utils/voice-providers.test.ts": {
+    "mtime": 1790872171.5212023,
+    "ast_hash": "4b78f8d9e526bbadf91ff0f6172c03b6",
+    "semantic_hash": ""
+  },
+  "server/utils/voice-providers.ts": {
+    "mtime": 1790872168.5041656,
+    "ast_hash": "a7f622b55926d306c91ad17f9a59caff",
+    "semantic_hash": ""
+  },
+  "layers/1.base/app/utils/voice/apply.test.ts": {
+    "mtime": 1790775053.9900177,
+    "ast_hash": "e3f5e98c5edce56684e05a9ef43e73ea",
+    "semantic_hash": ""
+  },
+  "layers/1.base/app/utils/voice/apply.ts": {
+    "mtime": 1790775084.537775,
+    "ast_hash": "89ff942165463ce1f0991f5a111c9cd8",
+    "semantic_hash": ""
+  },
+  "layers/1.base/app/utils/voice/catalog.test.ts": {
+    "mtime": 1790782215.2041554,
+    "ast_hash": "9e6a34e390221a2e3c9c21ed03cf9eca",
+    "semantic_hash": ""
+  },
+  "layers/1.base/app/utils/voice/catalog.ts": {
+    "mtime": 1790782672.6276865,
+    "ast_hash": "ffaee0ca341ef669906ee7b2e49c9035",
+    "semantic_hash": ""
+  },
+  "layers/1.base/app/utils/voice/legacy-types.ts": {
+    "mtime": 1790774452.1138813,
+    "ast_hash": "b51aecf0ca56524cad9db9a7a77bbc58",
+    "semantic_hash": ""
+  },
+  "layers/1.base/app/utils/voice/legacy.test.ts": {
+    "mtime": 1790774569.0538087,
+    "ast_hash": "8c47164c63f9d7a62cd792850d9e40b8",
+    "semantic_hash": ""
+  },
+  "layers/1.base/app/utils/voice/legacy.ts": {
+    "mtime": 1790774574.5902781,
+    "ast_hash": "8623d327abe2ed18d1a11da8a338b5f9",
+    "semantic_hash": ""
+  },
+  "docs/superpowers/plans/2026-09-30-voice-full-coverage.md": {
+    "mtime": 1790774329.0693576,
+    "ast_hash": "76c1b0716c97b271c03d2b303f9a69ad",
+    "semantic_hash": ""
+  },
+  "docs/superpowers/specs/2026-09-30-voice-full-coverage-design.md": {
+    "mtime": 1790774320.2742887,
+    "ast_hash": "18e4258e3631863824035d6c191ab915",
+    "semantic_hash": ""
+  },
+  "layers/1.base/app/components/VoiceConfirm.vue": {
+    "mtime": 1790779152.88645,
+    "ast_hash": "330b8ad31f7b0cd3138ff51c995ebfb5",
+    "semantic_hash": ""
+  },
+  "layers/1.base/app/composables/useVoiceConfirm.ts": {
+    "mtime": 1790775556.7790837,
+    "ast_hash": "960eec74f283bf74c540d7b46b8d4a33",
+    "semantic_hash": ""
+  },
+  "layers/1.base/app/composables/useVoiceForm.ts": {
+    "mtime": 1790777588.64969,
+    "ast_hash": "30594974524a97614bc9102bcf9fe308",
+    "semantic_hash": ""
+  },
+  "layers/1.base/app/utils/voice/current.test.ts": {
+    "mtime": 1790776337.3607025,
+    "ast_hash": "6adccb3ad41a715e8d89cbcb79696172",
+    "semantic_hash": ""
+  },
+  "layers/1.base/app/utils/voice/current.ts": {
+    "mtime": 1790776361.5732403,
+    "ast_hash": "068f9147e8f0a06760b910bb07e4c466",
+    "semantic_hash": ""
+  },
+  "layers/1.base/app/composables/useRouteQueryState.ts": {
+    "mtime": 1790783375.3207316,
+    "ast_hash": "39124f2814d6fbee1099a26a34bb4d5f",
+    "semantic_hash": ""
+  },
+  "layers/1.base/app/utils/route-query.test.ts": {
+    "mtime": 1790782221.0799742,
+    "ast_hash": "bc4ae82893b1c6c93f7ad4d968d2564c",
+    "semantic_hash": ""
+  },
+  "layers/1.base/app/utils/route-query.ts": {
+    "mtime": 1790782237.674025,
+    "ast_hash": "e68131e62276e29d4e034abb7c5245aa",
+    "semantic_hash": ""
+  },
+  "layers/1.base/app/utils/voice/views.ts": {
+    "mtime": 1790782237.102321,
+    "ast_hash": "f1ac20f8f2b1731908ada4cc2f2ca415",
+    "semantic_hash": ""
+  },
+  "docs/superpowers/plans/2026-09-30-voice-screen-controls.md": {
+    "mtime": 1790782122.1852782,
+    "ast_hash": "da3816dbb9acc429a3bb65f8e991f254",
+    "semantic_hash": ""
+  },
+  "docs/superpowers/specs/2026-09-30-voice-screen-controls-design.md": {
+    "mtime": 1790781797.096416,
+    "ast_hash": "67ca4a73f4627ecc3383a1531273379e",
+    "semantic_hash": ""
+  },
+  "layers/1.base/app/composables/useVoiceAsk.ts": {
+    "mtime": 1790872189.2924187,
+    "ast_hash": "b25139b99057eb4a595ae6cf0efa2719",
+    "semantic_hash": ""
+  },
+  "server/api/voice/ask.post.ts": {
+    "mtime": 1790872177.304508,
+    "ast_hash": "57319c1c88efcebb560c314b278628d1",
+    "semantic_hash": ""
+  },
+  "server/utils/voice-ask/loop.test.ts": {
+    "mtime": 1790872183.3143458,
+    "ast_hash": "d80d2796ef203aa4b81691744bdbd9c4",
+    "semantic_hash": ""
+  },
+  "server/utils/voice-ask/loop.ts": {
+    "mtime": 1790872183.1933444,
+    "ast_hash": "a05353ce2fde6a5a7f58f016366e54ba",
+    "semantic_hash": ""
+  },
+  "server/utils/voice-ask/mask.test.ts": {
+    "mtime": 1790857770.560382,
+    "ast_hash": "613e258e3add26a52ae3081697506621",
+    "semantic_hash": ""
+  },
+  "server/utils/voice-ask/mask.ts": {
+    "mtime": 1790858067.7954075,
+    "ast_hash": "785c396df4d04c9ff45cb68c954ba279",
+    "semantic_hash": ""
+  },
+  "server/utils/voice-ask/prompt.test.ts": {
+    "mtime": 1790859888.3914795,
+    "ast_hash": "a00cff174ba259d3a0ef084a3de08cfd",
+    "semantic_hash": ""
+  },
+  "server/utils/voice-ask/prompt.ts": {
+    "mtime": 1790859888.2084754,
+    "ast_hash": "2b6d3178172e67b56b3cb626595e0843",
+    "semantic_hash": ""
+  },
+  "server/utils/voice-ask/refs.test.ts": {
+    "mtime": 1790857825.927769,
+    "ast_hash": "eb7a87bf7676633ae38c2d22cece231e",
+    "semantic_hash": ""
+  },
+  "server/utils/voice-ask/refs.ts": {
+    "mtime": 1790857837.1985912,
+    "ast_hash": "4b39b0c4135397e08d74c3e803401e3d",
+    "semantic_hash": ""
+  },
+  "server/utils/voice-ask/tools.test.ts": {
+    "mtime": 1790858466.3269885,
+    "ast_hash": "379ff8c7fe477842291059debcc87fcb",
+    "semantic_hash": ""
+  },
+  "server/utils/voice-ask/tools.ts": {
+    "mtime": 1790858468.607003,
+    "ast_hash": "dce2b96e7808af552d387c413247971c",
+    "semantic_hash": ""
+  },
+  "docs/superpowers/plans/2026-09-30-voice-questions.md": {
+    "mtime": 1790856937.672544,
+    "ast_hash": "5acf2ec56cdcc2b361ee73a92319548f",
+    "semantic_hash": ""
+  },
+  "docs/superpowers/specs/2026-09-30-voice-questions-design.md": {
+    "mtime": 1790860012.3340714,
+    "ast_hash": "09690f23a5559bf9df1dddc213ac1924",
+    "semantic_hash": ""
+  },
+  "layers/1.base/app/utils/voice/ai-failure.test.ts": {
+    "mtime": 1790872214.1972194,
+    "ast_hash": "5a9ef74941e87598fe408a378849ec41",
+    "semantic_hash": ""
+  },
+  "layers/1.base/app/utils/voice/ai-failure.ts": {
+    "mtime": 1790872188.770672,
+    "ast_hash": "7ffcc60266298da4bbf4a05d8de0ad1b",
     "semantic_hash": ""
   }
 }

@@ -1,10 +1,11 @@
 import type { FormaPagamento } from '~~/shared/types/oficina'
 import {
+  ACCOUNTS_FILTER_ITEMS,
   emptyFinanceAccountDraft,
   type AccountsFilter,
   type FinanceCategoryDraft
 } from '../utils/accounts-payable'
-import { currentMonthValue } from '../utils/finance'
+import { currentMonthValue, isMonthValue } from '../utils/finance'
 import type { SupplierDraft } from '#layers/configuration/app/utils/catalog'
 import {
   useSupplierMutations,
@@ -20,8 +21,9 @@ export const FINANCE_TAB_ITEMS = [
 ]
 
 export function useFinanceWorkspace() {
-  const tab = ref<FinanceTab>('resumo')
-  const accountsFilter = ref<AccountsFilter>('a_pagar')
+  const tab = useRouteQueryState<FinanceTab>('aba', 'resumo', FINANCE_TAB_ITEMS.map(item => item.value))
+  const accountsFilter = useRouteQueryState<AccountsFilter>('contas', 'a_pagar', ACCOUNTS_FILTER_ITEMS.map(item => item.value))
+  const month = useRouteQueryState('mes', currentMonthValue(), isMonthValue)
   const categoriesOpen = ref(false)
   const suppliersOpen = ref(false)
 
@@ -45,7 +47,7 @@ export function useFinanceWorkspace() {
     total: ordersTotal,
     pending: pendingReport,
     refresh: refreshReport
-  } = useFinanceReport(currentMonthValue(), {
+  } = useFinanceReport(month, {
     enabled: computed(() => tab.value === 'resumo' || tab.value === 'recebiveis')
   })
 

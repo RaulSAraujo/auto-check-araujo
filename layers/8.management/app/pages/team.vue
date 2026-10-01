@@ -2,6 +2,7 @@
 import type { ColaboradorPapel } from '~~/shared/types/oficina'
 import type { CollaboratorRow } from '#layers/auth/app/composables/useCollaborators'
 import { settingsHubBreadcrumb } from '#layers/configuration/app/utils/settings-hub'
+import { VOICE_CATALOG, voiceConfirmText } from '#layers/base/app/utils/voice/catalog'
 
 defineOptions({ name: 'TeamIndexPage' })
 
@@ -20,7 +21,7 @@ const breadcrumbItems = settingsHubBreadcrumb('Equipe')
 const user = useSupabaseUser()
 const currentUserId = computed(() => user.value?.id)
 
-const { collaborators, pending, refresh } = useCollaboratorsList()
+const { collaborators, pending, refresh, error: collaboratorsError } = useCollaboratorsList()
 const { updatePapel, resetCollaboratorPassword, deleteCollaborator } = useCollaboratorMutations()
 
 const createOpen = ref(false)
@@ -31,6 +32,74 @@ const deleteTarget = ref<CollaboratorRow | null>(null)
 const updatingId = ref<string | null>(null)
 const resettingPassword = ref(false)
 const deleting = ref(false)
+const voiceCollaborator = ref<{ nome?: string, username?: string, papel?: ColaboradorPapel }>()
+
+watch(createOpen, (open) => {
+  if (!open) voiceCollaborator.value = undefined
+})
+
+const { confirmVoice } = useVoiceConfirm()
+
+function collaboratorRow(id?: string) {
+  return collaborators.value?.find(row => row.id === id)
+}
+
+function missingCollaboratorMessage() {
+  return collaboratorsError.value ? 'Não foi possível carregar a equipe.' : 'Colaborador não encontrado na lista.'
+}
+
+async function changeRoleByVoice(id: string | undefined, papel: unknown) {
+  const row = collaboratorRow(id)
+  if (!row || typeof papel !== 'string') return
+  await onUpdatePapel({ id: row.id, papel: papel as ColaboradorPapel })
+}
+
+useVoiceForm('collaborator', {
+  apply: async (draft) => {
+    if (draft.op === 'create') {
+      voiceCollaborator.value = { ...draft.fields } as typeof voiceCollaborator.value
+      createOpen.value = true
+      return
+    }
+    const { papel, ...others } = draft.fields
+    const onlyRoleToast = () => useToast().add({ title: 'Por voz, só dá para mudar o papel de um colaborador.', color: 'warning' })
+    if (typeof papel !== 'string') {
+      onlyRoleToast()
+      return
+    }
+    if (draft.id === currentUserId.value) {
+      useToast().add({ title: 'Você não pode mudar o próprio papel.', color: 'warning' })
+      return
+    }
+    if (!collaboratorRow(draft.id)) {
+      useToast().add({ title: missingCollaboratorMessage(), color: 'warning' })
+      return
+    }
+    if (await confirmVoice({ title: voiceConfirmText(VOICE_CATALOG.collaborator.actions.trocarPapel!.confirm!, { label: draft.label, papel }) })) {
+      await changeRoleByVoice(draft.id, papel)
+    }
+    if (Object.keys(others).length) onlyRoleToast()
+  },
+  unavailable: (action, draft) => {
+    if (action !== 'redefinirSenha' && draft.id === currentUserId.value) return 'Você não pode fazer isso com o próprio usuário.'
+    if (action === 'trocarPapel' && typeof draft.args?.papel !== 'string') return 'Diga o novo papel.'
+    if (!collaboratorRow(draft.id)) return missingCollaboratorMessage()
+    return undefined
+  },
+  actions: {
+    trocarPapel: draft => changeRoleByVoice(draft.id, draft.args?.papel),
+    redefinirSenha: (draft) => {
+      const row = collaboratorRow(draft.id)
+      if (row) onResetPassword(row)
+      return { message: 'Digite a nova senha.' }
+    },
+    excluir: (draft) => {
+      const row = collaboratorRow(draft.id)
+      if (row) onDelete(row)
+    }
+  },
+  ready: () => !pending.value && (!!collaborators.value || !!collaboratorsError.value)
+})
 
 const countLabel = computed(() => {
   const n = collaborators.value?.length ?? 0
@@ -143,7 +212,10 @@ async function onCreated() {
             :ui="{ content: 'overscroll-contain' }"
           >
             <template #body>
-              <TeamCollaboratorsCreateForm @created="onCreated" />
+              <TeamCollaboratorsCreateForm
+                :initial="voiceCollaborator"
+                @created="onCreated"
+              />
             </template>
           </USlideover>
 

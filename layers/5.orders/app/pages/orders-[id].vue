@@ -7,6 +7,10 @@ import {
 import { downloadBudgetPdf, printBudgetPdf } from '../utils/pdf'
 import { primaryPhone } from '~~/shared/utils/contact'
 import { formatTimeShort, schedulingDayPath } from '#layers/scheduling/app/utils/scheduling'
+import { applyVoiceFields, voiceBudgetItem } from '#layers/base/app/utils/voice/apply'
+import { VOICE_CATALOG } from '#layers/base/app/utils/voice/catalog'
+import { foldText } from '#layers/base/app/utils/voice/text'
+import type { VoiceDraft } from '#layers/base/app/utils/voice/types'
 
 defineOptions({ name: 'OrdersDetailPage' })
 
@@ -25,7 +29,7 @@ const breadcrumbOrigin = resolveOrderBreadcrumbOrigin()
 
 const [
   { data: ordem, pending, refresh },
-  { data: budgetItems, refresh: refreshBudgetItems }
+  { data: budgetItems, refresh: refreshBudgetItems, status: budgetItemsStatus }
 ] = await Promise.all([
   useOrderQuery(id),
   useOrderItemsQuery(id)
@@ -41,6 +45,7 @@ const { breadcrumbItems } = useOrderBreadcrumb({
 const {
   draft,
   selectedCatalogId,
+  addModalOpen,
   adding,
   deletingId,
   updatingStatus,
@@ -54,7 +59,9 @@ const {
   onDeleteItem,
   onSubmitForApproval,
   onApprove,
-  onReject
+  onReject,
+  openVoiceItem,
+  addVoiceItems
 } = useOrderBudgetPage(id, ordem, budgetItems, refresh, refreshBudgetItems)
 
 const {
@@ -89,6 +96,127 @@ const {
   discard: discardPayment,
   savePayment
 } = useOrderPayment(id, ordem, refresh)
+
+const { confirmVoice } = useVoiceConfirm()
+
+const ORDER_FORM_FIELDS = ['km_entrada', 'reclamacao', 'diagnostico', 'observacoes'] as const
+const PAYMENT_FIELDS = ['pago', 'forma_pagamento', 'parcelas', 'valor_cobrado'] as const
+
+const PAYMENT_DETAIL_FIELDS = ['forma_pagamento', 'parcelas', 'valor_cobrado'] as const
+const UNPAID_MESSAGE = 'Marque a OS como paga antes.'
+
+function voiceItemToRemove(draft: VoiceDraft): { item?: NonNullable<typeof budgetItems.value>[number], error?: string } {
+  const spoken = typeof draft.args?.descricao === 'string' ? foldText(draft.args.descricao).trim() : ''
+  const items = spoken ? (budgetItems.value ?? []) : []
+  const exact = items.filter(item => foldText(item.descricao).trim() === spoken)
+  const matches = exact.length ? exact : items.filter(item => foldText(item.descricao).includes(spoken))
+  if (matches.length === 1) return { item: matches[0] }
+  return { error: matches.length ? 'Mais de um item com esse nome. Diga o nome completo.' : 'Item não encontrado no orçamento.' }
+}
+
+function applyVoicePayment(fields: VoiceDraft['fields']) {
+  if (!PAYMENT_FIELDS.some(key => key in fields)) return
+  if (!canEditPayment.value || !showPaymentSection.value) {
+    useToast().add({ title: 'O pagamento desta OS não pode ser editado agora.', color: 'warning' })
+    return
+  }
+  const paid = fields.pago === true || (!('pago' in fields) && paymentState.pago)
+  const hasDetails = PAYMENT_DETAIL_FIELDS.some(key => key in fields)
+  if (hasDetails && !paid) useToast().add({ title: UNPAID_MESSAGE, color: 'warning' })
+  const written = applyVoiceFields(paymentState, fields, VOICE_CATALOG.order, { only: paid ? PAYMENT_FIELDS : ['pago'] })
+  // A spoken charge must survive the forma/parcelas watchers that recompute the suggestion.
+  if (written.includes('valor_cobrado')) markChargeTouched()
+  if (written.includes('forma_pagamento') && fields.forma_pagamento !== 'cartao_credito') paymentState.parcelas = null
+}
+
+useVoiceForm('order', {
+  ops: ['edit'],
+  apply: (draft) => {
+    const { status, ...rest } = draft.fields
+    const hasForm = ORDER_FORM_FIELDS.some(key => key in rest)
+    if ((hasForm || status) && !canEdit.value) {
+      useToast().add({ title: 'Esta OS não pode ser editada.', color: 'warning' })
+    } else {
+      applyVoiceFields(state, rest, VOICE_CATALOG.order, { only: ORDER_FORM_FIELDS })
+      if (typeof status === 'string') {
+        if (statusItems.value.some(item => item.value === status)) selectedStatus.value = status
+        else useToast().add({ title: 'Esse status não está disponível para esta OS.', color: 'warning' })
+      }
+    }
+    applyVoicePayment(rest)
+  },
+  onItems: async (items) => {
+    const voice = items.map(voiceBudgetItem)
+    if (voice.length === 1) return openVoiceItem(voice[0]!)
+    if (!canEditItems.value) {
+      useToast().add({ title: 'Orçamento bloqueado', description: 'Este orçamento não pode receber itens agora.', color: 'warning' })
+      return
+    }
+    const lines = voice.map(item => `${item.quantidade ?? 1}× ${item.descricao ?? 'item'}${item.valor_unitario != null ? ` — ${formatMoney(item.valor_unitario)}` : ''}`)
+    const ok = await confirmVoice({ title: `Adicionar ${voice.length} itens ao orçamento?`, description: lines.join('\n') })
+    if (!ok) return
+    const { added, skipped } = await addVoiceItems(voice)
+    if (added < voice.length) {
+      const reason = skipped ? ` (${skipped} sem descrição ou valor)` : ''
+      useToast().add({ title: `${added} de ${voice.length} itens adicionados${reason}.`, color: 'warning' })
+    }
+  },
+  unavailable: (action, draft) => {
+    if (['imprimir', 'baixarPdf', 'enviarWhatsApp'].includes(action) && !budgetItems.value?.length) return 'Adicione itens ao orçamento antes.'
+    if (action === 'enviarWhatsApp' && !budgetWhatsappUrl.value) return 'Cliente sem telefone cadastrado.'
+    if (['enviarAprovacao', 'removerItem'].includes(action) && !canEditItems.value) return 'Este orçamento não pode ser alterado agora.'
+    if (action === 'enviarAprovacao' && budgetStatus.value === 'aguardando_aprovacao') return 'O orçamento já está aguardando aprovação.'
+    if (action === 'enviarAprovacao' && !budgetItems.value?.length) return 'Adicione ao menos um item antes de enviar o orçamento.'
+    if (['aprovar', 'rejeitar'].includes(action) && budgetStatus.value !== 'aguardando_aprovacao') return 'O orçamento não está aguardando aprovação.'
+    if (action === 'removerItem') {
+      const { item, error } = voiceItemToRemove(draft)
+      // The confirmation names the matched item, not the spoken fragment.
+      if (item) draft.args = { ...draft.args, descricao: item.descricao }
+      return error
+    }
+    if (action === 'usarSugestao' && (!canEditPayment.value || !showPaymentSection.value)) return 'O pagamento desta OS não pode ser editado agora.'
+    if (action === 'usarSugestao' && !paymentState.pago) return UNPAID_MESSAGE
+    return undefined
+  },
+  actions: {
+    enviarAprovacao: () => onSubmitForApproval(),
+    aprovar: () => onApprove(),
+    rejeitar: () => onReject(),
+    removerItem: async (draft) => {
+      const { item, error } = voiceItemToRemove(draft)
+      if (!item) return { unavailable: error }
+      await onDeleteItem(item.id)
+    },
+    usarSugestao: () => {
+      applySuggestedCharge()
+      return { message: 'Valor sugerido aplicado. Confira e salve.' }
+    },
+    baixarPdf: () => onDownloadBudgetPdf(),
+    // Print and WhatsApp: window.open outside a tap is blocked; the toast button supplies the gesture.
+    imprimir: () => {
+      useToast().add({
+        title: 'Orçamento pronto para imprimir',
+        color: 'info',
+        icon: 'i-lucide-mic',
+        duration: 15000,
+        actions: [{ label: 'Imprimir', icon: 'i-lucide-printer', onClick: onPrintBudgetPdf }]
+      })
+    },
+    enviarWhatsApp: () => {
+      useToast().add({
+        title: 'Orçamento pronto para o WhatsApp',
+        color: 'info',
+        icon: 'i-lucide-mic',
+        duration: 15000,
+        actions: [{ label: 'Abrir WhatsApp', icon: 'i-simple-icons-whatsapp', to: budgetWhatsappUrl.value!, target: '_blank' }]
+      })
+    }
+  },
+  currentId: () => id.value,
+  label: () => ordem.value?.numero,
+  accept: draft => draft.id === id.value,
+  ready: () => !!ordem.value && ['success', 'error'].includes(budgetItemsStatus.value)
+})
 
 const isDirty = computed(() =>
   isFormDirty.value || isStatusDirty.value || isPaymentDirty.value
@@ -301,6 +429,7 @@ onMounted(() => {
           <section class="flex min-w-0 flex-col rounded-2xl bg-default p-5 pb-6 sm:p-6 sm:pb-7 ring-1 ring-default/60">
             <OrdersBudgetSection
               v-model:draft="draft"
+              v-model:add-open="addModalOpen"
               class="flex flex-col"
               :items="budgetItems || []"
               :budget-status="budgetStatus"
@@ -360,10 +489,10 @@ onMounted(() => {
         >
           <div
             v-if="isDirty"
-            class="orders-detail-command fixed inset-x-4 bottom-[calc(3.5rem+env(safe-area-inset-bottom)+1rem)] z-30 mx-auto flex max-w-lg items-center gap-3 rounded-full border border-default/80 bg-default/95 px-4 py-2.5 backdrop-blur-md sm:inset-x-auto sm:left-1/2 sm:-translate-x-1/2 sm:bottom-4"
+            class="orders-detail-command fixed inset-x-4 bottom-[calc(4.5rem+env(safe-area-inset-bottom))] z-30 mx-auto flex max-w-lg items-center gap-3 rounded-full border border-default/80 bg-default/95 px-4 py-2.5 backdrop-blur-md sm:inset-x-auto sm:left-1/2 sm:-translate-x-1/2 sm:bottom-4"
             role="status"
             aria-live="polite"
-            style="padding-bottom: max(0.625rem, env(safe-area-inset-bottom))"
+            data-voice-fab-lift
           >
             <span class="flex min-w-0 flex-1 items-center gap-2 text-sm text-muted">
               <span
