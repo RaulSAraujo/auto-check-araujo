@@ -4,6 +4,15 @@ Sistema interno da oficina mecânica — MVP de **Clientes** e **Veículos** (us
 
 Stack: Nuxt 4, Nuxt UI, Supabase (Auth + Postgres + RLS).
 
+## Telas
+
+| Tela | Desktop | Mobile |
+|------|---------|--------|
+| Login | <img src="docs/screenshots/login-desktop.png" width="480" alt="Login no desktop"> | <img src="docs/screenshots/login-mobile.jpg" width="180" alt="Login no mobile"> |
+| Dashboard | <img src="docs/screenshots/dashboard-desktop.png" width="480" alt="Dashboard no desktop"> | <img src="docs/screenshots/dashboard-mobile.png" width="180" alt="Dashboard no mobile"> |
+| Ordem de Serviço | <img src="docs/screenshots/ordem-desktop.png" width="480" alt="Ordem de Serviço no desktop"> | <img src="docs/screenshots/ordem-mobile.jpg" width="180" alt="Ordem de Serviço no mobile"> |
+| Comandos de voz | <img src="docs/screenshots/voz-desktop.png" width="480" alt="Comandos de voz no desktop"> | <img src="docs/screenshots/voz-mobile.jpg" width="180" alt="Comandos de voz no mobile"> |
+
 ## Setup
 
 ### 1. Dependências
