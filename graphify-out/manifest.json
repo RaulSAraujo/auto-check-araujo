@@ -1920,8 +1920,8 @@
     "semantic_hash": ""
   },
   "layers/1.base/app/utils/voice/types.ts": {
-    "mtime": 1791232028.0214968,
-    "ast_hash": "ef9b5e91def9c3da3ab53dd50393e5cc",
+    "mtime": 1790884748.60594,
+    "ast_hash": "211b3f9498e7f66abc8e70b05f79565b",
     "semantic_hash": ""
   },
   "docs/superpowers/plans/2026-09-29-voice-commands.md": {
@@ -1945,8 +1945,8 @@
     "semantic_hash": ""
   },
   "layers/1.base/app/composables/useVoiceCommand.ts": {
-    "mtime": 1791232028.0203834,
-    "ast_hash": "e959444c2dabf9fae0cd771e74945d89",
+    "mtime": 1790884312.7612503,
+    "ast_hash": "132afce27ab4abac954cf90bc8e3d8bf",
     "semantic_hash": ""
   },
   "layers/1.base/app/composables/useVoiceDraft.ts": {
@@ -1970,23 +1970,23 @@
     "semantic_hash": ""
   },
   "layers/1.base/app/utils/voice/normalize.test.ts": {
-    "mtime": 1791232028.0203834,
-    "ast_hash": "1fc5051f806cfc5b19893d70ad78e138",
+    "mtime": 1790883521.7768564,
+    "ast_hash": "e600967dc6e147db25cbe1b050e0023b",
     "semantic_hash": ""
   },
   "layers/1.base/app/utils/voice/normalize.ts": {
-    "mtime": 1791232028.021278,
-    "ast_hash": "ad68ed512595f67c4080a7c9b4ac7e1c",
+    "mtime": 1790883515.0042896,
+    "ast_hash": "6140f37d6d9f8fe66fefcbedb25698e4",
     "semantic_hash": ""
   },
   "layers/1.base/app/utils/voice/prompt.test.ts": {
-    "mtime": 1791232028.0213745,
-    "ast_hash": "e7ca7acc31ab8fd1b98952ab4f8ae5d8",
+    "mtime": 1790881018.74856,
+    "ast_hash": "1dcbcb733cd929c0ceb661ef07beacf6",
     "semantic_hash": ""
   },
   "layers/1.base/app/utils/voice/prompt.ts": {
-    "mtime": 1791232028.0214968,
-    "ast_hash": "c5a11a20ffc606d8a4df22b4271654d9",
+    "mtime": 1790884136.2652776,
+    "ast_hash": "82ab545ab5299542bdca5a4f08c90cec",
     "semantic_hash": ""
   },
   "docs/superpowers/plans/2026-09-29-voice-ai-edit.md": {
@@ -2000,18 +2000,18 @@
     "semantic_hash": ""
   },
   "server/api/voice/interpret.post.ts": {
-    "mtime": 1791232028.0214968,
-    "ast_hash": "3602f85a491d53e700051844db3cae44",
+    "mtime": 1790880933.4733417,
+    "ast_hash": "956cf356b26eb3e33b256943de44949c",
     "semantic_hash": ""
   },
   "server/utils/voice-providers.test.ts": {
-    "mtime": 1791232028.0222263,
-    "ast_hash": "4b78f8d9e526bbadf91ff0f6172c03b6",
+    "mtime": 1790881576.5710285,
+    "ast_hash": "a2a469c7af8cff2c63ad2f732c37c40b",
     "semantic_hash": ""
   },
   "server/utils/voice-providers.ts": {
-    "mtime": 1791232028.0223806,
-    "ast_hash": "a7f622b55926d306c91ad17f9a59caff",
+    "mtime": 1790881570.7657545,
+    "ast_hash": "f2968a5b62c97e551dbd1881bf793a67",
     "semantic_hash": ""
   },
   "layers/1.base/app/utils/voice/apply.test.ts": {
@@ -2030,8 +2030,8 @@
     "semantic_hash": ""
   },
   "layers/1.base/app/utils/voice/catalog.ts": {
-    "mtime": 1791232028.0203834,
-    "ast_hash": "ffaee0ca341ef669906ee7b2e49c9035",
+    "mtime": 1790883536.938523,
+    "ast_hash": "c0aac2bfcddeea0ceab9e77f79a88321",
     "semantic_hash": ""
   },
   "layers/1.base/app/utils/voice/legacy-types.ts": {
@@ -2125,13 +2125,13 @@
     "semantic_hash": ""
   },
   "server/utils/voice-ask/loop.test.ts": {
-    "mtime": 1791232028.0214968,
-    "ast_hash": "d80d2796ef203aa4b81691744bdbd9c4",
+    "mtime": 1790881586.6005995,
+    "ast_hash": "319fed2cb0e694cba1d6cf727c679dbc",
     "semantic_hash": ""
   },
   "server/utils/voice-ask/loop.ts": {
-    "mtime": 1791232028.0220823,
-    "ast_hash": "a05353ce2fde6a5a7f58f016366e54ba",
+    "mtime": 1790881571.7003253,
+    "ast_hash": "1e05e61f3c7c2fa9bd655cbf7b38115c",
     "semantic_hash": ""
   },
   "server/utils/voice-ask/mask.test.ts": {
@@ -2194,49 +2194,14 @@
     "ast_hash": "7ffcc60266298da4bbf4a05d8de0ad1b",
     "semantic_hash": ""
   },
-  "docs/screenshots/dashboard-desktop.png": {
-    "mtime": 1791232074.837883,
-    "ast_hash": "6a0a0e2111af2c916f4fb8c52e7d9d59",
+  "layers/1.base/app/utils/voice/dictation.test.ts": {
+    "mtime": 1790884303.5285318,
+    "ast_hash": "eeeaec87b8bb69f7c4f7eb5b9fe2afa8",
     "semantic_hash": ""
   },
-  "docs/screenshots/dashboard-mobile.png": {
-    "mtime": 1791232074.8426857,
-    "ast_hash": "d74b64827c90808a3a25edf41736d73b",
-    "semantic_hash": ""
-  },
-  "docs/screenshots/login-desktop.png": {
-    "mtime": 1791232074.849723,
-    "ast_hash": "5781a01806011530dc2db9e5582d5051",
-    "semantic_hash": ""
-  },
-  "docs/screenshots/login-mobile.jpg": {
-    "mtime": 1791232074.8637059,
-    "ast_hash": "e9968f599b971455bd4df0d9e450218b",
-    "semantic_hash": ""
-  },
-  "docs/screenshots/ordem-desktop.png": {
-    "mtime": 1791232074.8766854,
-    "ast_hash": "0944cbefa0cd0b28dc33bae530b5bb63",
-    "semantic_hash": ""
-  },
-  "docs/screenshots/ordem-mobile.jpg": {
-    "mtime": 1791232074.8986852,
-    "ast_hash": "022b3a7ee1edde5354d28097880dd8e9",
-    "semantic_hash": ""
-  },
-  "docs/screenshots/voz-desktop.png": {
-    "mtime": 1791232074.9156852,
-    "ast_hash": "76c1e302690c92cf6cb81a25dfab7132",
-    "semantic_hash": ""
-  },
-  "docs/screenshots/voz-mobile.jpg": {
-    "mtime": 1791232074.930685,
-    "ast_hash": "da73ac0e9cf6776761779e502b911e10",
-    "semantic_hash": ""
-  },
-  "public/og-image.jpg": {
-    "mtime": 1791287455.4484105,
-    "ast_hash": "20cbacf4c9a1bbf52286b355432f6a44",
+  "layers/1.base/app/utils/voice/dictation.ts": {
+    "mtime": 1790884303.3305964,
+    "ast_hash": "68d260ed7cf83028e494803fe860b7bf",
     "semantic_hash": ""
   }
 }
