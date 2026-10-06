@@ -1,6 +1,7 @@
 import type { PermissionAction } from '#layers/auth/app/utils/permissions'
 import { voiceAiFailure } from '../utils/voice/ai-failure'
 import { VOICE_CATALOG, type VoiceRefKind } from '../utils/voice/catalog'
+import { dictatedField } from '../utils/voice/dictation'
 import { legacyToCommand } from '../utils/voice/legacy'
 import { normalizeVoiceCommand } from '../utils/voice/normalize'
 import { parseVoiceCommand } from '../utils/voice/parser'
@@ -75,6 +76,8 @@ export function useVoiceCommand() {
 
   /** `failure`: why the AI couldn't be used; the local parser still gets a chance. */
   async function interpret(text: string, page: VoicePage): Promise<{ command: VoiceCommand | null, failure?: string }> {
+    const dictated = normalizeVoiceCommand(dictatedField(text, page))
+    if (dictated) return { command: dictated }
     const local = () => normalizeVoiceCommand(legacyToCommand(parseVoiceCommand(text)))
     try {
       const { command } = await $fetch<{ command: VoiceCommand | null }>('/api/voice/interpret', {
@@ -162,7 +165,15 @@ export function useVoiceCommand() {
       }
       return out
     }))
-    const kept = resolved.filter((item): item is VoiceRecord => !!item)
+    // A split phrase ("alinhamento", "balanceamento") can land twice on the same catalog entry.
+    const used = new Set<unknown>()
+    const kept = resolved.filter((item): item is VoiceRecord => {
+      if (!item) return false
+      if (item.catalogItemId === undefined) return true
+      if (used.has(item.catalogItemId)) return false
+      used.add(item.catalogItemId)
+      return true
+    })
     return kept.length ? kept : undefined
   }
 

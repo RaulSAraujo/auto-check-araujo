@@ -159,8 +159,14 @@ export function normalizeVoiceCommand(raw: unknown): VoiceCommand | null {
     return command
   }
 
-  const fields = pick(entity.fields, raw.fields, op)
-  if (fields) command.fields = fields
+  const fields = pick(entity.fields, raw.fields, op) ?? {}
+  // The AI often puts the plate in `target` even when creating ("abre uma OS pro ABC1D23").
+  const plateKey = Object.keys(entity.fields).find(key => entity.fields[key]!.type === 'placa')
+  if (op === 'create' && plateKey && fields[plateKey] === undefined && isObj(raw.target)) {
+    const plate = fieldValue(entity.fields[plateKey]!, raw.target.placa)
+    if (plate !== undefined) fields[plateKey] = plate
+  }
+  if (Object.keys(fields).length) command.fields = fields
 
   const itemSpec = entity.items
   if (itemSpec && Array.isArray(raw.items)) {
