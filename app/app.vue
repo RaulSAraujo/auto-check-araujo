@@ -15,13 +15,18 @@ useHead({
 
 const title = BRAND_DISPLAY_NAME
 const description = 'Sistema interno da oficina: clientes, veículos e ordens de serviço.'
+const ogImage = `${useRequestURL().origin}/og-image.jpg`
 
 useSeoMeta({
   title,
   description,
   ogTitle: title,
   ogDescription: description,
-  ogImage: BRAND.logoSrc
+  ogImage,
+  ogImageWidth: 1200,
+  ogImageHeight: 630,
+  twitterCard: 'summary_large_image',
+  twitterImage: ogImage
 })
 </script>
 
